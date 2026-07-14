@@ -1,0 +1,6836 @@
+{
+  "schema_version": "1.0",
+  "etf": {
+    "isin": "IE00BCLWRD08",
+    "ticker": "IS3H",
+    "name": "iShares MSCI EMU Mid Cap UCITS ETF",
+    "provider": "iShares",
+    "domicile": null,
+    "base_currency": null
+  },
+  "snapshot": {
+    "as_of": "2026-07-12",
+    "generated_at": "2026-07-12T13:48:28.724938+00:00",
+    "source_url": "https://www.ishares.com/ch/individual/en/products/257270/ishares-msci-emu-mid-cap-ucits-etf/1495092304805.ajax?fileType=csv&fileName=EMUM_holdings&dataType=fund",
+    "resolved_download_url": "data\\raw\\2026-07-12\\downloads\\IE00BCLWRD08.csv",
+    "source_format": "csv",
+    "parser_id": "ishares_csv_v1"
+  },
+  "holdings": [
+    {
+      "security": {
+        "isin": "IT0004176001",
+        "ticker": "PRY",
+        "name": "PRYSMIAN"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 3.45,
+        "market_value": 18609444.0,
+        "shares": 136283.0,
+        "price": 136.55,
+        "notional_value": 18609443.65,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "PRY",
+          "Name": "PRYSMIAN",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "18’609’444",
+          "Weight (%)": "3.45",
+          "Notional Value": "18’609’443.65",
+          "Shares": "136’283",
+          "Price": "136.55",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "alias",
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "REP",
+        "name": "REPSOL SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Energy",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 2.3,
+        "market_value": 12425169.0,
+        "shares": 534876.0,
+        "price": 23.23,
+        "notional_value": 12425169.48,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "REP",
+          "Name": "REPSOL SA",
+          "Sector": "Energy",
+          "Asset Class": "Equity",
+          "Market Value": "12’425’169",
+          "Weight (%)": "2.30",
+          "Notional Value": "12’425’169.48",
+          "Shares": "534’876",
+          "Price": "23.23",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding REP; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0011540547",
+        "ticker": "ABN",
+        "name": "ABN AMRO BANK NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 2.12,
+        "market_value": 11427226.0,
+        "shares": 298751.0,
+        "price": 38.25,
+        "notional_value": 11427225.75,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ABN",
+          "Name": "ABN AMRO BANK NV",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "11’427’226",
+          "Weight (%)": "2.12",
+          "Notional Value": "11’427’225.75",
+          "Shares": "298’751",
+          "Price": "38.25",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IE00BF0L3536",
+        "ticker": "A5G",
+        "name": "AIB GROUP PLC"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Ireland",
+        "exchange": "Irish Stock Exchange - All Market",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.98,
+        "market_value": 10697045.0,
+        "shares": 1029552.0,
+        "price": 10.39,
+        "notional_value": 10697045.28,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "A5G",
+          "Name": "AIB GROUP PLC",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "10’697’045",
+          "Weight (%)": "1.98",
+          "Notional Value": "10’697’045.28",
+          "Shares": "1’029’552",
+          "Price": "10.39",
+          "Location": "Ireland",
+          "Exchange": "Irish Stock Exchange - All Market",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IT0000066123",
+        "ticker": "BPE",
+        "name": "BPER BANCA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.95,
+        "market_value": 10552807.0,
+        "shares": 755607.0,
+        "price": 13.97,
+        "notional_value": 10552807.36,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BPE",
+          "Name": "BPER BANCA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "10’552’807",
+          "Weight (%)": "1.95",
+          "Notional Value": "10’552’807.36",
+          "Shares": "755’607",
+          "Price": "13.97",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "alias",
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "AER",
+        "name": "AERCAP HOLDINGS NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "New York Stock Exchange Inc.",
+        "market_currency": "USD"
+      },
+      "exposure": {
+        "weight_pct": 1.91,
+        "market_value": 10321825.0,
+        "shares": 78133.0,
+        "price": 132.11,
+        "notional_value": 10321825.49,
+        "currency_exposure": "USD"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AER",
+          "Name": "AERCAP HOLDINGS NV",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "10’321’825",
+          "Weight (%)": "1.91",
+          "Notional Value": "10’321’825.49",
+          "Shares": "78’133",
+          "Price": "132.11",
+          "Location": "Netherlands",
+          "Exchange": "New York Stock Exchange Inc.",
+          "Market Currency": "USD"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0167050915",
+        "ticker": "ACS",
+        "name": "ACS ACTIVIDADES DE CONSTRUCCION Y"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.9,
+        "market_value": 10282718.0,
+        "shares": 85263.0,
+        "price": 120.6,
+        "notional_value": 10282717.8,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ACS",
+          "Name": "ACS ACTIVIDADES DE CONSTRUCCION Y",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "10’282’718",
+          "Weight (%)": "1.90",
+          "Notional Value": "10’282’717.80",
+          "Shares": "85’263",
+          "Price": "120.60",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "LDO",
+        "name": "LEONARDO FINMECCANICA SPA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.89,
+        "market_value": 10220420.0,
+        "shares": 195831.0,
+        "price": 52.19,
+        "notional_value": 10220419.89,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "LDO",
+          "Name": "LEONARDO FINMECCANICA SPA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "10’220’420",
+          "Weight (%)": "1.89",
+          "Notional Value": "10’220’419.89",
+          "Shares": "195’831",
+          "Price": "52.19",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding LDO; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US65345N1063",
+        "ticker": "NN",
+        "name": "NN GROUP NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.8,
+        "market_value": 9727907.0,
+        "shares": 127262.0,
+        "price": 76.44,
+        "notional_value": 9727907.28,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "NN",
+          "Name": "NN GROUP NV",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "9’727’907",
+          "Weight (%)": "1.80",
+          "Notional Value": "9’727’907.28",
+          "Shares": "127’262",
+          "Price": "76.44",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000130577",
+        "ticker": "PUB",
+        "name": "PUBLICIS GROUPE SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Communication",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.75,
+        "market_value": 9465875.0,
+        "shares": 110531.0,
+        "price": 85.64,
+        "notional_value": 9465874.84,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "PUB",
+          "Name": "PUBLICIS GROUPE SA",
+          "Sector": "Communication",
+          "Asset Class": "Equity",
+          "Market Value": "9’465’875",
+          "Weight (%)": "1.75",
+          "Notional Value": "9’465’874.84",
+          "Shares": "110’531",
+          "Price": "85.64",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US6031581068",
+        "ticker": "MTX",
+        "name": "MTU AERO ENGINES HOLDING AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.75,
+        "market_value": 9431910.0,
+        "shares": 26055.0,
+        "price": 362.0,
+        "notional_value": 9431910.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "MTX",
+          "Name": "MTU AERO ENGINES HOLDING AG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "9’431’910",
+          "Weight (%)": "1.75",
+          "Notional Value": "9’431’910.00",
+          "Shares": "26’055",
+          "Price": "362.00",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0012866412",
+        "ticker": "BESI",
+        "name": "BE SEMICONDUCTOR INDUSTRIES NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.63,
+        "market_value": 8780663.0,
+        "shares": 34461.0,
+        "price": 254.8,
+        "notional_value": 8780662.8,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BESI",
+          "Name": "BE SEMICONDUCTOR INDUSTRIES NV",
+          "Sector": "Information Technology",
+          "Asset Class": "Equity",
+          "Market Value": "8’780’663",
+          "Weight (%)": "1.63",
+          "Notional Value": "8’780’662.80",
+          "Shares": "34’461",
+          "Price": "254.80",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0005785604",
+        "ticker": "FRE",
+        "name": "FRESENIUS SE AND CO KGAA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.6,
+        "market_value": 8628164.0,
+        "shares": 204362.0,
+        "price": 42.22,
+        "notional_value": 8628163.64,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "FRE",
+          "Name": "FRESENIUS SE AND CO KGAA",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "8’628’164",
+          "Weight (%)": "1.60",
+          "Notional Value": "8’628’163.64",
+          "Shares": "204’362",
+          "Price": "42.22",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CA09523F1053",
+        "ticker": "BAMI",
+        "name": "BANCO BPM"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.58,
+        "market_value": 8506608.0,
+        "shares": 549700.0,
+        "price": 15.48,
+        "notional_value": 8506607.5,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BAMI",
+          "Name": "BANCO BPM",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "8’506’608",
+          "Weight (%)": "1.58",
+          "Notional Value": "8’506’607.50",
+          "Shares": "549’700",
+          "Price": "15.48",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IE00BD1RP616",
+        "ticker": "BIRG",
+        "name": "BANK OF IRELAND GROUP PLC"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Ireland",
+        "exchange": "Irish Stock Exchange - All Market",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.51,
+        "market_value": 8129777.0,
+        "shares": 459699.0,
+        "price": 17.68,
+        "notional_value": 8129776.81,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BIRG",
+          "Name": "BANK OF IRELAND GROUP PLC",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "8’129’777",
+          "Weight (%)": "1.51",
+          "Notional Value": "8’129’776.81",
+          "Shares": "459’699",
+          "Price": "17.68",
+          "Location": "Ireland",
+          "Exchange": "Irish Stock Exchange - All Market",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0000009082",
+        "ticker": "KPN",
+        "name": "KONINKLIJKE KPN NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Communication",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.45,
+        "market_value": 7820390.0,
+        "shares": 1850542.0,
+        "price": 4.23,
+        "notional_value": 7820390.49,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "KPN",
+          "Name": "KONINKLIJKE KPN NV",
+          "Sector": "Communication",
+          "Asset Class": "Equity",
+          "Market Value": "7’820’390",
+          "Weight (%)": "1.45",
+          "Notional Value": "7’820’390.49",
+          "Shares": "1’850’542",
+          "Price": "4.23",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0113860A34",
+        "ticker": "SAB",
+        "name": "BANCO DE SABADELL"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.36,
+        "market_value": 7346306.0,
+        "shares": 2311613.0,
+        "price": 3.18,
+        "notional_value": 7346306.11,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "SAB",
+          "Name": "BANCO DE SABADELL",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "7’346’306",
+          "Weight (%)": "1.36",
+          "Notional Value": "7’346’306.11",
+          "Shares": "2’311’613",
+          "Price": "3.18",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009003727",
+        "ticker": "WRT1V",
+        "name": "WARTSILA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.32,
+        "market_value": 7153438.0,
+        "shares": 236243.0,
+        "price": 30.28,
+        "notional_value": 7153438.04,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "WRT1V",
+          "Name": "WARTSILA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "7’153’438",
+          "Weight (%)": "1.32",
+          "Notional Value": "7’153’438.04",
+          "Shares": "236’243",
+          "Price": "30.28",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US8965221091",
+        "ticker": "TRN",
+        "name": "TERNA RETE ELETTRICA NAZIONALE"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.29,
+        "market_value": 6948861.0,
+        "shares": 681595.0,
+        "price": 10.2,
+        "notional_value": 6948861.03,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "TRN",
+          "Name": "TERNA RETE ELETTRICA NAZIONALE",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "6’948’861",
+          "Weight (%)": "1.29",
+          "Notional Value": "6’948’861.03",
+          "Shares": "681’595",
+          "Price": "10.20",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US30257X1046",
+        "ticker": "FBK",
+        "name": "FINECOBANK BANCA FINECO"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.24,
+        "market_value": 6710313.0,
+        "shares": 296654.0,
+        "price": 22.62,
+        "notional_value": 6710313.48,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "FBK",
+          "Name": "FINECOBANK BANCA FINECO",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "6’710’313",
+          "Weight (%)": "1.24",
+          "Notional Value": "6’710’313.48",
+          "Shares": "296’654",
+          "Price": "22.62",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "DSFIR",
+        "name": "DSM FIRMENICH AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.24,
+        "market_value": 6673548.0,
+        "shares": 79447.0,
+        "price": 84.0,
+        "notional_value": 6673548.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "DSFIR",
+          "Name": "DSM FIRMENICH AG",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "6’673’548",
+          "Weight (%)": "1.24",
+          "Notional Value": "6’673’548.00",
+          "Shares": "79’447",
+          "Price": "84.00",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding DSFIR; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IT0003497168",
+        "ticker": "TIT",
+        "name": "TELECOM ITALIA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Communication",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.23,
+        "market_value": 6644887.0,
+        "shares": 827817.0,
+        "price": 8.03,
+        "notional_value": 6644887.06,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "TIT",
+          "Name": "TELECOM ITALIA",
+          "Sector": "Communication",
+          "Asset Class": "Equity",
+          "Market Value": "6’644’887",
+          "Weight (%)": "1.23",
+          "Notional Value": "6’644’887.06",
+          "Shares": "827’817",
+          "Price": "8.03",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "alias",
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0000395903",
+        "ticker": "WKL",
+        "name": "WOLTERS KLUWER NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.22,
+        "market_value": 6587305.0,
+        "shares": 109935.0,
+        "price": 59.92,
+        "notional_value": 6587305.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "WKL",
+          "Name": "WOLTERS KLUWER NV",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "6’587’305",
+          "Weight (%)": "1.22",
+          "Notional Value": "6’587’305.20",
+          "Shares": "109’935",
+          "Price": "59.92",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IE0004906560",
+        "ticker": "KRZ",
+        "name": "KERRY GROUP PLC"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "Ireland",
+        "exchange": "Irish Stock Exchange - All Market",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.17,
+        "market_value": 6338606.0,
+        "shares": 77112.0,
+        "price": 82.2,
+        "notional_value": 6338606.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "KRZ",
+          "Name": "KERRY GROUP PLC",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "6’338’606",
+          "Weight (%)": "1.17",
+          "Notional Value": "6’338’606.40",
+          "Shares": "77’112",
+          "Price": "82.20",
+          "Location": "Ireland",
+          "Exchange": "Irish Stock Exchange - All Market",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US74347R3131",
+        "ticker": "PST",
+        "name": "POSTE ITALIANE"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.17,
+        "market_value": 6330368.0,
+        "shares": 220340.0,
+        "price": 28.73,
+        "notional_value": 6330368.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "PST",
+          "Name": "POSTE ITALIANE",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "6’330’368",
+          "Weight (%)": "1.17",
+          "Notional Value": "6’330’368.20",
+          "Shares": "220’340",
+          "Price": "28.73",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "EDP",
+        "name": "EDP ENERGIAS DE PORTUGAL SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Portugal",
+        "exchange": "Nyse Euronext - Euronext Lisbon",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.16,
+        "market_value": 6260935.0,
+        "shares": 1410756.0,
+        "price": 4.44,
+        "notional_value": 6260935.13,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "EDP",
+          "Name": "EDP ENERGIAS DE PORTUGAL SA",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "6’260’935",
+          "Weight (%)": "1.16",
+          "Notional Value": "6’260’935.13",
+          "Shares": "1’410’756",
+          "Price": "4.44",
+          "Location": "Portugal",
+          "Exchange": "Nyse Euronext - Euronext Lisbon",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding EDP; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "BMG169621056",
+        "ticker": "BG",
+        "name": "BAWAG GROUP AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Austria",
+        "exchange": "Wiener Boerse Ag",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.15,
+        "market_value": 6220746.0,
+        "shares": 35265.0,
+        "price": 176.4,
+        "notional_value": 6220746.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BG",
+          "Name": "BAWAG GROUP AG",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "6’220’746",
+          "Weight (%)": "1.15",
+          "Notional Value": "6’220’746.00",
+          "Shares": "35’265",
+          "Price": "176.40",
+          "Location": "Austria",
+          "Exchange": "Wiener Boerse Ag",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US81752R1005",
+        "ticker": "SRG",
+        "name": "SNAM"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.12,
+        "market_value": 6048162.0,
+        "shares": 978034.0,
+        "price": 6.18,
+        "notional_value": 6048162.26,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "SRG",
+          "Name": "SNAM",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "6’048’162",
+          "Weight (%)": "1.12",
+          "Notional Value": "6’048’162.26",
+          "Shares": "978’034",
+          "Price": "6.18",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000120693",
+        "ticker": "RI",
+        "name": "PERNOD RICARD SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.12,
+        "market_value": 6032714.0,
+        "shares": 94854.0,
+        "price": 63.6,
+        "notional_value": 6032714.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "RI",
+          "Name": "PERNOD RICARD SA",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "6’032’714",
+          "Weight (%)": "1.12",
+          "Notional Value": "6’032’714.40",
+          "Shares": "94’854",
+          "Price": "63.60",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009013296",
+        "ticker": "NESTE",
+        "name": "NESTE"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Energy",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.11,
+        "market_value": 5975685.0,
+        "shares": 205350.0,
+        "price": 29.1,
+        "notional_value": 5975685.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "NESTE",
+          "Name": "NESTE",
+          "Sector": "Energy",
+          "Asset Class": "Equity",
+          "Market Value": "5’975’685",
+          "Weight (%)": "1.11",
+          "Notional Value": "5’975’685.00",
+          "Shares": "205’350",
+          "Price": "29.10",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IE0004927939",
+        "ticker": "KRX",
+        "name": "KINGSPAN GROUP PLC"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Ireland",
+        "exchange": "Irish Stock Exchange - All Market",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.08,
+        "market_value": 5857346.0,
+        "shares": 74379.0,
+        "price": 78.75,
+        "notional_value": 5857346.25,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "KRX",
+          "Name": "KINGSPAN GROUP PLC",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "5’857’346",
+          "Weight (%)": "1.08",
+          "Notional Value": "5’857’346.25",
+          "Shares": "74’379",
+          "Price": "78.75",
+          "Location": "Ireland",
+          "Exchange": "Irish Stock Exchange - All Market",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009005987",
+        "ticker": "UPM",
+        "name": "UPM-KYMMENE"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.08,
+        "market_value": 5848069.0,
+        "shares": 255933.0,
+        "price": 22.85,
+        "notional_value": 5848069.05,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "UPM",
+          "Name": "UPM-KYMMENE",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "5’848’069",
+          "Weight (%)": "1.08",
+          "Notional Value": "5’848’069.05",
+          "Shares": "255’933",
+          "Price": "22.85",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0105066007",
+        "ticker": "CLNX",
+        "name": "CELLNEX TELECOM"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Communication",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.06,
+        "market_value": 5725332.0,
+        "shares": 231701.0,
+        "price": 24.71,
+        "notional_value": 5725331.71,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "CLNX",
+          "Name": "CELLNEX TELECOM",
+          "Sector": "Communication",
+          "Asset Class": "Equity",
+          "Market Value": "5’725’332",
+          "Weight (%)": "1.06",
+          "Notional Value": "5’725’331.71",
+          "Shares": "231’701",
+          "Price": "24.71",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000SYM9999",
+        "ticker": "SY1",
+        "name": "SYMRISE AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.06,
+        "market_value": 5711892.0,
+        "shares": 64512.0,
+        "price": 88.54,
+        "notional_value": 5711892.48,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "SY1",
+          "Name": "SYMRISE AG",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "5’711’892",
+          "Weight (%)": "1.06",
+          "Notional Value": "5’711’892.48",
+          "Shares": "64’512",
+          "Price": "88.54",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "ENX",
+        "name": "EURONEXT NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 1.03,
+        "market_value": 5545658.0,
+        "shares": 37496.0,
+        "price": 147.9,
+        "notional_value": 5545658.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ENX",
+          "Name": "EURONEXT NV",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "5’545’658",
+          "Weight (%)": "1.03",
+          "Notional Value": "5’545’658.40",
+          "Shares": "37’496",
+          "Price": "147.90",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding ENX; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0013326246",
+        "ticker": "URW",
+        "name": "UNIBAIL RODAMCO WE STAPLED UNITS"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Real Estate",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.99,
+        "market_value": 5340514.0,
+        "shares": 52128.0,
+        "price": 102.45,
+        "notional_value": 5340513.6,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "URW",
+          "Name": "UNIBAIL RODAMCO WE STAPLED UNITS",
+          "Sector": "Real Estate",
+          "Asset Class": "Equity",
+          "Market Value": "5’340’514",
+          "Weight (%)": "0.99",
+          "Notional Value": "5’340’513.60",
+          "Shares": "52’128",
+          "Price": "102.45",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IT0004965148",
+        "ticker": "MONC",
+        "name": "MONCLER"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.98,
+        "market_value": 5295147.0,
+        "shares": 106757.0,
+        "price": 49.6,
+        "notional_value": 5295147.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "MONC",
+          "Name": "MONCLER",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "5’295’147",
+          "Weight (%)": "0.98",
+          "Notional Value": "5’295’147.20",
+          "Shares": "106’757",
+          "Price": "49.60",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "alias",
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0011872643",
+        "ticker": "ASRNL",
+        "name": "ASR NEDERLAND NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.96,
+        "market_value": 5162902.0,
+        "shares": 75658.0,
+        "price": 68.24,
+        "notional_value": 5162901.92,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ASRNL",
+          "Name": "ASR NEDERLAND NV",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "5’162’902",
+          "Weight (%)": "0.96",
+          "Notional Value": "5’162’901.92",
+          "Shares": "75’658",
+          "Price": "68.24",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "AGS",
+        "name": "AGEAS SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.95,
+        "market_value": 5115053.0,
+        "shares": 72043.0,
+        "price": 71.0,
+        "notional_value": 5115053.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AGS",
+          "Name": "AGEAS SA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "5’115’053",
+          "Weight (%)": "0.95",
+          "Notional Value": "5’115’053.00",
+          "Shares": "72’043",
+          "Price": "71.00",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding AGS; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000120503",
+        "ticker": "EN",
+        "name": "BOUYGUES SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.93,
+        "market_value": 5030804.0,
+        "shares": 107726.0,
+        "price": 46.7,
+        "notional_value": 5030804.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "EN",
+          "Name": "BOUYGUES SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "5’030’804",
+          "Weight (%)": "0.93",
+          "Notional Value": "5’030’804.20",
+          "Shares": "107’726",
+          "Price": "46.70",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009014575",
+        "ticker": "METSO",
+        "name": "METSO CORPORATION"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.87,
+        "market_value": 4684141.0,
+        "shares": 310208.0,
+        "price": 15.1,
+        "notional_value": 4684140.8,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "METSO",
+          "Name": "METSO CORPORATION",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "4’684’141",
+          "Weight (%)": "0.87",
+          "Notional Value": "4’684’140.80",
+          "Shares": "310’208",
+          "Price": "15.10",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US23306X8526",
+        "ticker": "CA",
+        "name": "CARREFOUR SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.86,
+        "market_value": 4643077.0,
+        "shares": 284241.0,
+        "price": 16.34,
+        "notional_value": 4643076.74,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "CA",
+          "Name": "CARREFOUR SA",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "4’643’077",
+          "Weight (%)": "0.86",
+          "Notional Value": "4’643’076.74",
+          "Shares": "284’241",
+          "Price": "16.34",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0113679I37",
+        "ticker": "BKT",
+        "name": "BANKINTER SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.85,
+        "market_value": 4600395.0,
+        "shares": 303857.0,
+        "price": 15.14,
+        "notional_value": 4600394.98,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BKT",
+          "Name": "BANKINTER SA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "4’600’395",
+          "Weight (%)": "0.85",
+          "Notional Value": "4’600’394.98",
+          "Shares": "303’857",
+          "Price": "15.14",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "AU0000150328",
+        "ticker": "AGN",
+        "name": "AEGON LTD"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.84,
+        "market_value": 4532644.0,
+        "shares": 588655.0,
+        "price": 7.7,
+        "notional_value": 4532643.5,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AGN",
+          "Name": "AEGON LTD",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "4’532’644",
+          "Weight (%)": "0.84",
+          "Notional Value": "4’532’643.50",
+          "Shares": "588’655",
+          "Price": "7.70",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0180907000",
+        "ticker": "UNI",
+        "name": "UNIPOL ASSICURAZIONI SPA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.84,
+        "market_value": 4528546.0,
+        "shares": 173574.0,
+        "price": 26.09,
+        "notional_value": 4528545.66,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "UNI",
+          "Name": "UNIPOL ASSICURAZIONI SPA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "4’528’546",
+          "Weight (%)": "0.84",
+          "Notional Value": "4’528’545.66",
+          "Shares": "173’574",
+          "Price": "26.09",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000120404",
+        "ticker": "AC",
+        "name": "ACCOR SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.82,
+        "market_value": 4413024.0,
+        "shares": 90691.0,
+        "price": 48.66,
+        "notional_value": 4413024.06,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AC",
+          "Name": "ACCOR SA",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "4’413’024",
+          "Weight (%)": "0.82",
+          "Notional Value": "4’413’024.06",
+          "Shares": "90’691",
+          "Price": "48.66",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0013267909",
+        "ticker": "AKZA",
+        "name": "AKZO NOBEL NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.79,
+        "market_value": 4281872.0,
+        "shares": 74989.0,
+        "price": 57.1,
+        "notional_value": 4281871.9,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AKZA",
+          "Name": "AKZO NOBEL NV",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "4’281’872",
+          "Weight (%)": "0.79",
+          "Notional Value": "4’281’871.90",
+          "Shares": "74’989",
+          "Price": "57.10",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009007132",
+        "ticker": "FORTUM",
+        "name": "FORTUM"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.79,
+        "market_value": 4247389.0,
+        "shares": 216593.0,
+        "price": 19.61,
+        "notional_value": 4247388.73,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "FORTUM",
+          "Name": "FORTUM",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "4’247’389",
+          "Weight (%)": "0.79",
+          "Notional Value": "4’247’388.73",
+          "Shares": "216’593",
+          "Price": "19.61",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0006602006",
+        "ticker": "G1A",
+        "name": "GEA GROUP AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.78,
+        "market_value": 4230599.0,
+        "shares": 70805.0,
+        "price": 59.75,
+        "notional_value": 4230598.75,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "G1A",
+          "Name": "GEA GROUP AG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "4’230’599",
+          "Weight (%)": "0.78",
+          "Notional Value": "4’230’598.75",
+          "Shares": "70’805",
+          "Price": "59.75",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "OMV",
+        "name": "OMV AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Energy",
+        "region": "Europe",
+        "country": "Austria",
+        "exchange": "Wiener Boerse Ag",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.78,
+        "market_value": 4200151.0,
+        "shares": 71189.0,
+        "price": 59.0,
+        "notional_value": 4200151.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "OMV",
+          "Name": "OMV AG",
+          "Sector": "Energy",
+          "Asset Class": "Equity",
+          "Market Value": "4’200’151",
+          "Weight (%)": "0.78",
+          "Notional Value": "4’200’151.00",
+          "Shares": "71’189",
+          "Price": "59.00",
+          "Location": "Austria",
+          "Exchange": "Wiener Boerse Ag",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding OMV; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0006174348",
+        "ticker": "BVI",
+        "name": "BUREAU VERITAS SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.77,
+        "market_value": 4138090.0,
+        "shares": 153490.0,
+        "price": 26.96,
+        "notional_value": 4138090.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BVI",
+          "Name": "BUREAU VERITAS SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "4’138’090",
+          "Weight (%)": "0.77",
+          "Notional Value": "4’138’090.40",
+          "Shares": "153’490",
+          "Price": "26.96",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "BCP",
+        "name": "BANCO COMERCIAL PORTUGUES SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Portugal",
+        "exchange": "Nyse Euronext - Euronext Lisbon",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.76,
+        "market_value": 4087355.0,
+        "shares": 3937722.0,
+        "price": 1.04,
+        "notional_value": 4087355.44,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BCP",
+          "Name": "BANCO COMERCIAL PORTUGUES SA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "4’087’355",
+          "Weight (%)": "0.76",
+          "Notional Value": "4’087’355.44",
+          "Shares": "3’937’722",
+          "Price": "1.04",
+          "Location": "Portugal",
+          "Exchange": "Nyse Euronext - Euronext Lisbon",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding BCP; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US74347R7355",
+        "ticker": "RXL",
+        "name": "REXEL SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.75,
+        "market_value": 4071835.0,
+        "shares": 107323.0,
+        "price": 37.94,
+        "notional_value": 4071834.62,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "RXL",
+          "Name": "REXEL SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "4’071’835",
+          "Weight (%)": "0.75",
+          "Notional Value": "4’071’834.62",
+          "Shares": "107’323",
+          "Price": "37.94",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000130452",
+        "ticker": "FGR",
+        "name": "EIFFAGE SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.74,
+        "market_value": 4012406.0,
+        "shares": 33133.0,
+        "price": 121.1,
+        "notional_value": 4012406.3,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "FGR",
+          "Name": "EIFFAGE SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "4’012’406",
+          "Weight (%)": "0.74",
+          "Notional Value": "4’012’406.30",
+          "Shares": "33’133",
+          "Price": "121.10",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0000008977",
+        "ticker": "HEIO",
+        "name": "HEINEKEN HOLDING NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.73,
+        "market_value": 3966454.0,
+        "shares": 58074.0,
+        "price": 68.3,
+        "notional_value": 3966454.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "HEIO",
+          "Name": "HEINEKEN HOLDING NV",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "3’966’454",
+          "Weight (%)": "0.73",
+          "Notional Value": "3’966’454.20",
+          "Shares": "58’074",
+          "Price": "68.30",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "GALP",
+        "name": "GALP ENERGIA SGPS SA CLASS B"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Energy",
+        "region": "Europe",
+        "country": "Portugal",
+        "exchange": "Nyse Euronext - Euronext Lisbon",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.71,
+        "market_value": 3860475.0,
+        "shares": 196963.0,
+        "price": 19.6,
+        "notional_value": 3860474.8,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "GALP",
+          "Name": "GALP ENERGIA SGPS SA CLASS B",
+          "Sector": "Energy",
+          "Asset Class": "Equity",
+          "Market Value": "3’860’475",
+          "Weight (%)": "0.71",
+          "Notional Value": "3’860’474.80",
+          "Shares": "196’963",
+          "Price": "19.60",
+          "Location": "Portugal",
+          "Exchange": "Nyse Euronext - Euronext Lisbon",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding GALP; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0005785802",
+        "ticker": "FME",
+        "name": "FRESENIUS MEDICAL CARE AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.71,
+        "market_value": 3856769.0,
+        "shares": 92179.0,
+        "price": 41.84,
+        "notional_value": 3856769.36,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "FME",
+          "Name": "FRESENIUS MEDICAL CARE AG",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "3’856’769",
+          "Weight (%)": "0.71",
+          "Notional Value": "3’856’769.36",
+          "Shares": "92’179",
+          "Price": "41.84",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US20603L1026",
+        "ticker": "CON",
+        "name": "CONTINENTAL AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.71,
+        "market_value": 3824577.0,
+        "shares": 53193.0,
+        "price": 71.9,
+        "notional_value": 3824576.7,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "CON",
+          "Name": "CONTINENTAL AG",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "3’824’577",
+          "Weight (%)": "0.71",
+          "Notional Value": "3’824’576.70",
+          "Shares": "53’193",
+          "Price": "71.90",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0014000MR3",
+        "ticker": "ERF",
+        "name": "EUROFINS SCIENTIFIC"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.7,
+        "market_value": 3805878.0,
+        "shares": 55318.0,
+        "price": 68.8,
+        "notional_value": 3805878.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ERF",
+          "Name": "EUROFINS SCIENTIFIC",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "3’805’878",
+          "Weight (%)": "0.70",
+          "Notional Value": "3’805’878.40",
+          "Shares": "55’318",
+          "Price": "68.80",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0015002MS2",
+        "ticker": "MICC",
+        "name": "MAGNUM ICE CREAM NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.7,
+        "market_value": 3773761.0,
+        "shares": 236956.0,
+        "price": 15.93,
+        "notional_value": 3773761.26,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "MICC",
+          "Name": "MAGNUM ICE CREAM NV",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "3’773’761",
+          "Weight (%)": "0.70",
+          "Notional Value": "3’773’761.26",
+          "Shares": "236’956",
+          "Price": "15.93",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009014377",
+        "ticker": "ORNBV",
+        "name": "ORION CLASS B"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.69,
+        "market_value": 3739573.0,
+        "shares": 53006.0,
+        "price": 70.55,
+        "notional_value": 3739573.3,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ORNBV",
+          "Name": "ORION CLASS B",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "3’739’573",
+          "Weight (%)": "0.69",
+          "Notional Value": "3’739’573.30",
+          "Shares": "53’006",
+          "Price": "70.55",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US50202M1027",
+        "ticker": "LI",
+        "name": "KLEPIERRE REIT SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Real Estate",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.69,
+        "market_value": 3737682.0,
+        "shares": 104288.0,
+        "price": 35.84,
+        "notional_value": 3737681.92,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "LI",
+          "Name": "KLEPIERRE REIT SA",
+          "Sector": "Real Estate",
+          "Asset Class": "Equity",
+          "Market Value": "3’737’682",
+          "Weight (%)": "0.69",
+          "Notional Value": "3’737’681.92",
+          "Shares": "104’288",
+          "Price": "35.84",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "BMG9108L1735",
+        "ticker": "TEN",
+        "name": "TENARIS SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Energy",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.69,
+        "market_value": 3723650.0,
+        "shares": 155476.0,
+        "price": 23.95,
+        "notional_value": 3723650.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "TEN",
+          "Name": "TENARIS SA",
+          "Sector": "Energy",
+          "Asset Class": "Equity",
+          "Market Value": "3’723’650",
+          "Weight (%)": "0.69",
+          "Notional Value": "3’723’650.20",
+          "Shares": "155’476",
+          "Price": "23.95",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "QIA",
+        "name": "QIAGEN NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Deutsche Boerse Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.68,
+        "market_value": 3659519.0,
+        "shares": 99796.0,
+        "price": 36.67,
+        "notional_value": 3659519.32,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "QIA",
+          "Name": "QIAGEN NV",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "3’659’519",
+          "Weight (%)": "0.68",
+          "Notional Value": "3’659’519.32",
+          "Shares": "99’796",
+          "Price": "36.67",
+          "Location": "Germany",
+          "Exchange": "Deutsche Boerse Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding QIA; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US00370M1036",
+        "ticker": "ABVX",
+        "name": "ABIVAX SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.66,
+        "market_value": 3587276.0,
+        "shares": 29260.0,
+        "price": 122.6,
+        "notional_value": 3587276.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ABVX",
+          "Name": "ABIVAX SA",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "3’587’276",
+          "Weight (%)": "0.66",
+          "Notional Value": "3’587’276.00",
+          "Shares": "29’260",
+          "Price": "122.60",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "AT0000606306",
+        "ticker": "RBI",
+        "name": "RAIFFEISEN BANK INTERNATIONAL AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Austria",
+        "exchange": "Wiener Boerse Ag",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.64,
+        "market_value": 3459740.0,
+        "shares": 63774.0,
+        "price": 54.25,
+        "notional_value": 3459739.5,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "RBI",
+          "Name": "RAIFFEISEN BANK INTERNATIONAL AG",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "3’459’740",
+          "Weight (%)": "0.64",
+          "Notional Value": "3’459’739.50",
+          "Shares": "63’774",
+          "Price": "54.25",
+          "Location": "Austria",
+          "Exchange": "Wiener Boerse Ag",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0006070006",
+        "ticker": "HOT",
+        "name": "HOCHTIEF AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.62,
+        "market_value": 3333330.0,
+        "shares": 7150.0,
+        "price": 466.2,
+        "notional_value": 3333330.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "HOT",
+          "Name": "HOCHTIEF AG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "3’333’330",
+          "Weight (%)": "0.62",
+          "Notional Value": "3’333’330.00",
+          "Shares": "7’150",
+          "Price": "466.20",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000KBX1006",
+        "ticker": "KBX",
+        "name": "KNORR BREMSE AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.59,
+        "market_value": 3184032.0,
+        "shares": 31216.0,
+        "price": 102.0,
+        "notional_value": 3184032.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "KBX",
+          "Name": "KNORR BREMSE AG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "3’184’032",
+          "Weight (%)": "0.59",
+          "Notional Value": "3’184’032.00",
+          "Shares": "31’216",
+          "Price": "102.00",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "AU000000TLX2",
+        "ticker": "TLX",
+        "name": "TALANX AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.58,
+        "market_value": 3150173.0,
+        "shares": 28795.0,
+        "price": 109.4,
+        "notional_value": 3150173.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "TLX",
+          "Name": "TALANX AG",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "3’150’173",
+          "Weight (%)": "0.58",
+          "Notional Value": "3’150’173.00",
+          "Shares": "28’795",
+          "Price": "109.40",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US12233L2060",
+        "ticker": "BNR",
+        "name": "BRENNTAG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.58,
+        "market_value": 3105271.0,
+        "shares": 55971.0,
+        "price": 55.48,
+        "notional_value": 3105271.08,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BNR",
+          "Name": "BRENNTAG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "3’105’271",
+          "Weight (%)": "0.58",
+          "Notional Value": "3’105’271.08",
+          "Shares": "55’971",
+          "Price": "55.48",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0173093024",
+        "ticker": "RED",
+        "name": "REDEIA CORPORACION SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.57,
+        "market_value": 3068443.0,
+        "shares": 201606.0,
+        "price": 15.22,
+        "notional_value": 3068443.32,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "RED",
+          "Name": "REDEIA CORPORACION SA",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "3’068’443",
+          "Weight (%)": "0.57",
+          "Notional Value": "3’068’443.32",
+          "Shares": "201’606",
+          "Price": "15.22",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CA4509131088",
+        "ticker": "IAG",
+        "name": "INTERNATIONAL AIRLINES GROUP SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.56,
+        "market_value": 3034367.0,
+        "shares": 555338.0,
+        "price": 5.46,
+        "notional_value": 3034366.83,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "IAG",
+          "Name": "INTERNATIONAL AIRLINES GROUP SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "3’034’367",
+          "Weight (%)": "0.56",
+          "Notional Value": "3’034’366.83",
+          "Shares": "555’338",
+          "Price": "5.46",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000A2E4K43",
+        "ticker": "DHER",
+        "name": "DELIVERY HERO"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.55,
+        "market_value": 2981167.0,
+        "shares": 81032.0,
+        "price": 36.79,
+        "notional_value": 2981167.28,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "DHER",
+          "Name": "DELIVERY HERO",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "2’981’167",
+          "Weight (%)": "0.55",
+          "Notional Value": "2’981’167.28",
+          "Shares": "81’032",
+          "Price": "36.79",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0125220311",
+        "ticker": "ANA",
+        "name": "ACCIONA SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.55,
+        "market_value": 2955827.0,
+        "shares": 11795.0,
+        "price": 250.6,
+        "notional_value": 2955827.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ANA",
+          "Name": "ACCIONA SA",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "2’955’827",
+          "Weight (%)": "0.55",
+          "Notional Value": "2’955’827.00",
+          "Shares": "11’795",
+          "Price": "250.60",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US74255Y8214",
+        "ticker": "IG",
+        "name": "ITALGAS"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.54,
+        "market_value": 2918980.0,
+        "shares": 293660.0,
+        "price": 9.94,
+        "notional_value": 2918980.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "IG",
+          "Name": "ITALGAS",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "2’918’980",
+          "Weight (%)": "0.54",
+          "Notional Value": "2’918’980.40",
+          "Shares": "293’660",
+          "Price": "9.94",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "NL0012059018",
+        "ticker": "EXO",
+        "name": "EXOR NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.54,
+        "market_value": 2893956.0,
+        "shares": 42810.0,
+        "price": 67.6,
+        "notional_value": 2893956.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "EXO",
+          "Name": "EXOR NV",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "2’893’956",
+          "Weight (%)": "0.54",
+          "Notional Value": "2’893’956.00",
+          "Shares": "42’810",
+          "Price": "67.60",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "ELI",
+        "name": "ELIA GROUP SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.53,
+        "market_value": 2864252.0,
+        "shares": 21154.0,
+        "price": 135.4,
+        "notional_value": 2864251.6,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ELI",
+          "Name": "ELIA GROUP SA",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "2’864’252",
+          "Weight (%)": "0.53",
+          "Notional Value": "2’864’251.60",
+          "Shares": "21’154",
+          "Price": "135.40",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding ELI; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0007165631",
+        "ticker": "SRT3",
+        "name": "SARTORIUS PREF AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.53,
+        "market_value": 2861658.0,
+        "shares": 12266.0,
+        "price": 233.3,
+        "notional_value": 2861657.8,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "SRT3",
+          "Name": "SARTORIUS PREF AG",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "2’861’658",
+          "Weight (%)": "0.53",
+          "Notional Value": "2’861’657.80",
+          "Shares": "12’266",
+          "Price": "233.30",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "GBLB",
+        "name": "GROUPE BRUXELLES LAMBERT NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.51,
+        "market_value": 2775830.0,
+        "shares": 35542.0,
+        "price": 78.1,
+        "notional_value": 2775830.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "GBLB",
+          "Name": "GROUPE BRUXELLES LAMBERT NV",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "2’775’830",
+          "Weight (%)": "0.51",
+          "Notional Value": "2’775’830.20",
+          "Shares": "35’542",
+          "Price": "78.10",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding GBLB; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000ZAL1111",
+        "ticker": "ZAL",
+        "name": "ZALANDO"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.51,
+        "market_value": 2774356.0,
+        "shares": 102564.0,
+        "price": 27.05,
+        "notional_value": 2774356.2,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ZAL",
+          "Name": "ZALANDO",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "2’774’356",
+          "Weight (%)": "0.51",
+          "Notional Value": "2’774’356.20",
+          "Shares": "102’564",
+          "Price": "27.05",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0010259150",
+        "ticker": "IPN",
+        "name": "IPSEN SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.51,
+        "market_value": 2747220.0,
+        "shares": 16275.0,
+        "price": 168.8,
+        "notional_value": 2747220.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "IPN",
+          "Name": "IPSEN SA",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "2’747’220",
+          "Weight (%)": "0.51",
+          "Notional Value": "2’747’220.00",
+          "Shares": "16’275",
+          "Price": "168.80",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0008232125",
+        "ticker": "LHA",
+        "name": "DEUTSCHE LUFTHANSA AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.51,
+        "market_value": 2730040.0,
+        "shares": 291049.0,
+        "price": 9.38,
+        "notional_value": 2730039.62,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "LHA",
+          "Name": "DEUTSCHE LUFTHANSA AG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "2’730’040",
+          "Weight (%)": "0.51",
+          "Notional Value": "2’730’039.62",
+          "Shares": "291’049",
+          "Price": "9.38",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US0030222741",
+        "ticker": "AMUN",
+        "name": "AMUNDI SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.49,
+        "market_value": 2625789.0,
+        "shares": 30095.0,
+        "price": 87.25,
+        "notional_value": 2625788.75,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AMUN",
+          "Name": "AMUNDI SA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "2’625’789",
+          "Weight (%)": "0.49",
+          "Notional Value": "2’625’788.75",
+          "Shares": "30’095",
+          "Price": "87.25",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "GB00B28ZPS36",
+        "ticker": "REC",
+        "name": "RECORDATI INDUSTRIA CHIMICA E FARM"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.48,
+        "market_value": 2604552.0,
+        "shares": 50771.0,
+        "price": 51.3,
+        "notional_value": 2604552.3,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "REC",
+          "Name": "RECORDATI INDUSTRIA CHIMICA E FARM",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "2’604’552",
+          "Weight (%)": "0.48",
+          "Notional Value": "2’604’552.30",
+          "Shares": "50’771",
+          "Price": "51.30",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0010220475",
+        "ticker": "ALO",
+        "name": "ALSTOM SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.48,
+        "market_value": 2600863.0,
+        "shares": 166402.0,
+        "price": 15.63,
+        "notional_value": 2600863.26,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ALO",
+          "Name": "ALSTOM SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "2’600’863",
+          "Weight (%)": "0.48",
+          "Notional Value": "2’600’863.26",
+          "Shares": "166’402",
+          "Price": "15.63",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009000202",
+        "ticker": "KESKOB",
+        "name": "KESKO CLASS B"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.47,
+        "market_value": 2552705.0,
+        "shares": 132677.0,
+        "price": 19.24,
+        "notional_value": 2552705.48,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "KESKOB",
+          "Name": "KESKO CLASS B",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "2’552’705",
+          "Weight (%)": "0.47",
+          "Notional Value": "2’552’705.48",
+          "Shares": "132’677",
+          "Price": "19.24",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009007884",
+        "ticker": "ELISA",
+        "name": "ELISA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Communication",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.46,
+        "market_value": 2463037.0,
+        "shares": 68954.0,
+        "price": 35.72,
+        "notional_value": 2463036.88,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ELISA",
+          "Name": "ELISA",
+          "Sector": "Communication",
+          "Asset Class": "Equity",
+          "Market Value": "2’463’037",
+          "Weight (%)": "0.46",
+          "Notional Value": "2’463’036.88",
+          "Shares": "68’954",
+          "Price": "35.72",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FI0009005961",
+        "ticker": "STERV",
+        "name": "STORA ENSO CLASS R"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Finland",
+        "exchange": "Nasdaq Omx Helsinki Ltd.",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.45,
+        "market_value": 2440279.0,
+        "shares": 263529.0,
+        "price": 9.26,
+        "notional_value": 2440278.54,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "STERV",
+          "Name": "STORA ENSO CLASS R",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "2’440’279",
+          "Weight (%)": "0.45",
+          "Notional Value": "2’440’278.54",
+          "Shares": "263’529",
+          "Price": "9.26",
+          "Location": "Finland",
+          "Exchange": "Nasdaq Omx Helsinki Ltd.",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000A12DM80",
+        "ticker": "G24",
+        "name": "SCOUT24 N"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Communication",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.45,
+        "market_value": 2432810.0,
+        "shares": 33349.0,
+        "price": 72.95,
+        "notional_value": 2432809.55,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "G24",
+          "Name": "SCOUT24 N",
+          "Sector": "Communication",
+          "Asset Class": "Equity",
+          "Market Value": "2’432’810",
+          "Weight (%)": "0.45",
+          "Notional Value": "2’432’809.55",
+          "Shares": "33’349",
+          "Price": "72.95",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US03676B1026",
+        "ticker": "AM",
+        "name": "DASSAULT AVIATION SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.45,
+        "market_value": 2406576.0,
+        "shares": 8310.0,
+        "price": 289.6,
+        "notional_value": 2406576.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AM",
+          "Name": "DASSAULT AVIATION SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "2’406’576",
+          "Weight (%)": "0.45",
+          "Notional Value": "2’406’576.00",
+          "Shares": "8’310",
+          "Price": "289.60",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000131906",
+        "ticker": "RNO",
+        "name": "RENAULT SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.42,
+        "market_value": 2271042.0,
+        "shares": 89800.0,
+        "price": 25.29,
+        "notional_value": 2271042.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "RNO",
+          "Name": "RENAULT SA",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "2’271’042",
+          "Weight (%)": "0.42",
+          "Notional Value": "2’271’042.00",
+          "Shares": "89’800",
+          "Price": "25.29",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "JMT",
+        "name": "JERONIMO MARTINS SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "Portugal",
+        "exchange": "Nyse Euronext - Euronext Lisbon",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.42,
+        "market_value": 2267820.0,
+        "shares": 137694.0,
+        "price": 16.47,
+        "notional_value": 2267820.18,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "JMT",
+          "Name": "JERONIMO MARTINS SA",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "2’267’820",
+          "Weight (%)": "0.42",
+          "Notional Value": "2’267’820.18",
+          "Shares": "137’694",
+          "Price": "16.47",
+          "Location": "Portugal",
+          "Exchange": "Nyse Euronext - Euronext Lisbon",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding JMT; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "LOTB",
+        "name": "LOTUS BAKERIES NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.42,
+        "market_value": 2241360.0,
+        "shares": 198.0,
+        "price": 11320.0,
+        "notional_value": 2241360.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "LOTB",
+          "Name": "LOTUS BAKERIES NV",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "2’241’360",
+          "Weight (%)": "0.42",
+          "Notional Value": "2’241’360.00",
+          "Shares": "198",
+          "Price": "11’320.00",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding LOTB; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0010533075",
+        "ticker": "GET",
+        "name": "GETLINK"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.41,
+        "market_value": 2240928.0,
+        "shares": 120480.0,
+        "price": 18.6,
+        "notional_value": 2240928.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "GET",
+          "Name": "GETLINK",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "2’240’928",
+          "Weight (%)": "0.41",
+          "Notional Value": "2’240’928.00",
+          "Shares": "120’480",
+          "Price": "18.60",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "SYENS",
+        "name": "SYENSQO NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.41,
+        "market_value": 2240896.0,
+        "shares": 34160.0,
+        "price": 65.6,
+        "notional_value": 2240896.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "SYENS",
+          "Name": "SYENSQO NV",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "2’240’896",
+          "Weight (%)": "0.41",
+          "Notional Value": "2’240’896.00",
+          "Shares": "34’160",
+          "Price": "65.60",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding SYENS; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US09290C4006",
+        "ticker": "BMED",
+        "name": "BANCA MEDIOLANUM"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.41,
+        "market_value": 2213675.0,
+        "shares": 99850.0,
+        "price": 22.17,
+        "notional_value": 2213674.5,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BMED",
+          "Name": "BANCA MEDIOLANUM",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "2’213’675",
+          "Weight (%)": "0.41",
+          "Notional Value": "2’213’674.50",
+          "Shares": "99’850",
+          "Price": "22.17",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000HAG0005",
+        "ticker": "HAG",
+        "name": "HENSOLDT AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.4,
+        "market_value": 2184666.0,
+        "shares": 29435.0,
+        "price": 74.22,
+        "notional_value": 2184665.7,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "HAG",
+          "Name": "HENSOLDT AG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "2’184’666",
+          "Weight (%)": "0.40",
+          "Notional Value": "2’184’665.70",
+          "Shares": "29’435",
+          "Price": "74.22",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "TUB",
+        "name": "FINANCIERE DE TUBIZE SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.39,
+        "market_value": 2107608.0,
+        "shares": 9615.0,
+        "price": 219.2,
+        "notional_value": 2107608.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "TUB",
+          "Name": "FINANCIERE DE TUBIZE SA",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "2’107’608",
+          "Weight (%)": "0.39",
+          "Notional Value": "2’107’608.00",
+          "Shares": "9’615",
+          "Price": "219.20",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding TUB; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "EDPR",
+        "name": "EDP RENEWABLES SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Utilities",
+        "region": "Europe",
+        "country": "Portugal",
+        "exchange": "Nyse Euronext - Euronext Lisbon",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.39,
+        "market_value": 2097686.0,
+        "shares": 152559.0,
+        "price": 13.75,
+        "notional_value": 2097686.25,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "EDPR",
+          "Name": "EDP RENEWABLES SA",
+          "Sector": "Utilities",
+          "Asset Class": "Equity",
+          "Market Value": "2’097’686",
+          "Weight (%)": "0.39",
+          "Notional Value": "2’097’686.25",
+          "Shares": "152’559",
+          "Price": "13.75",
+          "Location": "Portugal",
+          "Exchange": "Nyse Euronext - Euronext Lisbon",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding EDPR; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000PAH0038",
+        "ticker": "PAH3",
+        "name": "PORSCHE AUTOMOBIL HOLDING PREF"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.38,
+        "market_value": 2033648.0,
+        "shares": 74739.0,
+        "price": 27.21,
+        "notional_value": 2033648.19,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "PAH3",
+          "Name": "PORSCHE AUTOMOBIL HOLDING PREF",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "2’033’648",
+          "Weight (%)": "0.38",
+          "Notional Value": "2’033’648.19",
+          "Shares": "74’739",
+          "Price": "27.21",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IE00028FXN24",
+        "ticker": "SW",
+        "name": "SODEXO SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.38,
+        "market_value": 2031649.0,
+        "shares": 37763.0,
+        "price": 53.8,
+        "notional_value": 2031649.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "SW",
+          "Name": "SODEXO SA",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "2’031’649",
+          "Weight (%)": "0.38",
+          "Notional Value": "2’031’649.40",
+          "Shares": "37’763",
+          "Price": "53.80",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE000EVNK013",
+        "ticker": "EVK",
+        "name": "EVONIK INDUSTRIES AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.37,
+        "market_value": 2016708.0,
+        "shares": 123045.0,
+        "price": 16.39,
+        "notional_value": 2016707.55,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "EVK",
+          "Name": "EVONIK INDUSTRIES AG",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "2’016’708",
+          "Weight (%)": "0.37",
+          "Notional Value": "2’016’707.55",
+          "Shares": "123’045",
+          "Price": "16.39",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "ES0124244E34",
+        "ticker": "MAP",
+        "name": "MAPFRE SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.36,
+        "market_value": 1967654.0,
+        "shares": 446788.0,
+        "price": 4.4,
+        "notional_value": 1967654.35,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "MAP",
+          "Name": "MAPFRE SA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "1’967’654",
+          "Weight (%)": "0.36",
+          "Notional Value": "1’967’654.35",
+          "Shares": "446’788",
+          "Price": "4.40",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0013258662",
+        "ticker": "AYV",
+        "name": "AYVENS SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.36,
+        "market_value": 1919707.0,
+        "shares": 162825.0,
+        "price": 11.79,
+        "notional_value": 1919706.75,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "AYV",
+          "Name": "AYVENS SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "1’919’707",
+          "Weight (%)": "0.36",
+          "Notional Value": "1’919’706.75",
+          "Shares": "162’825",
+          "Price": "11.79",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "INPST",
+        "name": "INPOST SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.34,
+        "market_value": 1861903.0,
+        "shares": 120746.0,
+        "price": 15.42,
+        "notional_value": 1861903.32,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "INPST",
+          "Name": "INPOST SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "1’861’903",
+          "Weight (%)": "0.34",
+          "Notional Value": "1’861’903.32",
+          "Shares": "120’746",
+          "Price": "15.42",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding INPST; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US6458272050",
+        "ticker": "IDR",
+        "name": "INDRA SISTEMAS SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.34,
+        "market_value": 1820122.0,
+        "shares": 36696.0,
+        "price": 49.6,
+        "notional_value": 1820121.6,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "IDR",
+          "Name": "INDRA SISTEMAS SA",
+          "Sector": "Information Technology",
+          "Asset Class": "Equity",
+          "Market Value": "1’820’122",
+          "Weight (%)": "0.34",
+          "Notional Value": "1’820’121.60",
+          "Shares": "36’696",
+          "Price": "49.60",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0005580005",
+        "ticker": "DIE",
+        "name": "DIETEREN (D) SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.33,
+        "market_value": 1774612.0,
+        "shares": 10390.0,
+        "price": 170.8,
+        "notional_value": 1774612.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "DIE",
+          "Name": "DIETEREN (D) SA",
+          "Sector": "Consumer Discretionary",
+          "Asset Class": "Equity",
+          "Market Value": "1’774’612",
+          "Weight (%)": "0.33",
+          "Notional Value": "1’774’612.00",
+          "Shares": "10’390",
+          "Price": "170.80",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US0530151036",
+        "ticker": "ADP",
+        "name": "AEROPORTS DE PARIS SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.32,
+        "market_value": 1713926.0,
+        "shares": 15753.0,
+        "price": 108.8,
+        "notional_value": 1713926.4,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ADP",
+          "Name": "AEROPORTS DE PARIS SA",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "1’713’926",
+          "Weight (%)": "0.32",
+          "Notional Value": "1’713’926.40",
+          "Shares": "15’753",
+          "Price": "108.80",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "SOF",
+        "name": "SOFINA SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Belgium",
+        "exchange": "Nyse Euronext - Euronext Brussels",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.31,
+        "market_value": 1683474.0,
+        "shares": 7449.0,
+        "price": 226.0,
+        "notional_value": 1683474.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "SOF",
+          "Name": "SOFINA SA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "1’683’474",
+          "Weight (%)": "0.31",
+          "Notional Value": "1’683’474.00",
+          "Shares": "7’449",
+          "Price": "226.00",
+          "Location": "Belgium",
+          "Exchange": "Nyse Euronext - Euronext Brussels",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "IT0001347308",
+        "ticker": "BZU",
+        "name": "BUZZI"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.3,
+        "market_value": 1623149.0,
+        "shares": 37417.0,
+        "price": 43.38,
+        "notional_value": 1623149.46,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BZU",
+          "Name": "BUZZI",
+          "Sector": "Materials",
+          "Asset Class": "Equity",
+          "Market Value": "1’623’149",
+          "Weight (%)": "0.30",
+          "Notional Value": "1’623’149.46",
+          "Shares": "37’417",
+          "Price": "43.38",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "alias",
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US6516391066",
+        "ticker": "NEM",
+        "name": "NEMETSCHEK"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.29,
+        "market_value": 1573706.0,
+        "shares": 27977.0,
+        "price": 56.25,
+        "notional_value": 1573706.25,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "NEM",
+          "Name": "NEMETSCHEK",
+          "Sector": "Information Technology",
+          "Asset Class": "Equity",
+          "Market Value": "1’573’706",
+          "Weight (%)": "0.29",
+          "Notional Value": "1’573’706.25",
+          "Shares": "27’977",
+          "Price": "56.25",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US26923N3970",
+        "ticker": "RAA",
+        "name": "RATIONAL AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.29,
+        "market_value": 1559963.0,
+        "shares": 2447.0,
+        "price": 637.5,
+        "notional_value": 1559962.5,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "RAA",
+          "Name": "RATIONAL AG",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "1’559’963",
+          "Weight (%)": "0.29",
+          "Notional Value": "1’559’962.50",
+          "Shares": "2’447",
+          "Price": "637.50",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "PLPZBDT00013",
+        "ticker": "CPR",
+        "name": "DAVIDE CAMPARI MILANO NV"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Staples",
+        "region": "Europe",
+        "country": "Italy",
+        "exchange": "Borsa Italiana",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.29,
+        "market_value": 1549684.0,
+        "shares": 279323.0,
+        "price": 5.55,
+        "notional_value": 1549684.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "CPR",
+          "Name": "DAVIDE CAMPARI MILANO NV",
+          "Sector": "Consumer Staples",
+          "Asset Class": "Equity",
+          "Market Value": "1’549’684",
+          "Weight (%)": "0.29",
+          "Notional Value": "1’549’684.00",
+          "Shares": "279’323",
+          "Price": "5.55",
+          "Location": "Italy",
+          "Exchange": "Borsa Italiana",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "DE0005470306",
+        "ticker": "EVD",
+        "name": "CTS EVENTIM AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Communication",
+        "region": "Europe",
+        "country": "Germany",
+        "exchange": "Xetra",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.27,
+        "market_value": 1474590.0,
+        "shares": 27511.0,
+        "price": 53.6,
+        "notional_value": 1474589.6,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "EVD",
+          "Name": "CTS EVENTIM AG",
+          "Sector": "Communication",
+          "Asset Class": "Equity",
+          "Market Value": "1’474’590",
+          "Weight (%)": "0.27",
+          "Notional Value": "1’474’589.60",
+          "Shares": "27’511",
+          "Price": "53.60",
+          "Location": "Germany",
+          "Exchange": "Xetra",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker+exchange",
+          "attempted": [
+            "ticker+exchange"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0010040865",
+        "ticker": "GFC",
+        "name": "GECINA SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Real Estate",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.27,
+        "market_value": 1471097.0,
+        "shares": 21091.0,
+        "price": 69.75,
+        "notional_value": 1471097.25,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "GFC",
+          "Name": "GECINA SA",
+          "Sector": "Real Estate",
+          "Asset Class": "Equity",
+          "Market Value": "1’471’097",
+          "Weight (%)": "0.27",
+          "Notional Value": "1’471’097.25",
+          "Shares": "21’091",
+          "Price": "69.75",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000064578",
+        "ticker": "COV",
+        "name": "COVIVIO SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Real Estate",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.25,
+        "market_value": 1367591.0,
+        "shares": 25755.0,
+        "price": 53.1,
+        "notional_value": 1367590.5,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "COV",
+          "Name": "COVIVIO SA",
+          "Sector": "Real Estate",
+          "Asset Class": "Equity",
+          "Market Value": "1’367’591",
+          "Weight (%)": "0.25",
+          "Notional Value": "1’367’590.50",
+          "Shares": "25’755",
+          "Price": "53.10",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "JE00BRX98089",
+        "ticker": "CVC",
+        "name": "CVC CAPITAL PARTNERS PLC"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Netherlands",
+        "exchange": "Euronext Amsterdam",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.25,
+        "market_value": 1346091.0,
+        "shares": 101286.0,
+        "price": 13.29,
+        "notional_value": 1346090.94,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "CVC",
+          "Name": "CVC CAPITAL PARTNERS PLC",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "1’346’091",
+          "Weight (%)": "0.25",
+          "Notional Value": "1’346’090.94",
+          "Shares": "101’286",
+          "Price": "13.29",
+          "Location": "Netherlands",
+          "Exchange": "Euronext Amsterdam",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0013280286",
+        "ticker": "BIM",
+        "name": "BIOMERIEUX SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.24,
+        "market_value": 1316497.0,
+        "shares": 18374.0,
+        "price": 71.65,
+        "notional_value": 1316497.1,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BIM",
+          "Name": "BIOMERIEUX SA",
+          "Sector": "Health Care",
+          "Asset Class": "Equity",
+          "Market Value": "1’316’497",
+          "Weight (%)": "0.24",
+          "Notional Value": "1’316’497.10",
+          "Shares": "18’374",
+          "Price": "71.65",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "FR0000039299",
+        "ticker": "BOL",
+        "name": "BOLLORE"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Energy",
+        "region": "Europe",
+        "country": "France",
+        "exchange": "Nyse Euronext - Euronext Paris",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.23,
+        "market_value": 1216922.0,
+        "shares": 295226.0,
+        "price": 4.12,
+        "notional_value": 1216921.57,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BOL",
+          "Name": "BOLLORE",
+          "Sector": "Energy",
+          "Asset Class": "Equity",
+          "Market Value": "1’216’922",
+          "Weight (%)": "0.23",
+          "Notional Value": "1’216’921.57",
+          "Shares": "295’226",
+          "Price": "4.12",
+          "Location": "France",
+          "Exchange": "Nyse Euronext - Euronext Paris",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "ICSEAGD",
+        "name": "BLK ICS EUR LIQ FUND AGEN ACC T0"
+      },
+      "classification": {
+        "asset_class": "Money Market",
+        "sector": "Cash and/or Derivatives",
+        "region": "Europe",
+        "country": "Ireland",
+        "exchange": "-",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.2,
+        "market_value": 1098755.0,
+        "shares": 10054.0,
+        "price": 109.29,
+        "notional_value": 1098754.58,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ICSEAGD",
+          "Name": "BLK ICS EUR LIQ FUND AGEN ACC T0",
+          "Sector": "Cash and/or Derivatives",
+          "Asset Class": "Money Market",
+          "Market Value": "1’098’755",
+          "Weight (%)": "0.20",
+          "Notional Value": "1’098’754.58",
+          "Shares": "10’054",
+          "Price": "109.29",
+          "Location": "Ireland",
+          "Exchange": "-",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding ICSEAGD; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "PLEURCH00011",
+        "ticker": "EUR",
+        "name": "EUR CASH"
+      },
+      "classification": {
+        "asset_class": "Cash",
+        "sector": "Cash and/or Derivatives",
+        "region": null,
+        "country": "European Union",
+        "exchange": "-",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.2,
+        "market_value": 1070894.0,
+        "shares": 1070894.0,
+        "price": 100.0,
+        "notional_value": 1070894.31,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "EUR",
+          "Name": "EUR CASH",
+          "Sector": "Cash and/or Derivatives",
+          "Asset Class": "Cash",
+          "Market Value": "1’070’894",
+          "Weight (%)": "0.20",
+          "Notional Value": "1’070’894.31",
+          "Shares": "1’070’894",
+          "Price": "100.00",
+          "Location": "European Union",
+          "Exchange": "-",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "BZFUT",
+        "name": "CASH COLLATERAL EUR BZFUT"
+      },
+      "classification": {
+        "asset_class": "Cash Collateral and Margins",
+        "sector": "Cash and/or Derivatives",
+        "region": null,
+        "country": "European Union",
+        "exchange": "-",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.05,
+        "market_value": 245000.0,
+        "shares": 245000.0,
+        "price": 100.0,
+        "notional_value": 245000.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BZFUT",
+          "Name": "CASH COLLATERAL EUR BZFUT",
+          "Sector": "Cash and/or Derivatives",
+          "Asset Class": "Cash Collateral and Margins",
+          "Market Value": "245’000",
+          "Weight (%)": "0.05",
+          "Notional Value": "245’000.00",
+          "Shares": "245’000",
+          "Price": "100.00",
+          "Location": "European Union",
+          "Exchange": "-",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding BZFUT; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "ACS.D",
+        "name": "ACS ACTIVIDADES DE CONSTRUCCION Y"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Spain",
+        "exchange": "Bolsa De Madrid",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.03,
+        "market_value": 147676.0,
+        "shares": 85263.0,
+        "price": 1.73,
+        "notional_value": 147675.52,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "ACS.D",
+          "Name": "ACS ACTIVIDADES DE CONSTRUCCION Y",
+          "Sector": "Industrials",
+          "Asset Class": "Equity",
+          "Market Value": "147’676",
+          "Weight (%)": "0.03",
+          "Notional Value": "147’675.52",
+          "Shares": "85’263",
+          "Price": "1.73",
+          "Location": "Spain",
+          "Exchange": "Bolsa De Madrid",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding ACS.D; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "US74347R6696",
+        "ticker": "USD",
+        "name": "USD CASH"
+      },
+      "classification": {
+        "asset_class": "Cash",
+        "sector": "Cash and/or Derivatives",
+        "region": "North America",
+        "country": "United States",
+        "exchange": "-",
+        "market_currency": "USD"
+      },
+      "exposure": {
+        "weight_pct": 0.02,
+        "market_value": 105207.0,
+        "shares": 120278.0,
+        "price": 87.47,
+        "notional_value": 105207.11,
+        "currency_exposure": "USD"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "USD",
+          "Name": "USD CASH",
+          "Sector": "Cash and/or Derivatives",
+          "Asset Class": "Cash",
+          "Market Value": "105’207",
+          "Weight (%)": "0.02",
+          "Notional Value": "105’207.11",
+          "Shares": "120’278",
+          "Price": "87.47",
+          "Location": "United States",
+          "Exchange": "-",
+          "Market Currency": "USD"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "GBP",
+        "name": "GBP CASH"
+      },
+      "classification": {
+        "asset_class": "Cash",
+        "sector": "Cash and/or Derivatives",
+        "region": "Europe",
+        "country": "United Kingdom",
+        "exchange": "-",
+        "market_currency": "GBP"
+      },
+      "exposure": {
+        "weight_pct": 0.01,
+        "market_value": 78649.0,
+        "shares": 67143.0,
+        "price": 117.14,
+        "notional_value": 78648.76,
+        "currency_exposure": "GBP"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "GBP",
+          "Name": "GBP CASH",
+          "Sector": "Cash and/or Derivatives",
+          "Asset Class": "Cash",
+          "Market Value": "78’649",
+          "Weight (%)": "0.01",
+          "Notional Value": "78’648.76",
+          "Shares": "67’143",
+          "Price": "117.14",
+          "Location": "United Kingdom",
+          "Exchange": "-",
+          "Market Currency": "GBP"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding GBP; missing=['isin']"
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "GB00BF2F1X78",
+        "ticker": "CHF",
+        "name": "CHF CASH"
+      },
+      "classification": {
+        "asset_class": "Cash",
+        "sector": "Cash and/or Derivatives",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "-",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 0.0,
+        "market_value": 0.0,
+        "shares": 0.0,
+        "price": 108.4,
+        "notional_value": 0.13,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "CHF",
+          "Name": "CHF CASH",
+          "Sector": "Cash and/or Derivatives",
+          "Asset Class": "Cash",
+          "Market Value": "0",
+          "Weight (%)": "0.00",
+          "Notional Value": "0.13",
+          "Shares": "0",
+          "Price": "108.40",
+          "Location": "Switzerland",
+          "Exchange": "-",
+          "Market Currency": "CHF"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CA10489B1040",
+        "ticker": "BES",
+        "name": "BANCO ESPIRITO SANTO CLASS N SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Portugal",
+        "exchange": "Nyse Euronext - Euronext Lisbon",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.0,
+        "market_value": 8.0,
+        "shares": 757134.0,
+        "price": 0.0,
+        "notional_value": 7.57,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "BES",
+          "Name": "BANCO ESPIRITO SANTO CLASS N SA",
+          "Sector": "Financials",
+          "Asset Class": "Equity",
+          "Market Value": "8",
+          "Weight (%)": "0.00",
+          "Notional Value": "7.57",
+          "Shares": "757’134",
+          "Price": "0.00",
+          "Location": "Portugal",
+          "Exchange": "Nyse Euronext - Euronext Lisbon",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "security_master",
+        "match": {
+          "status": "matched",
+          "matched_by": "ticker",
+          "attempted": [
+            "ticker+exchange",
+            "ticker"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": null,
+        "ticker": "VGU6",
+        "name": "EURO STOXX 50 SEP 26"
+      },
+      "classification": {
+        "asset_class": "Futures",
+        "sector": "Cash and/or Derivatives",
+        "region": null,
+        "country": "European Union",
+        "exchange": "Eurex Deutschland",
+        "market_currency": "EUR"
+      },
+      "exposure": {
+        "weight_pct": 0.0,
+        "market_value": 0.0,
+        "shares": 38.0,
+        "price": 6309.0,
+        "notional_value": 2397420.0,
+        "currency_exposure": "EUR"
+      },
+      "provenance": {
+        "source_fields": {
+          "Ticker": "VGU6",
+          "Name": "EURO STOXX 50 SEP 26",
+          "Sector": "Cash and/or Derivatives",
+          "Asset Class": "Futures",
+          "Market Value": "0",
+          "Weight (%)": "0.00",
+          "Notional Value": "2’397’420.00",
+          "Shares": "38",
+          "Price": "6’309.00",
+          "Location": "European Union",
+          "Exchange": "Eurex Deutschland",
+          "Market Currency": "EUR"
+        },
+        "enrichment_source": "iShares",
+        "match": {
+          "status": "unmatched",
+          "matched_by": null,
+          "attempted": [
+            "ticker+exchange",
+            "ticker",
+            "alias"
+          ],
+          "missing_elements": [
+            "isin"
+          ],
+          "warning": "could not fully match holding VGU6; missing=['isin']"
+        }
+      }
+    }
+  ],
+  "aggregates": {
+    "sector_weights": [
+      {
+        "name": "Financials",
+        "weight_pct": 26.18
+      },
+      {
+        "name": "Industrials",
+        "weight_pct": 25.3
+      },
+      {
+        "name": "Health Care",
+        "weight_pct": 7.19
+      },
+      {
+        "name": "Utilities",
+        "weight_pct": 6.94
+      },
+      {
+        "name": "Communication",
+        "weight_pct": 6.67
+      },
+      {
+        "name": "Consumer Staples",
+        "weight_pct": 6.18
+      },
+      {
+        "name": "Energy",
+        "weight_pct": 5.82
+      },
+      {
+        "name": "Materials",
+        "weight_pct": 5.7
+      },
+      {
+        "name": "Consumer Discretionary",
+        "weight_pct": 5.08
+      },
+      {
+        "name": "Information Technology",
+        "weight_pct": 2.26
+      },
+      {
+        "name": "Real Estate",
+        "weight_pct": 2.2
+      },
+      {
+        "name": "Cash and/or Derivatives",
+        "weight_pct": 0.48
+      }
+    ],
+    "region_weights": [
+      {
+        "name": "Europe",
+        "weight_pct": 99.73
+      },
+      {
+        "name": "Unknown",
+        "weight_pct": 0.25
+      },
+      {
+        "name": "North America",
+        "weight_pct": 0.02
+      }
+    ],
+    "currency_weights": [
+      {
+        "name": "EUR",
+        "weight_pct": 98.06
+      },
+      {
+        "name": "USD",
+        "weight_pct": 1.93
+      },
+      {
+        "name": "GBP",
+        "weight_pct": 0.01
+      },
+      {
+        "name": "CHF",
+        "weight_pct": 0.0
+      }
+    ],
+    "top_holdings": [
+      {
+        "ticker": "PRY",
+        "name": "PRYSMIAN",
+        "weight_pct": 3.45
+      },
+      {
+        "ticker": "REP",
+        "name": "REPSOL SA",
+        "weight_pct": 2.3
+      },
+      {
+        "ticker": "ABN",
+        "name": "ABN AMRO BANK NV",
+        "weight_pct": 2.12
+      },
+      {
+        "ticker": "A5G",
+        "name": "AIB GROUP PLC",
+        "weight_pct": 1.98
+      },
+      {
+        "ticker": "BPE",
+        "name": "BPER BANCA",
+        "weight_pct": 1.95
+      },
+      {
+        "ticker": "AER",
+        "name": "AERCAP HOLDINGS NV",
+        "weight_pct": 1.91
+      },
+      {
+        "ticker": "ACS",
+        "name": "ACS ACTIVIDADES DE CONSTRUCCION Y",
+        "weight_pct": 1.9
+      },
+      {
+        "ticker": "LDO",
+        "name": "LEONARDO FINMECCANICA SPA",
+        "weight_pct": 1.89
+      },
+      {
+        "ticker": "NN",
+        "name": "NN GROUP NV",
+        "weight_pct": 1.8
+      },
+      {
+        "ticker": "PUB",
+        "name": "PUBLICIS GROUPE SA",
+        "weight_pct": 1.75
+      }
+    ],
+    "counts": {
+      "holdings": 128
+    }
+  },
+  "provenance": {
+    "security_master_version": "tickers.csv",
+    "warnings": [],
+    "raw_download_path": "data\\raw\\2026-07-12\\downloads\\IE00BCLWRD08.csv",
+    "domicile": null,
+    "base_currency": null
+  }
+}

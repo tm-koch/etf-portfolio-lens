@@ -1,0 +1,8 @@
+{
+  "name": "etf-lens-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python server.py"
+  }
+}

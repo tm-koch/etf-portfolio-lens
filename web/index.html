@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="ETF Portfolio Lens is a responsive ETF portfolio explorer with look-through exposure charts."
+    />
+    <title>ETF Portfolio Lens</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
+    <script type="module" src="./app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-frame">
+      <main class="app-shell">
+        <header class="hero card">
+          <div class="hero-copy">
+            <p class="eyebrow">ETF Portfolio Lens</p>
+            <h1>Portfolio exposure that fits on a phone and still reads on a desktop.</h1>
+            <p class="lede">
+              Build a local ETF portfolio from the published snapshot data, compare the
+              holdings visually, and inspect the aggregated look-through exposure.
+            </p>
+          </div>
+          <div class="hero-meta">
+            <div class="badge-row">
+              <span class="badge">Static snapshots</span>
+              <span class="badge">Chart.js</span>
+              <span class="badge">Responsive</span>
+            </div>
+            <div class="status-panel">
+              <strong>Development note</strong>
+              <p>Use the local web server to test the app on desktop or mobile-sized viewports.</p>
+            </div>
+          </div>
+        </header>
+
+        <section class="summary-grid" id="summary-grid" aria-label="Portfolio summary"></section>
+
+        <nav class="tab-bar card" aria-label="Main sections">
+          <button class="tab-button active" data-tab="portfolio" type="button">Portfolio</button>
+          <button class="tab-button" data-tab="comparison" type="button">Comparison</button>
+          <button class="tab-button" data-tab="aggregated" type="button">Aggregated</button>
+        </nav>
+
+        <section class="tab-panel card active" id="portfolio-panel" data-panel="portfolio">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label">Portfolio entry</p>
+              <h2>Add supported ETFs and set the number of shares.</h2>
+            </div>
+            <div class="inline-note">
+              <span class="dot"></span>
+              <span>Browser persistence is local only.</span>
+            </div>
+          </div>
+
+          <div class="portfolio-layout">
+            <div class="catalog-column">
+              <label class="search-box">
+                <span>Search the ETF catalog</span>
+                <input id="catalog-search" type="search" placeholder="Search by name, ticker, or ISIN" />
+              </label>
+              <div class="catalog-list" id="catalog-list" aria-live="polite"></div>
+            </div>
+
+            <div class="portfolio-column">
+              <div class="subcard">
+                <div class="subcard-heading">
+                  <h3>Selected positions</h3>
+                  <p id="portfolio-hint">Add an ETF to start building the portfolio.</p>
+                </div>
+                <div class="positions-table-wrap">
+                  <table class="positions-table">
+                    <thead>
+                      <tr>
+                        <th>ETF</th>
+                        <th>Shares</th>
+                        <th>Weight</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="positions-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="tab-panel card" id="comparison-panel" data-panel="comparison">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label">Comparison</p>
+              <h2>Compare sector, region, and currency exposure across selected ETFs.</h2>
+            </div>
+            <p class="panel-copy">Multi-ring donuts show how the selected ETFs differ within the same metric.</p>
+          </div>
+
+          <div class="comparison-toolbar" id="comparison-toolbar"></div>
+          <div class="metric-stack">
+            <article class="chart-card">
+              <div class="chart-card-head">
+                <h3>Sectors</h3>
+                <p>Weighted by ETF position share count.</p>
+              </div>
+              <div class="chart-frame">
+                <canvas id="sector-chart"></canvas>
+              </div>
+            </article>
+            <article class="chart-card">
+              <div class="chart-card-head">
+                <h3>Regions</h3>
+                <p>Multi-ring comparison by region.</p>
+              </div>
+              <div class="chart-frame">
+                <canvas id="region-chart"></canvas>
+              </div>
+            </article>
+            <article class="chart-card">
+              <div class="chart-card-head">
+                <h3>Currencies</h3>
+                <p>Underlying market currency distribution.</p>
+              </div>
+              <div class="chart-frame">
+                <canvas id="currency-chart"></canvas>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel card" id="aggregated-panel" data-panel="aggregated">
+          <div class="panel-heading">
+            <div>
+              <p class="section-label">Aggregated portfolio</p>
+              <h2>See the whole portfolio as one look-through exposure map.</h2>
+            </div>
+            <p class="panel-copy">Companies are ranked by exposure and flagged when they appear in multiple ETFs.</p>
+          </div>
+
+          <div class="aggregation-layout">
+            <div class="subcard stack">
+              <div class="subcard-heading">
+                <h3>Rollups</h3>
+              </div>
+              <div class="rollup-grid" id="rollup-grid"></div>
+            </div>
+            <div class="subcard stack">
+              <div class="subcard-heading">
+                <h3>Top companies</h3>
+                <p id="company-hint">Add positions to see the ranked look-through exposure.</p>
+              </div>
+              <div class="company-list" id="company-list"></div>
+            </div>
+            <div class="subcard stack">
+              <div class="subcard-heading">
+                <h3>Warnings</h3>
+              </div>
+              <div class="warning-list" id="warning-list"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

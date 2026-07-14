@@ -1,0 +1,41 @@
+{
+  "generatedAt": "2026-07-12",
+  "basis": "share_weighted",
+  "etfs": [
+    {
+      "isin": "IE00B44Z5B48",
+      "ticker": "ACWD",
+      "name": "SPDR MSCI ACWI UCITS ETF",
+      "provider": "SSGA",
+      "snapshotPath": "/data/raw/2026-07-12/snapshots/IE00B44Z5B48.json"
+    },
+    {
+      "isin": "LU0908500753",
+      "ticker": "MEUD",
+      "name": "Amundi Stoxx Europe 600 UCITS ETF C GBP",
+      "provider": "Amundi",
+      "snapshotPath": "/data/raw/2026-07-12/snapshots/LU0908500753.json"
+    },
+    {
+      "isin": "IE00BCLWRD08",
+      "ticker": "IS3H",
+      "name": "iShares MSCI EMU Mid Cap UCITS ETF",
+      "provider": "iShares",
+      "snapshotPath": "/data/raw/2026-07-12/snapshots/IE00BCLWRD08.json"
+    },
+    {
+      "isin": "CH0237935652",
+      "ticker": "CHSPI",
+      "name": "iShares Core SPI ETF (CH)",
+      "provider": "iShares",
+      "snapshotPath": "/data/raw/2026-07-12/snapshots/CH0237935652.json"
+    },
+    {
+      "isin": "CH0130595124",
+      "ticker": "SPMCHA",
+      "name": "UBS ETF (CH) – SPI Mid (CHF) A-dis",
+      "provider": "UBS",
+      "snapshotPath": "/data/raw/2026-07-12/snapshots/CH0130595124.json"
+    }
+  ]
+}
