@@ -11,6 +11,20 @@ async function fetchJson(url) {
   return response.json();
 }
 
+async function fetchJsonWithFallbacks(urls) {
+  let lastError = null;
+
+  for (const url of urls) {
+    try {
+      return await fetchJson(url);
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw lastError || new Error('Failed to load snapshot');
+}
+
 export async function loadPublishedCatalog() {
   /** @type {PublishedCatalog} */
   const catalog = await fetchJson(CATALOG_URL);
@@ -27,7 +41,14 @@ export async function loadPublishedCatalog() {
 }
 
 export async function loadSnapshot(entry) {
-  return fetchJson(entry.snapshotPath);
+  const normalizedPath = entry.snapshotPath.replace(/^\/+/, '');
+  const candidateUrls = [
+    entry.snapshotPath,
+    `./${normalizedPath}`,
+    `../${normalizedPath}`,
+  ];
+
+  return fetchJsonWithFallbacks(candidateUrls);
 }
 
 export function buildCatalogMaps(catalog) {

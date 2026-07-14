@@ -766,9 +766,17 @@ async function bootstrap() {
   state.catalogMaps = buildCatalogMaps(state.catalog);
   state.portfolio = loadPortfolioState();
 
-  const snapshots = await Promise.all(
+  const snapshotResults = await Promise.allSettled(
     state.catalog.etfs.map(async (entry) => [entry.isin, await loadSnapshot(entry)])
   );
+  const snapshots = [];
+  for (const result of snapshotResults) {
+    if (result.status === 'fulfilled') {
+      snapshots.push(result.value);
+    } else {
+      console.warn('Skipping ETF snapshot that failed to load:', result.reason);
+    }
+  }
   state.snapshots = new Map(snapshots);
 
   for (const position of state.portfolio) {

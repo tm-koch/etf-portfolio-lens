@@ -54,20 +54,23 @@ Open `http://localhost:8000/web/` in a desktop browser to test the UI. If you ne
 
 ## GitHub Pages
 
-Upload the static site contents in this structure:
-
-```text
-/
-├─ web/
 │  ├─ index.html
 │  ├─ styles.css
 │  ├─ app.js
 │  ├─ data.js
-│  ├─ charts.js
-│  ├─ package.json
-│  └─ data/
-│     └─ catalog.json
+
+For a root-hosted GitHub Pages deployment, publish the site so the frontend files sit at the branch root and the published data remains under `data/raw/`:
+
+```text
+/
+├─ index.html
+├─ styles.css
+├─ app.js
+├─ data.js
+├─ charts.js
+├─ package.json
 ├─ data/
+│  ├─ catalog.json
 │  └─ raw/
 │     └─ <date>/
 │        └─ snapshots/
@@ -75,4 +78,12 @@ Upload the static site contents in this structure:
 └─ README.md
 ```
 
-The frontend loads `web/data/catalog.json` and the snapshot JSON files under `data/raw/<date>/snapshots/`, so those paths must be preserved when publishing to GitHub Pages.
+The frontend loads `data/catalog.json` and the snapshot JSON files under `data/raw/<date>/snapshots/`, so those paths must be preserved when publishing to GitHub Pages.
+
+Use `scripts/publish-gh-pages.ps1` to publish the current working tree to the `gh-pages` branch and push it to the configured GitHub remote.
+
+```powershell
+pwsh -NoProfile -File .\scripts\publish-gh-pages.ps1
+```
+
+Add `-NoPush` if you want to build and commit the publish tree locally without pushing it yet.
