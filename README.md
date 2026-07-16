@@ -54,11 +54,6 @@ Open `http://localhost:8000/web/` in a desktop browser to test the UI. If you ne
 
 ## GitHub Pages
 
-│  ├─ index.html
-│  ├─ styles.css
-│  ├─ app.js
-│  ├─ data.js
-
 For a root-hosted GitHub Pages deployment, publish the site so the frontend files sit at the branch root and the published data remains under `data/raw/`:
 
 ```text
