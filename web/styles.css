@@ -404,6 +404,7 @@ body {
   border: 1px solid rgba(31, 42, 68, 0.1);
   background: rgba(255, 255, 255, 0.82);
   color: var(--text);
+  white-space: nowrap;
 }
 
 .chart-legend-swatch {
@@ -666,11 +667,15 @@ body {
 
   .chart-legend {
     gap: 8px;
+    justify-content: flex-start;
   }
 
   .chart-legend-item {
-    width: 100%;
+    flex: 0 1 auto;
+    width: max-content;
+    max-width: 100%;
     justify-content: flex-start;
+    padding: 7px 9px;
   }
 
   .company-chip {

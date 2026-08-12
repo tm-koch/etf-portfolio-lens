@@ -1,4 +1,4 @@
-## ADDED Requirements
+## MODIFIED Requirements
 
 ### Requirement: Consistent comparison donut sizing
 The comparison view SHALL render the sector, region, and currency doughnut charts with a consistent effective ring size so that the multi-ring visuals appear equally sized across the three metrics.
