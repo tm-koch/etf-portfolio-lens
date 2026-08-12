@@ -14,9 +14,9 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=20260812" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
-    <script type="module" src="./app.js" defer></script>
+    <script type="module" src="./app.js?v=20260812" defer></script>
   </head>
   <body>
     <div class="page-frame">
@@ -112,7 +112,7 @@
                 <h3>Sectors</h3>
                 <p>Weighted by ETF position share count.</p>
               </div>
-              <div class="chart-frame">
+              <div class="chart-frame" style="height: 470px;">
                 <canvas id="sector-chart"></canvas>
               </div>
             </article>
@@ -121,7 +121,7 @@
                 <h3>Regions</h3>
                 <p>Multi-ring comparison by region.</p>
               </div>
-              <div class="chart-frame">
+              <div class="chart-frame" style="height: 470px;">
                 <canvas id="region-chart"></canvas>
               </div>
             </article>
@@ -130,7 +130,7 @@
                 <h3>Currencies</h3>
                 <p>Underlying market currency distribution.</p>
               </div>
-              <div class="chart-frame">
+              <div class="chart-frame" style="height: 470px;">
                 <canvas id="currency-chart"></canvas>
               </div>
             </article>

@@ -21,6 +21,16 @@
       "fixture_path": "data/example/Fund Holdings_Amundi Core Stoxx Europe 600 UCITS ETF Acc_LU0908500753_08_07_2026.xlsx"
     },
     {
+      "isin": "IE00BF20LF40",
+      "ticker": "EUMD",
+      "name": "iShares MSCI Europe Mid Cap UCITS ETF EUR (Acc)",
+      "provider": "iShares",
+      "source_url": "https://www.ishares.com/ch/professionals/en/products/287746/ishares-msci-europe-mid-cap-ucits-etf",
+      "expected_format": "csv",
+      "parser_id": "ishares_csv_v1",
+      "fixture_path": "data/example/EUMD_holdings.csv"
+    },
+    {
       "isin": "IE00BCLWRD08",
       "ticker": "IS3H",
       "name": "iShares MSCI EMU Mid Cap UCITS ETF",

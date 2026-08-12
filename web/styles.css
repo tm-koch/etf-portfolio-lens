@@ -371,7 +371,7 @@ body {
 
 .chart-frame {
   width: 100%;
-  height: 570px;
+  height: 470px;
   position: relative;
 }
 
@@ -622,8 +622,8 @@ body {
   }
 
   .chart-frame {
-    min-height: 390px;
-    height: 390px;
+    min-height: 340px !important;
+    height: 340px !important;
   }
 
   .company-chip {

@@ -26,6 +26,8 @@ def _find_header_index(rows: list[list[str]]) -> int:
         normalized = {
             _normalize_header(cell).casefold() for cell in row if cell.strip()
         }
+        if {"emittententicker", "name"}.issubset(normalized):
+            return index
         if {"ticker", "name"}.issubset(normalized):
             return index
         if {"isin code", "name"}.issubset(normalized):

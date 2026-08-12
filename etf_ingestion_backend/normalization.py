@@ -98,6 +98,7 @@ def normalize_row(
         or raw_row.get("Security ISIN")
         or raw_row.get("isin")
         or raw_row.get("isin_code")
+        or raw_row.get("ISIN-Code")
         or ""
     ).strip() or None
     ticker = (
@@ -105,12 +106,16 @@ def normalize_row(
         or raw_row.get("ticker")
         or raw_row.get("Symbol")
         or raw_row.get("symbol")
+        or raw_row.get("Emittententicker")
         or ""
     ).strip() or None
     name = (raw_row.get("Name") or raw_row.get("name") or "").strip() or None
     name = (
         name
         or (raw_row.get("Security Name") or raw_row.get("security name") or "").strip()
+        or (
+            raw_row.get("Fondsname") or raw_row.get("Fonds Position Name") or ""
+        ).strip()
         or None
     )
     sector = (
@@ -118,6 +123,7 @@ def normalize_row(
         or raw_row.get("sector")
         or raw_row.get("Sector Classification")
         or raw_row.get("sector classification")
+        or raw_row.get("Sektor")
         or ""
     ).strip() or None
     asset_class = (
@@ -125,6 +131,7 @@ def normalize_row(
         or raw_row.get("asset_class")
         or raw_row.get("AssetClass")
         or raw_row.get("Asset class")
+        or raw_row.get("Anlageklasse")
         or ""
     ).strip() or None
     country = (
@@ -132,15 +139,17 @@ def normalize_row(
         or raw_row.get("country")
         or raw_row.get("Country")
         or raw_row.get("Trade Country Name")
+        or raw_row.get("Standort")
         or ""
     ).strip() or None
     exchange = (
-        raw_row.get("Exchange") or raw_row.get("exchange") or ""
+        raw_row.get("Exchange") or raw_row.get("exchange") or raw_row.get("Börse") or ""
     ).strip() or None
     market_currency = (
         raw_row.get("Market Currency")
         or raw_row.get("market_currency")
         or raw_row.get("Currency")
+        or raw_row.get("Marktwährung")
         or ""
     ).strip() or None
 

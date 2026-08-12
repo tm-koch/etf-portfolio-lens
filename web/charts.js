@@ -56,6 +56,14 @@ function createOptions(title, options = {}) {
     maintainAspectRatio: false,
     cutout: '36%',
     rotation: 0,
+    layout: {
+      padding: 24,
+    },
+    datasets: {
+      doughnut: {
+        radius: '88%',
+      },
+    },
     plugins: {
       legend: {
         position: 'bottom',

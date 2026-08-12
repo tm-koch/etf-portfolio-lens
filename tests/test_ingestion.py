@@ -23,7 +23,7 @@ class IngestionTests(unittest.TestCase):
         cls.security_master = SecurityMaster.from_csv(ROOT / "data" / "tickers.csv")
 
     def test_registry_has_five_supported_sources(self) -> None:
-        self.assertEqual(5, len(self.registry.entries))
+        self.assertEqual(6, len(self.registry.entries))
 
     def test_fixtures_generate_snapshots(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -32,7 +32,7 @@ class IngestionTests(unittest.TestCase):
             )
             results = pipeline.run(self.registry.entries, use_fixtures=True)
 
-            self.assertEqual(5, len(results))
+            self.assertEqual(6, len(results))
             for result in results:
                 self.assertTrue(result.snapshot_path.exists())
                 snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
@@ -107,6 +107,20 @@ class IngestionTests(unittest.TestCase):
                     for holding in snapshot["holdings"]
                 )
             )
+
+    def test_eumd_registry_entry_ingests_successfully(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry, self.security_master, Path(temp_dir)
+            )
+            selected = self.registry.select_by_isins(["IE00BF20LF40"])
+            results = pipeline.run(selected, use_fixtures=True)
+
+            self.assertEqual(1, len(results))
+            snapshot = json.loads(results[0].snapshot_path.read_text(encoding="utf-8"))
+            self.assertEqual("IE00BF20LF40", snapshot["etf"]["isin"])
+            self.assertEqual("EUMD", snapshot["etf"]["ticker"])
+            self.assertGreater(len(snapshot["holdings"]), 0)
 
     def test_xlsx_parser_stops_at_first_empty_row(self) -> None:
         data = Path("data/example/UBSFunds_Constituents_1783782798132.xls").read_bytes()

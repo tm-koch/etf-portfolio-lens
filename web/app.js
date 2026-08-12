@@ -16,6 +16,8 @@ const chartRefs = {
 
 const PORTFOLIO_REFERENCE_LABEL = 'Portfolio reference (share-weighted)';
 const COMPANY_BATCH_SIZE = 20;
+const CHART_FRAME_HEIGHT_DESKTOP = '470px';
+const CHART_FRAME_HEIGHT_MOBILE = '340px';
 
 const ETF_SEGMENT_COLORS = [
   '#67d3ff',
@@ -447,6 +449,15 @@ function buildReferenceSeries(labels, values, label = PORTFOLIO_REFERENCE_LABEL)
   };
 }
 
+function applyChartFrameSizing() {
+  const isMobile = window.matchMedia('(max-width: 760px)').matches;
+  const height = isMobile ? CHART_FRAME_HEIGHT_MOBILE : CHART_FRAME_HEIGHT_DESKTOP;
+  for (const frame of document.querySelectorAll('.chart-frame')) {
+    frame.style.height = height;
+    frame.style.minHeight = height;
+  }
+}
+
 function updateSummary() {
   const positions = getSelectedPositions();
   const totalShareUnits = getTotalShareUnits(positions);
@@ -761,6 +772,9 @@ async function bootstrap() {
   elements.companyList = document.getElementById('company-list');
   elements.companyHint = document.getElementById('company-hint');
   elements.warningList = document.getElementById('warning-list');
+
+  applyChartFrameSizing();
+  window.addEventListener('resize', applyChartFrameSizing);
 
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
