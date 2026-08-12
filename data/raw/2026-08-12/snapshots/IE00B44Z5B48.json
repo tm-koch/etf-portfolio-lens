@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-12",
-    "generated_at": "2026-08-12T19:30:07.345753+00:00",
+    "generated_at": "2026-08-12T19:57:29.395081+00:00",
     "source_url": "https://www.ssga.com/ch/en_gb/intermediary/library-content/products/fund-data/etfs/emea/holdings-daily-emea-en-spyy-gy.xlsx",
     "resolved_download_url": "data\\raw\\2026-08-12\\downloads\\IE00B44Z5B48.xlsx",
     "source_format": "xlsx",
@@ -100049,7 +100049,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "North America",
         "country": "United States",
         "exchange": null,
@@ -109461,7 +109461,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Australia",
         "exchange": null,
@@ -109513,7 +109513,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Brazil",
         "exchange": null,
@@ -109565,7 +109565,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "United Kingdom",
         "exchange": null,
@@ -109617,7 +109617,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "North America",
         "country": "Canada",
         "exchange": null,
@@ -109669,7 +109669,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Chile",
         "exchange": null,
@@ -109721,7 +109721,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Asia",
         "country": "China",
         "exchange": null,
@@ -109773,7 +109773,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Asia",
         "country": "China",
         "exchange": null,
@@ -109825,7 +109825,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Colombia",
         "exchange": null,
@@ -109877,7 +109877,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Czech Republic",
         "exchange": null,
@@ -109929,7 +109929,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Denmark",
         "exchange": null,
@@ -109981,7 +109981,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "None",
         "exchange": null,
@@ -110033,7 +110033,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "European Union",
         "exchange": null,
@@ -110085,7 +110085,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Asia",
         "country": "Hong Kong",
         "exchange": null,
@@ -110137,7 +110137,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Hungary",
         "exchange": null,
@@ -110189,7 +110189,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "India",
         "exchange": null,
@@ -110241,7 +110241,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Indonesia",
         "exchange": null,
@@ -110293,7 +110293,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Israel",
         "exchange": null,
@@ -110345,7 +110345,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Asia",
         "country": "Japan",
         "exchange": null,
@@ -110397,7 +110397,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Kuwait",
         "exchange": null,
@@ -110449,7 +110449,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Malaysia",
         "exchange": null,
@@ -110501,7 +110501,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Mexico",
         "exchange": null,
@@ -110553,7 +110553,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "New Zealand",
         "exchange": null,
@@ -110605,7 +110605,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Norway",
         "exchange": null,
@@ -110657,7 +110657,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Philippines",
         "exchange": null,
@@ -110709,7 +110709,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Poland",
         "exchange": null,
@@ -110761,7 +110761,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Qatar",
         "exchange": null,
@@ -110813,7 +110813,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Saudi Arabia",
         "exchange": null,
@@ -110865,7 +110865,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Singapore",
         "exchange": null,
@@ -110917,7 +110917,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "South Africa",
         "exchange": null,
@@ -110969,7 +110969,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Republic Of Korea",
         "exchange": null,
@@ -111021,7 +111021,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Sweden",
         "exchange": null,
@@ -111073,7 +111073,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": null,
@@ -111125,7 +111125,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Russian Federation",
         "exchange": null,
@@ -111177,7 +111177,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Asia",
         "country": "Taiwan",
         "exchange": null,
@@ -111229,7 +111229,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Thailand",
         "exchange": null,
@@ -111281,7 +111281,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Turkey",
         "exchange": null,
@@ -111333,7 +111333,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "North America",
         "country": "United States",
         "exchange": null,
@@ -111385,7 +111385,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "United Arab Emirates",
         "exchange": null,
@@ -111489,7 +111489,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "North America",
         "country": "Canada",
         "exchange": null,
@@ -111541,7 +111541,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Greece",
         "exchange": null,
@@ -111593,7 +111593,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Asia",
         "country": "Hong Kong",
         "exchange": null,
@@ -111645,7 +111645,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": "Asia",
         "country": "China",
         "exchange": null,
@@ -111953,7 +111953,7 @@
       },
       "classification": {
         "asset_class": null,
-        "sector": "Unassigned",
+        "sector": "Unknown",
         "region": null,
         "country": "Russia",
         "exchange": null,
@@ -112614,10 +112614,6 @@
       {
         "name": "Real Estate",
         "weight_pct": 1.6043
-      },
-      {
-        "name": "Unassigned",
-        "weight_pct": 0.0
       },
       {
         "name": "Unknown",

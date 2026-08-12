@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .models import NormalizedHolding
+from .sector_taxonomy import normalize_sector_label
 
 
 def _normalize(value: str | None) -> str:
@@ -70,7 +71,7 @@ class SecurityMaster:
                         ticker=(row.get("ticker") or "").strip(),
                         name=(row.get("name") or "").strip(),
                         exchange=(row.get("exchange") or "").strip(),
-                        sector=(row.get("stock_sector") or None),
+                        sector=normalize_sector_label(row.get("stock_sector")),
                         asset_type=(row.get("asset_type") or None),
                         country=(row.get("country") or None),
                         country_code=(row.get("country_code") or None),

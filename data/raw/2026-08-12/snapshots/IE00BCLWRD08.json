@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-12",
-    "generated_at": "2026-08-12T19:30:30.060479+00:00",
+    "generated_at": "2026-08-12T19:57:48.833594+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/257270/ishares-msci-emu-mid-cap-ucits-etf/1495092304805.ajax?fileType=csv&fileName=EMUM_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-08-12\\downloads\\IE00BCLWRD08.csv",
     "source_format": "csv",
@@ -497,7 +497,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "France",
         "exchange": "Nyse Euronext - Euronext Paris",
@@ -808,7 +808,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Netherlands",
         "exchange": "Euronext Amsterdam",
@@ -1121,7 +1121,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Italy",
         "exchange": "Borsa Italiana",
@@ -1695,7 +1695,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Spain",
         "exchange": "Bolsa De Madrid",
@@ -4503,7 +4503,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Finland",
         "exchange": "Nasdaq Omx Helsinki Ltd.",
@@ -4607,7 +4607,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Germany",
         "exchange": "Xetra",
@@ -5910,7 +5910,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Germany",
         "exchange": "Xetra",
@@ -6221,7 +6221,7 @@
       },
       "classification": {
         "asset_class": "Money Market",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Ireland",
         "exchange": "-",
@@ -6274,7 +6274,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": null,
         "country": "European Union",
         "exchange": "-",
@@ -6326,7 +6326,7 @@
       },
       "classification": {
         "asset_class": "Cash Collateral and Margins",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": null,
         "country": "European Union",
         "exchange": "-",
@@ -6432,7 +6432,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "North America",
         "country": "United States",
         "exchange": "-",
@@ -6484,7 +6484,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "United Kingdom",
         "exchange": "-",
@@ -6537,7 +6537,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "-",
@@ -6641,7 +6641,7 @@
       },
       "classification": {
         "asset_class": "Futures",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": null,
         "country": "European Union",
         "exchange": "Eurex Deutschland",
@@ -6706,7 +6706,7 @@
         "weight_pct": 6.94
       },
       {
-        "name": "Communication",
+        "name": "Communication Services",
         "weight_pct": 6.67
       },
       {
@@ -6734,7 +6734,7 @@
         "weight_pct": 2.2
       },
       {
-        "name": "Cash and/or Derivatives",
+        "name": "Unknown",
         "weight_pct": 0.48
       }
     ],

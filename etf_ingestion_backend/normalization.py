@@ -5,6 +5,7 @@ import sys
 from typing import Any
 
 from .models import MatchDiagnostics, NormalizedHolding
+from .sector_taxonomy import normalize_sector_label
 from .security_master import SecurityMaster, SecurityRecord
 
 PERCENT_WEIGHT_PARSERS = {
@@ -118,14 +119,14 @@ def normalize_row(
         ).strip()
         or None
     )
-    sector = (
+    sector = normalize_sector_label(
         raw_row.get("Sector")
         or raw_row.get("sector")
         or raw_row.get("Sector Classification")
         or raw_row.get("sector classification")
         or raw_row.get("Sektor")
         or ""
-    ).strip() or None
+    )
     asset_class = (
         raw_row.get("Asset Class")
         or raw_row.get("asset_class")
@@ -235,7 +236,7 @@ def enrich_holding(holding: NormalizedHolding, record: SecurityRecord) -> None:
     if not holding.name:
         holding.name = record.name
     if not holding.sector:
-        holding.sector = record.sector
+        holding.sector = normalize_sector_label(record.sector)
     if not holding.asset_class:
         holding.asset_class = record.asset_type or "Stock"
     if not holding.country:

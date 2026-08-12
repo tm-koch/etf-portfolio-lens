@@ -11,6 +11,7 @@ from etf_ingestion_backend.pipeline import IngestionPipeline
 from etf_ingestion_backend.normalization import normalize_row
 from etf_ingestion_backend.parsing import parse_xlsx_bytes
 from etf_ingestion_backend.registry import load_registry
+from etf_ingestion_backend.sector_taxonomy import normalize_sector_label
 from etf_ingestion_backend.security_master import SecurityMaster, SecurityRecord
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -121,6 +122,77 @@ class IngestionTests(unittest.TestCase):
             self.assertEqual("IE00BF20LF40", snapshot["etf"]["isin"])
             self.assertEqual("EUMD", snapshot["etf"]["ticker"])
             self.assertGreater(len(snapshot["holdings"]), 0)
+
+    def test_sector_normalization_maps_communication_and_preserves_raw_source(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    ticker="KPN",
+                    name="KONINKLIJKE KPN NV",
+                    exchange="Euronext Amsterdam",
+                    sector="Communication Services",
+                    asset_type="Stock",
+                    country="Netherlands",
+                    country_code="NL",
+                    isin="NL0000000001",
+                    aliases=[],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+
+        holding = normalize_row(
+            {
+                "Ticker": "KPN",
+                "Name": "KONINKLIJKE KPN NV",
+                "Sektor": "Communication",
+                "Exchange": "Euronext Amsterdam",
+                "Location": "Netherlands",
+            },
+            master,
+            "test",
+            "ishares_csv_v1",
+        )
+
+        self.assertEqual("Communication Services", holding.sector)
+        self.assertEqual("Communication", holding.source_fields["Sektor"])
+        self.assertEqual("Communication Services", normalize_sector_label("communication services"))
+
+    def test_sector_normalization_maps_cash_style_aliases_to_unknown(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    ticker="CASH",
+                    name="Cash Position",
+                    exchange="Test Exchange",
+                    sector="Financials",
+                    asset_type="Stock",
+                    country="United States",
+                    country_code="US",
+                    isin="US0000000001",
+                    aliases=[],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+
+        holding = normalize_row(
+            {
+                "Ticker": "CASH",
+                "Name": "Cash Position",
+                "Sector": "Cash and/or Derivatives",
+                "Exchange": "Test Exchange",
+                "Location": "United States",
+            },
+            master,
+            "test",
+            "ishares_csv_v1",
+        )
+
+        self.assertEqual("Unknown", holding.sector)
+        self.assertEqual("Cash and/or Derivatives", holding.source_fields["Sector"])
 
     def test_xlsx_parser_stops_at_first_empty_row(self) -> None:
         data = Path("data/example/UBSFunds_Constituents_1783782798132.xls").read_bytes()

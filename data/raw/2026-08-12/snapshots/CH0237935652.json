@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-12",
-    "generated_at": "2026-08-12T19:30:36.763322+00:00",
+    "generated_at": "2026-08-12T19:57:56.346884+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/264107/ishares-spi-ch-fund/1495092304805.ajax?fileType=csv&fileName=CHSPI_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-08-12\\downloads\\CH0237935652.csv",
     "source_format": "csv",
@@ -910,7 +910,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "-",
@@ -1223,7 +1223,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -3043,7 +3043,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -4916,7 +4916,7 @@
       },
       "classification": {
         "asset_class": "Cash Collateral and Margins",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "-",
@@ -6218,7 +6218,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -6634,7 +6634,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -7415,7 +7415,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -8404,7 +8404,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "United Kingdom",
         "exchange": "-",
@@ -9030,7 +9030,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "North America",
         "country": "United States",
         "exchange": "-",
@@ -9134,7 +9134,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Other",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -10177,7 +10177,7 @@
       },
       "classification": {
         "asset_class": "Cash",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": null,
         "country": "European Union",
         "exchange": "-",
@@ -10229,7 +10229,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -10385,7 +10385,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -10698,7 +10698,7 @@
       },
       "classification": {
         "asset_class": "Equity",
-        "sector": "Communication",
+        "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "SIX Swiss Exchange",
@@ -10751,7 +10751,7 @@
       },
       "classification": {
         "asset_class": "Futures",
-        "sector": "Cash and/or Derivatives",
+        "sector": "Unknown",
         "region": "Europe",
         "country": "Switzerland",
         "exchange": "Eurex Deutschland",
@@ -10832,20 +10832,16 @@
         "weight_pct": 1.49
       },
       {
-        "name": "Cash and/or Derivatives",
+        "name": "Unknown",
         "weight_pct": 1.05
       },
       {
-        "name": "Communication",
+        "name": "Communication Services",
         "weight_pct": 1.03
       },
       {
         "name": "Utilities",
         "weight_pct": 0.16
-      },
-      {
-        "name": "Other",
-        "weight_pct": 0.0
       }
     ],
     "region_weights": [
