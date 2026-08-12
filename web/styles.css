@@ -13,6 +13,7 @@
   --shadow: 0 16px 38px rgba(22, 34, 58, 0.08);
   --radius: 22px;
   --radius-sm: 16px;
+  --comparison-donut-mobile-spacing: 16px;
 }
 
 * {
@@ -663,6 +664,14 @@ body {
   .chart-frame {
     min-height: 420px !important;
     height: 420px !important;
+  }
+
+  .chart-card {
+    gap: var(--comparison-donut-mobile-spacing);
+  }
+
+  .chart-card-head {
+    margin-bottom: 0;
   }
 
   .chart-legend {

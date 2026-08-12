@@ -25,3 +25,11 @@ The comparison view SHALL render each chart legend completely within the availab
 - **WHEN** the comparison view is rendered on a smartphone-sized viewport
 - **THEN** the legend SHALL allow multiple entries to share the same row when space permits instead of forcing one item per line
 - **AND** the legend SHALL remain readable while using less vertical space than the single-column mobile layout
+
+### Requirement: Smartphone comparison donut spacing is symmetric
+The comparison view SHALL keep the donut stack visually balanced on smartphone-sized viewports so the effective whitespace around the donut is consistent with the spacing to the title and the legend.
+
+#### Scenario: Mobile chart stack uses the same spacing rhythm
+- **WHEN** the comparison view is rendered on a smartphone-sized viewport
+- **THEN** the donut SHALL retain matching effective spacing to the surrounding title and legend blocks
+- **AND** the left and right donut inset SHALL feel visually equivalent to the top and bottom spacing in the chart stack

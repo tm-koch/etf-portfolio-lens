@@ -1,5 +1,5 @@
 import { buildCatalogMaps, loadPublishedCatalog, loadSnapshot } from './data.js';
-import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-1';
+import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-3';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const defaultState = {
@@ -18,7 +18,6 @@ const PORTFOLIO_REFERENCE_LABEL = 'Portfolio reference (share-weighted)';
 const COMPANY_BATCH_SIZE = 20;
 const CHART_FRAME_HEIGHT_DESKTOP = '680px';
 const CHART_FRAME_HEIGHT_MOBILE_TABLET = '420px';
-const CHART_FRAME_HEIGHT_MOBILE_PHONE = '470px';
 
 const ETF_SEGMENT_COLORS = [
   '#67d3ff',
@@ -452,12 +451,16 @@ function buildReferenceSeries(labels, values, label = PORTFOLIO_REFERENCE_LABEL)
 
 function applyChartFrameSizing() {
   const width = window.innerWidth;
-  const height = width <= 480
-    ? CHART_FRAME_HEIGHT_MOBILE_PHONE
-    : width <= 760
-      ? CHART_FRAME_HEIGHT_MOBILE_TABLET
-      : CHART_FRAME_HEIGHT_DESKTOP;
   for (const frame of document.querySelectorAll('.chart-frame')) {
+    if (width <= 480) {
+      const frameWidth = frame.getBoundingClientRect().width;
+      const height = Math.max(Math.round(frameWidth), 1);
+      frame.style.setProperty('height', `${height}px`, 'important');
+      frame.style.setProperty('min-height', `${height}px`, 'important');
+      continue;
+    }
+
+    const height = width <= 760 ? CHART_FRAME_HEIGHT_MOBILE_TABLET : CHART_FRAME_HEIGHT_DESKTOP;
     frame.style.setProperty('height', height, 'important');
     frame.style.setProperty('min-height', height, 'important');
   }
@@ -719,6 +722,9 @@ function renderAll() {
   renderPositions();
   renderComparisonToolbar(getSelectedPositions());
   renderComparisonCharts();
+  if (state.activeTab === 'comparison') {
+    applyChartFrameSizing();
+  }
   renderRollups();
   renderCompanyList();
   renderWarnings();
@@ -734,6 +740,7 @@ function setTab(tabName) {
     panel.classList.toggle('active', panel.dataset.panel === tabName);
   }
   if (tabName === 'comparison') {
+    applyChartFrameSizing();
     renderComparisonCharts();
   }
   if (tabName === 'aggregated') {

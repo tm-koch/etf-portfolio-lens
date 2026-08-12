@@ -13,6 +13,21 @@ const CHART_COLORS = [
   '#5f8cff',
 ];
 
+const FALLBACK_COMPARISON_MOBILE_SPACING = 16;
+
+function getComparisonMobileSpacing() {
+  if (typeof document === 'undefined') {
+    return FALLBACK_COMPARISON_MOBILE_SPACING;
+  }
+
+  const rawValue = getComputedStyle(document.documentElement)
+    .getPropertyValue('--comparison-donut-mobile-spacing')
+    .trim();
+  const parsedValue = Number.parseFloat(rawValue);
+
+  return Number.isFinite(parsedValue) ? parsedValue : FALLBACK_COMPARISON_MOBILE_SPACING;
+}
+
 function hexToRgba(hex, alpha) {
   const normalized = hex.replace('#', '');
   const red = Number.parseInt(normalized.slice(0, 2), 16);
@@ -90,7 +105,7 @@ function renderLegend(container, chart, legendMode, legendLabelOverrides = new M
 function createOptions(title, options = {}) {
   const { labelColorOverrides = new Map() } = options;
   const width = typeof window !== 'undefined' ? window.innerWidth : 0;
-  const layoutPadding = width <= 480 ? 8 : width <= 760 ? 14 : 24;
+  const layoutPadding = width <= 480 ? getComparisonMobileSpacing() : width <= 760 ? 14 : 24;
 
   return {
     responsive: true,
