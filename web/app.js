@@ -1,5 +1,5 @@
 import { buildCatalogMaps, loadPublishedCatalog, loadSnapshot } from './data.js';
-import { destroyComparisonCharts, renderComparisonChart } from './charts.js';
+import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-1';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const defaultState = {
@@ -16,8 +16,9 @@ const chartRefs = {
 
 const PORTFOLIO_REFERENCE_LABEL = 'Portfolio reference (share-weighted)';
 const COMPANY_BATCH_SIZE = 20;
-const CHART_FRAME_HEIGHT_DESKTOP = '470px';
-const CHART_FRAME_HEIGHT_MOBILE = '340px';
+const CHART_FRAME_HEIGHT_DESKTOP = '680px';
+const CHART_FRAME_HEIGHT_MOBILE_TABLET = '420px';
+const CHART_FRAME_HEIGHT_MOBILE_PHONE = '470px';
 
 const ETF_SEGMENT_COLORS = [
   '#67d3ff',
@@ -450,11 +451,15 @@ function buildReferenceSeries(labels, values, label = PORTFOLIO_REFERENCE_LABEL)
 }
 
 function applyChartFrameSizing() {
-  const isMobile = window.matchMedia('(max-width: 760px)').matches;
-  const height = isMobile ? CHART_FRAME_HEIGHT_MOBILE : CHART_FRAME_HEIGHT_DESKTOP;
+  const width = window.innerWidth;
+  const height = width <= 480
+    ? CHART_FRAME_HEIGHT_MOBILE_PHONE
+    : width <= 760
+      ? CHART_FRAME_HEIGHT_MOBILE_TABLET
+      : CHART_FRAME_HEIGHT_DESKTOP;
   for (const frame of document.querySelectorAll('.chart-frame')) {
-    frame.style.height = height;
-    frame.style.minHeight = height;
+    frame.style.setProperty('height', height, 'important');
+    frame.style.setProperty('min-height', height, 'important');
   }
 }
 
@@ -608,9 +613,11 @@ function renderComparisonCharts() {
 
   renderComparisonChart(chartRefs.sector, elements.sectorCanvas, 'Sectors', sectorSeries, sectorLabels, {
     legendMode: 'labels',
+    legendContainer: elements.sectorLegend,
   });
   renderComparisonChart(chartRefs.region, elements.regionCanvas, 'Regions', regionSeries, regionLabels, {
     legendMode: 'labels',
+    legendContainer: elements.regionLegend,
   });
   renderComparisonChart(
     chartRefs.currency,
@@ -622,6 +629,7 @@ function renderComparisonCharts() {
       legendMode: 'labels',
       legendLabelOverrides: currencyData.legendLabelOverrides,
       labelColorOverrides: new Map([['Other', '#4b5563']]),
+      legendContainer: elements.currencyLegend,
     }
   );
 }
@@ -766,8 +774,11 @@ async function bootstrap() {
   elements.portfolioHint = document.getElementById('portfolio-hint');
   elements.comparisonToolbar = document.getElementById('comparison-toolbar');
   elements.sectorCanvas = document.getElementById('sector-chart');
+  elements.sectorLegend = document.getElementById('sector-legend');
   elements.regionCanvas = document.getElementById('region-chart');
+  elements.regionLegend = document.getElementById('region-legend');
   elements.currencyCanvas = document.getElementById('currency-chart');
+  elements.currencyLegend = document.getElementById('currency-legend');
   elements.rollupGrid = document.getElementById('rollup-grid');
   elements.companyList = document.getElementById('company-list');
   elements.companyHint = document.getElementById('company-hint');

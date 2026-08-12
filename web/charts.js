@@ -44,55 +44,68 @@ function buildDatasets(metricData, labels, labelColorOverrides = new Map()) {
   }));
 }
 
+function buildLegendItems(chart, legendMode, legendLabelOverrides) {
+  if (legendMode === 'labels') {
+    const labelTexts = chart.data.labels || [];
+    const colors = chart.data.datasets[0]?.backgroundColor || [];
+    return labelTexts.map((labelText, index) => ({
+      text: legendLabelOverrides.get(labelText) || labelText,
+      fillStyle: colors[index] || '#67d3ff',
+    }));
+  }
+
+  return Chart.defaults.plugins.legend.labels.generateLabels(chart).map((label) => ({
+    ...label,
+    text: legendLabelOverrides.get(label.text) || label.text,
+  }));
+}
+
+function renderLegend(container, chart, legendMode, legendLabelOverrides = new Map()) {
+  if (!container) {
+    return;
+  }
+
+  if (!chart || !chart.data?.labels?.length || !chart.data?.datasets?.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const legendItems = buildLegendItems(chart, legendMode, legendLabelOverrides);
+  container.innerHTML = `
+    <ul class="chart-legend" role="list">
+      ${legendItems
+        .map(
+          (item) => `
+            <li class="chart-legend-item">
+              <span class="chart-legend-swatch" style="background:${item.fillStyle || item.strokeStyle || '#67d3ff'}"></span>
+              <span class="chart-legend-label">${item.text}</span>
+            </li>
+          `
+        )
+        .join('')}
+    </ul>
+  `;
+}
+
 function createOptions(title, options = {}) {
-  const {
-    legendLabelOverrides = new Map(),
-    legendMode = 'datasets',
-    labelColorOverrides = new Map(),
-  } = options;
+  const { labelColorOverrides = new Map() } = options;
 
   return {
     responsive: true,
     maintainAspectRatio: false,
-    cutout: '36%',
+    cutout: '28%',
     rotation: 0,
     layout: {
       padding: 24,
     },
     datasets: {
       doughnut: {
-        radius: '88%',
+        radius: '98%',
       },
     },
     plugins: {
       legend: {
-        position: 'bottom',
-        labels: {
-          color: '#152033',
-          boxWidth: 12,
-          usePointStyle: true,
-          pointStyle: 'circle',
-          generateLabels(chart) {
-            if (legendMode === 'labels') {
-              const labelTexts = chart.data.labels || [];
-              const colors = chart.data.datasets[0]?.backgroundColor || [];
-              return labelTexts.map((labelText, index) => ({
-                text: legendLabelOverrides.get(labelText) || labelText,
-                fillStyle: colors[index] || '#67d3ff',
-                strokeStyle: '#ffffff',
-                lineWidth: 1,
-                hidden: false,
-                index,
-              }));
-            }
-
-            const labels = Chart.defaults.plugins.legend.labels.generateLabels(chart);
-            return labels.map((label) => ({
-              ...label,
-              text: legendLabelOverrides.get(label.text) || label.text,
-            }));
-          },
-        },
+        display: false,
       },
       title: {
         display: false,
@@ -133,6 +146,9 @@ export function renderComparisonChart(chartRef, canvas, title, metricData, label
     if (context) {
       context.clearRect(0, 0, canvas.width, canvas.height);
     }
+    if (options.legendContainer) {
+      options.legendContainer.innerHTML = '';
+    }
     return null;
   }
   chartRef.current = new Chart(canvas, {
@@ -143,6 +159,14 @@ export function renderComparisonChart(chartRef, canvas, title, metricData, label
     },
     options: createOptions(title, options),
   });
+
+  renderLegend(
+    options.legendContainer,
+    chartRef.current,
+    options.legendMode || 'datasets',
+    options.legendLabelOverrides || new Map()
+  );
+
   return chartRef.current;
 }
 

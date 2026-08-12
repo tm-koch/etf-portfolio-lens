@@ -14,9 +14,9 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260812" />
+    <link rel="stylesheet" href="./styles.css?v=20260812-2" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
-    <script type="module" src="./app.js?v=20260812" defer></script>
+    <script type="module" src="./app.js?v=20260812-2" defer></script>
   </head>
   <body>
     <div class="page-frame">
@@ -115,6 +115,7 @@
               <div class="chart-frame" style="height: 470px;">
                 <canvas id="sector-chart"></canvas>
               </div>
+              <div class="chart-legend-shell" id="sector-legend" aria-label="Sector legend"></div>
             </article>
             <article class="chart-card">
               <div class="chart-card-head">
@@ -124,6 +125,7 @@
               <div class="chart-frame" style="height: 470px;">
                 <canvas id="region-chart"></canvas>
               </div>
+              <div class="chart-legend-shell" id="region-legend" aria-label="Region legend"></div>
             </article>
             <article class="chart-card">
               <div class="chart-card-head">
@@ -133,6 +135,7 @@
               <div class="chart-frame" style="height: 470px;">
                 <canvas id="currency-chart"></canvas>
               </div>
+              <div class="chart-legend-shell" id="currency-legend" aria-label="Currency legend"></div>
             </article>
           </div>
         </section>
