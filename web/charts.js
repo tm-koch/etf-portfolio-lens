@@ -89,6 +89,8 @@ function renderLegend(container, chart, legendMode, legendLabelOverrides = new M
 
 function createOptions(title, options = {}) {
   const { labelColorOverrides = new Map() } = options;
+  const width = typeof window !== 'undefined' ? window.innerWidth : 0;
+  const layoutPadding = width <= 480 ? 8 : width <= 760 ? 14 : 24;
 
   return {
     responsive: true,
@@ -96,7 +98,7 @@ function createOptions(title, options = {}) {
     cutout: '28%',
     rotation: 0,
     layout: {
-      padding: 24,
+      padding: layoutPadding,
     },
     datasets: {
       doughnut: {
