@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-12",
-    "generated_at": "2026-08-12T19:57:34.481074+00:00",
+    "generated_at": "2026-08-12T20:26:29.145850+00:00",
     "source_url": "https://www.amundietf.ch/8961ee57-3a33-46f3-8111-02a70fd7493d",
     "resolved_download_url": "data\\raw\\2026-08-12\\downloads\\LU0908500753.xlsx",
     "source_format": "xlsx",
@@ -163,7 +163,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "NYSE",
+        "exchange": "LSE",
         "market_currency": "GBP"
       },
       "exposure": {
@@ -200,7 +200,7 @@
     {
       "security": {
         "isin": "CH1499059983",
-        "ticker": "0QOK",
+        "ticker": null,
         "name": "ROCHE HOLDING AG - GENUSSS CHF"
       },
       "classification": {
@@ -208,7 +208,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -230,15 +230,19 @@
           "Sector": "Health Care",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ROCHE HOLDING AG - GENUSSS CHF; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -290,7 +294,7 @@
     {
       "security": {
         "isin": "GB00BP6MXD84",
-        "ticker": "R6C0",
+        "ticker": null,
         "name": "SHELL PLC EUR"
       },
       "classification": {
@@ -298,7 +302,7 @@
         "sector": "Energy",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -320,15 +324,19 @@
           "Sector": "Energy",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SHELL PLC EUR; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -380,7 +388,7 @@
     {
       "security": {
         "isin": "ES0113900J37",
-        "ticker": "BSD2",
+        "ticker": null,
         "name": "BANCO SANTANDER SA MADRID"
       },
       "classification": {
@@ -388,7 +396,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -410,15 +418,19 @@
           "Sector": "Financials",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BANCO SANTANDER SA MADRID; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -478,7 +490,7 @@
         "sector": "Energy",
         "region": "Europe",
         "country": "France",
-        "exchange": "NYSE",
+        "exchange": "Euronext",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -515,7 +527,7 @@
     {
       "security": {
         "isin": "FR0000121972",
-        "ticker": "0NWV",
+        "ticker": null,
         "name": "SCHNEIDER ELECT SE"
       },
       "classification": {
@@ -523,7 +535,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -545,15 +557,19 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SCHNEIDER ELECT SE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -740,7 +756,7 @@
     {
       "security": {
         "isin": "GB00B63H8491",
-        "ticker": "RRU",
+        "ticker": null,
         "name": "ROLLS-ROYCE HOLDINGS PLC"
       },
       "classification": {
@@ -748,7 +764,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -770,15 +786,19 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ROLLS-ROYCE HOLDINGS PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -830,7 +850,7 @@
     {
       "security": {
         "isin": "ES0113211835",
-        "ticker": "BVA",
+        "ticker": null,
         "name": "BANCO BILBAO VIZCAYA ARGENTA"
       },
       "classification": {
@@ -838,7 +858,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -860,22 +880,26 @@
           "Sector": "Financials",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BANCO BILBAO VIZCAYA ARGENTA; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "DE000ENER6Y0",
-        "ticker": "0SEA",
+        "ticker": null,
         "name": "SIEMENS ENERGY AG"
       },
       "classification": {
@@ -883,7 +907,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -905,15 +929,19 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SIEMENS ENERGY AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -1010,7 +1038,7 @@
     {
       "security": {
         "isin": "FR0000121014",
-        "ticker": "0HAU",
+        "ticker": null,
         "name": "LVMH MOET HENNESSY LOUIS VUI"
       },
       "classification": {
@@ -1018,7 +1046,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -1040,15 +1068,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding LVMH MOET HENNESSY LOUIS VUI; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -1190,7 +1222,7 @@
     {
       "security": {
         "isin": "CH0210483332",
-        "ticker": "0QMU",
+        "ticker": null,
         "name": "CIE FINANCIERE RICHEMO-A REG"
       },
       "classification": {
@@ -1198,7 +1230,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1220,15 +1252,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding CIE FINANCIERE RICHEMO-A REG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -1282,7 +1318,7 @@
     {
       "security": {
         "isin": "FR0000131104",
-        "ticker": "0HB5",
+        "ticker": null,
         "name": "BNP PARIBAS"
       },
       "classification": {
@@ -1290,7 +1326,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -1312,15 +1348,19 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BNP PARIBAS; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -1417,7 +1457,7 @@
     {
       "security": {
         "isin": "GB00BN7SWP63",
-        "ticker": "GS71",
+        "ticker": null,
         "name": "GSK PLC"
       },
       "classification": {
@@ -1425,7 +1465,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -1447,22 +1487,26 @@
           "Sector": "Health Care",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding GSK PLC; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "IT0000072618",
-        "ticker": "0HBC",
+        "ticker": "ISP",
         "name": "INTESA SANPAOLO"
       },
       "classification": {
@@ -1470,7 +1514,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Italy",
-        "exchange": "LSE",
+        "exchange": "Borsa Italiana",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -1552,7 +1596,7 @@
     {
       "security": {
         "isin": "DE0005557508",
-        "ticker": "0MPH",
+        "ticker": null,
         "name": "DEUTSCHE TELEKOM NAMEN (XETRA)"
       },
       "classification": {
@@ -1560,7 +1604,7 @@
         "sector": "Communication Services",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -1582,22 +1626,26 @@
           "Sector": "Communication Services",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding DEUTSCHE TELEKOM NAMEN (XETRA); missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "FR0000120578",
-        "ticker": "0O59",
+        "ticker": null,
         "name": "SANOFI - PARIS"
       },
       "classification": {
@@ -1605,7 +1653,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -1627,22 +1675,26 @@
           "Sector": "Health Care",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SANOFI - PARIS; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "GB0007188757",
-        "ticker": "RIO1",
+        "ticker": null,
         "name": "RIO TINTO PLC (GBR)"
       },
       "classification": {
@@ -1650,7 +1702,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -1672,15 +1724,19 @@
           "Sector": "Materials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding RIO TINTO PLC (GBR); missing=['ticker', 'exchange']"
         }
       }
     },
@@ -1867,7 +1923,7 @@
     {
       "security": {
         "isin": "GB00BDR05C01",
-        "ticker": "NNGF",
+        "ticker": "NG",
         "name": "NATIONAL GRID PLC"
       },
       "classification": {
@@ -1875,7 +1931,7 @@
         "sector": "Utilities",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": "LSE",
         "market_currency": "GBP"
       },
       "exposure": {
@@ -2002,7 +2058,7 @@
     {
       "security": {
         "isin": "GB0002634946",
-        "ticker": "BSP",
+        "ticker": null,
         "name": "BAE SYSTEMS PLC GBP"
       },
       "classification": {
@@ -2010,7 +2066,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -2032,22 +2088,26 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BAE SYSTEMS PLC GBP; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "FR0000125486",
-        "ticker": "0NQM",
+        "ticker": null,
         "name": "VINCI SA (PARIS)"
       },
       "classification": {
@@ -2055,7 +2115,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -2077,15 +2137,19 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding VINCI SA (PARIS); missing=['ticker', 'exchange']"
         }
       }
     },
@@ -2190,7 +2254,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "NYSE",
+        "exchange": "LSE",
         "market_currency": "GBP"
       },
       "exposure": {
@@ -2227,7 +2291,7 @@
     {
       "security": {
         "isin": "ES0148396007",
-        "ticker": "0QWI",
+        "ticker": null,
         "name": "INDUSTRIA DE DISENO TEXTIL"
       },
       "classification": {
@@ -2235,7 +2299,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -2257,15 +2321,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding INDUSTRIA DE DISENO TEXTIL; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -2362,7 +2430,7 @@
     {
       "security": {
         "isin": "FI0009000681",
-        "ticker": "0HAF",
+        "ticker": "NOKIA",
         "name": "NOKIA OYJ HELSINKI"
       },
       "classification": {
@@ -2370,7 +2438,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Finland",
-        "exchange": "LSE",
+        "exchange": "HEL",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -2497,7 +2565,7 @@
     {
       "security": {
         "isin": "FR0000130809",
-        "ticker": "0J6Y",
+        "ticker": null,
         "name": "SOCIETE GENERALE"
       },
       "classification": {
@@ -2505,7 +2573,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -2527,22 +2595,26 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SOCIETE GENERALE; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "FR0000121667",
-        "ticker": "0OMK",
+        "ticker": null,
         "name": "ESSILORLUXOTTICA"
       },
       "classification": {
@@ -2550,7 +2622,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -2572,15 +2644,19 @@
           "Sector": "Health Care",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ESSILORLUXOTTICA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -3037,7 +3113,7 @@
     {
       "security": {
         "isin": "FR0000120644",
-        "ticker": "0KFX",
+        "ticker": null,
         "name": "DANONE"
       },
       "classification": {
@@ -3045,7 +3121,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -3067,15 +3143,19 @@
           "Sector": "Consumer Staples",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding DANONE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -3127,7 +3207,7 @@
     {
       "security": {
         "isin": "GB00BTK05J60",
-        "ticker": "NGL0",
+        "ticker": null,
         "name": "ANGLO AMERICAN PLC GBP"
       },
       "classification": {
@@ -3135,7 +3215,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -3157,22 +3237,26 @@
           "Sector": "Materials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ANGLO AMERICAN PLC GBP; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "NL0000334118",
-        "ticker": "0NX3",
+        "ticker": null,
         "name": "ASM INTERNATIONAL NV"
       },
       "classification": {
@@ -3180,7 +3264,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Netherlands",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -3202,15 +3286,19 @@
           "Sector": "Information Technology",
           "Country": "Netherlands"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ASM INTERNATIONAL NV; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -3904,7 +3992,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "NYSE",
+        "exchange": "LSE",
         "market_currency": "GBP"
       },
       "exposure": {
@@ -3941,7 +4029,7 @@
     {
       "security": {
         "isin": "GB00BSZBP530",
-        "ticker": "3RB0",
+        "ticker": null,
         "name": "RECKITT BENCKISER GROUP PLC GBP"
       },
       "classification": {
@@ -3949,7 +4037,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -3971,15 +4059,19 @@
           "Sector": "Consumer Staples",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding RECKITT BENCKISER GROUP PLC GBP; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -4211,7 +4303,7 @@
     {
       "security": {
         "isin": "GB00BLGZ9862",
-        "ticker": "TCO0",
+        "ticker": null,
         "name": "TESCO PLC"
       },
       "classification": {
@@ -4219,7 +4311,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -4241,15 +4333,19 @@
           "Sector": "Consumer Staples",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding TESCO PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -4301,7 +4397,7 @@
     {
       "security": {
         "isin": "AT0000652011",
-        "ticker": "0MJK",
+        "ticker": null,
         "name": "ERSTE GROUP BANK"
       },
       "classification": {
@@ -4309,7 +4405,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Austria",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -4331,15 +4427,19 @@
           "Sector": "Financials",
           "Country": "Austria"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ERSTE GROUP BANK; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -4440,7 +4540,7 @@
     {
       "security": {
         "isin": "FR0000120073",
-        "ticker": "0NWF",
+        "ticker": null,
         "name": "AIR LIQUIDE SA"
       },
       "classification": {
@@ -4448,7 +4548,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -4470,15 +4570,19 @@
           "Sector": "Materials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding AIR LIQUIDE SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -4530,7 +4634,7 @@
     {
       "security": {
         "isin": "NL0011794037",
-        "ticker": "0RI8",
+        "ticker": null,
         "name": "KONINKLIJKE AHOLD DELHAIZE"
       },
       "classification": {
@@ -4538,7 +4642,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "Netherlands",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -4560,22 +4664,26 @@
           "Sector": "Consumer Staples",
           "Country": "Netherlands"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding KONINKLIJKE AHOLD DELHAIZE; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "FR0000133308",
-        "ticker": "0OQV",
+        "ticker": null,
         "name": "ORANGE"
       },
       "classification": {
@@ -4583,7 +4691,7 @@
         "sector": "Communication Services",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -4605,15 +4713,19 @@
           "Sector": "Communication Services",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ORANGE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -4800,7 +4912,7 @@
     {
       "security": {
         "isin": "GB0007099541",
-        "ticker": "02378",
+        "ticker": null,
         "name": "PRUDENTIAL PLC"
       },
       "classification": {
@@ -4808,7 +4920,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "HKEX",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -4830,15 +4942,19 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding PRUDENTIAL PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -4890,7 +5006,7 @@
     {
       "security": {
         "isin": "GB00B1YW4409",
-        "ticker": "TGOPF",
+        "ticker": null,
         "name": "3I GROUP PLC"
       },
       "classification": {
@@ -4898,7 +5014,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -4920,22 +5036,26 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding 3I GROUP PLC; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "CH0432492467",
-        "ticker": "ALC",
+        "ticker": null,
         "name": "ALCON INC - CHF"
       },
       "classification": {
@@ -4943,7 +5063,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "NYSE",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -4965,15 +5085,19 @@
           "Sector": "Health Care",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ALCON INC - CHF; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -5070,7 +5194,7 @@
     {
       "security": {
         "isin": "CH0418792922",
-        "ticker": "0Z4C",
+        "ticker": "SIKA",
         "name": "SIKA AG-REG"
       },
       "classification": {
@@ -5078,7 +5202,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "LSE",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -5123,7 +5247,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "NASDAQ",
+        "exchange": "AMS",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -5295,7 +5419,7 @@
     {
       "security": {
         "isin": "FR0000120321",
-        "ticker": "0NZM",
+        "ticker": null,
         "name": "L OREAL"
       },
       "classification": {
@@ -5303,7 +5427,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -5325,15 +5449,19 @@
           "Sector": "Consumer Staples",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding L OREAL; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -5475,7 +5603,7 @@
     {
       "security": {
         "isin": "ES0173516115",
-        "ticker": "0NQG",
+        "ticker": null,
         "name": "REPSOL SA"
       },
       "classification": {
@@ -5483,7 +5611,7 @@
         "sector": "Energy",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -5505,15 +5633,19 @@
           "Sector": "Energy",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding REPSOL SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -6158,7 +6290,7 @@
     {
       "security": {
         "isin": "DE000DTR0CK8",
-        "ticker": "0AB9",
+        "ticker": null,
         "name": "DAIMLER TRUCK HOLDING AG"
       },
       "classification": {
@@ -6166,7 +6298,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -6188,15 +6320,19 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding DAIMLER TRUCK HOLDING AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -6473,7 +6609,7 @@
     {
       "security": {
         "isin": "DE0006047004",
-        "ticker": "0MG2",
+        "ticker": null,
         "name": "HEIDELBERGCEMENT AG"
       },
       "classification": {
@@ -6481,7 +6617,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -6503,15 +6639,19 @@
           "Sector": "Materials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding HEIDELBERGCEMENT AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -6608,7 +6748,7 @@
     {
       "security": {
         "isin": "GB00BHJYC057",
-        "ticker": "IC1H",
+        "ticker": null,
         "name": "INTERCONTINENTAL HOTELS GROU"
       },
       "classification": {
@@ -6616,7 +6756,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "USD"
       },
       "exposure": {
@@ -6638,15 +6778,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding INTERCONTINENTAL HOTELS GROU; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -6743,7 +6887,7 @@
     {
       "security": {
         "isin": "ES0109067019",
-        "ticker": "0P2W",
+        "ticker": null,
         "name": "AMADEUS IT GROUP SA"
       },
       "classification": {
@@ -6751,7 +6895,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -6773,22 +6917,26 @@
           "Sector": "Consumer Discretionary",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding AMADEUS IT GROUP SA; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "NL0010773842",
-        "ticker": "0QVV",
+        "ticker": null,
         "name": "NN GROUP NV"
       },
       "classification": {
@@ -6796,7 +6944,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Netherlands",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -6818,15 +6966,19 @@
           "Sector": "Financials",
           "Country": "Netherlands"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding NN GROUP NV; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -7197,7 +7349,7 @@
     {
       "security": {
         "isin": "FR0000045072",
-        "ticker": "0HAI",
+        "ticker": null,
         "name": "CREDIT AGRICOLE SA"
       },
       "classification": {
@@ -7205,7 +7357,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -7227,22 +7379,26 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding CREDIT AGRICOLE SA; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "GB0032089863",
-        "ticker": "NXGPF",
+        "ticker": null,
         "name": "NEXT PLC"
       },
       "classification": {
@@ -7250,7 +7406,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -7272,22 +7428,26 @@
           "Sector": "Consumer Discretionary",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding NEXT PLC; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "DE000A0D9PT0",
-        "ticker": "0FC9",
+        "ticker": null,
         "name": "MTU AERO ENGINES AG"
       },
       "classification": {
@@ -7295,7 +7455,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -7317,15 +7477,19 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding MTU AERO ENGINES AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -7512,7 +7676,7 @@
     {
       "security": {
         "isin": "DE0006599905",
-        "ticker": "0O14",
+        "ticker": null,
         "name": "MERCK KGAA"
       },
       "classification": {
@@ -7520,7 +7684,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -7542,15 +7706,19 @@
           "Sector": "Health Care",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding MERCK KGAA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -7692,7 +7860,7 @@
     {
       "security": {
         "isin": "CH0466642201",
-        "ticker": "0ACB",
+        "ticker": null,
         "name": "HELVETIA BALOISE HOLDING AG"
       },
       "classification": {
@@ -7700,7 +7868,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -7722,15 +7890,19 @@
           "Sector": "Financials",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding HELVETIA BALOISE HOLDING AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -8105,7 +8277,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Denmark",
-        "exchange": "NASDAQ",
+        "exchange": "CPH",
         "market_currency": "DKK"
       },
       "exposure": {
@@ -8322,7 +8494,7 @@
     {
       "security": {
         "isin": "CH0102484968",
-        "ticker": "0QO6",
+        "ticker": null,
         "name": "JULIUS BAER GROUP LTD"
       },
       "classification": {
@@ -8330,7 +8502,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -8352,15 +8524,19 @@
           "Sector": "Financials",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding JULIUS BAER GROUP LTD; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -8682,7 +8858,7 @@
     {
       "security": {
         "isin": "IT0005712671",
-        "ticker": null,
+        "ticker": "0H6I",
         "name": "TELECOM ITALIA SPA"
       },
       "classification": {
@@ -8690,7 +8866,7 @@
         "sector": "Communication Services",
         "region": "Europe",
         "country": "Italy",
-        "exchange": null,
+        "exchange": "LSE",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -8712,19 +8888,15 @@
           "Sector": "Communication Services",
           "Country": "Italy"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "security_master",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "matched",
+          "matched_by": "isin",
           "attempted": [
-            "isin",
-            "alias"
+            "isin"
           ],
-          "missing_elements": [
-            "ticker",
-            "exchange"
-          ],
-          "warning": "could not fully match holding TELECOM ITALIA SPA; missing=['ticker', 'exchange']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -8821,7 +8993,7 @@
     {
       "security": {
         "isin": "SE0000695876",
-        "ticker": "0NNF",
+        "ticker": null,
         "name": "ALFA LAVAL AB"
       },
       "classification": {
@@ -8829,7 +9001,7 @@
         "sector": "Industrials",
         "region": null,
         "country": "Sweden",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "SEK"
       },
       "exposure": {
@@ -8851,15 +9023,19 @@
           "Sector": "Industrials",
           "Country": "Sweden"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ALFA LAVAL AB; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -8874,7 +9050,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "NYSE",
+        "exchange": "LSE",
         "market_currency": "GBP"
       },
       "exposure": {
@@ -9136,7 +9312,7 @@
     {
       "security": {
         "isin": "AT0000BAWAG2",
-        "ticker": "0RVE",
+        "ticker": null,
         "name": "BAWAG GROUP AG"
       },
       "classification": {
@@ -9144,7 +9320,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Austria",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -9166,22 +9342,26 @@
           "Sector": "Financials",
           "Country": "Austria"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BAWAG GROUP AG; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "FR0014003TT8",
-        "ticker": "0HB4",
+        "ticker": null,
         "name": "DASSAULT SYSTEMES SE"
       },
       "classification": {
@@ -9189,7 +9369,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -9211,15 +9391,19 @@
           "Sector": "Information Technology",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding DASSAULT SYSTEMES SE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -9316,7 +9500,7 @@
     {
       "security": {
         "isin": "ES0177542018",
-        "ticker": "BABWF",
+        "ticker": null,
         "name": "INTL CONSOLD AIRLINES GRP SA-GBP"
       },
       "classification": {
@@ -9324,7 +9508,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -9346,15 +9530,19 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding INTL CONSOLD AIRLINES GRP SA-GBP; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -9451,7 +9639,7 @@
     {
       "security": {
         "isin": "SE0020050417",
-        "ticker": "0YAL",
+        "ticker": null,
         "name": "BOLIDEN AB"
       },
       "classification": {
@@ -9459,7 +9647,7 @@
         "sector": "Materials",
         "region": null,
         "country": "Sweden",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "SEK"
       },
       "exposure": {
@@ -9481,15 +9669,19 @@
           "Sector": "Materials",
           "Country": "Sweden"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BOLIDEN AB; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -9541,7 +9733,7 @@
     {
       "security": {
         "isin": "CH0025751329",
-        "ticker": "LOGI",
+        "ticker": null,
         "name": "LOGITECH INTERNATIONAL-REG"
       },
       "classification": {
@@ -9549,7 +9741,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "NASDAQ",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -9571,15 +9763,19 @@
           "Sector": "Information Technology",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding LOGITECH INTERNATIONAL-REG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -9631,7 +9827,7 @@
     {
       "security": {
         "isin": "ES0178430E18",
-        "ticker": "0TDE",
+        "ticker": "TEF",
         "name": "TELEFONICA SA"
       },
       "classification": {
@@ -9639,7 +9835,7 @@
         "sector": "Communication Services",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": "BME",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -10175,7 +10371,7 @@
     {
       "security": {
         "isin": "ES0130670112",
-        "ticker": "0N9G",
+        "ticker": null,
         "name": "ENDESA SA"
       },
       "classification": {
@@ -10183,7 +10379,7 @@
         "sector": "Utilities",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -10205,15 +10401,19 @@
           "Sector": "Utilities",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ENDESA SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -10490,7 +10690,7 @@
     {
       "security": {
         "isin": "GB00B02J6398",
-        "ticker": "AMIGF",
+        "ticker": null,
         "name": "ADMIRAL GROUP PLC"
       },
       "classification": {
@@ -10498,7 +10698,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -10520,15 +10720,19 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ADMIRAL GROUP PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -10580,7 +10784,7 @@
     {
       "security": {
         "isin": "GB0009223206",
-        "ticker": "NPW1",
+        "ticker": null,
         "name": "SMITH & NEPHEW PLC"
       },
       "classification": {
@@ -10588,7 +10792,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "XETRA",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -10610,15 +10814,19 @@
           "Sector": "Health Care",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SMITH & NEPHEW PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -11079,7 +11287,7 @@
     {
       "security": {
         "isin": "FR0000120172",
-        "ticker": "0NPH",
+        "ticker": null,
         "name": "CARREFOUR SA"
       },
       "classification": {
@@ -11087,7 +11295,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -11109,15 +11317,19 @@
           "Sector": "Consumer Staples",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding CARREFOUR SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -11398,7 +11610,7 @@
     {
       "security": {
         "isin": "PLKGHM000017",
-        "ticker": "0O8D",
+        "ticker": null,
         "name": "KGHM POLSKA MIEDZ S.A."
       },
       "classification": {
@@ -11406,7 +11618,7 @@
         "sector": "Materials",
         "region": null,
         "country": "Poland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "PLN"
       },
       "exposure": {
@@ -11428,15 +11640,19 @@
           "Sector": "Materials",
           "Country": "Poland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding KGHM POLSKA MIEDZ S.A.; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -12118,7 +12334,7 @@
     {
       "security": {
         "isin": "GB00BYQ0JC66",
-        "ticker": "BZLYF",
+        "ticker": null,
         "name": "BEAZLEY PLC/UK"
       },
       "classification": {
@@ -12126,7 +12342,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -12148,22 +12364,26 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BEAZLEY PLC/UK; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "GB00B033F229",
-        "ticker": "CPYYF",
+        "ticker": null,
         "name": "CENTRICA PLC"
       },
       "classification": {
@@ -12171,7 +12391,7 @@
         "sector": "Utilities",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -12193,15 +12413,19 @@
           "Sector": "Utilities",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding CENTRICA PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -12343,7 +12567,7 @@
     {
       "security": {
         "isin": "GB00B1WY2338",
-        "ticker": "SMGKF",
+        "ticker": null,
         "name": "SMITHS GROUP PLC"
       },
       "classification": {
@@ -12351,7 +12575,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -12373,15 +12597,19 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SMITHS GROUP PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -12748,7 +12976,7 @@
     {
       "security": {
         "isin": "FR0010451203",
-        "ticker": "0KBZ",
+        "ticker": null,
         "name": "REXEL SA"
       },
       "classification": {
@@ -12756,7 +12984,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -12778,15 +13006,19 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding REXEL SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -13018,7 +13250,7 @@
     {
       "security": {
         "isin": "NO0010063308",
-        "ticker": "0G8C",
+        "ticker": null,
         "name": "TELENOR ASA"
       },
       "classification": {
@@ -13026,7 +13258,7 @@
         "sector": "Communication Services",
         "region": "Europe",
         "country": "Norway",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "NOK"
       },
       "exposure": {
@@ -13048,15 +13280,19 @@
           "Sector": "Communication Services",
           "Country": "Norway"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding TELENOR ASA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -13108,7 +13344,7 @@
     {
       "security": {
         "isin": "FR0000121964",
-        "ticker": "0F4I",
+        "ticker": null,
         "name": "KLEPIERRE"
       },
       "classification": {
@@ -13116,7 +13352,7 @@
         "sector": "Real Estate",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -13138,15 +13374,19 @@
           "Sector": "Real Estate",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding KLEPIERRE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -13423,7 +13663,7 @@
     {
       "security": {
         "isin": "NO0003053605",
-        "ticker": "0NO0",
+        "ticker": null,
         "name": "STOREBRAND ASA"
       },
       "classification": {
@@ -13431,7 +13671,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Norway",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "NOK"
       },
       "exposure": {
@@ -13453,22 +13693,26 @@
           "Sector": "Financials",
           "Country": "Norway"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding STOREBRAND ASA; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "SE0012673267",
-        "ticker": "0RQ6",
+        "ticker": null,
         "name": "EVOLUTION AB"
       },
       "classification": {
@@ -13476,7 +13720,7 @@
         "sector": "Consumer Discretionary",
         "region": null,
         "country": "Sweden",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "SEK"
       },
       "exposure": {
@@ -13498,15 +13742,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "Sweden"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding EVOLUTION AB; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -13603,7 +13851,7 @@
     {
       "security": {
         "isin": "FR0012333284",
-        "ticker": "0RA9",
+        "ticker": null,
         "name": "ABIVAX SA"
       },
       "classification": {
@@ -13611,7 +13859,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -13633,15 +13881,19 @@
           "Sector": "Health Care",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ABIVAX SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -13971,7 +14223,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "Netherlands",
-        "exchange": "NYSE",
+        "exchange": "AMS",
         "market_currency": "GBP"
       },
       "exposure": {
@@ -14773,7 +15025,7 @@
     {
       "security": {
         "isin": "PLBZ00000044",
-        "ticker": "0DVR",
+        "ticker": "EBP",
         "name": "ERSTE BANK POLSKA SA"
       },
       "classification": {
@@ -14781,7 +15033,7 @@
         "sector": "Financials",
         "region": null,
         "country": "Poland",
-        "exchange": "LSE",
+        "exchange": "WSE",
         "market_currency": "PLN"
       },
       "exposure": {
@@ -14863,7 +15115,7 @@
     {
       "security": {
         "isin": "DE000TLX1005",
-        "ticker": "0QA8",
+        "ticker": "TLX",
         "name": "TALANX AG"
       },
       "classification": {
@@ -14871,7 +15123,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": "XETRA",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -14908,7 +15160,7 @@
     {
       "security": {
         "isin": "DE000A1DAHH0",
-        "ticker": "0MPT",
+        "ticker": null,
         "name": "BRENNTAG SE"
       },
       "classification": {
@@ -14916,7 +15168,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -14938,15 +15190,19 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BRENNTAG SE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -15133,7 +15389,7 @@
     {
       "security": {
         "isin": "GB0009697037",
-        "ticker": "BCKIF",
+        "ticker": null,
         "name": "BABCOCK INTL GRP"
       },
       "classification": {
@@ -15141,7 +15397,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -15163,22 +15419,26 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BABCOCK INTL GRP; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "FR0004125920",
-        "ticker": "0RDX",
+        "ticker": null,
         "name": "AMUNDI SA"
       },
       "classification": {
@@ -15186,7 +15446,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -15208,15 +15468,19 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding AMUNDI SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -15718,7 +15982,7 @@
     {
       "security": {
         "isin": "ES0105025003",
-        "ticker": "0QVM",
+        "ticker": "MRL",
         "name": "MERLIN PROPERTIES SOCIMI"
       },
       "classification": {
@@ -15726,7 +15990,7 @@
         "sector": "Real Estate",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": "BME",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -15763,7 +16027,7 @@
     {
       "security": {
         "isin": "FI0009005870",
-        "ticker": "0MET",
+        "ticker": null,
         "name": "KONECRANES OYJ"
       },
       "classification": {
@@ -15771,7 +16035,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Finland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -15793,15 +16057,19 @@
           "Sector": "Industrials",
           "Country": "Finland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding KONECRANES OYJ; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -16438,7 +16706,7 @@
     {
       "security": {
         "isin": "GB00BD3VFW73",
-        "ticker": "CNVVF",
+        "ticker": null,
         "name": "CONVATEC GROUP PLC"
       },
       "classification": {
@@ -16446,7 +16714,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -16468,15 +16736,19 @@
           "Sector": "Health Care",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding CONVATEC GROUP PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -16663,7 +16935,7 @@
     {
       "security": {
         "isin": "GB00BYW0PQ60",
-        "ticker": "LSGOF",
+        "ticker": null,
         "name": "LAND SECURITIES GROUP PLC"
       },
       "classification": {
@@ -16671,7 +16943,7 @@
         "sector": "Real Estate",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -16693,15 +16965,19 @@
           "Sector": "Real Estate",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding LAND SECURITIES GROUP PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -16843,7 +17119,7 @@
     {
       "security": {
         "isin": "AT0000730007",
-        "ticker": "0MJZ",
+        "ticker": null,
         "name": "ANDRITZ AG"
       },
       "classification": {
@@ -16851,7 +17127,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Austria",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -16873,15 +17149,19 @@
           "Sector": "Industrials",
           "Country": "Austria"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ANDRITZ AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -16933,7 +17213,7 @@
     {
       "security": {
         "isin": "FR0014004L86",
-        "ticker": "0IAX",
+        "ticker": null,
         "name": "DASSAULT AVIATION SA"
       },
       "classification": {
@@ -16941,7 +17221,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -16963,15 +17243,19 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding DASSAULT AVIATION SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -17023,7 +17307,7 @@
     {
       "security": {
         "isin": "BE0974464977",
-        "ticker": "SHBBF",
+        "ticker": "2NF",
         "name": "SYENSQO SA"
       },
       "classification": {
@@ -17031,7 +17315,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "Belgium",
-        "exchange": "OTC",
+        "exchange": "FSX",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -17158,7 +17442,7 @@
     {
       "security": {
         "isin": "AT0000937503",
-        "ticker": "0MKX",
+        "ticker": null,
         "name": "VOESTALPINE AG"
       },
       "classification": {
@@ -17166,7 +17450,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "Austria",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -17188,22 +17472,26 @@
           "Sector": "Materials",
           "Country": "Austria"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding VOESTALPINE AG; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "SE0015192067",
-        "ticker": "0A6V",
+        "ticker": null,
         "name": "NORDNET AB PUBL"
       },
       "classification": {
@@ -17211,7 +17499,7 @@
         "sector": "Financials",
         "region": null,
         "country": "Sweden",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "SEK"
       },
       "exposure": {
@@ -17233,15 +17521,19 @@
           "Sector": "Financials",
           "Country": "Sweden"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding NORDNET AB PUBL; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -18058,7 +18350,7 @@
     {
       "security": {
         "isin": "FR0010908533",
-        "ticker": "0MUM",
+        "ticker": null,
         "name": "EDENRED"
       },
       "classification": {
@@ -18066,7 +18358,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -18088,15 +18380,19 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding EDENRED; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -18598,7 +18894,7 @@
     {
       "security": {
         "isin": "GB0000961622",
-        "ticker": "BAFBF",
+        "ticker": null,
         "name": "BALFOUR BEATTY PLC"
       },
       "classification": {
@@ -18606,7 +18902,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -18628,22 +18924,26 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BALFOUR BEATTY PLC; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "AT0000969985",
-        "ticker": "0O5C",
+        "ticker": null,
         "name": "AUSTRIA TECHNOLOGY & SYSTEM(AUT)"
       },
       "classification": {
@@ -18651,7 +18951,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Austria",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -18673,15 +18973,19 @@
           "Sector": "Information Technology",
           "Country": "Austria"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding AUSTRIA TECHNOLOGY & SYSTEM(AUT); missing=['ticker', 'exchange']"
         }
       }
     },
@@ -19048,7 +19352,7 @@
     {
       "security": {
         "isin": "FR0013154002",
-        "ticker": "0RG8",
+        "ticker": null,
         "name": "SARTORIUS STEDIM BIOTECH"
       },
       "classification": {
@@ -19056,7 +19360,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -19078,15 +19382,19 @@
           "Sector": "Health Care",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SARTORIUS STEDIM BIOTECH; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -19138,7 +19446,7 @@
     {
       "security": {
         "isin": "GB0001367019",
-        "ticker": "BRLAF",
+        "ticker": null,
         "name": "BRITISH LAND CO  ORD 25P"
       },
       "classification": {
@@ -19146,7 +19454,7 @@
         "sector": "Real Estate",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -19168,15 +19476,19 @@
           "Sector": "Real Estate",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BRITISH LAND CO  ORD 25P; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -19318,7 +19630,7 @@
     {
       "security": {
         "isin": "AT0000746409",
-        "ticker": "0NR1",
+        "ticker": null,
         "name": "VERBUND AG"
       },
       "classification": {
@@ -19326,7 +19638,7 @@
         "sector": "Utilities",
         "region": "Europe",
         "country": "Austria",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -19348,15 +19660,19 @@
           "Sector": "Utilities",
           "Country": "Austria"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding VERBUND AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -19498,7 +19814,7 @@
     {
       "security": {
         "isin": "DE000LEG1110",
-        "ticker": "0QC9",
+        "ticker": null,
         "name": "LEG IMMOBILIEN AG"
       },
       "classification": {
@@ -19506,7 +19822,7 @@
         "sector": "Real Estate",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -19528,22 +19844,26 @@
           "Sector": "Real Estate",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding LEG IMMOBILIEN AG; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "FR0012435121",
-        "ticker": "0RA8",
+        "ticker": null,
         "name": "ELIS SA"
       },
       "classification": {
@@ -19551,7 +19871,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -19573,15 +19893,19 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ELIS SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -20312,7 +20636,7 @@
     {
       "security": {
         "isin": "PLBRE0000012",
-        "ticker": "0DU3",
+        "ticker": null,
         "name": "MBANK SA"
       },
       "classification": {
@@ -20320,7 +20644,7 @@
         "sector": "Financials",
         "region": null,
         "country": "Poland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "PLN"
       },
       "exposure": {
@@ -20342,15 +20666,19 @@
           "Sector": "Financials",
           "Country": "Poland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding MBANK SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -20582,7 +20910,7 @@
     {
       "security": {
         "isin": "JE00B8KF9B49",
-        "ticker": "WPPGF",
+        "ticker": null,
         "name": "WPP PLC"
       },
       "classification": {
@@ -20590,7 +20918,7 @@
         "sector": "Communication Services",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -20612,15 +20940,19 @@
           "Sector": "Communication Services",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding WPP PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -20852,7 +21184,7 @@
     {
       "security": {
         "isin": "ES0130960018",
-        "ticker": "0EBQ",
+        "ticker": null,
         "name": "ENAGAS SA"
       },
       "classification": {
@@ -20860,7 +21192,7 @@
         "sector": "Utilities",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -20882,15 +21214,19 @@
           "Sector": "Utilities",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ENAGAS SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -21302,7 +21638,7 @@
     {
       "security": {
         "isin": "DE0007010803",
-        "ticker": "0FRJ",
+        "ticker": null,
         "name": "RATIONAL AG"
       },
       "classification": {
@@ -21310,7 +21646,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -21332,15 +21668,19 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding RATIONAL AG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -21482,7 +21822,7 @@
     {
       "security": {
         "isin": "NL0000379121",
-        "ticker": "0NW2",
+        "ticker": null,
         "name": "RANDSTAD NV"
       },
       "classification": {
@@ -21490,7 +21830,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Netherlands",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -21512,15 +21852,19 @@
           "Sector": "Industrials",
           "Country": "Netherlands"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding RANDSTAD NV; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -21662,7 +22006,7 @@
     {
       "security": {
         "isin": "GB0006825383",
-        "ticker": "PSMMF",
+        "ticker": null,
         "name": "PERSIMMON PLC"
       },
       "classification": {
@@ -21670,7 +22014,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -21692,15 +22036,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding PERSIMMON PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -22022,7 +22370,7 @@
     {
       "security": {
         "isin": "DE000FTG1111",
-        "ticker": "0W89",
+        "ticker": null,
         "name": "FLATEXDEGIRO SE"
       },
       "classification": {
@@ -22030,7 +22378,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -22052,15 +22400,19 @@
           "Sector": "Financials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding FLATEXDEGIRO SE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -22337,7 +22689,7 @@
     {
       "security": {
         "isin": "DE0006452907",
-        "ticker": "0FDT",
+        "ticker": null,
         "name": "NEMETSCHEK AG"
       },
       "classification": {
@@ -22345,7 +22697,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -22367,22 +22719,26 @@
           "Sector": "Information Technology",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding NEMETSCHEK AG; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "GB0002318888",
-        "ticker": "CRWKF",
+        "ticker": null,
         "name": "CRANSWICK PLC"
       },
       "classification": {
@@ -22390,7 +22746,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -22412,15 +22768,19 @@
           "Sector": "Consumer Staples",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding CRANSWICK PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -22472,7 +22832,7 @@
     {
       "security": {
         "isin": "DE0005909006",
-        "ticker": "0NRG",
+        "ticker": null,
         "name": "BILFINGER SE"
       },
       "classification": {
@@ -22480,7 +22840,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Germany",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -22502,15 +22862,19 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding BILFINGER SE; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -22975,7 +23339,7 @@
     {
       "security": {
         "isin": "LU2910446546",
-        "ticker": "ZAB",
+        "ticker": "9M1",
         "name": "ZABKA GROUP SA"
       },
       "classification": {
@@ -22983,7 +23347,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "Poland",
-        "exchange": "WSE",
+        "exchange": "FSX",
         "market_currency": "PLN"
       },
       "exposure": {
@@ -23384,7 +23748,7 @@
     {
       "security": {
         "isin": "DK0010234467",
-        "ticker": "0OJA",
+        "ticker": null,
         "name": "FLSMIDTH & CO A/S"
       },
       "classification": {
@@ -23392,7 +23756,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Denmark",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "DKK"
       },
       "exposure": {
@@ -23414,15 +23778,19 @@
           "Sector": "Industrials",
           "Country": "Denmark"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding FLSMIDTH & CO A/S; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -23564,7 +23932,7 @@
     {
       "security": {
         "isin": "GB0008782301",
-        "ticker": "TWODF",
+        "ticker": null,
         "name": "TAYLOR WIMPEY"
       },
       "classification": {
@@ -23572,7 +23940,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -23594,15 +23962,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding TAYLOR WIMPEY; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -23654,7 +24026,7 @@
     {
       "security": {
         "isin": "CH0360826991",
-        "ticker": "0ROQ",
+        "ticker": null,
         "name": "COMET HOLDING AG-REG"
       },
       "classification": {
@@ -23662,7 +24034,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -23684,15 +24056,19 @@
           "Sector": "Information Technology",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding COMET HOLDING AG-REG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -23834,7 +24210,7 @@
     {
       "security": {
         "isin": "NO0010310956",
-        "ticker": "0FWY",
+        "ticker": null,
         "name": "SALMAR ASA"
       },
       "classification": {
@@ -23842,7 +24218,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "Norway",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "NOK"
       },
       "exposure": {
@@ -23864,15 +24240,19 @@
           "Sector": "Consumer Staples",
           "Country": "Norway"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SALMAR ASA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -23924,7 +24304,7 @@
     {
       "security": {
         "isin": "ES0132105018",
-        "ticker": "0OIQ",
+        "ticker": null,
         "name": "ACERINOX SA"
       },
       "classification": {
@@ -23932,7 +24312,7 @@
         "sector": "Materials",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -23954,15 +24334,19 @@
           "Sector": "Materials",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding ACERINOX SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -24014,7 +24398,7 @@
     {
       "security": {
         "isin": "FR0013227113",
-        "ticker": "0RMT",
+        "ticker": null,
         "name": "S.O.I.T.E.C."
       },
       "classification": {
@@ -24022,7 +24406,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -24044,15 +24428,19 @@
           "Sector": "Information Technology",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding S.O.I.T.E.C.; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -24239,7 +24627,7 @@
     {
       "security": {
         "isin": "FR0000051807",
-        "ticker": "0J6X",
+        "ticker": null,
         "name": "TELEPERFORMANCE PARIS"
       },
       "classification": {
@@ -24247,7 +24635,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -24269,15 +24657,19 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding TELEPERFORMANCE PARIS; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -24329,7 +24721,7 @@
     {
       "security": {
         "isin": "ES0105777017",
-        "ticker": "PUIGF",
+        "ticker": null,
         "name": "PUIG BRANDS SA-B"
       },
       "classification": {
@@ -24337,7 +24729,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -24359,15 +24751,19 @@
           "Sector": "Consumer Staples",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding PUIG BRANDS SA-B; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -24779,7 +25175,7 @@
     {
       "security": {
         "isin": "PLTAURN00011",
-        "ticker": "0N2X",
+        "ticker": null,
         "name": "TAURON POLSKA ENERGIA SA"
       },
       "classification": {
@@ -24787,7 +25183,7 @@
         "sector": "Utilities",
         "region": null,
         "country": "Poland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "PLN"
       },
       "exposure": {
@@ -24809,15 +25205,19 @@
           "Sector": "Utilities",
           "Country": "Poland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding TAURON POLSKA ENERGIA SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -25274,7 +25674,7 @@
     {
       "security": {
         "isin": "FR0013176526",
-        "ticker": "0RH5",
+        "ticker": null,
         "name": "VALEO"
       },
       "classification": {
@@ -25282,7 +25682,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -25304,22 +25704,26 @@
           "Sector": "Consumer Discretionary",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding VALEO; missing=['ticker', 'exchange']"
         }
       }
     },
     {
       "security": {
         "isin": "NO0012470089",
-        "ticker": "0KV7",
+        "ticker": null,
         "name": "TOMRA SYSTEMS ASA"
       },
       "classification": {
@@ -25327,7 +25731,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Norway",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "NOK"
       },
       "exposure": {
@@ -25349,15 +25753,19 @@
           "Sector": "Industrials",
           "Country": "Norway"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding TOMRA SYSTEMS ASA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -25589,7 +25997,7 @@
     {
       "security": {
         "isin": "CH0038388911",
-        "ticker": "0QQ9",
+        "ticker": null,
         "name": "SULZER AG-REG"
       },
       "classification": {
@@ -25597,7 +26005,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "CHF"
       },
       "exposure": {
@@ -25619,15 +26027,19 @@
           "Sector": "Industrials",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SULZER AG-REG; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -26264,7 +26676,7 @@
     {
       "security": {
         "isin": "FR0000121220",
-        "ticker": "0J3F",
+        "ticker": null,
         "name": "SODEXO SA"
       },
       "classification": {
@@ -26272,7 +26684,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "France",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -26294,15 +26706,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "France"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding SODEXO SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -26403,7 +26819,7 @@
     {
       "security": {
         "isin": "ES0171996087",
-        "ticker": "0RDU",
+        "ticker": "GRF",
         "name": "GRIFOLS SA"
       },
       "classification": {
@@ -26411,7 +26827,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": "BME",
         "market_currency": "EUR"
       },
       "exposure": {
@@ -26857,7 +27273,7 @@
     {
       "security": {
         "isin": "GB00BM8Q5M07",
-        "ticker": "JDDSF",
+        "ticker": null,
         "name": "JD SPORTS FASHION PLC"
       },
       "classification": {
@@ -26865,7 +27281,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "United Kingdom",
-        "exchange": "OTC",
+        "exchange": null,
         "market_currency": "GBP"
       },
       "exposure": {
@@ -26887,15 +27303,19 @@
           "Sector": "Consumer Discretionary",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding JD SPORTS FASHION PLC; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -27037,7 +27457,7 @@
     {
       "security": {
         "isin": "ES0184262212",
-        "ticker": "0MKW",
+        "ticker": null,
         "name": "VISCOFAN SA"
       },
       "classification": {
@@ -27045,7 +27465,7 @@
         "sector": "Consumer Staples",
         "region": "Europe",
         "country": "Spain",
-        "exchange": "LSE",
+        "exchange": null,
         "market_currency": "EUR"
       },
       "exposure": {
@@ -27067,15 +27487,19 @@
           "Sector": "Consumer Staples",
           "Country": "Spain"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "Amundi",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
-            "isin"
+            "isin",
+            "alias"
           ],
-          "missing_elements": [],
-          "warning": null
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": "could not fully match holding VISCOFAN SA; missing=['ticker', 'exchange']"
         }
       }
     },
@@ -28139,7 +28563,7 @@
         "weight_pct": 1.9513
       },
       {
-        "ticker": "0QOK",
+        "ticker": null,
         "name": "ROCHE HOLDING AG - GENUSSS CHF",
         "weight_pct": 1.9161
       },
@@ -28149,7 +28573,7 @@
         "weight_pct": 1.7648
       },
       {
-        "ticker": "R6C0",
+        "ticker": null,
         "name": "SHELL PLC EUR",
         "weight_pct": 1.5295
       },
@@ -28159,7 +28583,7 @@
         "weight_pct": 1.468
       },
       {
-        "ticker": "BSD2",
+        "ticker": null,
         "name": "BANCO SANTANDER SA MADRID",
         "weight_pct": 1.3083
       },
@@ -28175,6 +28599,8 @@
   },
   "provenance": {
     "security_master_version": "tickers.csv",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
+    "security_master_download_path": "data\\raw\\2026-08-12\\downloads\\tickers.csv",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-08-12\\downloads\\LU0908500753.xlsx",
     "domicile": null,

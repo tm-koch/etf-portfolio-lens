@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-12",
-    "generated_at": "2026-08-12T19:57:56.346884+00:00",
+    "generated_at": "2026-08-12T20:27:11.906244+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/264107/ishares-spi-ch-fund/1495092304805.ajax?fileType=csv&fileName=CHSPI_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-08-12\\downloads\\CH0237935652.csv",
     "source_format": "csv",
@@ -643,7 +643,7 @@
     },
     {
       "security": {
-        "isin": "CH0432492467",
+        "isin": "CA0156441077",
         "ticker": "ALC",
         "name": "ALCON AG"
       },
@@ -799,7 +799,7 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "CH0418792922",
         "ticker": "SIKA",
         "name": "SIKA AG"
       },
@@ -834,19 +834,18 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "security_master",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "matched",
+          "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker",
-            "alias"
+            "ticker"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": "could not fully match holding SIKA; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -3245,7 +3244,7 @@
     },
     {
       "security": {
-        "isin": "US86765K1097",
+        "isin": "GB0004016704",
         "ticker": "SUN",
         "name": "SULZER AG LTD"
       },
@@ -9337,7 +9336,7 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "CA55027C1068",
         "ticker": "LMN",
         "name": "LASTMINUTE NV"
       },
@@ -9372,19 +9371,18 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "security_master",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "matched",
+          "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker",
-            "alias"
+            "ticker"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": "could not fully match holding LMN; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -9806,7 +9804,7 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "CH1330780979",
         "ticker": "CURN",
         "name": "CURATIS N AG"
       },
@@ -9841,19 +9839,18 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "security_master",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "matched",
+          "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker",
-            "alias"
+            "ticker"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": "could not fully match holding CURN; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -10934,6 +10931,8 @@
   },
   "provenance": {
     "security_master_version": "tickers.csv",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
+    "security_master_download_path": "data\\raw\\2026-08-12\\downloads\\tickers.csv",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-08-12\\downloads\\CH0237935652.csv",
     "domicile": null,

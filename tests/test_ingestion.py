@@ -6,6 +6,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from urllib.error import URLError
 
 from etf_ingestion_backend.pipeline import IngestionPipeline
 from etf_ingestion_backend.normalization import normalize_row
@@ -21,7 +22,25 @@ class IngestionTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.registry = load_registry(ROOT / "data" / "etf_registry.json")
-        cls.security_master = SecurityMaster.from_csv(ROOT / "data" / "tickers.csv")
+        cls.security_master_fixture = tempfile.TemporaryDirectory()
+        fixture_path = Path(cls.security_master_fixture.name) / "tickers.csv"
+        fixture_path.write_text(
+            "\n".join(
+                [
+                    "ticker,name,exchange,stock_sector,asset_type,country,country_code,isin,aliases",
+                    "NOVN,NOVARTIS AG,Other Exchange,Health Care,Stock,Switzerland,CH,CH0012005267,",
+                    "SMG,SMG AG,SIX Swiss Exchange,Communication Services,Stock,Switzerland,CH,US8101861065,",
+                    "KPN,KONINKLIJKE KPN NV,Euronext Amsterdam,Communication Services,Stock,Netherlands,NL,NL0000000001,",
+                ]
+            ),
+            encoding="utf-8",
+        )
+        cls.security_master_source_url = fixture_path.as_uri()
+        cls.security_master = SecurityMaster.from_csv(fixture_path)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.security_master_fixture.cleanup()
 
     def test_registry_has_five_supported_sources(self) -> None:
         self.assertEqual(6, len(self.registry.entries))
@@ -29,7 +48,9 @@ class IngestionTests(unittest.TestCase):
     def test_fixtures_generate_snapshots(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             pipeline = IngestionPipeline(
-                self.registry, self.security_master, Path(temp_dir)
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
             )
             results = pipeline.run(self.registry.entries, use_fixtures=True)
 
@@ -42,6 +63,15 @@ class IngestionTests(unittest.TestCase):
                     str(result.raw_download_path),
                     snapshot["snapshot"]["resolved_download_url"],
                 )
+                self.assertEqual(
+                    self.security_master_source_url,
+                    snapshot["provenance"]["security_master_source_url"],
+                )
+                self.assertTrue(
+                    Path(
+                        snapshot["provenance"]["security_master_download_path"]
+                    ).exists()
+                )
                 self.assertIn("holdings", snapshot)
                 self.assertIn("aggregates", snapshot)
                 self.assertTrue((result.output_dir / "downloads").exists())
@@ -49,7 +79,9 @@ class IngestionTests(unittest.TestCase):
     def test_match_diagnostics_and_ticker_isin_fallback_are_in_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             pipeline = IngestionPipeline(
-                self.registry, self.security_master, Path(temp_dir)
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
             )
             selected = self.registry.select_by_isins(["CH0237935652"])
             results = pipeline.run(selected, use_fixtures=True)
@@ -80,7 +112,9 @@ class IngestionTests(unittest.TestCase):
     def test_unresolved_holdings_keep_source_name_in_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             pipeline = IngestionPipeline(
-                self.registry, self.security_master, Path(temp_dir)
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
             )
             selected = self.registry.select_by_isins(["CH0130595124"])
             results = pipeline.run(selected, use_fixtures=True)
@@ -112,7 +146,9 @@ class IngestionTests(unittest.TestCase):
     def test_eumd_registry_entry_ingests_successfully(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             pipeline = IngestionPipeline(
-                self.registry, self.security_master, Path(temp_dir)
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
             )
             selected = self.registry.select_by_isins(["IE00BF20LF40"])
             results = pipeline.run(selected, use_fixtures=True)
@@ -123,7 +159,9 @@ class IngestionTests(unittest.TestCase):
             self.assertEqual("EUMD", snapshot["etf"]["ticker"])
             self.assertGreater(len(snapshot["holdings"]), 0)
 
-    def test_sector_normalization_maps_communication_and_preserves_raw_source(self) -> None:
+    def test_sector_normalization_maps_communication_and_preserves_raw_source(
+        self,
+    ) -> None:
         master = SecurityMaster(
             records=[
                 SecurityRecord(
@@ -157,7 +195,10 @@ class IngestionTests(unittest.TestCase):
 
         self.assertEqual("Communication Services", holding.sector)
         self.assertEqual("Communication", holding.source_fields["Sektor"])
-        self.assertEqual("Communication Services", normalize_sector_label("communication services"))
+        self.assertEqual(
+            "Communication Services",
+            normalize_sector_label("communication services"),
+        )
 
     def test_sector_normalization_maps_cash_style_aliases_to_unknown(self) -> None:
         master = SecurityMaster(
@@ -193,6 +234,19 @@ class IngestionTests(unittest.TestCase):
 
         self.assertEqual("Unknown", holding.sector)
         self.assertEqual("Cash and/or Derivatives", holding.source_fields["Sector"])
+
+    def test_security_master_download_failure_stops_ingestion(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                "https://127.0.0.1:9/does-not-exist.csv",
+            )
+
+            with self.assertRaises(URLError):
+                pipeline.run(
+                    self.registry.select_by_isins(["CH0237935652"]), use_fixtures=True
+                )
 
     def test_xlsx_parser_stops_at_first_empty_row(self) -> None:
         data = Path("data/example/UBSFunds_Constituents_1783782798132.xls").read_bytes()

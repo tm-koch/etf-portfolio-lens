@@ -39,7 +39,7 @@ Each snapshot is a JSON document with:
 
 ## Notes
 
-- The backend uses the security master in `data/tickers.csv` for enrichment.
+- The backend downloads the security master CSV at ingestion time and uses the run-local copy for enrichment.
 - Missing matches print warnings to the console and do not stop the ingestion run.
 
 ## Frontend

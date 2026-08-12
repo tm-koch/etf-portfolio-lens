@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import argparse
-import sys
 from pathlib import Path
 
 from .pipeline import IngestionPipeline
 from .registry import load_registry
-from .security_master import SecurityMaster
+
+SECURITY_MASTER_SOURCE_URL = "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv"
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -19,9 +19,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="Path to the ETF registry JSON file.",
     )
     parser.add_argument(
-        "--security-master",
-        default="data/tickers.csv",
-        help="Path to the ticker security master CSV.",
+        "--security-master-url",
+        default=SECURITY_MASTER_SOURCE_URL,
+        help="URL for the ticker security master CSV.",
     )
     parser.add_argument(
         "--output-base",
@@ -48,11 +48,10 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     registry = load_registry(Path(args.registry))
-    security_master = SecurityMaster.from_csv(Path(args.security_master))
     pipeline = IngestionPipeline(
         registry=registry,
-        security_master=security_master,
         output_base=Path(args.output_base),
+        security_master_source_url=args.security_master_url,
     )
 
     if args.all or not args.isins:

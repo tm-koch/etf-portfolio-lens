@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-12",
-    "generated_at": "2026-08-12T19:57:43.161701+00:00",
+    "generated_at": "2026-08-12T20:26:54.360473+00:00",
     "source_url": "https://www.ishares.com/ch/professionals/en/products/287746/ishares-msci-europe-mid-cap-ucits-etf",
     "resolved_download_url": "data\\raw\\2026-08-12\\downloads\\IE00BF20LF40.csv",
     "source_format": "csv",
@@ -124,7 +124,7 @@
     },
     {
       "security": {
-        "isin": "ES0173516115",
+        "isin": "AU0000180317",
         "ticker": "REP",
         "name": "REPSOL"
       },
@@ -162,11 +162,10 @@
         "enrichment_source": "security_master",
         "match": {
           "status": "matched",
-          "matched_by": "alias",
+          "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker",
-            "alias"
+            "ticker"
           ],
           "missing_elements": [
             "isin"
@@ -2576,7 +2575,7 @@
     },
     {
       "security": {
-        "isin": "IT0003497168",
+        "isin": null,
         "ticker": "TIT",
         "name": "TELECOM ITALIA"
       },
@@ -2611,10 +2610,10 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "match": {
-          "status": "matched",
-          "matched_by": "alias",
+          "status": "unmatched",
+          "matched_by": null,
           "attempted": [
             "ticker+exchange",
             "ticker",
@@ -2623,7 +2622,7 @@
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "could not fully match holding TIT; missing=['isin']"
         }
       }
     },
@@ -4870,7 +4869,7 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "TH0420010Y01",
         "ticker": "BCP",
         "name": "BANCO COMERCIAL PORTUGUES SA"
       },
@@ -4905,19 +4904,18 @@
           "Exchange": "Nyse Euronext - Euronext Lisbon",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "security_master",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "matched",
+          "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker",
-            "alias"
+            "ticker"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": "could not fully match holding BCP; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -6750,7 +6748,7 @@
     },
     {
       "security": {
-        "isin": "AU000000TLX2",
+        "isin": "DE000TLX1005",
         "ticker": "TLX",
         "name": "TALANX AG"
       },
@@ -6788,10 +6786,9 @@
         "enrichment_source": "security_master",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "ticker+exchange",
           "attempted": [
-            "ticker+exchange",
-            "ticker"
+            "ticker+exchange"
           ],
           "missing_elements": [
             "isin"
@@ -7633,7 +7630,7 @@
     },
     {
       "security": {
-        "isin": "CA4509131088",
+        "isin": "CA45075E1043",
         "ticker": "IAG",
         "name": "INTERNATIONAL AIRLINES GROUP SA"
       },
@@ -9387,19 +9384,18 @@
           "Exchange": "Nyse Euronext - Euronext Lisbon",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "security_master",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "matched",
+          "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker",
-            "alias"
+            "ticker"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": "could not fully match holding JMT; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -10133,7 +10129,7 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "ES0132945017",
         "ticker": "TUB",
         "name": "FINANCIERE DE TUBIZE SA"
       },
@@ -10168,19 +10164,18 @@
           "Exchange": "Nyse Euronext - Euronext Brussels",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "security_master",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "matched",
+          "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker",
-            "alias"
+            "ticker"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": "could not fully match holding TUB; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -12172,6 +12167,8 @@
   },
   "provenance": {
     "security_master_version": "tickers.csv",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
+    "security_master_download_path": "data\\raw\\2026-08-12\\downloads\\tickers.csv",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-08-12\\downloads\\IE00BF20LF40.csv",
     "domicile": null,

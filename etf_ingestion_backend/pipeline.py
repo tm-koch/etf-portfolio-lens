@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .aggregation import aggregate_holdings
-from .fetching import copy_fixture, fetch_url
+from .fetching import DownloadedSource, copy_fixture, fetch_url
 from .models import ETFSnapshot, ETFSourceEntry, IngestionResult
 from .normalization import normalize_row
 from .parsing import parse_table
@@ -18,8 +18,18 @@ from .security_master import SecurityMaster
 @dataclass(slots=True)
 class IngestionPipeline:
     registry: ETFRegistry
-    security_master: SecurityMaster
     output_base: Path
+    security_master_source_url: str
+
+    def _download_security_master(
+        self, downloads_dir: Path
+    ) -> tuple[SecurityMaster, DownloadedSource]:
+        downloaded = fetch_url(
+            self.security_master_source_url,
+            downloads_dir,
+            preferred_name="tickers",
+        )
+        return SecurityMaster.from_csv(downloaded.download_path), downloaded
 
     def run(
         self, entries: Iterable[ETFSourceEntry], use_fixtures: bool = False
@@ -30,6 +40,10 @@ class IngestionPipeline:
         snapshots_dir = output_dir / "snapshots"
         downloads_dir.mkdir(parents=True, exist_ok=True)
         snapshots_dir.mkdir(parents=True, exist_ok=True)
+
+        security_master, security_master_download = self._download_security_master(
+            downloads_dir
+        )
 
         results: list[IngestionResult] = []
         for entry in entries:
@@ -49,7 +63,7 @@ class IngestionPipeline:
             holdings = [
                 normalize_row(
                     row,
-                    self.security_master,
+                    security_master,
                     source_name=entry.provider,
                     parser_id=entry.parser_id,
                 )
@@ -68,13 +82,15 @@ class IngestionPipeline:
                 holdings=holdings,
                 aggregates=aggregates,
                 provenance={
-                    "security_master_version": self.security_master.version,
-                    "warnings": self.security_master.warnings,
-                    "raw_download_path": str(downloaded.download_path),
-                    "domicile": self.security_master.lookup_etf_metadata().get(
-                        "domicile"
+                    "security_master_version": security_master.version,
+                    "security_master_source_url": self.security_master_source_url,
+                    "security_master_download_path": str(
+                        security_master_download.download_path
                     ),
-                    "base_currency": self.security_master.lookup_etf_metadata().get(
+                    "warnings": security_master.warnings,
+                    "raw_download_path": str(downloaded.download_path),
+                    "domicile": security_master.lookup_etf_metadata().get("domicile"),
+                    "base_currency": security_master.lookup_etf_metadata().get(
                         "base_currency"
                     ),
                 },
