@@ -18,7 +18,13 @@
       "source_url": "https://www.amundietf.ch/en/professional/products/equity/amundi-core-stoxx-europe-600-ucits-etf-acc/lu0908500753",
       "expected_format": "xlsx",
       "parser_id": "amundi_landing_xlsx_v1",
-      "fixture_path": "data/example/Fund Holdings_Amundi Core Stoxx Europe 600 UCITS ETF Acc_LU0908500753_08_07_2026.xlsx"
+      "fixture_path": "data/example/Fund Holdings_Amundi Core Stoxx Europe 600 UCITS ETF Acc_LU0908500753_12_08_2026.xlsx",
+      "fetcher_id": "amundi_product_page_v1",
+      "fetcher_context": {
+        "countryCode": "CHE",
+        "languageCode": "en",
+        "userProfileName": "INSTIT"
+      }
     },
     {
       "isin": "IE00BF20LF40",

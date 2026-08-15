@@ -7,7 +7,12 @@ from pathlib import Path
 from typing import Iterable
 
 from .aggregation import aggregate_holdings
-from .fetching import DownloadedSource, copy_fixture, fetch_url
+from .fetching import (
+    DownloadedSource,
+    copy_fixture,
+    fetch_amundi_full_holdings,
+    fetch_url,
+)
 from .models import ETFSnapshot, ETFSourceEntry, IngestionResult
 from .normalization import normalize_row
 from .parsing import parse_table
@@ -47,19 +52,31 @@ class IngestionPipeline:
 
         results: list[IngestionResult] = []
         for entry in entries:
+            parsed_rows = None
             if use_fixtures and entry.fixture_path:
                 downloaded = copy_fixture(
                     Path(entry.fixture_path), downloads_dir, preferred_name=entry.isin
+                )
+            elif entry.fetcher_id == "amundi_product_page_v1":
+                downloaded, parsed_rows = fetch_amundi_full_holdings(
+                    entry.isin,
+                    downloads_dir,
+                    context=entry.fetcher_context,
                 )
             else:
                 downloaded = fetch_url(
                     entry.source_url, downloads_dir, preferred_name=entry.isin
                 )
 
-            parsed = parse_table(
-                downloaded.download_path,
-                stop_at_empty_row=entry.parser_id == "ubs_xml_xls_v1",
+            parsed = (
+                None
+                if parsed_rows is not None
+                else parse_table(
+                    downloaded.download_path,
+                    stop_at_empty_row=entry.parser_id == "ubs_xml_xls_v1",
+                )
             )
+            rows = parsed_rows if parsed_rows is not None else parsed.rows
             holdings = [
                 normalize_row(
                     row,
@@ -67,7 +84,7 @@ class IngestionPipeline:
                     source_name=entry.provider,
                     parser_id=entry.parser_id,
                 )
-                for row in parsed.rows
+                for row in rows
             ]
             aggregates = aggregate_holdings(holdings)
             generated_at = datetime.now(timezone.utc).isoformat()
@@ -77,7 +94,7 @@ class IngestionPipeline:
                 generated_at=generated_at,
                 source_url=entry.source_url,
                 resolved_download_url=str(downloaded.download_path),
-                source_format=entry.expected_format,
+                source_format=downloaded.source_format or entry.expected_format,
                 parser_id=entry.parser_id,
                 holdings=holdings,
                 aggregates=aggregates,

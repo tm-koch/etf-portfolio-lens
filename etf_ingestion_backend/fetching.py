@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 import html.parser
+import json
 import mimetypes
 import re
 import shutil
-import sys
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
@@ -16,6 +16,41 @@ class DownloadedSource:
     source_path: Path
     download_path: Path
     content_type: str | None
+    source_format: str | None = None
+
+
+AMUNDI_PRODUCT_API_URL = "https://www.amundietf.ch/mapi/ProductAPI/getProductsData"
+AMUNDI_COMPOSITION_FIELDS = [
+    "date",
+    "type",
+    "bbg",
+    "isin",
+    "name",
+    "weight",
+    "quantity",
+    "currency",
+    "sector",
+    "country",
+    "countryOfRisk",
+]
+DEFAULT_AMUNDI_CONTEXT = {
+    "countryCode": "CHE",
+    "countryName": "Switzerland",
+    "googleCountryCode": "CH",
+    "domainName": "www.amundietf.ch",
+    "bcp47Code": "en-GB",
+    "languageName": "English",
+    "gtmCode": "GTM-57M8WTF",
+    "languageCode": "en",
+    "userProfileName": "INSTIT",
+    "userProfileSlug": "instit",
+    "portalProfileName": None,
+    "portalProfileSlug": None,
+}
+
+
+class AmundiHoldingsError(ValueError):
+    """Raised when Amundi does not return a complete holdings composition."""
 
 
 class _HrefExtractor(html.parser.HTMLParser):
@@ -104,6 +139,89 @@ def fetch_url(
 
     return DownloadedSource(
         source_path=source_path, download_path=source_path, content_type=content_type
+    )
+
+
+def fetch_amundi_full_holdings(
+    isin: str,
+    destination_dir: Path,
+    context: dict[str, str] | None = None,
+) -> tuple[DownloadedSource, list[dict[str, object]]]:
+    _ensure_directory(destination_dir)
+    request_body = {
+        "context": {**DEFAULT_AMUNDI_CONTEXT, **(context or {})},
+        "productIds": [isin],
+        "characteristics": ["ISIN", "TICKER", "FUND_FUND_NAME"],
+        "historics": [],
+        "metrics": [],
+        "breakDown": {"aggregationFields": ["FUND_TOP10"]},
+        "productType": "PRODUCT",
+        "composition": {"compositionFields": AMUNDI_COMPOSITION_FIELDS},
+    }
+    request = urllib.request.Request(
+        AMUNDI_PRODUCT_API_URL,
+        data=json.dumps(request_body).encode("utf-8"),
+        headers={"User-Agent": "Mozilla/5.0", "Content-Type": "application/json"},
+        method="POST",
+    )
+    with urllib.request.urlopen(request) as response:
+        content_type = response.headers.get_content_type()
+        data = response.read()
+
+    if content_type and "json" not in content_type.lower():
+        raise AmundiHoldingsError(
+            f"Amundi holdings response is not JSON: {content_type}"
+        )
+    try:
+        payload = json.loads(data.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise AmundiHoldingsError("Amundi holdings response is not valid JSON") from exc
+
+    products = payload.get("products") if isinstance(payload, dict) else None
+    product = next(
+        (item for item in products or [] if item.get("productId") == isin), None
+    )
+    composition = product.get("composition") if product else None
+    rows = composition.get("compositionData") if composition else None
+    total = composition.get("totalNumberOfInstruments") if composition else None
+    if not isinstance(rows, list) or not isinstance(total, int):
+        raise AmundiHoldingsError("Amundi response has no complete composition data")
+    if total <= 10 or len(rows) != total:
+        raise AmundiHoldingsError(
+            f"Amundi composition is incomplete: expected {total}, received {len(rows)}"
+        )
+
+    normalized_rows: list[dict[str, object]] = []
+    required = {"isin", "name", "weight"}
+    for index, item in enumerate(rows):
+        characteristics = item.get("compositionCharacteristics", {})
+        if not required.issubset(characteristics):
+            raise AmundiHoldingsError(
+                f"Amundi composition row {index} is missing required fields"
+            )
+        normalized_rows.append(
+            {
+                "ISIN code": characteristics.get("isin"),
+                "Name": characteristics.get("name"),
+                "Asset class": characteristics.get("type"),
+                "Currency": characteristics.get("currency"),
+                "Weight": characteristics.get("weight"),
+                "Sector": characteristics.get("sector"),
+                "Country": characteristics.get("countryOfRisk")
+                or characteristics.get("country"),
+            }
+        )
+
+    download_path = destination_dir / f"{isin}_amundi_composition.json"
+    download_path.write_bytes(data)
+    return (
+        DownloadedSource(
+            source_path=download_path,
+            download_path=download_path,
+            content_type=content_type,
+            source_format="json-api",
+        ),
+        normalized_rows,
     )
 
 

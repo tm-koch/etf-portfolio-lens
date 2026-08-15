@@ -33,6 +33,8 @@ class ETFSourceEntry:
     expected_format: str
     parser_id: str
     fixture_path: str | None = None
+    fetcher_id: str | None = None
+    fetcher_context: dict[str, str] = field(default_factory=dict)
 
 
 @dataclass(slots=True)

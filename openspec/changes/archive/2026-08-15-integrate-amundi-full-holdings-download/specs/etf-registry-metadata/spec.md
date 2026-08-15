@@ -1,8 +1,5 @@
-# etf-registry-metadata Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change correct-amundi-fund-metadata. Update Purpose after archive.
-## Requirements
 ### Requirement: Canonical Amundi ETF identity
 The registry SHALL identify ISIN `LU0908500753` with the current Amundi product name `Amundi Core Stoxx Europe 600 UCITS ETF Acc`, canonical product URL `https://www.amundietf.ch/en/professional/products/equity/amundi-core-stoxx-europe-600-ucits-etf-acc/lu0908500753`, and an explicit Amundi full-holdings fetch strategy separate from its parser ID.
 
@@ -39,4 +36,3 @@ The metadata correction SHALL apply to future generated data without rewriting e
 #### Scenario: Future snapshot uses corrected identity
 - **WHEN** a new ingestion run creates a snapshot for `LU0908500753`
 - **THEN** the snapshot metadata uses the corrected registry name and canonical source URL
-

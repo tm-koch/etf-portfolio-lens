@@ -7,15 +7,37 @@ import tempfile
 import unittest
 from pathlib import Path
 from urllib.error import URLError
+from email.message import Message
+from unittest.mock import patch
 
+from etf_ingestion_backend.fetching import (
+    AmundiHoldingsError,
+    fetch_amundi_full_holdings,
+)
 from etf_ingestion_backend.pipeline import IngestionPipeline
-from etf_ingestion_backend.normalization import normalize_row
-from etf_ingestion_backend.parsing import parse_xlsx_bytes
+from etf_ingestion_backend.normalization import normalize_row, parse_weight_float
+from etf_ingestion_backend.parsing import parse_xlsx_bytes, parse_xlsx_file
 from etf_ingestion_backend.registry import load_registry
 from etf_ingestion_backend.sector_taxonomy import normalize_sector_label
 from etf_ingestion_backend.security_master import SecurityMaster, SecurityRecord
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+class FakeHttpResponse:
+    def __init__(self, payload: bytes, content_type: str = "application/json") -> None:
+        self.headers = Message()
+        self.headers["Content-Type"] = content_type
+        self.payload = payload
+
+    def __enter__(self) -> "FakeHttpResponse":
+        return self
+
+    def __exit__(self, *args: object) -> None:
+        return None
+
+    def read(self) -> bytes:
+        return self.payload
 
 
 class IngestionTests(unittest.TestCase):
@@ -158,6 +180,110 @@ class IngestionTests(unittest.TestCase):
             self.assertEqual("IE00BF20LF40", snapshot["etf"]["isin"])
             self.assertEqual("EUMD", snapshot["etf"]["ticker"])
             self.assertGreater(len(snapshot["holdings"]), 0)
+
+    def test_latest_amundi_fixture_has_complete_fractional_holdings(self) -> None:
+        path = (
+            ROOT
+            / "data"
+            / "example"
+            / (
+                "Fund Holdings_Amundi Core Stoxx Europe 600 UCITS ETF Acc_"
+                "LU0908500753_12_08_2026.xlsx"
+            )
+        )
+        parsed = parse_xlsx_file(path)
+        weights = [
+            parse_weight_float(row.get("Weight"), "amundi_landing_xlsx_v1")
+            for row in parsed.rows
+        ]
+        values = [weight for weight in weights if weight is not None]
+
+        self.assertEqual(619, len(parsed.rows))
+        self.assertAlmostEqual(100.0, sum(values), places=4)
+        self.assertLess(max(values), 10.0)
+
+    def test_amundi_fetcher_maps_complete_composition(self) -> None:
+        payload = {
+            "products": [
+                {
+                    "productId": "LU0908500753",
+                    "composition": {
+                        "totalNumberOfInstruments": 11,
+                        "compositionData": [
+                            {
+                                "compositionCharacteristics": {
+                                    "isin": f"ISIN{i:010d}",
+                                    "name": f"Holding {i}",
+                                    "type": "EQUITY_ORDINARY",
+                                    "currency": "EUR",
+                                    "weight": 1 / 11,
+                                    "sector": "Financials",
+                                    "countryOfRisk": "France",
+                                }
+                            }
+                            for i in range(11)
+                        ],
+                    },
+                }
+            ]
+        }
+        response = FakeHttpResponse(json.dumps(payload).encode("utf-8"))
+        with tempfile.TemporaryDirectory() as temp_dir, patch(
+            "etf_ingestion_backend.fetching.urllib.request.urlopen",
+            return_value=response,
+        ) as urlopen:
+            downloaded, rows = fetch_amundi_full_holdings(
+                "LU0908500753", Path(temp_dir)
+            )
+            self.assertTrue(downloaded.download_path.exists())
+
+        request = urlopen.call_args.args[0]
+        body = json.loads(request.data.decode("utf-8"))
+        self.assertEqual("POST", request.method)
+        self.assertEqual(["LU0908500753"], body["productIds"])
+        self.assertEqual("CHE", body["context"]["countryCode"])
+        self.assertEqual(11, len(rows))
+        self.assertEqual("ISIN0000000000", rows[0]["ISIN code"])
+        self.assertEqual("json-api", downloaded.source_format)
+
+    def test_amundi_fetcher_rejects_top_ten_composition(self) -> None:
+        payload = {
+            "products": [
+                {
+                    "productId": "LU0908500753",
+                    "composition": {
+                        "totalNumberOfInstruments": 10,
+                        "compositionData": [],
+                    },
+                }
+            ]
+        }
+        response = FakeHttpResponse(json.dumps(payload).encode("utf-8"))
+        with tempfile.TemporaryDirectory() as temp_dir, patch(
+            "etf_ingestion_backend.fetching.urllib.request.urlopen",
+            return_value=response,
+        ):
+            with self.assertRaisesRegex(AmundiHoldingsError, "incomplete"):
+                fetch_amundi_full_holdings("LU0908500753", Path(temp_dir))
+
+    def test_amundi_fetcher_rejects_html_response(self) -> None:
+        response = FakeHttpResponse(b"<html>product page</html>", "text/html")
+        with tempfile.TemporaryDirectory() as temp_dir, patch(
+            "etf_ingestion_backend.fetching.urllib.request.urlopen",
+            return_value=response,
+        ):
+            with self.assertRaisesRegex(AmundiHoldingsError, "not JSON"):
+                fetch_amundi_full_holdings("LU0908500753", Path(temp_dir))
+
+    def test_amundi_fetcher_rejects_missing_composition_fields(self) -> None:
+        payload = {"products": [{"productId": "LU0908500753"}]}
+        response = FakeHttpResponse(json.dumps(payload).encode("utf-8"))
+        with tempfile.TemporaryDirectory() as temp_dir, patch(
+            "etf_ingestion_backend.fetching.urllib.request.urlopen",
+            return_value=response,
+        ):
+            with self.assertRaisesRegex(AmundiHoldingsError, "no complete composition"):
+                fetch_amundi_full_holdings("LU0908500753", Path(temp_dir))
 
     def test_sector_normalization_maps_communication_and_preserves_raw_source(
         self,
