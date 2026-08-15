@@ -668,18 +668,28 @@ body {
 
   .primary-navigation {
     position: fixed;
-    right: 14px;
+    right: 0;
     bottom: 0;
-    left: 14px;
+    left: 0;
     z-index: 20;
     padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
-    border-radius: 22px 22px 0 0;
+    border-radius: 0;
+    border-top: 1px solid var(--border);
     background: #ffffff;
-    box-shadow: 0 -12px 30px rgba(22, 34, 58, 0.14);
+    box-shadow: none;
   }
 
   .primary-navigation-items {
     gap: 4px;
+  }
+
+  .tab-button.active {
+    color: var(--accent);
+    background: transparent;
+  }
+
+  .tab-button.active .navigation-icon {
+    color: var(--accent);
   }
 
   .panel-heading {
