@@ -57,7 +57,7 @@ The navigation SHALL remain in normal document flow on desktop widths and SHALL 
 - **THEN** page content has enough bottom clearance for the stable navigation footprint and its safe-area inset so the navigation does not obscure reachable content
 
 ### Requirement: Safe-area and visual treatment
-The mobile navigation SHALL use a solid background, SHALL use a restrained visual boundary without a heavy shadow, and SHALL reserve a stable safe-area region without changing the icon-and-label row geometry. Firefox Android SHALL not include a dynamically changing `env(safe-area-inset-bottom)` value in the navigation footprint.
+The mobile navigation SHALL use a solid background, SHALL use a restrained visual boundary without a heavy shadow, SHALL reserve a stable safe-area region without changing the icon-and-label row geometry, and SHALL display a small static shadow above the navigation on mobile widths. Firefox Android SHALL not include a dynamically changing `env(safe-area-inset-bottom)` value in the navigation footprint.
 
 #### Scenario: WebKit mobile device has a bottom safe area
 - **WHEN** a WebKit mobile browser reports a non-zero `env(safe-area-inset-bottom)` value
@@ -65,15 +65,23 @@ The mobile navigation SHALL use a solid background, SHALL use a restrained visua
 
 #### Scenario: Navigation remains visually distinct
 - **WHEN** destination content is scrolled behind the fixed mobile navigation
-- **THEN** the solid navigation background and a subtle top border keep labels and icons legible and visually separate the navigation from content
+- **THEN** the solid navigation background, subtle top border, and small static top shadow keep labels and icons legible and visually separate the navigation from content
 
 #### Scenario: Mobile shadow is restrained
 - **WHEN** the viewport width is 760px or less
-- **THEN** the navigation does not use the existing heavy drop shadow
+- **THEN** the navigation uses a static upward shadow equivalent to `0 -2px 8px rgba(22, 34, 58, 0.10)` and does not use the former heavy drop shadow
 
-#### Scenario: Firefox Android toolbar changes state
-- **WHEN** Firefox Android changes the browser toolbar state during mobile scrolling
-- **THEN** the navigation remains an opaque fixed element without special-layer jitter and with unchanged footprint and icon-to-bottom spacing
+#### Scenario: Desktop shadow remains unchanged
+- **WHEN** the viewport width is greater than 760px
+- **THEN** the mobile-specific top shadow does not alter the desktop navigation styling
+
+#### Scenario: Shadow does not affect geometry
+- **WHEN** the mobile navigation is rendered or the browser toolbar changes state
+- **THEN** the shadow does not change the navigation height, safe-area spacing, icon row height, or page content clearance
+
+#### Scenario: Shadow is not animated
+- **WHEN** the user scrolls or switches navigation destinations
+- **THEN** the shadow remains static and no shadow transition or animation runs
 
 ### Requirement: Active destination accessibility
 The navigation SHALL expose the active destination to keyboard and assistive-technology users. On mobile widths, the active destination SHALL use a transparent background with both its icon and label rendered in the accent blue.
