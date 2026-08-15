@@ -14,9 +14,10 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260812-5" />
+    <link rel="stylesheet" href="./styles.css?v=20260815-1" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
-    <script type="module" src="./app.js?v=20260812-4" defer></script>
+    <script src="https://unpkg.com/lucide@0.468.0" defer></script>
+    <script type="module" src="./app.js?v=20260815-1" defer></script>
   </head>
   <body>
     <div class="page-frame">
@@ -45,10 +46,8 @@
 
         <section class="summary-grid" id="summary-grid" aria-label="Portfolio summary"></section>
 
-        <nav class="tab-bar card" aria-label="Main sections">
-          <button class="tab-button active" data-tab="portfolio" type="button">Portfolio</button>
-          <button class="tab-button" data-tab="comparison" type="button">Comparison</button>
-          <button class="tab-button" data-tab="aggregated" type="button">Aggregated</button>
+        <nav class="primary-navigation card" aria-label="Main sections">
+          <div class="primary-navigation-items" id="primary-navigation-items"></div>
         </nav>
 
         <section class="tab-panel card active" id="portfolio-panel" data-panel="portfolio">

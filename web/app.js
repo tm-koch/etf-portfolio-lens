@@ -2,6 +2,7 @@ import { buildCatalogMaps, loadPublishedCatalog, loadSnapshot } from './data.js'
 import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-3';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
+const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
 const defaultState = {
   activeTab: 'portfolio',
   searchTerm: '',
@@ -41,6 +42,40 @@ const state = {
 };
 
 const elements = {};
+
+const NAVIGATION_DESTINATIONS = [
+  { key: 'portfolio', label: 'Portfolio', icon: 'briefcase-business' },
+  { key: 'comparison', label: 'Compare', icon: 'scale' },
+  { key: 'aggregated', label: 'Explore', icon: 'layers-3' },
+];
+
+function getNavigationDestination(key) {
+  return NAVIGATION_DESTINATIONS.find((destination) => destination.key === key) || null;
+}
+
+function loadActiveTab() {
+  const storedTab = localStorage.getItem(ACTIVE_TAB_STORAGE_KEY);
+  return getNavigationDestination(storedTab)?.key || defaultState.activeTab;
+}
+
+function saveActiveTab() {
+  localStorage.setItem(ACTIVE_TAB_STORAGE_KEY, state.activeTab);
+}
+
+function renderNavigation() {
+  elements.navigationItems.innerHTML = NAVIGATION_DESTINATIONS
+    .map(
+      (destination) => `
+        <button class="tab-button" data-tab="${destination.key}" type="button">
+          <i class="navigation-icon" data-lucide="${destination.icon}" aria-hidden="true"></i>
+          <span>${destination.label}</span>
+        </button>
+      `
+    )
+    .join('');
+
+  window.lucide?.createIcons();
+}
 
 function loadPortfolioState() {
   try {
@@ -732,18 +767,25 @@ function renderAll() {
 }
 
 function setTab(tabName) {
-  state.activeTab = tabName;
+  state.activeTab = getNavigationDestination(tabName)?.key || defaultState.activeTab;
+  saveActiveTab();
   for (const button of elements.tabButtons) {
-    button.classList.toggle('active', button.dataset.tab === tabName);
+    const isActive = button.dataset.tab === state.activeTab;
+    button.classList.toggle('active', isActive);
+    if (isActive) {
+      button.setAttribute('aria-current', 'page');
+    } else {
+      button.removeAttribute('aria-current');
+    }
   }
   for (const panel of elements.tabPanels) {
-    panel.classList.toggle('active', panel.dataset.panel === tabName);
+    panel.classList.toggle('active', panel.dataset.panel === state.activeTab);
   }
-  if (tabName === 'comparison') {
+  if (state.activeTab === 'comparison') {
     applyChartFrameSizing();
     renderComparisonCharts();
   }
-  if (tabName === 'aggregated') {
+  if (state.activeTab === 'aggregated') {
     renderCompanyList();
   }
 }
@@ -773,6 +815,8 @@ function removePosition(isin) {
 
 async function bootstrap() {
   elements.summaryGrid = document.getElementById('summary-grid');
+  elements.navigationItems = document.getElementById('primary-navigation-items');
+  renderNavigation();
   elements.tabButtons = [...document.querySelectorAll('.tab-button')];
   elements.tabPanels = [...document.querySelectorAll('.tab-panel')];
   elements.catalogSearch = document.getElementById('catalog-search');
@@ -797,6 +841,7 @@ async function bootstrap() {
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
   state.portfolio = loadPortfolioState();
+  state.activeTab = loadActiveTab();
 
   const snapshotResults = await Promise.allSettled(
     state.catalog.etfs.map(async (entry) => [entry.isin, await loadSnapshot(entry)])
@@ -856,7 +901,7 @@ async function bootstrap() {
   });
 
   renderAll();
-  setTab('portfolio');
+  setTab(state.activeTab);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
