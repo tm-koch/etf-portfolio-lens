@@ -30,7 +30,7 @@ Each destination navigation item SHALL display a consistent Lucide icon and its 
 - **THEN** the destination labels remain visible and the navigation remains operable
 
 ### Requirement: Responsive navigation placement
-The navigation SHALL remain in normal document flow on desktop widths and SHALL be fixed to the viewport bottom at widths up to 760px. At mobile widths, the navigation SHALL span the full viewport width and SHALL have no rounded corners.
+The navigation SHALL remain in normal document flow on desktop widths and SHALL be fixed to the viewport bottom at widths up to 760px. At mobile widths, the navigation SHALL span the full viewport width, SHALL have no rounded corners, and SHALL maintain stable total geometry while the browser visual viewport changes during scrolling. Firefox Android SHALL render the navigation as a simple opaque fixed element without special compositor or containment hints.
 
 #### Scenario: Desktop navigation placement
 - **WHEN** the viewport width is greater than 760px
@@ -48,16 +48,20 @@ The navigation SHALL remain in normal document flow on desktop widths and SHALL 
 - **WHEN** the viewport width is 760px or less
 - **THEN** the navigation has no rounded corners
 
+#### Scenario: Mobile navigation geometry remains stable
+- **WHEN** the browser visual viewport height changes during mobile scrolling
+- **THEN** the navigation's internal icon-and-label row height and total navigation height do not change because of content-driven sizing
+
 #### Scenario: Mobile content clearance
 - **WHEN** the mobile navigation is fixed
-- **THEN** page content has enough bottom clearance for the navigation and its safe-area inset so the navigation does not obscure reachable content
+- **THEN** page content has enough bottom clearance for the stable navigation footprint and its safe-area inset so the navigation does not obscure reachable content
 
 ### Requirement: Safe-area and visual treatment
-The mobile navigation SHALL use a solid background, SHALL account for devices with a bottom safe-area inset, and SHALL use a restrained visual boundary without a heavy shadow.
+The mobile navigation SHALL use a solid background, SHALL use a restrained visual boundary without a heavy shadow, and SHALL reserve a stable safe-area region without changing the icon-and-label row geometry. Firefox Android SHALL not include a dynamically changing `env(safe-area-inset-bottom)` value in the navigation footprint.
 
-#### Scenario: Device has a bottom safe area
-- **WHEN** the browser reports a non-zero `env(safe-area-inset-bottom)` value
-- **THEN** the navigation includes that inset in its bottom spacing without moving or clipping the destination labels
+#### Scenario: WebKit mobile device has a bottom safe area
+- **WHEN** a WebKit mobile browser reports a non-zero `env(safe-area-inset-bottom)` value
+- **THEN** the navigation includes that stable inset in its bottom spacing without moving or clipping the destination labels
 
 #### Scenario: Navigation remains visually distinct
 - **WHEN** destination content is scrolled behind the fixed mobile navigation
@@ -66,6 +70,10 @@ The mobile navigation SHALL use a solid background, SHALL account for devices wi
 #### Scenario: Mobile shadow is restrained
 - **WHEN** the viewport width is 760px or less
 - **THEN** the navigation does not use the existing heavy drop shadow
+
+#### Scenario: Firefox Android toolbar changes state
+- **WHEN** Firefox Android changes the browser toolbar state during mobile scrolling
+- **THEN** the navigation remains an opaque fixed element without special-layer jitter and with unchanged footprint and icon-to-bottom spacing
 
 ### Requirement: Active destination accessibility
 The navigation SHALL expose the active destination to keyboard and assistive-technology users. On mobile widths, the active destination SHALL use a transparent background with both its icon and label rendered in the accent blue.
