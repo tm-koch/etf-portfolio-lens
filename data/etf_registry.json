@@ -13,9 +13,9 @@
     {
       "isin": "LU0908500753",
       "ticker": "MEUD",
-      "name": "Amundi Stoxx Europe 600 UCITS ETF C GBP",
+      "name": "Amundi Core Stoxx Europe 600 UCITS ETF Acc",
       "provider": "Amundi",
-      "source_url": "https://www.amundietf.ch/8961ee57-3a33-46f3-8111-02a70fd7493d",
+      "source_url": "https://www.amundietf.ch/en/professional/products/equity/amundi-core-stoxx-europe-600-ucits-etf-acc/lu0908500753",
       "expected_format": "xlsx",
       "parser_id": "amundi_landing_xlsx_v1",
       "fixture_path": "data/example/Fund Holdings_Amundi Core Stoxx Europe 600 UCITS ETF Acc_LU0908500753_08_07_2026.xlsx"

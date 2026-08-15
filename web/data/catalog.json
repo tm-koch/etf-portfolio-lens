@@ -12,7 +12,7 @@
     {
       "isin": "LU0908500753",
       "ticker": "MEUD",
-      "name": "Amundi Stoxx Europe 600 UCITS ETF C GBP",
+      "name": "Amundi Core Stoxx Europe 600 UCITS ETF Acc",
       "provider": "Amundi",
       "snapshotPath": "/data/raw/2026-08-12/snapshots/LU0908500753.json"
     },
