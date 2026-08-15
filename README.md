@@ -10,6 +10,16 @@ Use the CLI to generate snapshots on demand:
 python -m etf_ingestion_backend --all --fixtures
 ```
 
+To regenerate the frontend catalog from the newly generated snapshots, use the
+explicit catalog update option:
+
+```bash
+python -m etf_ingestion_backend --all --fixtures --update-catalog
+```
+
+Without `--update-catalog`, ingestion updates snapshots only and leaves
+`web/data/catalog.json` unchanged.
+
 Outputs are written under `data/raw/<run-date>/`:
 
 - `data/raw/<run-date>/downloads/` retains the downloaded or copied source files

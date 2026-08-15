@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from .catalog import build_catalog, write_catalog
 from .pipeline import IngestionPipeline
 from .registry import load_registry
 
@@ -42,6 +43,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Use local fixture files when registry entries provide fixture paths.",
     )
+    parser.add_argument(
+        "--update-catalog",
+        action="store_true",
+        help="Update web/data/catalog.json from the successful ingestion results.",
+    )
     return parser
 
 
@@ -60,6 +66,9 @@ def main(argv: list[str] | None = None) -> int:
         selected = registry.select_by_isins(args.isins)
 
     results = pipeline.run(selected, use_fixtures=args.fixtures)
+    if args.update_catalog:
+        catalog = build_catalog(selected, results)
+        write_catalog(catalog, Path("web/data/catalog.json"))
     for result in results:
         print(f"{result.etf.isin}: {result.snapshot_path}")
     return 0
