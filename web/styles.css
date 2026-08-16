@@ -658,7 +658,7 @@ body {
 
 @media (max-width: 760px) {
   :root {
-    --mobile-nav-row-height: 78px;
+    --mobile-nav-row-height: 57.6px;
     --mobile-nav-safe-area: 0px;
   }
 
@@ -689,21 +689,33 @@ body {
 
   .primary-navigation-items {
     height: var(--mobile-nav-row-height);
-    gap: 4px;
+    gap: 2px;
   }
 
   .primary-navigation .tab-button {
     height: var(--mobile-nav-row-height);
     min-height: 0;
+    padding: 6px 8px;
+    gap: 3px;
+    font-size: 0.75rem;
+    font-weight: 400;
   }
 
-  .tab-button.active {
+  .primary-navigation .navigation-icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2;
+  }
+
+  .primary-navigation .tab-button.active {
     color: var(--accent);
     background: transparent;
+    font-weight: 700;
   }
 
-  .tab-button.active .navigation-icon {
+  .primary-navigation .tab-button.active .navigation-icon {
     color: var(--accent);
+    stroke-width: 2.4;
   }
 
   @supports (-webkit-touch-callout: none) {
