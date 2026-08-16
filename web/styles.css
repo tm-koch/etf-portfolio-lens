@@ -658,7 +658,7 @@ body {
 
 @media (max-width: 760px) {
   :root {
-    --mobile-nav-row-height: 57.6px;
+    --mobile-nav-row-height: 64px;
     --mobile-nav-safe-area: 0px;
   }
 
@@ -697,7 +697,7 @@ body {
     min-height: 0;
     padding: 6px 8px;
     gap: 3px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 400;
   }
 
