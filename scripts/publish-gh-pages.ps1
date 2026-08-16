@@ -2,6 +2,7 @@ param(
   [string]$Remote = 'origin',
   [string]$Branch = 'gh-pages',
   [string]$CommitMessage = 'Publish GitHub Pages site',
+  [string]$RepositoryUrl = 'https://github.com/tm-koch/etf-portfolio-lens',
   [switch]$NoPush
 )
 
@@ -24,6 +25,8 @@ function Invoke-Git {
 
 $repoRoot = (Invoke-Git -Args @('rev-parse', '--show-toplevel')).Trim()
 Set-Location $repoRoot
+$sourceCommit = (Invoke-Git -Args @('rev-parse', 'HEAD')).Trim()
+$sourceCommitTimestamp = (Invoke-Git -Args @('show', '-s', '--format=%cI', 'HEAD')).Trim()
 
 if (-not (git remote).Contains($Remote)) {
   throw "Remote '$Remote' is not configured. Add the GitHub remote before publishing."
@@ -64,6 +67,22 @@ try {
 
   Copy-Item -Force (Join-Path $repoRoot 'web\data\catalog.json') (Join-Path $tempRoot 'data\catalog.json')
   Copy-Item -Recurse -Force (Join-Path $repoRoot 'data\raw') (Join-Path $tempRoot 'data')
+
+  $catalog = Get-Content (Join-Path $tempRoot 'data\catalog.json') -Raw | ConvertFrom-Json
+  $buildInfo = [ordered]@{
+    schemaVersion = 1
+    repositoryUrl = $RepositoryUrl
+    source = [ordered]@{
+      commit = $sourceCommit
+      commitTimestamp = $sourceCommitTimestamp
+    }
+    publishedAt = (Get-Date).ToUniversalTime().ToString('o')
+    data = [ordered]@{
+      timestamp = $catalog.generatedAt
+    }
+    details = [ordered]@{}
+  }
+  $buildInfo | ConvertTo-Json -Depth 6 | Set-Content (Join-Path $tempRoot 'build-info.json') -Encoding utf8
 
   $changes = Invoke-Git -Args @('status', '--porcelain')
   if (-not $changes) {

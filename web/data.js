@@ -1,7 +1,9 @@
 const CATALOG_URL = './data/catalog.json';
+const BUILD_INFO_URL = './build-info.json';
 
 /** @typedef {{ isin: string, ticker: string, name: string, provider: string, snapshotPath: string }} CatalogEntry */
 /** @typedef {{ generatedAt: string, basis: string, etfs: CatalogEntry[] }} PublishedCatalog */
+/** @typedef {{ schemaVersion: number, repositoryUrl?: string, source?: { commit?: string, commitTimestamp?: string }, publishedAt?: string, data?: { timestamp?: string }, details?: Record<string, unknown> }} BuildInfo */
 
 async function fetchJson(url) {
   const response = await fetch(url);
@@ -38,6 +40,19 @@ export async function loadPublishedCatalog() {
         .toLowerCase(),
     })),
   };
+}
+
+export async function loadBuildInfo() {
+  try {
+    /** @type {BuildInfo} */
+    const buildInfo = await fetchJson(BUILD_INFO_URL);
+    if (!buildInfo || buildInfo.schemaVersion !== 1 || typeof buildInfo !== 'object') {
+      return null;
+    }
+    return buildInfo;
+  } catch {
+    return null;
+  }
 }
 
 export async function loadSnapshot(entry) {

@@ -1,4 +1,4 @@
-import { buildCatalogMaps, loadPublishedCatalog, loadSnapshot } from './data.js';
+import { buildCatalogMaps, loadBuildInfo, loadPublishedCatalog, loadSnapshot } from './data.js?v=20260816-3';
 import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-3';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
@@ -36,6 +36,8 @@ const state = {
   catalog: null,
   catalogMaps: null,
   snapshots: new Map(),
+  buildInfo: null,
+  buildDialogReturnFocus: null,
   companyRanked: [],
   companyVisibleCount: 0,
   companyObserver: null,
@@ -100,6 +102,127 @@ function formatPercent(value) {
 
 function formatCount(value) {
   return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
+}
+
+function formatBuildTimestamp(value) {
+  if (!value) {
+    return 'Unavailable (local development)';
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return value;
+  }
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return value;
+  }
+  return `${new Intl.DateTimeFormat('en', {
+    dateStyle: 'medium',
+    timeStyle: 'medium',
+    timeZone: 'UTC',
+  }).format(parsed)} UTC`;
+}
+
+function getCommitUrl(repositoryUrl, commit) {
+  if (!repositoryUrl || !commit) {
+    return null;
+  }
+  try {
+    const url = new URL(repositoryUrl);
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      return null;
+    }
+    return `${url.toString().replace(/\/$/, '')}/commit/${encodeURIComponent(commit)}`;
+  } catch {
+    return null;
+  }
+}
+
+function appendBuildMetadataRow(container, label, valueNode) {
+  const term = document.createElement('dt');
+  term.textContent = label;
+  const description = document.createElement('dd');
+  description.append(valueNode);
+  container.append(term, description);
+}
+
+function renderBuildInfo() {
+  if (!elements.buildMetadata) {
+    return;
+  }
+
+  elements.buildMetadata.replaceChildren();
+  elements.buildDetailsExtra.replaceChildren();
+  elements.buildDetailsExtra.hidden = true;
+
+  if (!state.buildInfo) {
+    const status = document.createElement('p');
+    status.className = 'build-metadata-status';
+    status.textContent = 'Build metadata is unavailable in local development or could not be loaded.';
+    elements.buildMetadata.append(status);
+    return;
+  }
+
+  const source = state.buildInfo.source || {};
+  const sourceValue = document.createElement('span');
+  const commitUrl = getCommitUrl(state.buildInfo.repositoryUrl, source.commit);
+  if (commitUrl) {
+    const commitLink = document.createElement('a');
+    commitLink.href = commitUrl;
+    commitLink.target = '_blank';
+    commitLink.rel = 'noreferrer';
+    commitLink.textContent = source.commit;
+    sourceValue.append(commitLink);
+  } else {
+    sourceValue.textContent = source.commit || 'Unavailable (local development)';
+  }
+
+  appendBuildMetadataRow(elements.buildMetadata, 'Source commit', sourceValue);
+  appendBuildMetadataRow(
+    elements.buildMetadata,
+    'Commit timestamp',
+    document.createTextNode(formatBuildTimestamp(source.commitTimestamp))
+  );
+  appendBuildMetadataRow(
+    elements.buildMetadata,
+    'Publish timestamp',
+    document.createTextNode(formatBuildTimestamp(state.buildInfo.publishedAt))
+  );
+  appendBuildMetadataRow(
+    elements.buildMetadata,
+    'ETF data timestamp',
+    document.createTextNode(formatBuildTimestamp(state.buildInfo.data?.timestamp))
+  );
+
+  const details = state.buildInfo.details;
+  if (details && typeof details === 'object' && !Array.isArray(details) && Object.keys(details).length > 0) {
+    const heading = document.createElement('h3');
+    heading.textContent = 'Additional details';
+    const detailsList = document.createElement('dl');
+    detailsList.className = 'build-metadata';
+    for (const [key, value] of Object.entries(details)) {
+      const displayValue = typeof value === 'string' ? value : JSON.stringify(value);
+      appendBuildMetadataRow(detailsList, key, document.createTextNode(displayValue));
+    }
+    elements.buildDetailsExtra.append(heading, detailsList);
+    elements.buildDetailsExtra.hidden = false;
+  }
+}
+
+function openBuildDialog() {
+  state.buildDialogReturnFocus = document.activeElement;
+  if (typeof elements.buildDialog.showModal === 'function') {
+    elements.buildDialog.showModal();
+  } else {
+    elements.buildDialog.setAttribute('open', '');
+  }
+}
+
+function closeBuildDialog() {
+  if (typeof elements.buildDialog.close === 'function') {
+    elements.buildDialog.close();
+  } else {
+    elements.buildDialog.removeAttribute('open');
+  }
 }
 
 function getHoldingName(holding) {
@@ -834,6 +957,33 @@ async function bootstrap() {
   elements.companyList = document.getElementById('company-list');
   elements.companyHint = document.getElementById('company-hint');
   elements.warningList = document.getElementById('warning-list');
+  elements.aboutBuildButton = document.getElementById('about-build-button');
+  elements.buildDialog = document.getElementById('build-dialog');
+  elements.buildDialogClose = document.getElementById('build-dialog-close');
+  elements.buildMetadata = document.getElementById('build-metadata');
+  elements.buildDetailsExtra = document.getElementById('build-details-extra');
+
+  renderBuildInfo();
+  elements.aboutBuildButton.addEventListener('click', openBuildDialog);
+  elements.buildDialogClose.addEventListener('click', closeBuildDialog);
+  elements.buildDialog.addEventListener('close', () => {
+    state.buildDialogReturnFocus?.focus();
+    state.buildDialogReturnFocus = null;
+  });
+  elements.buildDialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeBuildDialog();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && elements.buildDialog.open) {
+      event.preventDefault();
+      closeBuildDialog();
+    }
+  });
+  void loadBuildInfo().then((buildInfo) => {
+    state.buildInfo = buildInfo;
+    renderBuildInfo();
+  });
 
   applyChartFrameSizing();
   window.addEventListener('resize', applyChartFrameSizing);
