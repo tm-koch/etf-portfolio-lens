@@ -71,12 +71,13 @@ class IngestionPipeline:
             parsed = (
                 None
                 if parsed_rows is not None
-                else parse_table(
-                    downloaded.download_path,
-                    stop_at_empty_row=entry.parser_id == "ubs_xml_xls_v1",
-                )
+                else self._parse_downloaded_table(entry, downloaded)
             )
             rows = parsed_rows if parsed_rows is not None else parsed.rows
+            if entry.isin == "IE00BF20LF40" and len(rows) <= 10:
+                raise ValueError(
+                    "Incomplete EUMD holdings: expected more than ten rows"
+                )
             holdings = [
                 normalize_row(
                     row,
@@ -128,3 +129,16 @@ class IngestionPipeline:
                 )
             )
         return results
+
+    @staticmethod
+    def _parse_downloaded_table(entry: ETFSourceEntry, downloaded: DownloadedSource):
+        actual_format = downloaded.download_path.suffix.lower().lstrip(".")
+        if actual_format != entry.expected_format.lower():
+            raise ValueError(
+                f"Download format mismatch for {entry.isin}: "
+                f"expected {entry.expected_format}, received {actual_format or 'unknown'}"
+            )
+        return parse_table(
+            downloaded.download_path,
+            stop_at_empty_row=entry.parser_id == "ubs_xml_xls_v1",
+        )

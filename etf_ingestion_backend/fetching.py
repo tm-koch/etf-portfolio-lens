@@ -19,6 +19,10 @@ class DownloadedSource:
     source_format: str | None = None
 
 
+class DownloadError(ValueError):
+    """Raised when a holdings source does not resolve to a downloadable file."""
+
+
 AMUNDI_PRODUCT_API_URL = "https://www.amundietf.ch/mapi/ProductAPI/getProductsData"
 AMUNDI_COMPOSITION_FIELDS = [
     "date",
@@ -80,13 +84,16 @@ def _safe_name(value: str, fallback: str) -> str:
 
 def _guess_extension(url: str, content_type: str | None = None) -> str:
     parsed = urllib.parse.urlparse(url)
-    suffix = Path(parsed.path).suffix
-    if suffix:
-        return suffix
+    file_type = urllib.parse.parse_qs(parsed.query).get("fileType", [""])[0].lower()
+    if file_type in {"csv", "xls", "xlsx"}:
+        return f".{file_type}"
     if content_type:
         guessed = mimetypes.guess_extension(content_type.split(";", 1)[0].strip())
         if guessed:
             return guessed
+    suffix = Path(parsed.path).suffix
+    if suffix:
+        return suffix
     return ".bin"
 
 
@@ -101,9 +108,15 @@ def _extract_download_link(base_url: str, html_text: str) -> str | None:
     parser.feed(html_text)
     for link in parser.links:
         lowered = link.lower()
+        file_type = (
+            urllib.parse.parse_qs(urllib.parse.urlparse(link).query)
+            .get("fileType", [""])[0]
+            .lower()
+        )
         if (
             any(ext in lowered for ext in (".csv", ".xls", ".xlsx"))
             or "download" in lowered
+            or file_type in {"csv", "xls", "xlsx"}
         ):
             return urllib.parse.urljoin(base_url, link)
     return None
@@ -136,6 +149,7 @@ def fetch_url(
                 preferred_name=Path(urllib.parse.urlparse(linked).path).stem
                 or filename,
             )
+        raise DownloadError(f"Download URL returned HTML without a file link: {url}")
 
     return DownloadedSource(
         source_path=source_path, download_path=source_path, content_type=content_type

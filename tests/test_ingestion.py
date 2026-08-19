@@ -12,7 +12,10 @@ from unittest.mock import patch
 
 from etf_ingestion_backend.fetching import (
     AmundiHoldingsError,
+    DownloadError,
+    DownloadedSource,
     fetch_amundi_full_holdings,
+    fetch_url,
 )
 from etf_ingestion_backend.pipeline import IngestionPipeline
 from etf_ingestion_backend.normalization import normalize_row, parse_weight_float
@@ -236,7 +239,90 @@ class IngestionTests(unittest.TestCase):
             snapshot = json.loads(results[0].snapshot_path.read_text(encoding="utf-8"))
             self.assertEqual("IE00BF20LF40", snapshot["etf"]["isin"])
             self.assertEqual("EUMD", snapshot["etf"]["ticker"])
-            self.assertGreater(len(snapshot["holdings"]), 0)
+            self.assertGreater(len(snapshot["holdings"]), 10)
+
+    def test_eumd_registry_uses_direct_full_holdings_csv(self) -> None:
+        entry = self.registry.select_by_isins(["IE00BF20LF40"])[0]
+
+        self.assertIn("/fund/1495092304805.ajax", entry.source_url)
+        self.assertIn("fileType=csv", entry.source_url)
+        self.assertIn("fileName=EUMD_holdings", entry.source_url)
+        self.assertIn("dataType=fund", entry.source_url)
+
+    def test_fetch_url_resolves_query_parameter_csv_link(self) -> None:
+        html = (
+            b'<a href="/fund/1495092304805.ajax?fileType=csv&'
+            b'fileName=EUMD_holdings&dataType=fund">Holdings</a>'
+        )
+        csv_data = b"Fund Holdings as of,19/Aug/2026\nTicker,Name\nABC,Example\n"
+        responses = [
+            FakeHttpResponse(html, "text/html"),
+            FakeHttpResponse(csv_data, "text/csv"),
+        ]
+
+        with tempfile.TemporaryDirectory() as temp_dir, patch(
+            "etf_ingestion_backend.fetching.urllib.request.urlopen",
+            side_effect=responses,
+        ) as urlopen:
+            downloaded = fetch_url(
+                "https://www.ishares.com/ch/products/287746/holdings",
+                Path(temp_dir),
+            )
+
+        self.assertEqual(".csv", downloaded.download_path.suffix)
+        self.assertEqual(2, urlopen.call_count)
+        self.assertIn("fileType=csv", urlopen.call_args.args[0].full_url)
+
+    def test_fetch_url_rejects_html_without_download_link(self) -> None:
+        response = FakeHttpResponse(b"<html>product page</html>", "text/html")
+
+        with tempfile.TemporaryDirectory() as temp_dir, patch(
+            "etf_ingestion_backend.fetching.urllib.request.urlopen",
+            return_value=response,
+        ):
+            with self.assertRaisesRegex(DownloadError, "returned HTML"):
+                fetch_url("https://example.test/product", Path(temp_dir))
+
+    def test_eumd_rejects_top_ten_response_before_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            source_path = Path(temp_dir) / "EUMD_holdings.csv"
+            rows = ["Ticker,Name,Weight (%)"] + [
+                f"TICK{i},Holding {i},1" for i in range(10)
+            ]
+            source_path.write_text("\n".join(rows), encoding="utf-8")
+            security_master_download = Path(self.security_master_source_url[8:])
+            downloaded = DownloadedSource(
+                source_path=source_path,
+                download_path=source_path,
+                content_type="text/csv",
+            )
+            security_master_source = DownloadedSource(
+                source_path=security_master_download,
+                download_path=security_master_download,
+                content_type="text/csv",
+            )
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir) / "output",
+                self.security_master_source_url,
+            )
+
+            with patch(
+                "etf_ingestion_backend.pipeline.fetch_url",
+                side_effect=[security_master_source, downloaded],
+            ):
+                with self.assertRaisesRegex(ValueError, "Incomplete EUMD holdings"):
+                    pipeline.run(self.registry.select_by_isins(["IE00BF20LF40"]))
+
+            self.assertFalse(
+                (
+                    Path(temp_dir)
+                    / "output"
+                    / "2026-08-19"
+                    / "snapshots"
+                    / "IE00BF20LF40.json"
+                ).exists()
+            )
 
     def test_latest_amundi_fixture_has_complete_fractional_holdings(self) -> None:
         path = (

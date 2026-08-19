@@ -31,7 +31,7 @@
       "ticker": "EUMD",
       "name": "iShares MSCI Europe Mid Cap UCITS ETF EUR (Acc)",
       "provider": "iShares",
-      "source_url": "https://www.ishares.com/ch/professionals/en/products/287746/ishares-msci-europe-mid-cap-ucits-etf",
+      "source_url": "https://www.ishares.com/ch/professionals/en/products/287746/fund/1495092304805.ajax?fileType=csv&fileName=EUMD_holdings&dataType=fund",
       "expected_format": "csv",
       "parser_id": "ishares_csv_v1",
       "fixture_path": "data/example/EUMD_holdings.csv"
