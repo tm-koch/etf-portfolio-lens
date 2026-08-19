@@ -65,6 +65,16 @@
       "expected_format": "xls",
       "parser_id": "ubs_xml_xls_v1",
       "fixture_path": "data/example/UBSFunds_Constituents_1783782798132.xls"
+    },
+    {
+      "isin": "CH1553162921",
+      "ticker": "SPIEXT",
+      "name": "UBS SPI® Extra ETF",
+      "provider": "UBS",
+      "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch1553162921-ubs-spi-extra-etf-pd001.html",
+      "expected_format": "xls",
+      "parser_id": "ubs_xml_xls_v1",
+      "fixture_path": "data/example/UBSFunds_Constituents_1786975364611.xls"
     }
   ]
 }

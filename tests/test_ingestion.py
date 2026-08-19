@@ -65,7 +65,64 @@ class IngestionTests(unittest.TestCase):
         cls.security_master_fixture.cleanup()
 
     def test_registry_has_five_supported_sources(self) -> None:
-        self.assertEqual(6, len(self.registry.entries))
+        self.assertEqual(7, len(self.registry.entries))
+
+    def test_registry_contains_ubs_spi_extra_metadata(self) -> None:
+        entry = self.registry.select_by_isins(["CH1553162921"])[0]
+
+        self.assertEqual("SPIEXT", entry.ticker)
+        self.assertEqual("UBS SPI® Extra ETF", entry.name)
+        self.assertEqual("UBS", entry.provider)
+        self.assertEqual(
+            "https://www.ubs.com/ch/en/assetmanagement/funds/etf/"
+            "ch1553162921-ubs-spi-extra-etf-pd001.html",
+            entry.source_url,
+        )
+        self.assertEqual("xls", entry.expected_format)
+        self.assertEqual("ubs_xml_xls_v1", entry.parser_id)
+        self.assertEqual(
+            "data/example/UBSFunds_Constituents_1786975364611.xls",
+            entry.fixture_path,
+        )
+
+    def test_ubs_spi_extra_fixture_preserves_complete_holdings(self) -> None:
+        path = ROOT / "data" / "example" / "UBSFunds_Constituents_1786975364611.xls"
+
+        parsed = parse_xlsx_bytes(path.read_bytes(), stop_at_empty_row=True)
+        weights = [float(row["Weight %"]) for row in parsed.rows]
+
+        self.assertEqual(179, len(parsed.rows))
+        self.assertEqual("Securities", parsed.headers[0])
+        self.assertEqual("VILLARS HOLDING AG-REG", parsed.rows[-1]["Securities"])
+        self.assertEqual("0", parsed.rows[-1]["Weight %"])
+        self.assertAlmostEqual(99.21987, sum(weights), places=5)
+        self.assertFalse(
+            any("Quelle: UBS AG" in row.get("Securities", "") for row in parsed.rows)
+        )
+
+    def test_ubs_spi_extra_snapshot_uses_registry_identity(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
+            )
+            selected = self.registry.select_by_isins(["CH1553162921"])
+            results = pipeline.run(selected, use_fixtures=True)
+
+            snapshot = json.loads(results[0].snapshot_path.read_text(encoding="utf-8"))
+
+            self.assertEqual("CH1553162921", snapshot["etf"]["isin"])
+            self.assertEqual("SPIEXT", snapshot["etf"]["ticker"])
+            self.assertEqual("UBS SPI® Extra ETF", snapshot["etf"]["name"])
+            self.assertEqual("ubs_xml_xls_v1", snapshot["snapshot"]["parser_id"])
+            self.assertEqual(179, snapshot["aggregates"]["counts"]["holdings"])
+            self.assertFalse(
+                any(
+                    "Quelle: UBS AG" in holding["security"].get("name", "")
+                    for holding in snapshot["holdings"]
+                )
+            )
 
     def test_fixtures_generate_snapshots(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -76,7 +133,7 @@ class IngestionTests(unittest.TestCase):
             )
             results = pipeline.run(self.registry.entries, use_fixtures=True)
 
-            self.assertEqual(6, len(results))
+            self.assertEqual(7, len(results))
             for result in results:
                 self.assertTrue(result.snapshot_path.exists())
                 snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))

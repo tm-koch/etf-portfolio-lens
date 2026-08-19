@@ -51,6 +51,8 @@ Each snapshot is a JSON document with:
 
 - The backend downloads the security master CSV at ingestion time and uses the run-local copy for enrichment.
 - Missing matches print warnings to the console and do not stop the ingestion run.
+- The registry includes UBS SPI® Extra ETF (`CH1553162921`, ticker `SPIEXT`) using the existing UBS holdings parser and fixture workflow.
+- UBS live product-page retrieval continues to use the current generic downloader; provider-specific handling for dynamic pages or HTTP 403 responses is deferred.
 
 ## Frontend
 

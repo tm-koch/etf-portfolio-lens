@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16",
+  "generatedAt": "2026-08-19",
   "basis": "share_weighted",
   "etfs": [
     {
@@ -7,42 +7,49 @@
       "ticker": "ACWD",
       "name": "SPDR MSCI ACWI UCITS ETF",
       "provider": "SSGA",
-      "snapshotPath": "/data/raw/2026-08-16/snapshots/IE00B44Z5B48.json"
+      "snapshotPath": "/data/raw/2026-08-19/snapshots/IE00B44Z5B48.json"
     },
     {
       "isin": "LU0908500753",
       "ticker": "MEUD",
       "name": "Amundi Core Stoxx Europe 600 UCITS ETF Acc",
       "provider": "Amundi",
-      "snapshotPath": "/data/raw/2026-08-16/snapshots/LU0908500753.json"
+      "snapshotPath": "/data/raw/2026-08-19/snapshots/LU0908500753.json"
     },
     {
       "isin": "IE00BF20LF40",
       "ticker": "EUMD",
       "name": "iShares MSCI Europe Mid Cap UCITS ETF EUR (Acc)",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-08-16/snapshots/IE00BF20LF40.json"
+      "snapshotPath": "/data/raw/2026-08-19/snapshots/IE00BF20LF40.json"
     },
     {
       "isin": "IE00BCLWRD08",
       "ticker": "IS3H",
       "name": "iShares MSCI EMU Mid Cap UCITS ETF",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-08-16/snapshots/IE00BCLWRD08.json"
+      "snapshotPath": "/data/raw/2026-08-19/snapshots/IE00BCLWRD08.json"
     },
     {
       "isin": "CH0237935652",
       "ticker": "CHSPI",
       "name": "iShares Core SPI ETF (CH)",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-08-16/snapshots/CH0237935652.json"
+      "snapshotPath": "/data/raw/2026-08-19/snapshots/CH0237935652.json"
     },
     {
       "isin": "CH0130595124",
       "ticker": "SPMCHA",
       "name": "UBS ETF (CH) – SPI Mid (CHF) A-dis",
       "provider": "UBS",
-      "snapshotPath": "/data/raw/2026-08-16/snapshots/CH0130595124.json"
+      "snapshotPath": "/data/raw/2026-08-19/snapshots/CH0130595124.json"
+    },
+    {
+      "isin": "CH1553162921",
+      "ticker": "SPIEXT",
+      "name": "UBS SPI® Extra ETF",
+      "provider": "UBS",
+      "snapshotPath": "/data/raw/2026-08-19/snapshots/CH1553162921.json"
     }
   ]
 }
