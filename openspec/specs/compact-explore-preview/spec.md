@@ -62,3 +62,14 @@ The compact holdings matrix SHALL remain readable when its intrinsic width excee
 #### Scenario: Long holding name on mobile
 - **WHEN** a holding name exceeds half of the available mobile line width
 - **THEN** the displayed name SHALL be clipped with a visual fade and its full value SHALL be available through the cell hover tip
+
+### Requirement: Compact Explore preview styling
+The compact Explore preview SHALL apply the requested light palette to its existing semantic holdings matrix without changing the matrix data, ordering, loading behavior, or responsive interaction model.
+
+#### Scenario: Preview uses the styled matrix
+- **WHEN** compact Explore preview mode is enabled
+- **THEN** the existing holdings matrix is rendered with the specified header and alternating body-row colors
+
+#### Scenario: Preview data behavior is unchanged
+- **WHEN** the styled compact matrix renders or appends holdings
+- **THEN** it preserves the existing ranked rows, ETF contribution values, incremental loading, and empty-state behavior

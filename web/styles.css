@@ -829,7 +829,7 @@ body {
   top: 0;
   z-index: 1;
   color: var(--muted);
-  background: var(--card-strong);
+  background: rgb(232, 236, 244);
   font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -846,7 +846,23 @@ body {
   position: sticky;
   left: 0;
   z-index: 2;
-  background: var(--card-strong);
+  background: white;
+}
+
+.compact-explore-table tbody tr:nth-child(odd) {
+  background: rgb(244, 246, 251);
+}
+
+.compact-explore-table tbody tr:nth-child(even) {
+  background: white;
+}
+
+.compact-explore-table tbody tr:nth-child(odd) .compact-explore-holding {
+  background: rgb(244, 246, 251);
+}
+
+.compact-explore-table tbody tr:nth-child(even) .compact-explore-holding {
+  background: white;
 }
 
 .compact-explore-table .compact-explore-holding-name {
@@ -863,6 +879,7 @@ body {
 
 .compact-explore-table thead .compact-explore-holding {
   z-index: 3;
+  background: rgb(232, 236, 244);
 }
 
 .compact-explore-table .compact-explore-number {
