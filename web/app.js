@@ -3,10 +3,12 @@ import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
+const COMPACT_EXPLORE_STORAGE_KEY = 'etf-lens.compact-explore-preview.v1';
 const defaultState = {
   activeTab: 'portfolio',
   searchTerm: '',
   portfolio: [],
+  compactExplorePreview: false,
 };
 
 const chartRefs = {
@@ -62,6 +64,22 @@ function loadActiveTab() {
 
 function saveActiveTab() {
   localStorage.setItem(ACTIVE_TAB_STORAGE_KEY, state.activeTab);
+}
+
+function loadCompactExplorePreview() {
+  try {
+    return localStorage.getItem(COMPACT_EXPLORE_STORAGE_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function saveCompactExplorePreview() {
+  try {
+    localStorage.setItem(COMPACT_EXPLORE_STORAGE_KEY, String(state.compactExplorePreview));
+  } catch {
+    // Browser storage may be unavailable in private or restricted contexts.
+  }
 }
 
 function renderNavigation() {
@@ -489,6 +507,49 @@ function buildCompanyRow(company, index) {
   `;
 }
 
+function buildCompactExploreRow(positions, company) {
+  const contributionByTicker = new Map(
+    company.contributors.map((contributor) => [contributor.ticker, contributor])
+  );
+  const etfCells = positions.map((position) => {
+    const contributor = contributionByTicker.get(position.entry.ticker);
+    return `<td class="compact-explore-number">${contributor ? formatPercent(contributor.shareOfCompany) : '—'}</td>`;
+  }).join('');
+
+  return `
+    <tr>
+      <th scope="row" class="compact-explore-holding" title="${company.name}">
+        <span class="compact-explore-holding-name">${company.name}</span>
+      </th>
+      <td class="compact-explore-number compact-explore-total">${formatPercent(company.displayWeight)}</td>
+      ${etfCells}
+    </tr>
+  `;
+}
+
+function buildCompactExploreTable(positions) {
+  const etfHeaders = positions.map((position) => `
+    <th scope="col" class="compact-explore-etf-column" title="${position.entry.name}">
+      ${position.entry.ticker}
+    </th>
+  `).join('');
+
+  return `
+    <div class="compact-explore-table-wrap">
+      <table class="compact-explore-table">
+        <thead>
+          <tr>
+            <th scope="col" class="compact-explore-holding">Holding</th>
+            <th scope="col" class="compact-explore-number compact-explore-total">Portfolio</th>
+            ${etfHeaders}
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  `;
+}
+
 function appendCompanyBatch() {
   const ranked = state.companyRanked;
   const start = state.companyVisibleCount;
@@ -499,15 +560,28 @@ function appendCompanyBatch() {
     return;
   }
 
-  const fragment = document.createRange().createContextualFragment(
-    ranked.slice(start, end).map((company, index) => buildCompanyRow(company, start + index)).join('')
-  );
+  const positions = getSelectedPositions();
   const sentinel = elements.companyList.querySelector('.company-scroll-sentinel');
 
-  if (sentinel) {
-    elements.companyList.insertBefore(fragment, sentinel);
+  if (state.compactExplorePreview) {
+    const template = document.createElement('template');
+    template.innerHTML = ranked
+      .slice(start, end)
+      .map((company) => buildCompactExploreRow(positions, company))
+      .join('');
+    elements.companyList.querySelector('.compact-explore-table tbody').appendChild(template.content);
   } else {
-    elements.companyList.appendChild(fragment);
+    const fragment = document.createRange().createContextualFragment(
+      ranked
+        .slice(start, end)
+        .map((company, index) => buildCompanyRow(company, start + index))
+        .join('')
+    );
+    if (sentinel) {
+      elements.companyList.insertBefore(fragment, sentinel);
+    } else {
+      elements.companyList.appendChild(fragment);
+    }
   }
 
   state.companyVisibleCount = end;
@@ -826,6 +900,26 @@ function renderCompanyList() {
   state.companyVisibleCount = 0;
   disconnectCompanyObserver();
 
+  if (state.compactExplorePreview) {
+    if (!ranked.length) {
+      elements.companyList.innerHTML = '<div class="empty-state">Add positions to calculate company exposure.</div>';
+      elements.companyHint.textContent = 'No look-through exposure is available yet.';
+      return;
+    }
+
+    elements.companyHint.textContent = 'Holdings ranked by total portfolio exposure.';
+    elements.companyList.innerHTML = buildCompactExploreTable(positions);
+    appendCompanyBatch();
+    if (state.companyVisibleCount < ranked.length) {
+      const sentinel = document.createElement('div');
+      sentinel.className = 'company-scroll-sentinel';
+      sentinel.setAttribute('aria-hidden', 'true');
+      elements.companyList.appendChild(sentinel);
+      ensureCompanyObserver();
+    }
+    return;
+  }
+
   if (!ranked.length) {
     elements.companyList.innerHTML = '<div class="empty-state">Add positions to calculate company exposure.</div>';
     elements.companyHint.textContent = 'No look-through exposure is available yet.';
@@ -962,6 +1056,7 @@ async function bootstrap() {
   elements.buildDialogClose = document.getElementById('build-dialog-close');
   elements.buildMetadata = document.getElementById('build-metadata');
   elements.buildDetailsExtra = document.getElementById('build-details-extra');
+  elements.compactExplorePreview = document.getElementById('compact-explore-preview');
 
   renderBuildInfo();
   elements.aboutBuildButton.addEventListener('click', openBuildDialog);
@@ -992,6 +1087,8 @@ async function bootstrap() {
   state.catalogMaps = buildCatalogMaps(state.catalog);
   state.portfolio = loadPortfolioState();
   state.activeTab = loadActiveTab();
+  state.compactExplorePreview = loadCompactExplorePreview();
+  elements.compactExplorePreview.checked = state.compactExplorePreview;
 
   const snapshotResults = await Promise.allSettled(
     state.catalog.etfs.map(async (entry) => [entry.isin, await loadSnapshot(entry)])
@@ -1047,6 +1144,16 @@ async function bootstrap() {
     const compareToggle = event.target.closest('[data-compare-toggle]');
     if (compareToggle) {
       renderComparisonCharts();
+      return;
+    }
+
+    const compactExplorePreview = event.target.closest('[data-compact-explore-preview]');
+    if (compactExplorePreview) {
+      state.compactExplorePreview = compactExplorePreview.checked;
+      saveCompactExplorePreview();
+      if (state.activeTab === 'aggregated') {
+        renderCompanyList();
+      }
     }
   });
 
