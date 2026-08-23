@@ -365,6 +365,15 @@ body {
   margin-top: 8px;
 }
 
+.home-panel {
+  gap: 18px;
+}
+
+.home-panel .hero {
+  padding: 6px;
+  box-shadow: none;
+}
+
 .primary-navigation {
   display: flex;
   gap: 10px;

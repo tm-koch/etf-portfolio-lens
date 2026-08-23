@@ -5,7 +5,7 @@ const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
 const COMPACT_EXPLORE_STORAGE_KEY = 'etf-lens.compact-explore-preview.v1';
 const defaultState = {
-  activeTab: 'portfolio',
+  activeTab: 'home',
   searchTerm: '',
   portfolio: [],
   compactExplorePreview: false,
@@ -48,6 +48,7 @@ const state = {
 const elements = {};
 
 const NAVIGATION_DESTINATIONS = [
+  { key: 'home', label: 'Home', icon: 'house' },
   { key: 'portfolio', label: 'Portfolio', icon: 'briefcase-business' },
   { key: 'comparison', label: 'Compare', icon: 'scale' },
   { key: 'aggregated', label: 'Explore', icon: 'layers-3' },

@@ -22,31 +22,35 @@
   <body>
     <div class="page-frame">
       <main class="app-shell">
-        <header class="hero card">
-          <div class="hero-copy">
-            <p class="eyebrow">ETF Portfolio Lens</p>
-            <h1>Portfolio exposure that fits on a phone and still reads on a desktop.</h1>
-            <p class="lede">
-              Build a local ETF portfolio from the published snapshot data, compare the
-              holdings visually, and inspect the aggregated look-through exposure.
-            </p>
-          </div>
-          <div class="hero-meta">
-            <div class="badge-row">
-              <span class="badge">Static snapshots</span>
-              <span class="badge">Chart.js</span>
-              <span class="badge">Responsive</span>
+        <section class="tab-panel home-panel card active" id="home-panel" data-panel="home">
+          <header class="hero">
+            <div class="hero-copy">
+              <p class="eyebrow">ETF Portfolio Lens</p>
+              <h1>Portfolio exposure that fits on a phone and still reads on a desktop.</h1>
+              <p class="lede">
+                Build a local ETF portfolio from the published snapshot data, compare the
+                holdings visually, and inspect the aggregated look-through exposure.
+              </p>
             </div>
-            <div class="status-panel">
-              <strong>Development note</strong>
-              <p>Use the local web server to test the app on desktop or mobile-sized viewports.</p>
-              <button class="about-build-link" id="about-build-button" type="button">
-                <i class="about-build-icon" data-lucide="info" aria-hidden="true"></i>
-                <span>About this build</span>
-              </button>
+            <div class="hero-meta">
+              <div class="badge-row">
+                <span class="badge">Static snapshots</span>
+                <span class="badge">Chart.js</span>
+                <span class="badge">Responsive</span>
+              </div>
+              <div class="status-panel">
+                <strong>Development note</strong>
+                <p>Use the local web server to test the app on desktop or mobile-sized viewports.</p>
+                <button class="about-build-link" id="about-build-button" type="button">
+                  <i class="about-build-icon" data-lucide="info" aria-hidden="true"></i>
+                  <span>About this build</span>
+                </button>
+              </div>
             </div>
-          </div>
-        </header>
+          </header>
+
+          <section class="summary-grid" id="summary-grid" aria-label="Portfolio summary"></section>
+        </section>
 
         <dialog class="build-dialog" id="build-dialog" aria-labelledby="build-dialog-title" aria-describedby="build-dialog-description">
           <div class="build-dialog-content">
@@ -74,8 +78,6 @@
             </div>
           </div>
         </dialog>
-
-        <section class="summary-grid" id="summary-grid" aria-label="Portfolio summary"></section>
 
         <nav class="primary-navigation card" aria-label="Main sections">
           <div class="primary-navigation-items" id="primary-navigation-items"></div>
