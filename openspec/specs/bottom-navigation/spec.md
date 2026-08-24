@@ -30,11 +30,15 @@ Each destination navigation item SHALL display a consistent Lucide icon and its 
 - **THEN** the destination labels remain visible and the navigation remains operable
 
 ### Requirement: Responsive navigation placement
-The navigation SHALL remain in normal document flow on desktop widths and SHALL be fixed to the viewport bottom at widths up to 760px. At mobile widths, the navigation SHALL span the full viewport width, SHALL have no rounded corners, and SHALL maintain stable total geometry while the browser visual viewport changes during scrolling. Firefox Android SHALL render the navigation as a simple opaque fixed element without special compositor or containment hints.
+The navigation SHALL be presented before destination content in the document order. At viewport widths greater than 760px, it SHALL occupy a persistent app-bar position above the active destination content, remaining available at the top while the user scrolls. At viewport widths up to 760px, it SHALL be fixed to the viewport bottom. At mobile widths, the navigation SHALL span the full viewport width, SHALL have no rounded corners, and SHALL maintain stable total geometry while the browser visual viewport changes during scrolling. Firefox Android SHALL render the navigation as a simple opaque fixed element without special compositor or containment hints.
 
-#### Scenario: Desktop navigation placement
-- **WHEN** the viewport width is greater than 760px
-- **THEN** the navigation occupies its document-flow position after the Home overview content and does not overlay the viewport edge
+#### Scenario: Desktop navigation appears before content
+- **WHEN** the application loads at a viewport width greater than 760px
+- **THEN** the primary navigation appears before the active destination panel in document and visual order
+
+#### Scenario: Desktop navigation remains available while scrolling
+- **WHEN** a user scrolls the active destination at a viewport width greater than 760px
+- **THEN** the primary navigation remains available at the top as a persistent app bar
 
 #### Scenario: Mobile navigation placement
 - **WHEN** the viewport width is 760px or less
@@ -168,3 +172,19 @@ At viewport widths up to 760px, navigation labels SHALL use a 0.8rem font size i
 #### Scenario: Desktop navigation remains unchanged
 - **WHEN** the viewport width is greater than 760px
 - **THEN** the mobile row and label-size changes do not alter desktop navigation geometry or typography
+
+### Requirement: Navigation is independent from the content frame
+The application SHALL render the primary navigation outside the constrained destination-content column. The desktop app bar SHALL be able to span the viewport independently, while destination content SHALL retain a readable maximum width.
+
+#### Scenario: Desktop app bar is not enclosed by the content column
+- **WHEN** the application renders at a desktop viewport width
+- **THEN** the navigation is visually separate from the centered destination-content column and is not enclosed by the column's outer card frame
+
+#### Scenario: Smartphone content uses the available width
+- **WHEN** the application renders at a viewport width of 760px or less
+- **THEN** the active destination content uses the viewport width without an additional outer page gutter or rounded outer frame
+
+#### Scenario: Destination internals retain readable spacing
+- **WHEN** an active destination renders on a smartphone-sized viewport
+- **THEN** its content retains internal padding and its nested tables, charts, and grouped sections remain visually distinguishable
+
