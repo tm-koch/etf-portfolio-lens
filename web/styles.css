@@ -256,6 +256,23 @@ body {
   font-size: 1rem;
 }
 
+.build-dialog-warnings {
+  display: grid;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.build-dialog-warnings h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.build-dialog-warnings .warning-list {
+  display: grid;
+  gap: 10px;
+}
+
 .developer-settings {
   display: grid;
   gap: 12px;
@@ -553,6 +570,18 @@ body {
   cursor: pointer;
 }
 
+.remove-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.remove-button svg {
+  width: 16px;
+  height: 16px;
+}
+
 .subcard {
   padding: 18px;
   border-radius: var(--radius);
@@ -597,6 +626,10 @@ body {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   font: inherit;
+}
+
+.position-row td {
+  min-width: 0;
 }
 
 .chart-grid {
@@ -1123,6 +1156,92 @@ body {
 
   .build-metadata dd {
     margin-bottom: 8px;
+  }
+
+  .positions-table-wrap {
+    overflow-x: visible;
+  }
+
+  .positions-table,
+  .positions-table tbody,
+  .position-row {
+    display: block;
+    width: 100%;
+  }
+
+  .positions-table thead {
+    display: none;
+  }
+
+  .positions-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  .position-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+    grid-template-areas:
+      "identity identity identity"
+      "shares weight remove";
+    gap: 12px 10px;
+    padding: 12px;
+    border-bottom: 0;
+  }
+
+  .position-row td {
+    display: grid;
+    align-content: start;
+    gap: 5px;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .position-row td::before {
+    display: none;
+  }
+
+  .position-row .position-identity {
+    grid-area: identity;
+    padding-bottom: 2px;
+  }
+
+  .position-row .position-identity::before {
+    display: none;
+  }
+
+  .position-row .position-shares {
+    grid-area: shares;
+  }
+
+  .position-row .position-weight {
+    grid-area: weight;
+    overflow-wrap: anywhere;
+  }
+
+  .position-row .position-remove {
+    grid-area: remove;
+    align-items: end;
+    justify-items: end;
+  }
+
+  .position-input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .position-remove .remove-button {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+  }
+
+  .remove-button-label {
+    display: none;
+  }
+
+  .position-name span {
+    overflow-wrap: anywhere;
   }
 }
 

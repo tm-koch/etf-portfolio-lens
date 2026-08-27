@@ -172,6 +172,7 @@ function renderBuildInfo() {
   elements.buildMetadata.replaceChildren();
   elements.buildDetailsExtra.replaceChildren();
   elements.buildDetailsExtra.hidden = true;
+  renderBuildWarnings();
 
   if (!state.buildInfo) {
     const status = document.createElement('p');
@@ -390,7 +391,6 @@ function aggregateCompanyExposure(positions) {
   for (const [positionIndex, position] of positions.entries()) {
     const snapshot = position.snapshot;
     if (!snapshot) {
-      warnings.push(`${position.entry.ticker}: snapshot not loaded`);
       continue;
     }
 
@@ -460,6 +460,45 @@ function aggregateCompanyExposure(positions) {
     ranked: scaled,
     warnings,
   };
+}
+
+function getCurrentSelectionWarnings(positions = getSelectedPositions()) {
+  const { warnings } = aggregateCompanyExposure(positions);
+  const snapshotWarnings = [];
+
+  for (const position of positions) {
+    const snapshot = position.snapshot;
+    if (!snapshot) {
+      snapshotWarnings.push(`${position.entry.ticker}: snapshot unavailable`);
+      continue;
+    }
+    if (!snapshot.holdings?.length) {
+      snapshotWarnings.push(`${position.entry.ticker}: snapshot has no holdings`);
+    }
+  }
+
+  return [...snapshotWarnings, ...warnings];
+}
+
+function renderWarningItems(container, items, emptyText) {
+  if (!items.length) {
+    container.innerHTML = `<div class="empty-state">${emptyText}</div>`;
+    return;
+  }
+
+  container.innerHTML = items.map((item) => `
+    <article class="warning-item">
+      <div class="left">${item}</div>
+    </article>
+  `).join('');
+}
+
+function renderBuildWarnings() {
+  if (!elements.buildWarningList) {
+    return;
+  }
+  const items = state.catalogMaps ? getCurrentSelectionWarnings() : [];
+  renderWarningItems(elements.buildWarningList, items, 'No warnings detected in the current selection.');
 }
 
 function buildCompanyRow(company, index) {
@@ -769,25 +808,24 @@ function renderPositions() {
   elements.positionsBody.innerHTML = positions
     .map((position) => {
       const weight = getPositionWeight(position, totalShareUnits);
-      const snapshot = position.snapshot;
-      const warnings = snapshot?.holdings?.filter((holding) => holding?.provenance?.match?.status !== 'matched').length || 0;
       return `
         <tr class="position-row">
-          <td>
+          <td class="position-identity" data-label="ETF">
             <div class="position-name">
               <strong>${position.entry.ticker}</strong>
               <span>${position.entry.name}</span>
             </div>
           </td>
-          <td>
-            <input class="position-input" type="number" min="0" step="1" value="${position.shares}" data-shares-input="${position.isin}" />
+          <td class="position-shares" data-label="Shares">
+            <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="1" value="${position.shares}" data-shares-input="${position.isin}" />
           </td>
-          <td>${formatPercent(weight)}${warnings ? ` · ${warnings} warnings` : ''}</td>
-          <td><button type="button" class="remove-button" data-remove-position="${position.isin}">Remove</button></td>
+          <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
+          <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>
         </tr>
       `;
     })
     .join('');
+  window.lucide?.createIcons();
 }
 
 function renderComparisonToolbar(positions) {
@@ -941,33 +979,12 @@ function renderCompanyList() {
 }
 
 function renderWarnings() {
-  const positions = getSelectedPositions();
-  const { warnings } = aggregateCompanyExposure(positions);
-  const items = [];
-
-  for (const position of positions) {
-    const snapshot = position.snapshot;
-    if (!snapshot) {
-      items.push(`${position.entry.ticker}: snapshot unavailable`);
-      continue;
-    }
-    if (!snapshot.holdings?.length) {
-      items.push(`${position.entry.ticker}: snapshot has no holdings`);
-    }
-  }
-
-  items.push(...warnings);
-
-  if (!items.length) {
-    elements.warningList.innerHTML = '<div class="empty-state">No warnings detected in the current selection.</div>';
-    return;
-  }
-
-  elements.warningList.innerHTML = items.map((item) => `
-    <article class="warning-item">
-      <div class="left">${item}</div>
-    </article>
-  `).join('');
+  renderWarningItems(
+    elements.warningList,
+    getCurrentSelectionWarnings(),
+    'No warnings detected in the current selection.'
+  );
+  renderBuildWarnings();
 }
 
 function renderAll() {
@@ -1057,6 +1074,7 @@ async function bootstrap() {
   elements.buildDialogClose = document.getElementById('build-dialog-close');
   elements.buildMetadata = document.getElementById('build-metadata');
   elements.buildDetailsExtra = document.getElementById('build-details-extra');
+  elements.buildWarningList = document.getElementById('build-warning-list');
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
 
   renderBuildInfo();
