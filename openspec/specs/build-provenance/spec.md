@@ -2,9 +2,7 @@
 
 ## Purpose
 Expose source, deployment, and ETF data timestamps through a secondary About/build-details surface and generated publish metadata.
-
 ## Requirements
-
 ### Requirement: Secondary About build-details access
 The web app SHALL provide a secondary `About this build` action in the hero development/status area. The action SHALL remain outside the primary Portfolio, Compare, and Explore navigation and SHALL open an in-page build-details surface without changing browser URL or history.
 
@@ -66,7 +64,16 @@ The publishing workflow SHALL generate and publish a machine-readable provenance
 - **THEN** the published manifest records the aggregate catalog or snapshot generation timestamp used by the published data
 
 ### Requirement: Extensible and fault-tolerant metadata
-The provenance manifest SHALL include a versioned or extensible structure for future metadata fields, and failure to load or parse it SHALL not block the core portfolio UI.
+
+The provenance manifest SHALL include a versioned or extensible structure for future metadata fields, and failure to load or parse it SHALL not block the core portfolio UI. The About this build surface SHALL render optional metadata without leaving a duplicate horizontal separator when that metadata is absent, and SHALL retain one separator before its bottom current-selection warnings section.
+
+#### Scenario: Optional details are absent
+- **WHEN** the About this build surface has no optional details to display
+- **THEN** the hidden optional-details section SHALL not occupy layout space or display a separator
+
+#### Scenario: Warnings remain at the bottom
+- **WHEN** the About this build surface is rendered
+- **THEN** current-selection warnings SHALL appear after the developer settings and SHALL have one separator immediately above the warnings section
 
 #### Scenario: Future metadata is added
 - **WHEN** additional provenance or diagnostic fields are added to the manifest
@@ -79,3 +86,4 @@ The provenance manifest SHALL include a versioned or extensible structure for fu
 #### Scenario: Manifest is malformed
 - **WHEN** the provenance manifest cannot be parsed
 - **THEN** the app continues loading its portfolio data and reports unavailable build metadata in the About surface
+

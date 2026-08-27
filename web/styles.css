@@ -251,6 +251,10 @@ body {
   border-top: 1px solid var(--border);
 }
 
+.build-details-extra[hidden] {
+  display: none;
+}
+
 .build-details-extra h3 {
   margin: 0;
   font-size: 1rem;

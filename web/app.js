@@ -979,11 +979,6 @@ function renderCompanyList() {
 }
 
 function renderWarnings() {
-  renderWarningItems(
-    elements.warningList,
-    getCurrentSelectionWarnings(),
-    'No warnings detected in the current selection.'
-  );
   renderBuildWarnings();
 }
 
@@ -1068,7 +1063,6 @@ async function bootstrap() {
   elements.rollupGrid = document.getElementById('rollup-grid');
   elements.companyList = document.getElementById('company-list');
   elements.companyHint = document.getElementById('company-hint');
-  elements.warningList = document.getElementById('warning-list');
   elements.aboutBuildButton = document.getElementById('about-build-button');
   elements.buildDialog = document.getElementById('build-dialog');
   elements.buildDialogClose = document.getElementById('build-dialog-close');

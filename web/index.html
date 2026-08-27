@@ -14,10 +14,10 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260827-2" />
+    <link rel="stylesheet" href="./styles.css?v=20260827-3" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
     <script src="https://unpkg.com/lucide@0.468.0" defer></script>
-    <script type="module" src="./app.js?v=20260827-2" defer></script>
+    <script type="module" src="./app.js?v=20260827-3" defer></script>
   </head>
   <body>
     <nav class="primary-navigation card" aria-label="Main sections">
@@ -69,10 +69,6 @@
             <p id="build-dialog-description">Source, deployment, and ETF data provenance for this web UI.</p>
             <dl class="build-metadata" id="build-metadata"></dl>
             <div class="build-details-extra" id="build-details-extra" hidden></div>
-            <section class="build-dialog-warnings" aria-labelledby="build-warnings-title">
-              <h3 id="build-warnings-title">Current selection warnings</h3>
-              <div class="warning-list" id="build-warning-list"></div>
-            </section>
             <div class="developer-settings">
               <div>
                 <h3>Developer mode</h3>
@@ -83,6 +79,10 @@
                 <input id="compact-explore-preview" data-compact-explore-preview type="checkbox" role="switch" />
               </label>
             </div>
+            <section class="build-dialog-warnings" aria-labelledby="build-warnings-title">
+              <h3 id="build-warnings-title">Current selection warnings</h3>
+              <div class="warning-list" id="build-warning-list"></div>
+            </section>
           </div>
         </dialog>
 
@@ -197,12 +197,6 @@
                 <p id="company-hint">Add positions to see the ranked look-through exposure.</p>
               </div>
               <div class="company-list" id="company-list"></div>
-            </div>
-            <div class="subcard stack">
-              <div class="subcard-heading">
-                <h3>Warnings</h3>
-              </div>
-              <div class="warning-list" id="warning-list"></div>
             </div>
           </div>
         </section>
