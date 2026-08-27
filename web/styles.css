@@ -871,11 +871,11 @@ body {
 }
 
 .compact-explore-table tbody tr:nth-child(odd) .compact-explore-holding {
-  background: rgb(244, 246, 251);
+  background: rgba(244, 246, 251, 0.88);
 }
 
 .compact-explore-table tbody tr:nth-child(even) .compact-explore-holding {
-  background: white;
+  background: rgba(255, 255, 255, 0.88);
 }
 
 .compact-explore-table .compact-explore-holding-name {
@@ -910,7 +910,7 @@ body {
 }
 
 .compact-explore-table tbody tr:hover .compact-explore-holding {
-  background: #f8fafd;
+  background: rgba(248, 250, 253, 0.9);
 }
 
 @media (max-width: 760px) {
