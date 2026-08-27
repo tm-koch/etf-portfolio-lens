@@ -26,6 +26,10 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('data-lucide="trash-2"', app)
         self.assertIn("grid-template-areas:", styles)
         self.assertIn('"shares weight remove"', styles)
+        self.assertIn(
+            ".position-row .position-weight {\n    grid-area: weight;\n    display: flex;\n    align-items: center;",
+            styles,
+        )
 
     def test_warning_surfaces_share_current_selection_collection(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

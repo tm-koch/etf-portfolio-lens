@@ -1216,6 +1216,8 @@ body {
 
   .position-row .position-weight {
     grid-area: weight;
+    display: flex;
+    align-items: center;
     overflow-wrap: anywhere;
   }
 
