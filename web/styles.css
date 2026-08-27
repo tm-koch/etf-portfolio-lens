@@ -38,14 +38,14 @@ body {
 
 .app-shell {
   display: grid;
-  gap: 18px;
+  gap: 12px;
 }
 
 .content-column {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 16px;
 }
 
 .card,
@@ -382,8 +382,8 @@ body {
   z-index: 20;
   display: flex;
   gap: 10px;
-  width: calc(100% - 48px);
-  max-width: 1392px;
+  width: calc(100% - 32px);
+  max-width: 1408px;
   margin: 0 auto;
   padding: 10px;
   border-radius: 0 0 var(--radius) var(--radius);
@@ -1003,6 +1003,7 @@ body {
   }
 
   .tab-panel.card {
+    padding: 16px;
     border-right: 0;
     border-left: 0;
     border-radius: 0;
