@@ -28,6 +28,20 @@ STRICT_IDENTITY_EXEMPTIONS = {
     "SWISS MKT IX SEP 26",
 }
 
+SPMCHA_CLASSIFICATION_ISINS = {
+    "CH0466642201",
+    "CH0102484968",
+    "CH0025751329",
+    "CH0360826991",
+    "CH0038388911",
+    "CH0025536027",
+    "CH0024590272",
+    "CH0371153492",
+    "CH0468525222",
+    "CH0406705126",
+    "CH1484953687",
+}
+
 
 def _is_strict_identity_exempt(holding: NormalizedHolding) -> bool:
     return (holding.name or "").strip().upper() in STRICT_IDENTITY_EXEMPTIONS
@@ -124,6 +138,21 @@ class IngestionPipeline:
                             f"{entry.ticker} row {index}: unresolved identity "
                             f"status={holding.match.status if holding.match else 'missing'} "
                             f"name={holding.name or '<unknown>'}"
+                        )
+                    if holding.isin in SPMCHA_CLASSIFICATION_ISINS and any(
+                        not getattr(holding, field)
+                        for field in (
+                            "company_id",
+                            "canonical_name",
+                            "sector",
+                            "asset_class",
+                            "country",
+                            "exchange",
+                        )
+                    ):
+                        failures.append(
+                            f"{entry.ticker} row {index}: incomplete SPMCHA classification "
+                            f"isin={holding.isin}"
                         )
             aggregates = aggregate_holdings(holdings)
             generated_at = datetime.now(timezone.utc).isoformat()

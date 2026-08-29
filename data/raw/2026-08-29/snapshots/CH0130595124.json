@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-29",
-    "generated_at": "2026-08-29T15:07:39.558246+00:00",
+    "generated_at": "2026-08-29T15:37:00.524097+00:00",
     "source_url": "https://www.ubs.com/9780d2d6-3ef1-4069-8ce9-69c94f32a317",
     "resolved_download_url": "data\\raw\\2026-08-29\\downloads\\CH0130595124.xls",
     "source_format": "xls",
@@ -113,16 +113,16 @@
       "security": {
         "isin": "CH0466642201",
         "ticker": null,
-        "name": "HELVETIA BALOISE HOLDING AG",
+        "name": "Helvetia Baloise Holding AG",
         "company_id": "helvetia-baloise-holding-ag",
-        "canonical_name": null
+        "canonical_name": "Helvetia Baloise Holding AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -142,19 +142,18 @@
           "Price": "212.6",
           "Weight %": "4.43423"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -254,16 +253,16 @@
       "security": {
         "isin": "CH0102484968",
         "ticker": null,
-        "name": "JULIUS BAER GROUP LTD",
-        "company_id": "julius-baer-group-ltd",
-        "canonical_name": null
+        "name": "Julius Baer Group AG",
+        "company_id": "julius-baer-group-ag",
+        "canonical_name": "Julius Baer Group AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -283,19 +282,18 @@
           "Price": "73.92",
           "Weight %": "4.13125"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -349,16 +347,16 @@
       "security": {
         "isin": "CH0025751329",
         "ticker": null,
-        "name": "LOGITECH INTERNATIONAL-REG",
-        "company_id": "logitech-international-reg",
-        "canonical_name": null
+        "name": "Logitech International S.A.",
+        "company_id": "logitech-international-sa",
+        "canonical_name": "Logitech International S.A."
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -378,19 +376,18 @@
           "Price": "77.84",
           "Weight %": "3.05465"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1640,16 +1637,16 @@
       "security": {
         "isin": "CH0360826991",
         "ticker": null,
-        "name": "COMET HOLDING AG-REG",
-        "company_id": "comet-holding-ag-reg",
-        "canonical_name": null
+        "name": "Comet Holding AG",
+        "company_id": "comet-holding-ag",
+        "canonical_name": "Comet Holding AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1669,19 +1666,18 @@
           "Price": "357",
           "Weight %": "0.7473"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1965,16 +1961,16 @@
       "security": {
         "isin": "CH0038388911",
         "ticker": null,
-        "name": "SULZER AG-REG",
-        "company_id": "sulzer-ag-reg",
-        "canonical_name": null
+        "name": "Sulzer AG",
+        "company_id": "sulzer-ag",
+        "canonical_name": "Sulzer AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1994,19 +1990,18 @@
           "Price": "138.2",
           "Weight %": "0.65526"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -2934,16 +2929,16 @@
       "security": {
         "isin": "CH0025536027",
         "ticker": null,
-        "name": "BURCKHARDT COMPRESSION HOLDI",
-        "company_id": "burckhardt-compression-holdi",
-        "canonical_name": null
+        "name": "Burckhardt Compression Holding AG",
+        "company_id": "burckhardt-compression-holding-ag",
+        "canonical_name": "Burckhardt Compression Holding AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -2963,19 +2958,18 @@
           "Price": "448",
           "Weight %": "0.37286"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3075,16 +3069,16 @@
       "security": {
         "isin": "CH0024590272",
         "ticker": null,
-        "name": "ALSO HOLDING AG-REG",
-        "company_id": "also-holding-ag-reg",
-        "canonical_name": null
+        "name": "ALSO Holding AG",
+        "company_id": "also-holding-ag",
+        "canonical_name": "ALSO Holding AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -3104,19 +3098,18 @@
           "Price": "201",
           "Weight %": "0.33964"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3262,16 +3255,16 @@
       "security": {
         "isin": "CH0371153492",
         "ticker": null,
-        "name": "LANDIS + GYR GROUP AG",
+        "name": "Landis+Gyr Group AG",
         "company_id": "landis-gyr-group-ag",
-        "canonical_name": null
+        "canonical_name": "Landis+Gyr Group AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -3291,19 +3284,18 @@
           "Price": "41.8",
           "Weight %": "0.29307"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3449,16 +3441,16 @@
       "security": {
         "isin": "CH0468525222",
         "ticker": null,
-        "name": "MEDACTA GROUP SA",
+        "name": "Medacta Group SA",
         "company_id": "medacta-group-sa",
-        "canonical_name": null
+        "canonical_name": "Medacta Group SA"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -3478,19 +3470,18 @@
           "Price": "138.8",
           "Weight %": "0.22754"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3498,16 +3489,16 @@
       "security": {
         "isin": "CH0406705126",
         "ticker": null,
-        "name": "SENSIRION HOLDING AG",
+        "name": "Sensirion Holding AG",
         "company_id": "sensirion-holding-ag",
-        "canonical_name": null
+        "canonical_name": "Sensirion Holding AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -3527,19 +3518,18 @@
           "Price": "76.5",
           "Weight %": "0.21802"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3639,16 +3629,16 @@
       "security": {
         "isin": "CH1484953687",
         "ticker": null,
-        "name": "SMG SWISS MARKETPLACE GROUP",
-        "company_id": "smg-swiss-marketplace-group",
-        "canonical_name": null
+        "name": "SMG Swiss Marketplace Group AG",
+        "company_id": "smg-swiss-marketplace-group-ag",
+        "canonical_name": "SMG Swiss Marketplace Group AG"
       },
       "classification": {
-        "asset_class": null,
-        "sector": null,
-        "region": null,
-        "country": null,
-        "exchange": null,
+        "asset_class": "Equity",
+        "sector": "Communication Services",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -3668,19 +3658,18 @@
           "Price": "26.75",
           "Weight %": "0.15652"
         },
-        "enrichment_source": "UBS",
-        "exchange_code": null,
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
           "missing_elements": [
-            "ticker",
-            "exchange"
+            "ticker"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     }
@@ -3689,19 +3678,19 @@
     "sector_weights": [
       {
         "name": "Industrials",
-        "weight_pct": 26.0798
-      },
-      {
-        "name": "Health Care",
-        "weight_pct": 15.0712
-      },
-      {
-        "name": "Unknown",
-        "weight_pct": 14.6303
+        "weight_pct": 27.401
       },
       {
         "name": "Financials",
-        "weight_pct": 10.322
+        "weight_pct": 18.8875
+      },
+      {
+        "name": "Health Care",
+        "weight_pct": 15.2988
+      },
+      {
+        "name": "Information Technology",
+        "weight_pct": 10.2025
       },
       {
         "name": "Consumer Staples",
@@ -3720,12 +3709,8 @@
         "weight_pct": 6.0032
       },
       {
-        "name": "Information Technology",
-        "weight_pct": 5.8429
-      },
-      {
         "name": "Communication Services",
-        "weight_pct": 0.7237
+        "weight_pct": 0.8802
       },
       {
         "name": "Utilities",
@@ -3735,11 +3720,11 @@
     "region_weights": [
       {
         "name": "Europe",
-        "weight_pct": 84.2371
+        "weight_pct": 98.8675
       },
       {
         "name": "Unknown",
-        "weight_pct": 14.9828
+        "weight_pct": 0.3524
       }
     ],
     "currency_weights": [
@@ -3765,7 +3750,7 @@
       },
       {
         "ticker": null,
-        "name": "HELVETIA BALOISE HOLDING AG",
+        "name": "Helvetia Baloise Holding AG",
         "weight_pct": 4.4342
       },
       {
@@ -3780,7 +3765,7 @@
       },
       {
         "ticker": null,
-        "name": "JULIUS BAER GROUP LTD",
+        "name": "Julius Baer Group AG",
         "weight_pct": 4.1312
       },
       {
@@ -3790,7 +3775,7 @@
       },
       {
         "ticker": null,
-        "name": "LOGITECH INTERNATIONAL-REG",
+        "name": "Logitech International S.A.",
         "weight_pct": 3.0547
       },
       {

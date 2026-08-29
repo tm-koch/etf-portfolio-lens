@@ -239,6 +239,75 @@ class IngestionTests(unittest.TestCase):
                 )
             )
 
+    def test_spmcha_overrides_complete_classification_and_preserve_ubs_fields(
+        self,
+    ) -> None:
+        expected = {
+            "CH0466642201": ("helvetia-baloise-holding-ag", "Financials"),
+            "CH0102484968": ("julius-baer-group-ag", "Financials"),
+            "CH0025751329": ("logitech-international-sa", "Information Technology"),
+            "CH0360826991": ("comet-holding-ag", "Information Technology"),
+            "CH0038388911": ("sulzer-ag", "Industrials"),
+            "CH0025536027": ("burckhardt-compression-holding-ag", "Industrials"),
+            "CH0024590272": ("also-holding-ag", "Information Technology"),
+            "CH0371153492": ("landis-gyr-group-ag", "Industrials"),
+            "CH0468525222": ("medacta-group-sa", "Health Care"),
+            "CH0406705126": ("sensirion-holding-ag", "Information Technology"),
+            "CH1484953687": (
+                "smg-swiss-marketplace-group-ag",
+                "Communication Services",
+            ),
+        }
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
+                override_path=ROOT / "data" / "security_overrides.json",
+            )
+            results = pipeline.run(
+                self.registry.select_by_isins(["CH0130595124"]),
+                use_fixtures=True,
+            )
+            snapshot = results[0].snapshot.to_dict()
+
+        affected = {
+            holding["security"]["isin"]: holding
+            for holding in snapshot["holdings"]
+            if holding["security"]["isin"] in expected
+        }
+
+        self.assertEqual(set(expected), set(affected))
+        for isin, (company_id, sector) in expected.items():
+            holding = affected[isin]
+            self.assertEqual(company_id, holding["security"]["company_id"])
+            self.assertEqual(sector, holding["classification"]["sector"])
+            self.assertEqual("Equity", holding["classification"]["asset_class"])
+            self.assertEqual("Switzerland", holding["classification"]["country"])
+            self.assertEqual("Europe", holding["classification"]["region"])
+            self.assertEqual("SIX", holding["classification"]["exchange"])
+            self.assertEqual("CHF", holding["classification"]["market_currency"])
+            self.assertEqual("CHF", holding["provenance"]["source_fields"]["Currency"])
+            self.assertEqual("overridden", holding["provenance"]["match"]["status"])
+
+        sector_names = {item["classification"]["sector"] for item in affected.values()}
+        region_names = {item["classification"]["region"] for item in affected.values()}
+        self.assertTrue(sector_names.isdisjoint({"Unknown", None}))
+        self.assertTrue(region_names.isdisjoint({"Unknown", None}))
+        aggregate_sector_names = {
+            item["name"] for item in snapshot["aggregates"]["sector_weights"]
+        }
+        aggregate_region_names = {
+            item["name"] for item in snapshot["aggregates"]["region_weights"]
+        }
+        self.assertTrue(sector_names <= aggregate_sector_names)
+        self.assertTrue(region_names <= aggregate_region_names)
+        self.assertIn(
+            "CHF",
+            {item["name"] for item in snapshot["aggregates"]["currency_weights"]},
+        )
+
     def test_eumd_registry_entry_ingests_successfully(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             pipeline = IngestionPipeline(
