@@ -1173,6 +1173,11 @@ body {
     width: 100%;
   }
 
+  .positions-table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
   .positions-table thead {
     display: none;
   }
@@ -1190,7 +1195,7 @@ body {
       "shares weight remove";
     gap: 12px 10px;
     padding: 12px;
-    border-bottom: 0;
+    border-bottom: 1px solid var(--border);
   }
 
   .position-row td {

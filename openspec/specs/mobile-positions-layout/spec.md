@@ -5,7 +5,7 @@ TBD - created by archiving change mobile-positions-layout-and-dev-warnings. Upda
 ## Requirements
 ### Requirement: Mobile selected-position reflow
 
-The application SHALL render each selected ETF position without requiring horizontal scrolling at supported mobile viewport widths. On mobile, the ETF ticker and name SHALL occupy the upper area of the position entry, while Shares, Weight, and Remove SHALL occupy the same lower row.
+The application SHALL render each selected ETF position without requiring horizontal scrolling at supported mobile viewport widths. On mobile, the ETF ticker and name SHALL occupy the upper area of the position entry, while Shares, Weight, and Remove SHALL occupy the same lower row. Each position entry SHALL render as a complete enclosed card with visible top, right, bottom, and left boundaries.
 
 #### Scenario: Position fits within a phone viewport
 - **WHEN** the Selected positions view is displayed at a supported mobile viewport width
@@ -18,6 +18,10 @@ The application SHALL render each selected ETF position without requiring horizo
 #### Scenario: Remove shares the lower row
 - **WHEN** a mobile position entry displays its controls
 - **THEN** Shares, Weight, and Remove SHALL be presented together on one lower row
+
+#### Scenario: Position card has a complete boundary
+- **WHEN** a mobile position entry is rendered
+- **THEN** its visible card border SHALL include continuous top, right, bottom, and left edges without the lower edge being omitted or clipped
 
 ### Requirement: Mobile position controls remain usable
 
@@ -50,4 +54,3 @@ The application SHALL preserve the existing four-column Selected positions table
 #### Scenario: Desktop positions remain tabular
 - **WHEN** the Selected positions view is displayed above the mobile breakpoint
 - **THEN** ETF, Shares, Weight, and Remove SHALL remain presented as the existing four table columns with their current behavior
-

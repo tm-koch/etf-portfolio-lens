@@ -32,6 +32,13 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
+        mobile_styles = styles[styles.index("@media (max-width: 760px)") :]
+        mobile_row_start = mobile_styles.index("  .position-row {")
+        mobile_row_end = mobile_styles.index("  .position-row td {", mobile_row_start)
+        mobile_row_styles = mobile_styles[mobile_row_start:mobile_row_end]
+        self.assertNotIn("border-bottom: 0;", mobile_row_styles)
+        self.assertIn("border-bottom: 0;", mobile_styles[mobile_row_end:])
+
     def test_build_dialog_retains_current_selection_warnings(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
