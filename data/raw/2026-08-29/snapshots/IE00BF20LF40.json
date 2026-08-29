@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-29",
-    "generated_at": "2026-08-29T13:38:52.156334+00:00",
+    "generated_at": "2026-08-29T15:07:30.214053+00:00",
     "source_url": "https://www.ishares.com/ch/professionals/en/products/287746/fund/1495092304805.ajax?fileType=csv&fileName=EUMD_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-08-29\\downloads\\IE00BF20LF40.csv",
     "source_format": "csv",
@@ -1345,11 +1345,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "CH0466642201",
         "ticker": "HBAN",
-        "name": "HELVETIA BALOISE HOLDING N AG",
-        "company_id": "helvetia-baloise-holding-n-ag",
-        "canonical_name": null
+        "name": "Helvetia Baloise Holding AG",
+        "company_id": "helvetia-baloise-holding-ag",
+        "canonical_name": "Helvetia Baloise Holding AG"
       },
       "classification": {
         "asset_class": "Equity",
@@ -1382,20 +1382,19 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override",
         "exchange_code": "SIX",
         "match": {
-          "status": "ambiguous",
-          "matched_by": "ticker",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
+            "isin",
             "ticker+exchange",
             "ticker",
             "alias"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "ticker match for HBAN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -1510,11 +1509,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "CH0102484968",
         "ticker": "BAER",
-        "name": "JULIUS BAER GRUPPE AG",
+        "name": "Julius Baer Gruppe AG",
         "company_id": "julius-baer-gruppe-ag",
-        "canonical_name": null
+        "canonical_name": "Julius Baer Gruppe AG"
       },
       "classification": {
         "asset_class": "Equity",
@@ -1547,20 +1546,19 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override",
         "exchange_code": "SIX",
         "match": {
-          "status": "ambiguous",
-          "matched_by": "ticker",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
+            "isin",
             "ticker+exchange",
             "ticker",
             "alias"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "ticker match for BAER conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
