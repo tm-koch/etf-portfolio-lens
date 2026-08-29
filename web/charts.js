@@ -40,6 +40,13 @@ function paletteColor(index, alpha = 0.9) {
   return hexToRgba(CHART_COLORS[index % CHART_COLORS.length], alpha);
 }
 
+function getThemeColor(variable, fallback) {
+  if (typeof document === 'undefined') {
+    return fallback;
+  }
+  return getComputedStyle(document.documentElement).getPropertyValue(variable).trim() || fallback;
+}
+
 function colorForLabel(label, index, alpha = 0.9, labelColorOverrides = new Map()) {
   const override = labelColorOverrides.get(label);
   if (override) {
@@ -53,7 +60,7 @@ function buildDatasets(metricData, labels, labelColorOverrides = new Map()) {
     label: series.label,
     data: labels.map((label) => series.values.get(label) ?? 0),
     backgroundColor: labels.map((label, labelIndex) => colorForLabel(label, labelIndex, 0.94 - index * 0.04, labelColorOverrides)),
-    borderColor: '#ffffff',
+    borderColor: getThemeColor('--chart-border', '#ffffff'),
     borderWidth: 1,
     weight: metricData.length > 1 ? 1 : 2,
   }));
@@ -104,6 +111,9 @@ function renderLegend(container, chart, legendMode, legendLabelOverrides = new M
 
 function createOptions(title, options = {}) {
   const { labelColorOverrides = new Map() } = options;
+  const chartText = getThemeColor('--text', '#152033');
+  const chartSurface = getThemeColor('--card-strong', '#ffffff');
+  const chartBorder = getThemeColor('--border', 'rgba(31, 42, 68, 0.12)');
   const width = typeof window !== 'undefined' ? window.innerWidth : 0;
   const layoutPadding = width <= 480 ? getComparisonMobileSpacing() : width <= 760 ? 14 : 24;
 
@@ -129,6 +139,11 @@ function createOptions(title, options = {}) {
         text: title,
       },
       tooltip: {
+        backgroundColor: chartSurface,
+        titleColor: chartText,
+        bodyColor: chartText,
+        borderColor: chartBorder,
+        borderWidth: 1,
         callbacks: {
           title(context) {
             const first = context[0];

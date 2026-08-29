@@ -8,6 +8,18 @@
       content="ETF Portfolio Lens is a responsive ETF portfolio explorer with look-through exposure charts."
     />
     <title>ETF Portfolio Lens</title>
+    <script>
+      (() => {
+        const key = 'etf-lens.color-mode.v1';
+        const stored = (() => {
+          try { return localStorage.getItem(key); } catch { return null; }
+        })();
+        const mode = ['bright', 'automatic', 'dark'].includes(stored) ? stored : 'automatic';
+        const prefersDark = window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+        document.documentElement.dataset.colorMode = mode === 'automatic' && prefersDark ? 'dark' : mode === 'automatic' ? 'bright' : mode;
+        document.documentElement.dataset.colorModePreference = mode;
+      })();
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -73,6 +85,20 @@
               <div>
                 <h3>Developer mode</h3>
                 <p>Preview alternate Explore layouts.</p>
+              </div>
+              <div class="color-mode-setting">
+                <span>Color mode</span>
+                <div class="color-mode-control" data-color-mode-control>
+                  <button
+                    class="color-mode-button"
+                    id="color-mode-button"
+                    type="button"
+                    aria-haspopup="menu"
+                    aria-expanded="false"
+                    title="Change color mode"
+                  ></button>
+                  <div class="color-mode-menu" id="color-mode-menu" role="menu" aria-label="Color mode" hidden></div>
+                </div>
               </div>
               <label class="switch-control">
                 <span>Compact Explore preview</span>

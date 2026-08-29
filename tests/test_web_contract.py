@@ -83,6 +83,64 @@ class WebContractTests(unittest.TestCase):
         self.assertIn(".build-details-extra[hidden]", styles)
         self.assertIn("display: none;", styles)
 
+    def test_color_mode_contract_covers_preferences_persistence_and_bootstrap(
+        self,
+    ) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        charts = (WEB_ROOT / "charts.js").read_text(encoding="utf-8")
+
+        self.assertIn("etf-lens.color-mode.v1", index)
+        self.assertIn("etf-lens.color-mode.v1", app)
+        self.assertIn("['bright', 'automatic', 'dark']", index)
+        self.assertIn("const COLOR_MODES = ['bright', 'automatic', 'dark'];", app)
+        self.assertIn("prefers-color-scheme: dark", index)
+        self.assertIn("window.matchMedia?.(DARK_MODE_MEDIA_QUERY)", app)
+        self.assertIn("data-color-mode-control", index)
+        self.assertIn('aria-haspopup="menu"', index)
+        self.assertIn("data-color-mode-option", app)
+        self.assertIn('data-lucide="${selectedMode.icon}"', app)
+        self.assertIn(":root[data-color-mode='dark']", styles)
+        self.assertIn("--chart-border", styles)
+        self.assertIn("getThemeColor('--text'", charts)
+
+    def test_color_mode_is_labeled_and_explore_sticky_column_follows_hover(
+        self,
+    ) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn("<span>Color mode</span>", index)
+        self.assertIn('class="color-mode-setting"', index)
+        self.assertIn("--table-row-hover-background", styles)
+        self.assertIn(
+            "--table-sticky-row-background: rgba(255, 255, 255, 0.72);",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table .compact-explore-holding {\n  min-width: 220px;",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table tbody tr:hover .compact-explore-holding {\n  background: var(--table-sticky-row-background);",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table tbody tr:nth-child(odd):hover .compact-explore-holding {\n  background: var(--table-sticky-row-alt-background);",
+            styles,
+        )
+        self.assertIn(
+            "--table-sticky-row-background: rgba(27, 36, 48, 0.78);",
+            styles,
+        )
+
+    def test_color_mode_documentation_mentions_automatic_and_persistence(self) -> None:
+        readme = (WEB_ROOT / "README.md").read_text(encoding="utf-8")
+
+        self.assertIn("Automatic", readme)
+        self.assertIn("localStorage", readme)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -4,11 +4,16 @@ import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
 const COMPACT_EXPLORE_STORAGE_KEY = 'etf-lens.compact-explore-preview.v1';
+const COLOR_MODE_STORAGE_KEY = 'etf-lens.color-mode.v1';
+const COLOR_MODES = ['bright', 'automatic', 'dark'];
+const DARK_MODE_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 const defaultState = {
   activeTab: 'home',
   searchTerm: '',
   portfolio: [],
   compactExplorePreview: false,
+  colorMode: 'automatic',
+  effectiveColorMode: 'bright',
 };
 
 const chartRefs = {
@@ -44,6 +49,7 @@ const state = {
   companyRanked: [],
   companyVisibleCount: 0,
   companyObserver: null,
+  colorModeMediaQuery: null,
 };
 
 const elements = {};
@@ -57,6 +63,103 @@ const NAVIGATION_DESTINATIONS = [
 
 function getNavigationDestination(key) {
   return NAVIGATION_DESTINATIONS.find((destination) => destination.key === key) || null;
+}
+
+function isColorMode(value) {
+  return COLOR_MODES.includes(value);
+}
+
+function loadColorMode() {
+  try {
+    const storedMode = localStorage.getItem(COLOR_MODE_STORAGE_KEY);
+    return isColorMode(storedMode) ? storedMode : defaultState.colorMode;
+  } catch {
+    return defaultState.colorMode;
+  }
+}
+
+function saveColorMode() {
+  try {
+    localStorage.setItem(COLOR_MODE_STORAGE_KEY, state.colorMode);
+  } catch {
+    // Browser storage may be unavailable in private or restricted contexts.
+  }
+}
+
+function prefersDarkMode() {
+  return window.matchMedia?.(DARK_MODE_MEDIA_QUERY).matches ?? false;
+}
+
+function resolveColorMode(colorMode) {
+  return colorMode === 'automatic' ? (prefersDarkMode() ? 'dark' : 'bright') : colorMode;
+}
+
+function applyColorMode() {
+  state.effectiveColorMode = resolveColorMode(state.colorMode);
+  document.documentElement.dataset.colorMode = state.effectiveColorMode;
+  document.documentElement.dataset.colorModePreference = state.colorMode;
+}
+
+function handleSystemColorModeChange() {
+  if (state.colorMode === 'automatic') {
+    applyColorMode();
+    renderComparisonCharts();
+  }
+}
+
+function setupColorModeMediaQuery() {
+  state.colorModeMediaQuery = window.matchMedia?.(DARK_MODE_MEDIA_QUERY) || null;
+  state.colorModeMediaQuery?.addEventListener('change', handleSystemColorModeChange);
+}
+
+function setColorMode(colorMode) {
+  if (!isColorMode(colorMode)) {
+    return;
+  }
+  state.colorMode = colorMode;
+  saveColorMode();
+  applyColorMode();
+  renderColorModeControl();
+  renderComparisonCharts();
+}
+
+function renderColorModeControl() {
+  if (!elements.colorModeButton || !elements.colorModeMenu) {
+    return;
+  }
+
+  const modes = [
+    { key: 'bright', label: 'Bright', icon: 'sun' },
+    { key: 'automatic', label: 'Automatic', icon: 'monitor' },
+    { key: 'dark', label: 'Dark', icon: 'moon' },
+  ];
+  const selectedMode = modes.find((mode) => mode.key === state.colorMode) || modes[1];
+  elements.colorModeButton.innerHTML = `
+    <i data-lucide="${selectedMode.icon}" aria-hidden="true"></i>
+    <span>${selectedMode.label}</span>
+  `;
+  elements.colorModeButton.setAttribute('aria-label', `Color mode: ${selectedMode.label}`);
+  elements.colorModeMenu.innerHTML = modes
+    .map(
+      (mode) => `
+        <button class="color-mode-option" type="button" role="menuitemradio" aria-checked="${mode.key === state.colorMode}" data-color-mode-option="${mode.key}">
+          <i data-lucide="${mode.icon}" aria-hidden="true"></i>
+          <span>${mode.label}</span>
+        </button>
+      `
+    )
+    .join('');
+  window.lucide?.createIcons();
+}
+
+function toggleColorModeMenu(forceOpen) {
+  const isOpen = !elements.colorModeMenu.hidden;
+  const shouldOpen = forceOpen ?? !isOpen;
+  elements.colorModeMenu.hidden = !shouldOpen;
+  elements.colorModeButton.setAttribute('aria-expanded', String(shouldOpen));
+  if (shouldOpen) {
+    elements.colorModeMenu.querySelector('[aria-checked="true"]')?.focus();
+  }
 }
 
 function loadActiveTab() {
@@ -1071,7 +1174,12 @@ async function bootstrap() {
   elements.buildDetailsExtra = document.getElementById('build-details-extra');
   elements.buildWarningList = document.getElementById('build-warning-list');
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
+  elements.colorModeButton = document.getElementById('color-mode-button');
+  elements.colorModeMenu = document.getElementById('color-mode-menu');
 
+  state.colorMode = loadColorMode();
+  applyColorMode();
+  renderColorModeControl();
   renderBuildInfo();
   elements.aboutBuildButton.addEventListener('click', openBuildDialog);
   elements.buildDialogClose.addEventListener('click', closeBuildDialog);
@@ -1096,6 +1204,7 @@ async function bootstrap() {
 
   applyChartFrameSizing();
   window.addEventListener('resize', applyChartFrameSizing);
+  setupColorModeMediaQuery();
 
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
@@ -1129,6 +1238,21 @@ async function bootstrap() {
   });
 
   document.addEventListener('click', (event) => {
+    const colorModeOption = event.target.closest('[data-color-mode-option]');
+    if (colorModeOption) {
+      setColorMode(colorModeOption.dataset.colorModeOption);
+      toggleColorModeMenu(false);
+      return;
+    }
+
+    if (event.target.closest('[data-color-mode-control]')) {
+      if (event.target.closest('#color-mode-button')) {
+        toggleColorModeMenu();
+      }
+      return;
+    }
+    toggleColorModeMenu(false);
+
     const addButton = event.target.closest('[data-add-etf]');
     if (addButton) {
       addPosition(addButton.dataset.addEtf);
