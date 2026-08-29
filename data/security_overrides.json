@@ -53,6 +53,146 @@
         "company_id": "roche-holding",
         "canonical_name": "Roche Holding AG"
       }
+    },
+    {
+      "match": {"ticker": "ALC", "exchange": "SIX", "holding_name": "ALCON AG"},
+      "set": {"isin": "CH0432492467", "company_id": "alcon-ag", "canonical_name": "Alcon AG"}
+    },
+    {
+      "match": {"ticker": "HBAN", "exchange": "SIX", "holding_name": "HELVETIA BALOISE HOLDING N AG"},
+      "set": {"isin": "CH0466642201", "company_id": "helvetia-baloise-holding-ag", "canonical_name": "Helvetia Baloise Holding AG"}
+    },
+    {
+      "match": {"ticker": "DSFIR", "exchange": "SIX", "holding_name": "DSM FIRMENICH AG"},
+      "set": {"isin": "CH1216478797", "company_id": "dsm-firmenich-ag", "canonical_name": "DSM-Firmenich AG"}
+    },
+    {
+      "match": {"ticker": "BAER", "exchange": "SIX", "holding_name": "JULIUS BAER GRUPPE AG"},
+      "set": {"isin": "CH0102484968", "company_id": "julius-baer-gruppe-ag", "canonical_name": "Julius Baer Gruppe AG"}
+    },
+    {
+      "match": {"ticker": "LOGN", "exchange": "SIX", "holding_name": "LOGITECH INTERNATIONAL SA"},
+      "set": {"isin": "CH0025751329", "company_id": "logitech-international-sa", "canonical_name": "Logitech International SA"}
+    },
+    {
+      "match": {"ticker": "SCHP", "exchange": "SIX", "holding_name": "SCHINDLER HOLDING PAR AG"},
+      "set": {"isin": "CH0024638196", "company_id": "schindler-holding-ag", "canonical_name": "Schindler Holding AG"}
+    },
+    {
+      "match": {"ticker": "COTN", "exchange": "SIX", "holding_name": "COMET HOLDING AG"},
+      "set": {"isin": "CH0360826991", "company_id": "comet-holding-ag", "canonical_name": "Comet Holding AG"}
+    },
+    {
+      "match": {"ticker": "SUN", "exchange": "SIX", "holding_name": "SULZER AG LTD"},
+      "set": {"isin": "CH0038388911", "company_id": "sulzer-ag", "canonical_name": "Sulzer AG"}
+    },
+    {
+      "match": {"ticker": "BCHN", "exchange": "SIX", "holding_name": "BURCKHARDT COMPRESSION HOLDING AG"},
+      "set": {"isin": "CH0025536027", "company_id": "burckhardt-compression-holding-ag", "canonical_name": "Burckhardt Compression Holding AG"}
+    },
+    {
+      "match": {"ticker": "ALSN", "exchange": "SIX", "holding_name": "ALSO HOLDING AG"},
+      "set": {"isin": "CH0024590272", "company_id": "also-holding-ag", "canonical_name": "ALSO Holding AG"}
+    },
+    {
+      "match": {"ticker": "MOVE", "exchange": "SIX", "holding_name": "MEDACTA GROUP SA"},
+      "set": {"isin": "CH0468525222", "company_id": "medacta-group-sa", "canonical_name": "Medacta Group SA"}
+    },
+    {
+      "match": {"ticker": "SENS", "exchange": "SIX", "holding_name": "SENSIRION HOLDING AG"},
+      "set": {"isin": "CH0406705126", "company_id": "sensirion-holding-ag", "canonical_name": "Sensirion Holding AG"}
+    },
+    {
+      "match": {"ticker": "AERO", "exchange": "SIX", "holding_name": "MONTANA N AG"},
+      "set": {"isin": "CH1110425654", "company_id": "montana-aerospace-ag", "canonical_name": "Montana Aerospace AG"}
+    },
+    {
+      "match": {"ticker": "BLKB", "exchange": "SIX", "holding_name": "BASELLANDSCHAFTLICHE KANTONALBANK"},
+      "set": {"isin": "CH0001473559", "company_id": "basellandschaftliche-kantonalbank", "canonical_name": "Basellandschaftliche Kantonalbank"}
+    },
+    {
+      "match": {"ticker": "COPN", "exchange": "SIX", "holding_name": "COSMO N NV"},
+      "set": {"isin": "NL0011832936", "company_id": "cosmo-nv", "canonical_name": "Cosmo N.V."}
+    },
+    {
+      "match": {"ticker": "PLAN", "exchange": "SIX", "holding_name": "PLAZZA AG"},
+      "set": {"isin": "CH0284142913", "company_id": "plazza-ag", "canonical_name": "Plazza AG"}
+    },
+    {
+      "match": {"ticker": "CHAM", "exchange": "SIX", "holding_name": "CHAM SWISS PROPERTIES AG"},
+      "set": {"isin": "CH0524026959", "company_id": "cham-swiss-properties-ag", "canonical_name": "Cham Swiss Properties AG"}
+    },
+    {
+      "match": {"ticker": "MED", "exchange": "SIX", "holding_name": "MEDARTIS HOLDING AG"},
+      "set": {"isin": "CH0386200239", "company_id": "medartis-holding-ag", "canonical_name": "Medartis Holding AG"}
+    },
+    {
+      "match": {"ticker": "IREN", "exchange": "SIX", "holding_name": "INVESTIS HOLDING SA"},
+      "set": {"isin": "CH0325094297", "company_id": "investis-holding-sa", "canonical_name": "Investis Holding SA"}
+    },
+    {
+      "match": {"ticker": "ASCN", "exchange": "SIX", "holding_name": "ASCOM HOLDING AG"},
+      "set": {"isin": "CH0011339204", "company_id": "ascom-holding-ag", "canonical_name": "Ascom Holding AG"}
+    },
+    {
+      "match": {"ticker": "MTG", "exchange": "SIX", "holding_name": "MEIER TOBLER GROUP AG"},
+      "set": {"isin": "CH0208062627", "company_id": "meier-tobler-group-ag", "canonical_name": "Meier Tobler Group AG"}
+    },
+    {
+      "match": {"ticker": "MCHN", "exchange": "SIX", "holding_name": "MCH GROUP AG"},
+      "set": {"isin": "CH0039542854", "company_id": "mch-group-ag", "canonical_name": "MCH Group AG"}
+    },
+    {
+      "match": {"ticker": "GAM", "exchange": "SIX", "holding_name": "GAM HOLDING AG"},
+      "set": {"isin": "CH0102659627", "company_id": "gam-holding-ag", "canonical_name": "GAM Holding AG"}
+    },
+    {
+      "match": {"ticker": "STRN", "exchange": "SIX", "holding_name": "SCHLATTER INDUSTRIES AG"},
+      "set": {"isin": "CH0002277314", "company_id": "schlatter-industries-ag", "canonical_name": "Schlatter Industries AG"}
+    },
+    {
+      "match": {"ticker": "AMS", "exchange": "SIX", "holding_name": "AMS-OSRAM AG"},
+      "set": {"isin": "AT0000A3EPA4", "company_id": "ams-osram-ag", "canonical_name": "ams-OSRAM AG"}
+    },
+    {
+      "match": {"ticker": "SMG", "exchange": "SIX", "holding_name": "SMG AG"},
+      "set": {"isin": "CH1484953687", "company_id": "smg-ag", "canonical_name": "SMG AG"}
+    },
+    {
+      "match": {"ticker": "CICN", "exchange": "SIX", "holding_name": "CICOR TECHNOLOGIES B LTD"},
+      "set": {"isin": "CH0008702190", "company_id": "cicor-technologies-ag", "canonical_name": "Cicor Technologies Ltd."}
+    },
+    {
+      "match": {"ticker": "PMN", "exchange": "SIX", "holding_name": "PHOENIX N AG"},
+      "set": {"isin": "CH1261338102", "company_id": "phoenix-mecano-ag", "canonical_name": "Phoenix Mecano AG"}
+    },
+    {
+      "match": {"ticker": "MEDX", "exchange": "SIX", "holding_name": "MEDMIX N AG"},
+      "set": {"isin": "CH1129677105", "company_id": "medmix-ag", "canonical_name": "medmix AG"}
+    },
+    {
+      "match": {"ticker": "CNTL", "exchange": "SIX", "holding_name": "CENTIEL N AG"},
+      "set": {"isin": "CH0024666528", "company_id": "centiel-ag", "canonical_name": "Centiel AG"}
+    },
+    {
+      "match": {"ticker": "INFRAC", "exchange": "SIX", "holding_name": "INFRACORE SA"},
+      "set": {"isin": "CH0019867685", "company_id": "infracore-sa", "canonical_name": "Infracore SA"}
+    },
+    {
+      "match": {"ticker": "LMN", "exchange": "SIX", "holding_name": "LASTMINUTE NV"},
+      "set": {"isin": "NL0010733960", "company_id": "lastminute-nv", "canonical_name": "lastminute.com N.V."}
+    },
+    {
+      "match": {"ticker": "MMTX", "exchange": "SIX", "holding_name": "MINDMAZE THERAPEUTICS HOLDING SA"},
+      "set": {"isin": "CH1251125998", "company_id": "mindmaze-therapeutics-holding-sa", "canonical_name": "MindMaze Therapeutics Holding SA"}
+    },
+    {
+      "match": {"ticker": "SPEX", "exchange": "SIX", "holding_name": "SPEXIS N AG"},
+      "set": {"isin": "CH0106213793", "company_id": "spexis-ag", "canonical_name": "Spexis AG"}
+    },
+    {
+      "match": {"ticker": "THAG", "exchange": "SIX", "holding_name": "TALENTHOUSE AG"},
+      "set": {"isin": "CH0010819867", "company_id": "talenthouse-ag", "canonical_name": "Talenthouse AG"}
     }
   ]
 }

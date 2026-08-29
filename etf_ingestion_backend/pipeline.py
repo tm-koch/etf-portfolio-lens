@@ -13,12 +13,24 @@ from .fetching import (
     fetch_amundi_full_holdings,
     fetch_url,
 )
-from .models import ETFSnapshot, ETFSourceEntry, IngestionResult
+from .models import ETFSnapshot, ETFSourceEntry, IngestionResult, NormalizedHolding
 from .normalization import normalize_row
 from .overrides import OverrideRegistry
 from .parsing import parse_table
 from .registry import ETFRegistry
 from .security_master import SecurityMaster
+
+STRICT_IDENTITY_EXEMPTIONS = {
+    "EUR CASH",
+    "CHF CASH",
+    "CASH COLLATERAL CHF F-GSI",
+    "GBP CASH",
+    "SWISS MKT IX SEP 26",
+}
+
+
+def _is_strict_identity_exempt(holding: NormalizedHolding) -> bool:
+    return (holding.name or "").strip().upper() in STRICT_IDENTITY_EXEMPTIONS
 
 
 @dataclass(slots=True)
@@ -102,7 +114,7 @@ class IngestionPipeline:
             ]
             if strict:
                 for index, holding in enumerate(holdings, start=1):
-                    if (
+                    if not _is_strict_identity_exempt(holding) and (
                         not holding.company_id
                         or not holding.canonical_name
                         or not holding.match

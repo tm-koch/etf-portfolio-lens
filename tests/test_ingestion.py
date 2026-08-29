@@ -550,6 +550,44 @@ class IngestionTests(unittest.TestCase):
             snapshots = list(Path(temp_dir).rglob("snapshots/*.json"))
             self.assertEqual([], snapshots)
 
+    def test_strict_chspi_allows_requested_non_company_exclusions(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                (
+                    ROOT / "data" / "raw" / "2026-08-29" / "downloads" / "tickers.txt"
+                ).as_uri(),
+                ROOT / "data" / "security_overrides.json",
+            )
+            result = pipeline.run(
+                self.registry.select_by_isins(["CH0237935652"]),
+                use_fixtures=True,
+                strict=True,
+            )[0]
+
+            snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
+            excluded = {
+                "EUR CASH",
+                "CHF CASH",
+                "CASH COLLATERAL CHF F-GSI",
+                "GBP CASH",
+                "SWISS MKT IX SEP 26",
+            }
+            excluded_holdings = [
+                holding
+                for holding in snapshot["holdings"]
+                if holding["security"]["name"] in excluded
+            ]
+
+            self.assertEqual(5, len(excluded_holdings))
+            self.assertTrue(
+                all(
+                    "source_fields" in holding["provenance"]
+                    for holding in excluded_holdings
+                )
+            )
+
     def test_sector_normalization_maps_cash_style_aliases_to_unknown(self) -> None:
         master = SecurityMaster(
             records=[
