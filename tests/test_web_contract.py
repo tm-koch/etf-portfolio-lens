@@ -40,6 +40,13 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("renderWarningItems(", app)
         self.assertIn("elements.buildWarningList", app)
 
+    def test_explore_uses_canonical_identity_and_stable_order(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn("holding?.security?.canonical_name", app)
+        self.assertIn("holding?.security?.company_id", app)
+        self.assertIn("b.weight - a.weight || a.key.localeCompare(b.key)", app)
+
     def test_build_dialog_warnings_are_last_and_hidden_details_do_not_display(
         self,
     ) -> None:

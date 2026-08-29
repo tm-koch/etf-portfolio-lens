@@ -42,11 +42,14 @@ class NormalizedHolding:
     ticker: str | None
     name: str | None
     isin: str | None = None
+    company_id: str | None = None
+    canonical_name: str | None = None
     sector: str | None = None
     asset_class: str | None = None
     region: str | None = None
     country: str | None = None
     exchange: str | None = None
+    exchange_code: str | None = None
     market_currency: str | None = None
     weight_pct: float | None = None
     market_value: float | None = None
@@ -63,6 +66,8 @@ class NormalizedHolding:
                 "isin": self.isin,
                 "ticker": self.ticker,
                 "name": self.name,
+                "company_id": self.company_id,
+                "canonical_name": self.canonical_name,
             },
             "classification": {
                 "asset_class": self.asset_class,
@@ -83,6 +88,7 @@ class NormalizedHolding:
             "provenance": {
                 "source_fields": self.source_fields,
                 "enrichment_source": self.enrichment_source,
+                "exchange_code": self.exchange_code,
                 "match": self.match.to_dict() if self.match else None,
             },
         }

@@ -23,6 +23,7 @@ from etf_ingestion_backend.parsing import parse_xlsx_bytes, parse_xlsx_file
 from etf_ingestion_backend.registry import load_registry
 from etf_ingestion_backend.sector_taxonomy import normalize_sector_label
 from etf_ingestion_backend.security_master import SecurityMaster, SecurityRecord
+from etf_ingestion_backend.overrides import OverrideRegistry
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -469,6 +470,86 @@ class IngestionTests(unittest.TestCase):
             normalize_sector_label("communication services"),
         )
 
+    def test_exchange_alias_and_override_resolve_roche(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    ticker="RO",
+                    name="Roche Holding AG",
+                    exchange="SIX",
+                    sector="Health Care",
+                    asset_type="Stock",
+                    country="Switzerland",
+                    country_code="CH",
+                    isin="CH0012032113",
+                    aliases=[],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        with tempfile.TemporaryDirectory() as temp_dir:
+            override_path = Path(temp_dir) / "overrides.json"
+            override_path.write_text(
+                json.dumps(
+                    {
+                        "overrides": [
+                            {
+                                "match": {
+                                    "ticker": "ROP",
+                                    "exchange": "SIX",
+                                    "holding_name": "ROCHE PS PAR AG",
+                                },
+                                "set": {
+                                    "isin": "CH0012032113",
+                                    "company_id": "roche-holding",
+                                    "canonical_name": "Roche Holding AG",
+                                },
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            holding = normalize_row(
+                {
+                    "Ticker": "ROP",
+                    "Name": "ROCHE PS PAR AG",
+                    "Exchange": "SIX Swiss Exchange",
+                    "Location": "Switzerland",
+                },
+                master,
+                "test",
+                "ishares_csv_v1",
+                overrides=OverrideRegistry.from_json(override_path),
+            )
+
+        self.assertEqual("SIX", holding.exchange_code)
+        self.assertEqual("CH0012032113", holding.isin)
+        self.assertEqual("roche-holding", holding.company_id)
+        self.assertEqual("Roche Holding AG", holding.name)
+        self.assertEqual("overridden", holding.match.status)
+
+    def test_strict_mode_rejects_unresolved_holdings_without_partial_snapshot(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
+            )
+            with self.assertRaisesRegex(
+                ValueError, "Strict identity validation failed"
+            ):
+                pipeline.run(
+                    self.registry.select_by_isins(["IE00B44Z5B48"]),
+                    use_fixtures=True,
+                    strict=True,
+                )
+            snapshots = list(Path(temp_dir).rglob("snapshots/*.json"))
+            self.assertEqual([], snapshots)
+
     def test_sector_normalization_maps_cash_style_aliases_to_unknown(self) -> None:
         master = SecurityMaster(
             records=[
@@ -576,6 +657,53 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual("ticker", holding.match.matched_by)
         self.assertIn("isin", holding.match.missing_elements)
         self.assertIn("ambiguous ticker match", buffer.getvalue())
+
+    def test_same_ticker_uses_exchange_to_keep_companies_distinct(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    "DUP",
+                    "Company One",
+                    "EX1",
+                    "Financials",
+                    "Stock",
+                    "Country A",
+                    "AA",
+                    "AA1111111111",
+                    [],
+                ),
+                SecurityRecord(
+                    "DUP",
+                    "Company Two",
+                    "EX2",
+                    "Financials",
+                    "Stock",
+                    "Country B",
+                    "BB",
+                    "BB2222222222",
+                    [],
+                ),
+            ],
+            version="test",
+            warnings=[],
+        )
+
+        first = normalize_row(
+            {"Ticker": "DUP", "Exchange": "EX1", "Name": "Company One"},
+            master,
+            "test",
+            "ishares_csv_v1",
+        )
+        second = normalize_row(
+            {"Ticker": "DUP", "Exchange": "EX2", "Name": "Company Two"},
+            master,
+            "test",
+            "ishares_csv_v1",
+        )
+
+        self.assertEqual("AA1111111111", first.isin)
+        self.assertEqual("BB2222222222", second.isin)
+        self.assertNotEqual(first.company_id, second.company_id)
 
     def test_normalize_row_preserves_percent_based_parser_weight(self) -> None:
         holding = normalize_row(

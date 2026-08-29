@@ -15,6 +15,7 @@ from .fetching import (
 )
 from .models import ETFSnapshot, ETFSourceEntry, IngestionResult
 from .normalization import normalize_row
+from .overrides import OverrideRegistry
 from .parsing import parse_table
 from .registry import ETFRegistry
 from .security_master import SecurityMaster
@@ -25,6 +26,7 @@ class IngestionPipeline:
     registry: ETFRegistry
     output_base: Path
     security_master_source_url: str
+    override_path: Path | None = None
 
     def _download_security_master(
         self, downloads_dir: Path
@@ -37,7 +39,10 @@ class IngestionPipeline:
         return SecurityMaster.from_csv(downloaded.download_path), downloaded
 
     def run(
-        self, entries: Iterable[ETFSourceEntry], use_fixtures: bool = False
+        self,
+        entries: Iterable[ETFSourceEntry],
+        use_fixtures: bool = False,
+        strict: bool = False,
     ) -> list[IngestionResult]:
         run_date = date.today().isoformat()
         output_dir = self.output_base / run_date
@@ -49,8 +54,15 @@ class IngestionPipeline:
         security_master, security_master_download = self._download_security_master(
             downloads_dir
         )
+        overrides = (
+            OverrideRegistry.from_json(self.override_path)
+            if self.override_path and self.override_path.exists()
+            else OverrideRegistry.empty()
+        )
 
         results: list[IngestionResult] = []
+        pending: list[tuple[ETFSourceEntry, DownloadedSource, ETFSnapshot]] = []
+        failures: list[str] = []
         for entry in entries:
             parsed_rows = None
             if use_fixtures and entry.fixture_path:
@@ -84,9 +96,23 @@ class IngestionPipeline:
                     security_master,
                     source_name=entry.provider,
                     parser_id=entry.parser_id,
+                    overrides=overrides,
                 )
                 for row in rows
             ]
+            if strict:
+                for index, holding in enumerate(holdings, start=1):
+                    if (
+                        not holding.company_id
+                        or not holding.canonical_name
+                        or not holding.match
+                        or holding.match.status in {"unmatched", "ambiguous"}
+                    ):
+                        failures.append(
+                            f"{entry.ticker} row {index}: unresolved identity "
+                            f"status={holding.match.status if holding.match else 'missing'} "
+                            f"name={holding.name or '<unknown>'}"
+                        )
             aggregates = aggregate_holdings(holdings)
             generated_at = datetime.now(timezone.utc).isoformat()
             snapshot = ETFSnapshot(
@@ -114,6 +140,14 @@ class IngestionPipeline:
                 },
             )
 
+            pending.append((entry, downloaded, snapshot))
+
+        if failures:
+            raise ValueError(
+                "Strict identity validation failed:\n" + "\n".join(failures)
+            )
+
+        for entry, downloaded, snapshot in pending:
             snapshot_path = snapshots_dir / f"{entry.isin}.json"
             snapshot_path.write_text(
                 json.dumps(snapshot.to_dict(), indent=2, ensure_ascii=False),

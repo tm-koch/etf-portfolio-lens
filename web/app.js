@@ -246,11 +246,11 @@ function closeBuildDialog() {
 }
 
 function getHoldingName(holding) {
-  return holding?.security?.name || holding?.security?.ticker || 'Unknown holding';
+  return holding?.security?.canonical_name || holding?.security?.name || holding?.security?.ticker || 'Unknown holding';
 }
 
 function getHoldingKey(holding) {
-  return holding?.security?.isin || holding?.security?.ticker || getHoldingName(holding);
+  return holding?.security?.company_id || holding?.security?.isin || holding?.security?.ticker || getHoldingName(holding);
 }
 
 function getSnapshotForPosition(position) {
@@ -433,14 +433,14 @@ function aggregateCompanyExposure(positions) {
   }
 
   const ranked = [...exposure.values()]
-    .sort((a, b) => b.weight - a.weight)
+    .sort((a, b) => b.weight - a.weight || a.key.localeCompare(b.key))
     .map((company) => {
       const contributors = [...company.contributors.values()]
         .map((contributor) => ({
           ...contributor,
           shareOfCompany: company.weight ? (contributor.weight / company.weight) * 100 : 0,
         }))
-        .sort((a, b) => b.weight - a.weight);
+        .sort((a, b) => b.weight - a.weight || a.ticker.localeCompare(b.ticker));
 
       return {
         ...company,

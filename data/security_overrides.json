@@ -1,0 +1,46 @@
+{
+  "version": "1",
+  "overrides": [
+    {
+      "match": {
+        "ticker": "ROP",
+        "exchange": "SIX",
+        "holding_name": "ROCHE PS PAR AG"
+      },
+      "set": {
+        "isin": "CH0012032113",
+        "company_id": "roche-holding",
+        "canonical_name": "Roche Holding AG"
+      }
+    },
+    {
+      "match": {
+        "isin": "CH1499059983"
+      },
+      "set": {
+        "company_id": "roche-holding",
+        "canonical_name": "Roche Holding AG"
+      }
+    },
+    {
+      "match": {
+        "isin": "CH0012032113"
+      },
+      "set": {
+        "company_id": "roche-holding",
+        "canonical_name": "Roche Holding AG"
+      }
+    },
+    {
+      "match": {
+        "ticker": "RO",
+        "exchange": "SIX"
+      },
+      "set": {
+        "isin": "CH0012032113",
+        "company_id": "roche-holding",
+        "canonical_name": "Roche Holding AG"
+      }
+    }
+  ]
+}

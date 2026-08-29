@@ -4,6 +4,7 @@ import csv
 from dataclasses import dataclass
 from pathlib import Path
 
+from .exchange import normalize_exchange
 from .models import NormalizedHolding
 from .sector_taxonomy import normalize_sector_label
 
@@ -99,9 +100,18 @@ class SecurityMaster:
                 matches.append(record)
         return matches
 
+    def _records_by_name(self, value: str) -> list[SecurityRecord]:
+        normalized_value = _normalize(value)
+        return [
+            record
+            for record in self.records
+            if _normalize(record.name) == normalized_value
+        ]
+
     def match(self, holding: NormalizedHolding) -> SecurityMatch:
         attempted: list[str] = []
         missing_elements: list[str] = []
+        ambiguous_ticker_warning: str | None = None
 
         if holding.isin:
             attempted.append("isin")
@@ -119,10 +129,9 @@ class SecurityMaster:
         if ticker and exchange:
             attempted.append("ticker+exchange")
             for record in self.records:
-                if (
-                    _normalize(record.ticker) == ticker
-                    and _normalize(record.exchange) == exchange
-                ):
+                if _normalize(record.ticker) == ticker and _normalize(
+                    normalize_exchange(record.exchange)
+                ) == _normalize(holding.exchange_code):
                     return SecurityMatch(
                         record,
                         "matched",
@@ -139,6 +148,11 @@ class SecurityMaster:
         if ticker:
             attempted.append("ticker")
             ticker_matches = self._records_by_ticker(ticker)
+            country_matches = [
+                record
+                for record in ticker_matches
+                if _normalize(record.country) == _normalize(holding.country)
+            ]
             if len(ticker_matches) == 1:
                 return SecurityMatch(
                     ticker_matches[0],
@@ -147,16 +161,35 @@ class SecurityMaster:
                     attempted,
                     missing_elements,
                 )
-            if len(ticker_matches) > 1:
-                warning = f"ambiguous ticker match for {holding.ticker}: {len(ticker_matches)} candidates"
+            if len(country_matches) == 1:
                 return SecurityMatch(
-                    None,
-                    "ambiguous",
-                    "ticker",
+                    country_matches[0],
+                    "matched",
+                    "ticker+country",
                     attempted,
                     missing_elements,
-                    warning,
                 )
+            if len(ticker_matches) > 1:
+                ambiguous_ticker_warning = f"ambiguous ticker match for {holding.ticker}: {len(ticker_matches)} candidates"
+
+        name_matches = self._records_by_name(holding.name or "")
+        if len(name_matches) == 1:
+            return SecurityMatch(
+                name_matches[0],
+                "matched",
+                "name",
+                attempted + ["name"],
+                missing_elements,
+            )
+        if len(name_matches) > 1:
+            return SecurityMatch(
+                None,
+                "ambiguous",
+                "name",
+                attempted + ["name"],
+                missing_elements,
+                f"ambiguous name match for {holding.name}: {len(name_matches)} candidates",
+            )
 
         alias_candidates = [value for value in (holding.ticker, holding.name) if value]
         if alias_candidates:
@@ -189,6 +222,16 @@ class SecurityMaster:
                     missing_elements,
                     warning,
                 )
+
+        if ambiguous_ticker_warning:
+            return SecurityMatch(
+                None,
+                "ambiguous",
+                "ticker",
+                attempted,
+                missing_elements,
+                ambiguous_ticker_warning,
+            )
 
         warning = f"could not fully match holding {holding.ticker or holding.name or '<unknown>'}; missing={missing_elements or ['unknown']}"
         return SecurityMatch(

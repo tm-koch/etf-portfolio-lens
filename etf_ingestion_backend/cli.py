@@ -8,6 +8,7 @@ from .pipeline import IngestionPipeline
 from .registry import load_registry
 
 SECURITY_MASTER_SOURCE_URL = "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv"
+DEFAULT_OVERRIDE_PATH = "data/security_overrides.json"
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -28,6 +29,16 @@ def build_parser() -> argparse.ArgumentParser:
         "--output-base",
         default="data/raw",
         help="Base directory for date-stamped outputs.",
+    )
+    parser.add_argument(
+        "--overrides",
+        default=DEFAULT_OVERRIDE_PATH,
+        help="Path to the holding identity override JSON file.",
+    )
+    parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Fail when any holding cannot be resolved to a canonical identity.",
     )
     parser.add_argument(
         "--isin",
@@ -58,6 +69,7 @@ def main(argv: list[str] | None = None) -> int:
         registry=registry,
         output_base=Path(args.output_base),
         security_master_source_url=args.security_master_url,
+        override_path=Path(args.overrides),
     )
 
     if args.all or not args.isins:
@@ -65,7 +77,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         selected = registry.select_by_isins(args.isins)
 
-    results = pipeline.run(selected, use_fixtures=args.fixtures)
+    results = pipeline.run(selected, use_fixtures=args.fixtures, strict=args.strict)
     if args.update_catalog:
         catalog = build_catalog(selected, results)
         write_catalog(catalog, Path("web/data/catalog.json"))

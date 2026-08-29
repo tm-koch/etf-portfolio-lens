@@ -10,6 +10,13 @@ Use the CLI to generate snapshots on demand:
 python -m etf_ingestion_backend --all --fixtures
 ```
 
+Holdings identity corrections are maintained in `data/security_overrides.json`.
+Use `--overrides <path>` to select another file. Exchange labels are normalized
+before matching, and resolved snapshots contain both the exact instrument fields
+and a canonical `company_id`/name for aggregation. Add `--strict` to terminate
+when any selected holding cannot be resolved to a canonical identity; strict
+runs stage output and do not publish partial snapshots.
+
 To regenerate the frontend catalog from the newly generated snapshots, use the
 explicit catalog update option:
 
@@ -51,6 +58,8 @@ Each snapshot is a JSON document with:
 
 - The backend downloads the security master CSV at ingestion time and uses the run-local copy for enrichment.
 - Missing matches print warnings to the console and do not stop the ingestion run.
+- Overrides are applied before the security master and preserve raw provider values in snapshot provenance.
+- `company_id` identifies the canonical company, while ISIN/ticker/exchange identify the exact traded instrument.
 - The registry includes UBS SPI® Extra ETF (`CH1553162921`, ticker `SPIEXT`) using the existing UBS holdings parser and fixture workflow.
 - UBS live product-page retrieval continues to use the current generic downloader; provider-specific handling for dynamic pages or HTTP 403 responses is deferred.
 

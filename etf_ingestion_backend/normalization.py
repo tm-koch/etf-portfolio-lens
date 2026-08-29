@@ -4,7 +4,9 @@ import re
 import sys
 from typing import Any
 
+from .exchange import normalize_exchange
 from .models import MatchDiagnostics, NormalizedHolding
+from .overrides import OverrideRegistry
 from .sector_taxonomy import normalize_sector_label
 from .security_master import SecurityMaster, SecurityRecord
 
@@ -87,11 +89,17 @@ def _infer_region(country: str | None) -> str | None:
     return REGION_BY_COUNTRY.get(_normalize_key(country))
 
 
+def _company_id(name: str | None, isin: str | None) -> str | None:
+    value = re.sub(r"[^a-z0-9]+", "-", (name or "").casefold()).strip("-")
+    return value or (f"instrument-{isin.casefold()}" if isin else None)
+
+
 def normalize_row(
     raw_row: dict[str, Any],
     security_master: SecurityMaster,
     source_name: str,
     parser_id: str,
+    overrides: OverrideRegistry | None = None,
 ) -> NormalizedHolding:
     isin = (
         raw_row.get("ISIN")
@@ -163,6 +171,7 @@ def normalize_row(
         region=_infer_region(country),
         country=country,
         exchange=exchange,
+        exchange_code=normalize_exchange(exchange),
         market_currency=market_currency,
         weight_pct=parse_weight_float(
             raw_row.get("Weight %")
@@ -192,6 +201,14 @@ def normalize_row(
         source_fields=dict(raw_row),
         enrichment_source=source_name,
     )
+
+    override = (overrides or OverrideRegistry.empty()).find(holding)
+    if override:
+        for field, value in override.set_values.items():
+            if hasattr(holding, field) and value not in (None, ""):
+                setattr(holding, field, value)
+        if holding.exchange:
+            holding.exchange_code = normalize_exchange(holding.exchange)
 
     match = security_master.match(holding)
     holding.match = MatchDiagnostics(
@@ -225,6 +242,20 @@ def normalize_row(
     if not holding.region:
         holding.region = _infer_region(holding.country)
 
+    if override:
+        holding.enrichment_source = (
+            "override+security_master" if match.record else "override"
+        )
+        holding.match.status = "overridden"
+        holding.match.matched_by = "override"
+    if holding.canonical_name:
+        holding.name = holding.canonical_name
+    elif match.record:
+        holding.canonical_name = match.record.name
+        holding.name = holding.canonical_name
+    if holding.name and not holding.company_id:
+        holding.company_id = _company_id(holding.name, holding.isin)
+
     return holding
 
 
@@ -243,6 +274,8 @@ def enrich_holding(holding: NormalizedHolding, record: SecurityRecord) -> None:
         holding.country = record.country
     if not holding.exchange:
         holding.exchange = record.exchange
+    if not holding.exchange_code:
+        holding.exchange_code = normalize_exchange(record.exchange)
     if not holding.market_currency:
         holding.market_currency = record.country_code or None
     if not holding.region:
