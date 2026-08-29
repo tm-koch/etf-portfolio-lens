@@ -192,6 +192,19 @@ class IngestionTests(unittest.TestCase):
                 max(item["weight_pct"] for item in currency_weights), 0.0
             )
 
+    def test_chspi_snapshot_distinguishes_incomplete_rows_from_overrides(self) -> None:
+        snapshot_path = (
+            ROOT / "data" / "raw" / "2026-08-29" / "snapshots" / "CH0237935652.json"
+        )
+        snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        statuses = [
+            holding["provenance"]["match"]["status"] for holding in snapshot["holdings"]
+        ]
+
+        self.assertEqual(2, statuses.count("ambiguous"))
+        self.assertEqual(3, statuses.count("unmatched"))
+        self.assertGreater(statuses.count("overridden"), 0)
+
     def test_unresolved_holdings_keep_source_name_in_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             pipeline = IngestionPipeline(

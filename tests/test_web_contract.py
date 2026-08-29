@@ -40,6 +40,22 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("renderWarningItems(", app)
         self.assertIn("elements.buildWarningList", app)
 
+    def test_warning_count_only_includes_incomplete_match_statuses(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "const INCOMPLETE_MATCH_STATUSES = new Set(['ambiguous', 'unmatched']);",
+            app,
+        )
+        self.assertIn(
+            "INCOMPLETE_MATCH_STATUSES.has(holding?.provenance?.match?.status)",
+            app,
+        )
+        self.assertNotIn(
+            "holding?.provenance?.match?.status !== 'matched'",
+            app,
+        )
+
     def test_explore_uses_canonical_identity_and_stable_order(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
