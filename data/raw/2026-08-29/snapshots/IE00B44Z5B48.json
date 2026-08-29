@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-29",
-    "generated_at": "2026-08-29T13:07:25.341680+00:00",
+    "generated_at": "2026-08-29T13:38:17.679781+00:00",
     "source_url": "https://www.ssga.com/ch/en_gb/intermediary/library-content/products/fund-data/etfs/emea/holdings-daily-emea-en-spyy-gy.xlsx",
     "resolved_download_url": "data\\raw\\2026-08-29\\downloads\\IE00B44Z5B48.xlsx",
     "source_format": "xlsx",
@@ -2159,7 +2159,7 @@
             "ticker",
             "exchange"
           ],
-          "warning": "could not fully match holding Roche Holding Ltd; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },

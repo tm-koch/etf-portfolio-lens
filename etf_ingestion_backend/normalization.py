@@ -209,6 +209,9 @@ def normalize_row(
                 setattr(holding, field, value)
         if holding.exchange:
             holding.exchange_code = normalize_exchange(holding.exchange)
+    complete_override = bool(
+        override and holding.isin and holding.company_id and holding.canonical_name
+    )
 
     match = security_master.match(holding)
     holding.match = MatchDiagnostics(
@@ -232,12 +235,16 @@ def normalize_row(
             ).strip()
             if source_label:
                 holding.name = source_label
-        fallback_identifier = holding.ticker or holding.name or "<unknown>"
-        warning = match.warning or "could not fully match holding {} from {}".format(
-            fallback_identifier,
-            source_name,
-        )
-        print(f"WARNING: {warning}", file=sys.stderr)
+        if not complete_override:
+            fallback_identifier = holding.ticker or holding.name or "<unknown>"
+            warning = (
+                match.warning
+                or "could not fully match holding {} from {}".format(
+                    fallback_identifier,
+                    source_name,
+                )
+            )
+            print(f"WARNING: {warning}", file=sys.stderr)
 
     if not holding.region:
         holding.region = _infer_region(holding.country)
@@ -248,6 +255,8 @@ def normalize_row(
         )
         holding.match.status = "overridden"
         holding.match.matched_by = "override"
+        if complete_override:
+            holding.match.warning = None
     if holding.canonical_name:
         holding.name = holding.canonical_name
     elif match.record:

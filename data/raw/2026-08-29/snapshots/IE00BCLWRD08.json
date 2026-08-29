@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-29",
-    "generated_at": "2026-08-29T13:08:01.437983+00:00",
+    "generated_at": "2026-08-29T13:39:02.276263+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/257270/ishares-msci-emu-mid-cap-ucits-etf/1495092304805.ajax?fileType=csv&fileName=EMUM_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-08-29\\downloads\\IE00BCLWRD08.csv",
     "source_format": "csv",
@@ -75,11 +75,11 @@
     },
     {
       "security": {
-        "isin": "AU0000180317",
+        "isin": null,
         "ticker": "REP",
-        "name": "Ram Essential Services Property Fund",
-        "company_id": "ram-essential-services-property-fund",
-        "canonical_name": "Ram Essential Services Property Fund"
+        "name": "REPSOL SA",
+        "company_id": "repsol-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -112,19 +112,20 @@
           "Exchange": "Bolsa De Madrid",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BOLSA DE MADRID",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for REP conflicts with holding context exchange=Bolsa De Madrid, country=Spain"
         }
       }
     },
@@ -337,10 +338,11 @@
         "exchange_code": "NEW YORK STOCK EXCHANGE INC.",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
@@ -462,11 +464,11 @@
     },
     {
       "security": {
-        "isin": "US65345N1063",
+        "isin": null,
         "ticker": "NN",
-        "name": "Nextnav Acquisition Corp",
-        "company_id": "nextnav-acquisition-corp",
-        "canonical_name": "Nextnav Acquisition Corp"
+        "name": "NN GROUP NV",
+        "company_id": "nn-group-nv",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -499,19 +501,20 @@
           "Exchange": "Euronext Amsterdam",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "EURONEXT AMSTERDAM",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for NN conflicts with holding context exchange=Euronext Amsterdam, country=Netherlands"
         }
       }
     },
@@ -572,11 +575,11 @@
     },
     {
       "security": {
-        "isin": "US6031581068",
+        "isin": null,
         "ticker": "MTX",
-        "name": "Minerals Technologies Inc",
-        "company_id": "minerals-technologies-inc",
-        "canonical_name": "Minerals Technologies Inc"
+        "name": "MTU AERO ENGINES HOLDING AG",
+        "company_id": "mtu-aero-engines-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -609,19 +612,20 @@
           "Exchange": "Xetra",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "XETRA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for MTX conflicts with holding context exchange=Xetra, country=Germany"
         }
       }
     },
@@ -736,11 +740,11 @@
     },
     {
       "security": {
-        "isin": "CA09523F1053",
+        "isin": "IT0005218380",
         "ticker": "BAMI",
-        "name": "Blue Ant Media Corporation",
-        "company_id": "blue-ant-media-corporation",
-        "canonical_name": "Blue Ant Media Corporation"
+        "name": "Banco Bpm SpA",
+        "company_id": "banco-bpm-spa",
+        "canonical_name": "Banco Bpm SpA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -777,10 +781,11 @@
         "exchange_code": "BORSA ITALIANA",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "alias",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
@@ -1011,11 +1016,11 @@
     },
     {
       "security": {
-        "isin": "US8965221091",
+        "isin": "US88088L1035",
         "ticker": "TRN",
-        "name": "Trinity Industries Inc",
-        "company_id": "trinity-industries-inc",
-        "canonical_name": "Trinity Industries Inc"
+        "name": "Terna Rete Elettrica Nazionale",
+        "company_id": "terna-rete-elettrica-nazionale",
+        "canonical_name": "Terna Rete Elettrica Nazionale"
       },
       "classification": {
         "asset_class": "Equity",
@@ -1052,10 +1057,11 @@
         "exchange_code": "BORSA ITALIANA",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
@@ -1066,11 +1072,11 @@
     },
     {
       "security": {
-        "isin": "US30257X1046",
+        "isin": null,
         "ticker": "FBK",
-        "name": "FB Financial Corp",
-        "company_id": "fb-financial-corp",
-        "canonical_name": "FB Financial Corp"
+        "name": "FINECOBANK BANCA FINECO",
+        "company_id": "finecobank-banca-fineco",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -1103,19 +1109,20 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for FBK conflicts with holding context exchange=Borsa Italiana, country=Italy"
         }
       }
     },
@@ -1343,11 +1350,11 @@
     },
     {
       "security": {
-        "isin": "US74347R3131",
+        "isin": "IT0003796171",
         "ticker": "PST",
-        "name": "ProShares UltraShort 7-10 Year Treasury",
-        "company_id": "proshares-ultrashort-7-10-year-treasury",
-        "canonical_name": "ProShares UltraShort 7-10 Year Treasury"
+        "name": "Poste Italiane S.p.A.",
+        "company_id": "poste-italiane-s-p-a",
+        "canonical_name": "Poste Italiane S.p.A."
       },
       "classification": {
         "asset_class": "Equity",
@@ -1384,10 +1391,11 @@
         "exchange_code": "BORSA ITALIANA",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "alias",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
@@ -1454,11 +1462,11 @@
     },
     {
       "security": {
-        "isin": "BMG169621056",
+        "isin": "US07178A1088",
         "ticker": "BG",
-        "name": "Bunge Global S.A.",
-        "company_id": "bunge-global-s-a",
-        "canonical_name": "Bunge Global S.A."
+        "name": "BAWAG Group AG",
+        "company_id": "bawag-group-ag",
+        "canonical_name": "BAWAG Group AG"
       },
       "classification": {
         "asset_class": "Equity",
@@ -1495,10 +1503,11 @@
         "exchange_code": "WIENER BOERSE AG",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
@@ -1509,11 +1518,11 @@
     },
     {
       "security": {
-        "isin": "US81752R1005",
+        "isin": null,
         "ticker": "SRG",
-        "name": "Seritage Growth Properties",
-        "company_id": "seritage-growth-properties",
-        "canonical_name": "Seritage Growth Properties"
+        "name": "SNAM",
+        "company_id": "snam",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -1546,19 +1555,20 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for SRG conflicts with holding context exchange=Borsa Italiana, country=Italy"
         }
       }
     },
@@ -2281,11 +2291,11 @@
     },
     {
       "security": {
-        "isin": "US23306X8526",
+        "isin": null,
         "ticker": "CA",
-        "name": "Xtrackers California Municipal Bonds ETF",
-        "company_id": "xtrackers-california-municipal-bonds-etf",
-        "canonical_name": "Xtrackers California Municipal Bonds ETF"
+        "name": "CARREFOUR SA",
+        "company_id": "carrefour-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -2318,19 +2328,20 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CA conflicts with holding context exchange=Nyse Euronext - Euronext Paris, country=France"
         }
       }
     },
@@ -2391,11 +2402,11 @@
     },
     {
       "security": {
-        "isin": "AU0000150328",
+        "isin": null,
         "ticker": "AGN",
-        "name": "Argenica Therapeutics Limited",
-        "company_id": "argenica-therapeutics-limited",
-        "canonical_name": "Argenica Therapeutics Limited"
+        "name": "AEGON LTD",
+        "company_id": "aegon-ltd",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -2428,29 +2439,30 @@
           "Exchange": "Euronext Amsterdam",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "EURONEXT AMSTERDAM",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for AGN conflicts with holding context exchange=Euronext Amsterdam, country=Netherlands"
         }
       }
     },
     {
       "security": {
-        "isin": "ES0180907000",
+        "isin": null,
         "ticker": "UNI",
-        "name": "Unicaja Banco SA",
-        "company_id": "unicaja-banco-sa",
-        "canonical_name": "Unicaja Banco SA"
+        "name": "UNIPOL ASSICURAZIONI SPA",
+        "company_id": "unipol-assicurazioni-spa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -2483,19 +2495,20 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for UNI conflicts with holding context exchange=Borsa Italiana, country=Italy"
         }
       }
     },
@@ -2831,11 +2844,11 @@
     },
     {
       "security": {
-        "isin": "TH0420010Y01",
+        "isin": null,
         "ticker": "BCP",
-        "name": "Bangchak Corporation Public Company Limited",
-        "company_id": "bangchak-corporation-public-company-limited",
-        "canonical_name": "Bangchak Corporation Public Company Limited"
+        "name": "BANCO COMERCIAL PORTUGUES SA",
+        "company_id": "banco-comercial-portugues-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -2868,29 +2881,30 @@
           "Exchange": "Nyse Euronext - Euronext Lisbon",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for BCP conflicts with holding context exchange=Nyse Euronext - Euronext Lisbon, country=Portugal"
         }
       }
     },
     {
       "security": {
-        "isin": "US74347R7355",
+        "isin": null,
         "ticker": "RXL",
-        "name": "ProShares Ultra Health Care",
-        "company_id": "proshares-ultra-health-care",
-        "canonical_name": "ProShares Ultra Health Care"
+        "name": "REXEL SA",
+        "company_id": "rexel-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -2923,19 +2937,20 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for RXL conflicts with holding context exchange=Nyse Euronext - Euronext Paris, country=France"
         }
       }
     },
@@ -3161,11 +3176,11 @@
     },
     {
       "security": {
-        "isin": "US20603L1026",
+        "isin": null,
         "ticker": "CON",
-        "name": "Concentra Group Holdings Parent, Inc.",
-        "company_id": "concentra-group-holdings-parent-inc",
-        "canonical_name": "Concentra Group Holdings Parent, Inc."
+        "name": "CONTINENTAL AG",
+        "company_id": "continental-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -3198,19 +3213,20 @@
           "Exchange": "Xetra",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "XETRA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CON conflicts with holding context exchange=Xetra, country=Germany"
         }
       }
     },
@@ -3381,11 +3397,11 @@
     },
     {
       "security": {
-        "isin": "US50202M1027",
+        "isin": null,
         "ticker": "LI",
-        "name": "Li Auto Inc",
-        "company_id": "li-auto-inc",
-        "canonical_name": "Li Auto Inc"
+        "name": "KLEPIERRE REIT SA",
+        "company_id": "klepierre-reit-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -3418,29 +3434,30 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for LI conflicts with holding context exchange=Nyse Euronext - Euronext Paris, country=France"
         }
       }
     },
     {
       "security": {
-        "isin": "BMG9108L1735",
+        "isin": "LU2598331598",
         "ticker": "TEN",
-        "name": "Tsakos Energy Navigation Ltd",
-        "company_id": "tsakos-energy-navigation-ltd",
-        "canonical_name": "Tsakos Energy Navigation Ltd"
+        "name": "Tenaris SA",
+        "company_id": "tenaris-sa",
+        "canonical_name": "Tenaris SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -3477,10 +3494,11 @@
         "exchange_code": "BORSA ITALIANA",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
@@ -3819,11 +3837,11 @@
     },
     {
       "security": {
-        "isin": "US12233L2060",
+        "isin": null,
         "ticker": "BNR",
-        "name": "Burning Rock Biotech Ltd",
-        "company_id": "burning-rock-biotech-ltd",
-        "canonical_name": "Burning Rock Biotech Ltd"
+        "name": "BRENNTAG",
+        "company_id": "brenntag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -3856,19 +3874,20 @@
           "Exchange": "Xetra",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "XETRA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for BNR conflicts with holding context exchange=Xetra, country=Germany"
         }
       }
     },
@@ -3929,11 +3948,11 @@
     },
     {
       "security": {
-        "isin": "CA45075E1043",
+        "isin": null,
         "ticker": "IAG",
-        "name": "iA Financial Corporation Inc",
-        "company_id": "ia-financial-corporation-inc",
-        "canonical_name": "iA Financial Corporation Inc"
+        "name": "INTERNATIONAL AIRLINES GROUP SA",
+        "company_id": "international-airlines-group-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -3966,19 +3985,20 @@
           "Exchange": "Bolsa De Madrid",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BOLSA DE MADRID",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for IAG conflicts with holding context exchange=Bolsa De Madrid, country=Spain"
         }
       }
     },
@@ -4093,11 +4113,11 @@
     },
     {
       "security": {
-        "isin": "US74255Y8214",
+        "isin": "IT0005211237",
         "ticker": "IG",
-        "name": "Principal Exchange-Traded Funds - Principal Investment Grade Corporate Active ETF",
-        "company_id": "principal-exchange-traded-funds-principal-investment-grade-corporate-active-etf",
-        "canonical_name": "Principal Exchange-Traded Funds - Principal Investment Grade Corporate Active ETF"
+        "name": "Italgas S.p.A.",
+        "company_id": "italgas-s-p-a",
+        "canonical_name": "Italgas S.p.A."
       },
       "classification": {
         "asset_class": "Equity",
@@ -4134,10 +4154,11 @@
         "exchange_code": "BORSA ITALIANA",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "alias",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
@@ -4532,11 +4553,11 @@
     },
     {
       "security": {
-        "isin": "US0030222741",
+        "isin": null,
         "ticker": "AMUN",
-        "name": "abrdn Ultra Short Municipal Income Active ETF",
-        "company_id": "abrdn-ultra-short-municipal-income-active-etf",
-        "canonical_name": "abrdn Ultra Short Municipal Income Active ETF"
+        "name": "AMUNDI SA",
+        "company_id": "amundi-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -4569,29 +4590,30 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for AMUN conflicts with holding context exchange=Nyse Euronext - Euronext Paris, country=France"
         }
       }
     },
     {
       "security": {
-        "isin": "GB00B28ZPS36",
+        "isin": null,
         "ticker": "REC",
-        "name": "Record PLC",
-        "company_id": "record-plc",
-        "canonical_name": "Record PLC"
+        "name": "RECORDATI INDUSTRIA CHIMICA E FARM",
+        "company_id": "recordati-industria-chimica-e-farm",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -4624,19 +4646,20 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for REC conflicts with holding context exchange=Borsa Italiana, country=Italy"
         }
       }
     },
@@ -4916,11 +4939,11 @@
     },
     {
       "security": {
-        "isin": "US03676B1026",
+        "isin": "FR0000121725",
         "ticker": "AM",
-        "name": "Antero Midstream Partners LP",
-        "company_id": "antero-midstream-partners-lp",
-        "canonical_name": "Antero Midstream Partners LP"
+        "name": "Dassault Aviation SA",
+        "company_id": "dassault-aviation-sa",
+        "canonical_name": "Dassault Aviation SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -4957,10 +4980,11 @@
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
@@ -5026,11 +5050,11 @@
     },
     {
       "security": {
-        "isin": "TH3925010Z05",
+        "isin": null,
         "ticker": "JMT",
-        "name": "JMT NETWORK SERVICES PUBLIC COMPANY LIMITED",
-        "company_id": "jmt-network-services-public-company-limited",
-        "canonical_name": "JMT NETWORK SERVICES PUBLIC COMPANY LIMITED"
+        "name": "JERONIMO MARTINS SA",
+        "company_id": "jeronimo-martins-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5063,19 +5087,20 @@
           "Exchange": "Nyse Euronext - Euronext Lisbon",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for JMT conflicts with holding context exchange=Nyse Euronext - Euronext Lisbon, country=Portugal"
         }
       }
     },
@@ -5248,11 +5273,11 @@
     },
     {
       "security": {
-        "isin": "US09290C4006",
+        "isin": "IT0004776628",
         "ticker": "BMED",
-        "name": "BlackRock Future Health ETF",
-        "company_id": "blackrock-future-health-etf",
-        "canonical_name": "BlackRock Future Health ETF"
+        "name": "Banca Mediolanum SpA",
+        "company_id": "banca-mediolanum-spa",
+        "canonical_name": "Banca Mediolanum SpA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -5289,10 +5314,11 @@
         "exchange_code": "BORSA ITALIANA",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "alias",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
@@ -5357,11 +5383,11 @@
     },
     {
       "security": {
-        "isin": "ES0132945017",
+        "isin": "BE0003823409",
         "ticker": "TUB",
-        "name": "Tubacex S.A",
-        "company_id": "tubacex-s-a",
-        "canonical_name": "Tubacex S.A"
+        "name": "Financiere de Tubize SA",
+        "company_id": "financiere-de-tubize-sa",
+        "canonical_name": "Financiere de Tubize SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -5398,10 +5424,11 @@
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
@@ -5522,11 +5549,11 @@
     },
     {
       "security": {
-        "isin": "IE00028FXN24",
+        "isin": null,
         "ticker": "SW",
-        "name": "Smurfit WestRock plc",
-        "company_id": "smurfit-westrock-plc",
-        "canonical_name": "Smurfit WestRock plc"
+        "name": "SODEXO SA",
+        "company_id": "sodexo-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5559,19 +5586,20 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for SW conflicts with holding context exchange=Nyse Euronext - Euronext Paris, country=France"
         }
       }
     },
@@ -5797,11 +5825,11 @@
     },
     {
       "security": {
-        "isin": "US6458272050",
+        "isin": null,
         "ticker": "IDR",
-        "name": "Idaho Strategic Resources Inc",
-        "company_id": "idaho-strategic-resources-inc",
-        "canonical_name": "Idaho Strategic Resources Inc"
+        "name": "INDRA SISTEMAS SA",
+        "company_id": "indra-sistemas-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5834,29 +5862,30 @@
           "Exchange": "Bolsa De Madrid",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BOLSA DE MADRID",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for IDR conflicts with holding context exchange=Bolsa De Madrid, country=Spain"
         }
       }
     },
     {
       "security": {
-        "isin": "DE0005580005",
+        "isin": null,
         "ticker": "DIE",
-        "name": "DIERIG HOLDING AG O.N.",
-        "company_id": "dierig-holding-ag-o-n",
-        "canonical_name": "DIERIG HOLDING AG O.N."
+        "name": "DIETEREN (D) SA",
+        "company_id": "dieteren-d-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5889,29 +5918,30 @@
           "Exchange": "Nyse Euronext - Euronext Brussels",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for DIE conflicts with holding context exchange=Nyse Euronext - Euronext Brussels, country=Belgium"
         }
       }
     },
     {
       "security": {
-        "isin": "US0530151036",
+        "isin": null,
         "ticker": "ADP",
-        "name": "Automatic Data Processing Inc",
-        "company_id": "automatic-data-processing-inc",
-        "canonical_name": "Automatic Data Processing Inc"
+        "name": "AEROPORTS DE PARIS SA",
+        "company_id": "aeroports-de-paris-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5944,19 +5974,20 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
         "match": {
-          "status": "matched",
-          "matched_by": "ticker",
+          "status": "ambiguous",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ambiguous name match for AEROPORTS DE PARIS SA: 2 candidates"
         }
       }
     },
@@ -5964,9 +5995,9 @@
       "security": {
         "isin": null,
         "ticker": "SOF",
-        "name": "Amplify Samsung SOFR ETF",
-        "company_id": "amplify-samsung-sofr-etf",
-        "canonical_name": "Amplify Samsung SOFR ETF"
+        "name": "SOFINA SA",
+        "company_id": "sofina-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5999,19 +6030,20 @@
           "Exchange": "Nyse Euronext - Euronext Brussels",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for SOF conflicts with holding context exchange=Nyse Euronext - Euronext Brussels, country=Belgium"
         }
       }
     },
@@ -6073,11 +6105,11 @@
     },
     {
       "security": {
-        "isin": "US6516391066",
+        "isin": null,
         "ticker": "NEM",
-        "name": "Newmont Goldcorp Corp",
-        "company_id": "newmont-goldcorp-corp",
-        "canonical_name": "Newmont Goldcorp Corp"
+        "name": "NEMETSCHEK",
+        "company_id": "nemetschek",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6110,29 +6142,30 @@
           "Exchange": "Xetra",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "XETRA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for NEM conflicts with holding context exchange=Xetra, country=Germany"
         }
       }
     },
     {
       "security": {
-        "isin": "US26923N3970",
+        "isin": null,
         "ticker": "RAA",
-        "name": "SMI 3Fourteen REAL Asset Allocation ETF",
-        "company_id": "smi-3fourteen-real-asset-allocation-etf",
-        "canonical_name": "SMI 3Fourteen REAL Asset Allocation ETF"
+        "name": "RATIONAL AG",
+        "company_id": "rational-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6165,29 +6198,30 @@
           "Exchange": "Xetra",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "XETRA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for RAA conflicts with holding context exchange=Xetra, country=Germany"
         }
       }
     },
     {
       "security": {
-        "isin": "PLPZBDT00013",
+        "isin": null,
         "ticker": "CPR",
-        "name": "Compremum S.A.",
-        "company_id": "compremum-s-a",
-        "canonical_name": "Compremum S.A."
+        "name": "DAVIDE CAMPARI MILANO NV",
+        "company_id": "davide-campari-milano-nv",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6220,19 +6254,20 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CPR conflicts with holding context exchange=Borsa Italiana, country=Italy"
         }
       }
     },
@@ -6402,11 +6437,11 @@
     },
     {
       "security": {
-        "isin": "JE00BRX98089",
+        "isin": null,
         "ticker": "CVC",
-        "name": "CVC CAPITAL",
-        "company_id": "cvc-capital",
-        "canonical_name": "CVC CAPITAL"
+        "name": "CVC CAPITAL PARTNERS PLC",
+        "company_id": "cvc-capital-partners-plc",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6439,19 +6474,20 @@
           "Exchange": "Euronext Amsterdam",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "EURONEXT AMSTERDAM",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CVC conflicts with holding context exchange=Euronext Amsterdam, country=Netherlands"
         }
       }
     },
@@ -6623,11 +6659,11 @@
     },
     {
       "security": {
-        "isin": "PLEURCH00011",
+        "isin": null,
         "ticker": "EUR",
-        "name": "Eurocash S.A.",
-        "company_id": "eurocash-s-a",
-        "canonical_name": "Eurocash S.A."
+        "name": "EUR CASH",
+        "company_id": "eur-cash",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Cash",
@@ -6660,19 +6696,20 @@
           "Exchange": "-",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "-",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for EUR conflicts with holding context exchange=-, country=European Union"
         }
       }
     },
@@ -6901,11 +6938,11 @@
     },
     {
       "security": {
-        "isin": "GB00BF2F1X78",
+        "isin": null,
         "ticker": "CHF",
-        "name": "Chesterfield Resources PLC",
-        "company_id": "chesterfield-resources-plc",
-        "canonical_name": "Chesterfield Resources PLC"
+        "name": "CHF CASH",
+        "company_id": "chf-cash",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Cash",
@@ -6938,29 +6975,30 @@
           "Exchange": "-",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "-",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CHF conflicts with holding context exchange=-, country=Switzerland"
         }
       }
     },
     {
       "security": {
-        "isin": "CA10489B1040",
+        "isin": null,
         "ticker": "BES",
-        "name": "Braille Energy Systems Inc.",
-        "company_id": "braille-energy-systems-inc",
-        "canonical_name": "Braille Energy Systems Inc."
+        "name": "BANCO ESPIRITO SANTO CLASS N SA",
+        "company_id": "banco-espirito-santo-class-n-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6993,19 +7031,20 @@
           "Exchange": "Nyse Euronext - Euronext Lisbon",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for BES conflicts with holding context exchange=Nyse Euronext - Euronext Lisbon, country=Portugal"
         }
       }
     },
@@ -7157,7 +7196,7 @@
       },
       {
         "ticker": "REP",
-        "name": "Ram Essential Services Property Fund",
+        "name": "REPSOL SA",
         "weight_pct": 2.3
       },
       {
@@ -7192,7 +7231,7 @@
       },
       {
         "ticker": "NN",
-        "name": "Nextnav Acquisition Corp",
+        "name": "NN GROUP NV",
         "weight_pct": 1.8
       },
       {

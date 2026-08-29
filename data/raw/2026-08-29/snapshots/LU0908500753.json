@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-29",
-    "generated_at": "2026-08-29T13:07:39.807925+00:00",
+    "generated_at": "2026-08-29T13:38:34.672426+00:00",
     "source_url": "https://www.amundietf.ch/en/professional/products/equity/amundi-core-stoxx-europe-600-ucits-etf-acc/lu0908500753",
     "resolved_download_url": "data\\raw\\2026-08-29\\downloads\\LU0908500753.xlsx",
     "source_format": "xlsx",
@@ -161,7 +161,7 @@
             "ticker",
             "exchange"
           ],
-          "warning": "could not fully match holding ROCHE HOLDING AG - GENUSSS CHF; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },

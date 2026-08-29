@@ -658,6 +658,181 @@ class IngestionTests(unittest.TestCase):
         self.assertIn("isin", holding.match.missing_elements)
         self.assertIn("ambiguous ticker match", buffer.getvalue())
 
+    def test_context_conflicting_ticker_match_warns_and_stays_unresolved(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    "CFR",
+                    "Cullen/Frost Bankers Inc",
+                    "NYSE",
+                    "Financials",
+                    "Stock",
+                    "United States",
+                    "US",
+                    "US2298991090",
+                    [],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        buffer = io.StringIO()
+        with contextlib.redirect_stderr(buffer):
+            holding = normalize_row(
+                {
+                    "Ticker": "CFR",
+                    "Name": "COMPAGNIE FINANCIERE RICHEMONT SA",
+                    "Exchange": "SIX Swiss Exchange",
+                    "Location": "Switzerland",
+                },
+                master,
+                "test",
+                "ishares_csv_v1",
+            )
+
+        self.assertIsNone(holding.isin)
+        self.assertEqual("ambiguous", holding.match.status)
+        self.assertEqual("ticker", holding.match.matched_by)
+        self.assertIn("ticker+exchange", holding.match.attempted)
+        self.assertIn("conflicts with holding context", holding.match.warning)
+        self.assertIn("conflicts with holding context", buffer.getvalue())
+
+    def test_context_conflicting_ticker_does_not_block_unique_ticker_without_context(
+        self,
+    ) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    "CFR",
+                    "Cullen/Frost Bankers Inc",
+                    "NYSE",
+                    "Financials",
+                    "Stock",
+                    "United States",
+                    "US",
+                    "US2298991090",
+                    [],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+
+        holding = normalize_row(
+            {"Ticker": "CFR", "Name": "Cullen/Frost Bankers Inc"},
+            master,
+            "test",
+            "ishares_csv_v1",
+        )
+
+        self.assertEqual("US2298991090", holding.isin)
+        self.assertEqual("ticker", holding.match.matched_by)
+
+    def test_richemont_override_does_not_match_cullen_frost(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    "CFR",
+                    "Cullen/Frost Bankers Inc",
+                    "NYSE",
+                    "Financials",
+                    "Stock",
+                    "United States",
+                    "US",
+                    "US2298991090",
+                    [],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+
+        holding = normalize_row(
+            {
+                "Ticker": "CFR",
+                "Name": "Cullen/Frost Bankers Inc",
+                "Exchange": "NYSE",
+                "Location": "United States",
+            },
+            master,
+            "test",
+            "ishares_csv_v1",
+            overrides=overrides,
+        )
+
+        self.assertEqual("US2298991090", holding.isin)
+        self.assertEqual("Cullen/Frost Bankers Inc", holding.name)
+        self.assertNotEqual("richemont", holding.company_id)
+
+    def test_richemont_override_resolves_cfr_and_preserves_source_fields(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    "CFR",
+                    "Cullen/Frost Bankers Inc",
+                    "NYSE",
+                    "Financials",
+                    "Stock",
+                    "United States",
+                    "US",
+                    "US2298991090",
+                    [],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+        source_row = {
+            "Ticker": "CFR",
+            "Name": "COMPAGNIE FINANCIERE RICHEMONT SA",
+            "Exchange": "SIX Swiss Exchange",
+            "Location": "Switzerland",
+        }
+
+        holding = normalize_row(
+            source_row,
+            master,
+            "test",
+            "ishares_csv_v1",
+            overrides=overrides,
+        )
+
+        self.assertEqual("CH0210483332", holding.isin)
+        self.assertEqual("richemont", holding.company_id)
+        self.assertEqual("Compagnie Financiere Richemont SA", holding.name)
+        self.assertEqual("overridden", holding.match.status)
+        self.assertEqual(source_row, holding.source_fields)
+
+    def test_strict_context_conflict_writes_no_partial_snapshot(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            override_path = Path(temp_dir) / "empty-overrides.json"
+            override_path.write_text('{"overrides": []}', encoding="utf-8")
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir) / "output",
+                self.security_master_source_url,
+                override_path=override_path,
+            )
+
+            with self.assertRaisesRegex(
+                ValueError, "Strict identity validation failed"
+            ):
+                pipeline.run(
+                    self.registry.select_by_isins(["CH0237935652"]),
+                    use_fixtures=True,
+                    strict=True,
+                )
+
+            self.assertEqual(
+                [], list((Path(temp_dir) / "output").rglob("snapshots/*.json"))
+            )
+
     def test_same_ticker_uses_exchange_to_keep_companies_distinct(self) -> None:
         master = SecurityMaster(
             records=[

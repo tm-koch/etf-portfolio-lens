@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-08-29",
-    "generated_at": "2026-08-29T13:08:07.705875+00:00",
+    "generated_at": "2026-08-29T13:39:10.603721+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/264107/ishares-spi-ch-fund/1495092304805.ajax?fileType=csv&fileName=CHSPI_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-08-29\\downloads\\CH0237935652.csv",
     "source_format": "csv",
@@ -287,11 +287,11 @@
     },
     {
       "security": {
-        "isin": "US2298991090",
+        "isin": "CH0210483332",
         "ticker": "CFR",
-        "name": "Cullen/Frost Bankers Inc",
-        "company_id": "cullen-frost-bankers-inc",
-        "canonical_name": "Cullen/Frost Bankers Inc"
+        "name": "Compagnie Financiere Richemont SA",
+        "company_id": "richemont",
+        "canonical_name": "Compagnie Financiere Richemont SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -324,18 +324,18 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
-          "matched_by": "ticker",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
+            "isin",
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
-          "missing_elements": [
-            "isin"
-          ],
+          "missing_elements": [],
           "warning": null
         }
       }
@@ -666,11 +666,11 @@
     },
     {
       "security": {
-        "isin": "CA0156441077",
+        "isin": null,
         "ticker": "ALC",
-        "name": "Algoma Central Corporation",
-        "company_id": "algoma-central-corporation",
-        "canonical_name": "Algoma Central Corporation"
+        "name": "ALCON AG",
+        "company_id": "alcon-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -703,19 +703,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for ALC conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -937,11 +938,11 @@
     },
     {
       "security": {
-        "isin": "GB00BF2F1X78",
+        "isin": null,
         "ticker": "CHF",
-        "name": "Chesterfield Resources PLC",
-        "company_id": "chesterfield-resources-plc",
-        "canonical_name": "Chesterfield Resources PLC"
+        "name": "CHF CASH",
+        "company_id": "chf-cash",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Cash",
@@ -974,19 +975,20 @@
           "Exchange": "-",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "-",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CHF conflicts with holding context exchange=-, country=Switzerland"
         }
       }
     },
@@ -1100,11 +1102,11 @@
     },
     {
       "security": {
-        "isin": "US4461501045",
+        "isin": null,
         "ticker": "HBAN",
-        "name": "Huntington Bancshares Incorporated",
-        "company_id": "huntington-bancshares-incorporated",
-        "canonical_name": "Huntington Bancshares Incorporated"
+        "name": "HELVETIA BALOISE HOLDING N AG",
+        "company_id": "helvetia-baloise-holding-n-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -1137,19 +1139,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for HBAN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -1373,11 +1376,11 @@
     },
     {
       "security": {
-        "isin": "US96812F1021",
+        "isin": null,
         "ticker": "BAER",
-        "name": "Bridger Aerospace Group Holdings, Inc. Common Stock",
-        "company_id": "bridger-aerospace-group-holdings-inc-common-stock",
-        "canonical_name": "Bridger Aerospace Group Holdings, Inc. Common Stock"
+        "name": "JULIUS BAER GRUPPE AG",
+        "company_id": "julius-baer-gruppe-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -1410,19 +1413,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for BAER conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -1482,11 +1486,11 @@
     },
     {
       "security": {
-        "isin": "US5412091028",
+        "isin": null,
         "ticker": "LOGN",
-        "name": "Logansport Financial Corp",
-        "company_id": "logansport-financial-corp",
-        "canonical_name": "Logansport Financial Corp"
+        "name": "LOGITECH INTERNATIONAL SA",
+        "company_id": "logitech-international-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -1519,19 +1523,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for LOGN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -1645,11 +1650,11 @@
     },
     {
       "security": {
-        "isin": "US8085248701",
+        "isin": null,
         "ticker": "SCHP",
-        "name": "Schwab U.S. TIPS ETF",
-        "company_id": "schwab-u-s-tips-etf",
-        "canonical_name": "Schwab U.S. TIPS ETF"
+        "name": "SCHINDLER HOLDING PAR AG",
+        "company_id": "schindler-holding-par-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -1682,19 +1687,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for SCHP conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -2886,11 +2892,11 @@
     },
     {
       "security": {
-        "isin": "GB00B15KXT11",
+        "isin": null,
         "ticker": "COTN",
-        "name": "WisdomTree Cotton",
-        "company_id": "wisdomtree-cotton",
-        "canonical_name": "WisdomTree Cotton"
+        "name": "COMET HOLDING AG",
+        "company_id": "comet-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -2923,19 +2929,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for COTN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -3373,11 +3380,11 @@
     },
     {
       "security": {
-        "isin": "GB0004016704",
+        "isin": null,
         "ticker": "SUN",
-        "name": "Surgical Innovations Group Plc",
-        "company_id": "surgical-innovations-group-plc",
-        "canonical_name": "Surgical Innovations Group Plc"
+        "name": "SULZER AG LTD",
+        "company_id": "sulzer-ag-ltd",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -3410,19 +3417,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for SUN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -4022,11 +4030,11 @@
     },
     {
       "security": {
-        "isin": "US0295951059",
+        "isin": null,
         "ticker": "AMS",
-        "name": "American Shared Hospital Service",
-        "company_id": "american-shared-hospital-service",
-        "canonical_name": "American Shared Hospital Service"
+        "name": "AMS-OSRAM AG",
+        "company_id": "ams-osram-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -4059,19 +4067,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for AMS conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -4617,11 +4626,11 @@
     },
     {
       "security": {
-        "isin": "IE00BGBN6P67",
+        "isin": null,
         "ticker": "BCHN",
-        "name": "Invesco CoinShares Global Blockchain UCITS ETF",
-        "company_id": "invesco-coinshares-global-blockchain-ucits-etf",
-        "canonical_name": "Invesco CoinShares Global Blockchain UCITS ETF"
+        "name": "BURCKHARDT COMPRESSION HOLDING AG",
+        "company_id": "burckhardt-compression-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -4654,19 +4663,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for BCHN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -4944,11 +4954,11 @@
     },
     {
       "security": {
-        "isin": "US01973R1014",
+        "isin": null,
         "ticker": "ALSN",
-        "name": "Allison Transmission Holdings Inc",
-        "company_id": "allison-transmission-holdings-inc",
-        "canonical_name": "Allison Transmission Holdings Inc"
+        "name": "ALSO HOLDING AG",
+        "company_id": "also-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -4981,19 +4991,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for ALSN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -5163,11 +5174,11 @@
     },
     {
       "security": {
-        "isin": "US3765491010",
+        "isin": "US51504D1054",
         "ticker": "LAND",
-        "name": "Gladstone Land Corporation",
-        "company_id": "gladstone-land-corporation",
-        "canonical_name": "Gladstone Land Corporation"
+        "name": "Landis+Gyr Group AG",
+        "company_id": "landis-gyr-group-ag",
+        "canonical_name": "Landis+Gyr Group AG"
       },
       "classification": {
         "asset_class": "Equity",
@@ -5204,10 +5215,11 @@
         "exchange_code": "SIX",
         "match": {
           "status": "matched",
-          "matched_by": "ticker",
+          "matched_by": "name",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "name"
           ],
           "missing_elements": [
             "isin"
@@ -5542,11 +5554,11 @@
     },
     {
       "security": {
-        "isin": "US62459M3051",
+        "isin": null,
         "ticker": "MOVE",
-        "name": "Corvex, Inc.",
-        "company_id": "corvex-inc",
-        "canonical_name": "Corvex, Inc."
+        "name": "MEDACTA GROUP SA",
+        "company_id": "medacta-group-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5579,19 +5591,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for MOVE conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -5651,11 +5664,11 @@
     },
     {
       "security": {
-        "isin": "US81727U3032",
+        "isin": null,
         "ticker": "SENS",
-        "name": "Senseonics Holdings, Inc.",
-        "company_id": "senseonics-holdings-inc",
-        "canonical_name": "Senseonics Holdings, Inc."
+        "name": "SENSIRION HOLDING AG",
+        "company_id": "sensirion-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5688,19 +5701,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for SENS conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -5870,9 +5884,9 @@
       "security": {
         "isin": null,
         "ticker": "AERO",
-        "name": "Grupo Aeroméxico, S.A.B. de C.V.",
-        "company_id": "grupo-aerom-xico-s-a-b-de-c-v",
-        "canonical_name": "Grupo Aeroméxico, S.A.B. de C.V."
+        "name": "MONTANA N AG",
+        "company_id": "montana-n-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -5905,19 +5919,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for AERO conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -6247,11 +6262,11 @@
     },
     {
       "security": {
-        "isin": "US09227Q1004",
+        "isin": null,
         "ticker": "BLKB",
-        "name": "Blackbaud Inc",
-        "company_id": "blackbaud-inc",
-        "canonical_name": "Blackbaud Inc"
+        "name": "BASELLANDSCHAFTLICHE KANTONALBANK",
+        "company_id": "basellandschaftliche-kantonalbank",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6284,19 +6299,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for BLKB conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -6466,11 +6482,11 @@
     },
     {
       "security": {
-        "isin": "US8101861065",
+        "isin": null,
         "ticker": "SMG",
-        "name": "Scotts Miracle-Gro Company",
-        "company_id": "scotts-miracle-gro-company",
-        "canonical_name": "Scotts Miracle-Gro Company"
+        "name": "SMG AG",
+        "company_id": "smg-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6503,19 +6519,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for SMG conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -6629,11 +6646,11 @@
     },
     {
       "security": {
-        "isin": "LU2370241684",
+        "isin": null,
         "ticker": "PLAN",
-        "name": "Lyxor Corporate Green Bond (DR) UCITS ETF EUR Accumulation USD",
-        "company_id": "lyxor-corporate-green-bond-dr-ucits-etf-eur-accumulation-usd",
-        "canonical_name": "Lyxor Corporate Green Bond (DR) UCITS ETF EUR Accumulation USD"
+        "name": "PLAZZA AG",
+        "company_id": "plazza-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6666,19 +6683,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for PLAN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -6792,11 +6810,11 @@
     },
     {
       "security": {
-        "isin": "US1585301054",
+        "isin": null,
         "ticker": "CHAM",
-        "name": "Champion Investments Inc",
-        "company_id": "champion-investments-inc",
-        "canonical_name": "Champion Investments Inc"
+        "name": "CHAM SWISS PROPERTIES AG",
+        "company_id": "cham-swiss-properties-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6829,29 +6847,30 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CHAM conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
     {
       "security": {
-        "isin": "US58470H1014",
+        "isin": null,
         "ticker": "MED",
-        "name": "MEDIFAST INC",
-        "company_id": "medifast-inc",
-        "canonical_name": "MEDIFAST INC"
+        "name": "MEDARTIS HOLDING AG",
+        "company_id": "medartis-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -6884,19 +6903,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for MED conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -7010,11 +7030,11 @@
     },
     {
       "security": {
-        "isin": "AU0000185993",
+        "isin": null,
         "ticker": "IREN",
-        "name": "IREN Ltd",
-        "company_id": "iren-ltd",
-        "canonical_name": "IREN Ltd"
+        "name": "INVESTIS HOLDING SA",
+        "company_id": "investis-holding-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -7047,19 +7067,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for IREN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -7499,11 +7520,11 @@
     },
     {
       "security": {
-        "isin": "US1717083083",
+        "isin": null,
         "ticker": "CICN",
-        "name": "SMS Alternatives Inc.",
-        "company_id": "sms-alternatives-inc",
-        "canonical_name": "SMS Alternatives Inc."
+        "name": "CICOR TECHNOLOGIES B LTD",
+        "company_id": "cicor-technologies-b-ltd",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -7536,19 +7557,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for CICN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -7770,11 +7792,11 @@
     },
     {
       "security": {
-        "isin": "CA74346M5054",
+        "isin": null,
         "ticker": "PMN",
-        "name": "ProMIS Neurosciences Inc.",
-        "company_id": "promis-neurosciences-inc",
-        "canonical_name": "ProMIS Neurosciences Inc."
+        "name": "PHOENIX N AG",
+        "company_id": "phoenix-n-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -7807,29 +7829,30 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for PMN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
     {
       "security": {
-        "isin": "US0038531085",
+        "isin": null,
         "ticker": "ASCN",
-        "name": "Absecon Bancorp",
-        "company_id": "absecon-bancorp",
-        "canonical_name": "Absecon Bancorp"
+        "name": "ASCOM HOLDING AG",
+        "company_id": "ascom-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -7862,19 +7885,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for ASCN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -8150,11 +8174,11 @@
     },
     {
       "security": {
-        "isin": "US53656G5633",
+        "isin": null,
         "ticker": "MEDX",
-        "name": "Horizon Kinetics Medical ETF",
-        "company_id": "horizon-kinetics-medical-etf",
-        "canonical_name": "Horizon Kinetics Medical ETF"
+        "name": "MEDMIX N AG",
+        "company_id": "medmix-n-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -8187,19 +8211,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for MEDX conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -8912,11 +8937,11 @@
     },
     {
       "security": {
-        "isin": "US5528481030",
+        "isin": null,
         "ticker": "MTG",
-        "name": "MGIC Investment Corp",
-        "company_id": "mgic-investment-corp",
-        "canonical_name": "MGIC Investment Corp"
+        "name": "MEIER TOBLER GROUP AG",
+        "company_id": "meier-tobler-group-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -8949,19 +8974,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for MTG conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -9729,11 +9755,11 @@
     },
     {
       "security": {
-        "isin": "CA55027C1068",
+        "isin": null,
         "ticker": "LMN",
-        "name": "Lumine Group Inc.",
-        "company_id": "lumine-group-inc",
-        "canonical_name": "Lumine Group Inc."
+        "name": "LASTMINUTE NV",
+        "company_id": "lastminute-nv",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -9766,19 +9792,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for LMN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -10594,11 +10621,11 @@
     },
     {
       "security": {
-        "isin": "PLEURCH00011",
+        "isin": null,
         "ticker": "EUR",
-        "name": "Eurocash S.A.",
-        "company_id": "eurocash-s-a",
-        "canonical_name": "Eurocash S.A."
+        "name": "EUR CASH",
+        "company_id": "eur-cash",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Cash",
@@ -10631,29 +10658,30 @@
           "Exchange": "-",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "-",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for EUR conflicts with holding context exchange=-, country=European Union"
         }
       }
     },
     {
       "security": {
-        "isin": "IE00BK80XL30",
+        "isin": null,
         "ticker": "MCHN",
-        "name": "Invesco MSCI China All Shares Connect UCITS ETF",
-        "company_id": "invesco-msci-china-all-shares-connect-ucits-etf",
-        "canonical_name": "Invesco MSCI China All Shares Connect UCITS ETF"
+        "name": "MCH GROUP AG",
+        "company_id": "mch-group-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -10686,29 +10714,30 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for MCHN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
     {
       "security": {
-        "isin": "FR0000034894",
+        "isin": null,
         "ticker": "GAM",
-        "name": "Gaumont Sa",
-        "company_id": "gaumont-sa",
-        "canonical_name": "Gaumont Sa"
+        "name": "GAM HOLDING AG",
+        "company_id": "gam-holding-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -10741,29 +10770,30 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for GAM conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
     {
       "security": {
-        "isin": "KYG6180J1004",
+        "isin": null,
         "ticker": "MMTX",
-        "name": "Miluna Acquisition Corp Class A Ordinary Share",
-        "company_id": "miluna-acquisition-corp-class-a-ordinary-share",
-        "canonical_name": "Miluna Acquisition Corp Class A Ordinary Share"
+        "name": "MINDMAZE THERAPEUTICS HOLDING SA",
+        "company_id": "mindmaze-therapeutics-holding-sa",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -10796,19 +10826,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for MMTX conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -10868,11 +10899,11 @@
     },
     {
       "security": {
-        "isin": "US8863641168",
+        "isin": null,
         "ticker": "STRN",
-        "name": "SMART Trend 25 ETF",
-        "company_id": "smart-trend-25-etf",
-        "canonical_name": "SMART Trend 25 ETF"
+        "name": "SCHLATTER INDUSTRIES AG",
+        "company_id": "schlatter-industries-ag",
+        "canonical_name": null
       },
       "classification": {
         "asset_class": "Equity",
@@ -10905,19 +10936,20 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "iShares",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
+          "status": "ambiguous",
           "matched_by": "ticker",
           "attempted": [
             "ticker+exchange",
-            "ticker"
+            "ticker",
+            "alias"
           ],
           "missing_elements": [
             "isin"
           ],
-          "warning": null
+          "warning": "ticker match for STRN conflicts with holding context exchange=SIX Swiss Exchange, country=Switzerland"
         }
       }
     },
@@ -11359,7 +11391,7 @@
       },
       {
         "ticker": "CFR",
-        "name": "Cullen/Frost Bankers Inc",
+        "name": "Compagnie Financiere Richemont SA",
         "weight_pct": 5.21
       },
       {

@@ -3,6 +3,18 @@
   "overrides": [
     {
       "match": {
+        "ticker": "CFR",
+        "exchange": "SIX",
+        "holding_name": "COMPAGNIE FINANCIERE RICHEMONT SA"
+      },
+      "set": {
+        "isin": "CH0210483332",
+        "company_id": "richemont",
+        "canonical_name": "Compagnie Financiere Richemont SA"
+      }
+    },
+    {
+      "match": {
         "ticker": "ROP",
         "exchange": "SIX",
         "holding_name": "ROCHE PS PAR AG"

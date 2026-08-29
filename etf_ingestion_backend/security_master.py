@@ -126,6 +126,8 @@ class SecurityMaster:
 
         ticker = _normalize(holding.ticker)
         exchange = _normalize(holding.exchange)
+        country = _normalize(holding.country)
+        has_context = bool(exchange or country)
         if ticker and exchange:
             attempted.append("ticker+exchange")
             for record in self.records:
@@ -148,28 +150,42 @@ class SecurityMaster:
         if ticker:
             attempted.append("ticker")
             ticker_matches = self._records_by_ticker(ticker)
-            country_matches = [
+            exchange_matches = [
                 record
                 for record in ticker_matches
-                if _normalize(record.country) == _normalize(holding.country)
+                if not exchange
+                or _normalize(normalize_exchange(record.exchange)) == exchange
             ]
-            if len(ticker_matches) == 1:
+            contextual_matches = [
+                record
+                for record in exchange_matches
+                if not country or _normalize(record.country) == country
+            ]
+            if exchange and not contextual_matches and country:
+                contextual_matches = [
+                    record
+                    for record in ticker_matches
+                    if _normalize(record.country) == country
+                ]
+            if len(contextual_matches) == 1:
                 return SecurityMatch(
-                    ticker_matches[0],
+                    contextual_matches[0],
                     "matched",
                     "ticker",
                     attempted,
                     missing_elements,
                 )
-            if len(country_matches) == 1:
-                return SecurityMatch(
-                    country_matches[0],
-                    "matched",
-                    "ticker+country",
-                    attempted,
-                    missing_elements,
+            if len(contextual_matches) > 1:
+                if has_context:
+                    ambiguous_ticker_warning = f"ambiguous contextual ticker match for {holding.ticker}: {len(contextual_matches)} candidates"
+                else:
+                    ambiguous_ticker_warning = f"ambiguous ticker match for {holding.ticker}: {len(contextual_matches)} candidates"
+            elif has_context and ticker_matches:
+                ambiguous_ticker_warning = (
+                    f"ticker match for {holding.ticker} conflicts with holding context "
+                    f"exchange={holding.exchange or '<missing>'}, country={holding.country or '<missing>'}"
                 )
-            if len(ticker_matches) > 1:
+            elif len(ticker_matches) > 1:
                 ambiguous_ticker_warning = f"ambiguous ticker match for {holding.ticker}: {len(ticker_matches)} candidates"
 
         name_matches = self._records_by_name(holding.name or "")
