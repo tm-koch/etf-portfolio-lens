@@ -141,6 +141,34 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("Automatic", readme)
         self.assertIn("localStorage", readme)
 
+    def test_dark_navigation_uses_a_theme_gradient(self) -> None:
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "--navigation-background: var(--card);",
+            styles,
+        )
+        self.assertIn(
+            "--navigation-edge-gradient: linear-gradient(180deg, rgba(32, 43, 56, 0.9), transparent);",
+            styles,
+        )
+        self.assertIn(
+            "--navigation-background: rgba(23, 30, 40, 0.92);",
+            styles,
+        )
+        self.assertIn(
+            ".primary-navigation {\n  position: sticky;",
+            styles,
+        )
+        self.assertIn("  background: var(--navigation-background);", styles)
+        self.assertIn(".primary-navigation::after {", styles)
+        self.assertIn("  top: 100%;", styles)
+        self.assertIn("    bottom: 100%;", styles)
+        self.assertIn(
+            "    background: var(--navigation-background);",
+            styles,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
