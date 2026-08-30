@@ -152,6 +152,26 @@ function renderColorModeControl() {
   window.lucide?.createIcons();
 }
 
+function positionColorModeControl() {
+  if (!elements.colorModeUtility) {
+    return;
+  }
+
+  const activePanel = document.querySelector(`.tab-panel[data-panel="${state.activeTab}"]`);
+  const title = activePanel?.querySelector('.eyebrow, .panel-heading .section-label');
+  const titleContainer = title?.closest('.hero, .panel-heading');
+  if (!title || !titleContainer || !title.getBoundingClientRect().width) {
+    elements.colorModeUtility.style.top = '';
+    elements.colorModeUtility.style.right = '';
+    return;
+  }
+
+  const titleRect = title.getBoundingClientRect();
+  const containerRect = titleContainer.getBoundingClientRect();
+  elements.colorModeUtility.style.top = `${titleRect.top + window.scrollY}px`;
+  elements.colorModeUtility.style.right = `${document.documentElement.clientWidth - containerRect.right - window.scrollX}px`;
+}
+
 function toggleColorModeMenu(forceOpen) {
   const isOpen = !elements.colorModeMenu.hidden;
   const shouldOpen = forceOpen ?? !isOpen;
@@ -1115,6 +1135,7 @@ function setTab(tabName) {
   for (const panel of elements.tabPanels) {
     panel.classList.toggle('active', panel.dataset.panel === state.activeTab);
   }
+  positionColorModeControl();
   if (state.activeTab === 'comparison') {
     applyChartFrameSizing();
     renderComparisonCharts();
@@ -1176,6 +1197,7 @@ async function bootstrap() {
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
   elements.colorModeButton = document.getElementById('color-mode-button');
   elements.colorModeMenu = document.getElementById('color-mode-menu');
+  elements.colorModeUtility = document.querySelector('.app-utility-bar');
 
   state.colorMode = loadColorMode();
   applyColorMode();
@@ -1203,13 +1225,16 @@ async function bootstrap() {
   });
 
   applyChartFrameSizing();
+  positionColorModeControl();
   window.addEventListener('resize', applyChartFrameSizing);
+  window.addEventListener('resize', positionColorModeControl);
   setupColorModeMediaQuery();
 
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
   state.portfolio = loadPortfolioState();
   state.activeTab = loadActiveTab();
+  positionColorModeControl();
   state.compactExplorePreview = loadCompactExplorePreview();
   elements.compactExplorePreview.checked = state.compactExplorePreview;
 

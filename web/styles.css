@@ -72,6 +72,27 @@ body {
   gap: 12px;
 }
 
+.app-utility-bar {
+  position: absolute;
+  top: 150px;
+  right: max(16px, calc((100vw - 1408px) / 2));
+  z-index: 10;
+}
+
+.app-utility-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.app-utility-label {
+  display: none;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
 .content-column {
   width: 100%;
   max-width: 1440px;
@@ -207,7 +228,6 @@ body {
 .color-mode-control {
   position: relative;
   display: flex;
-  justify-content: end;
 }
 
 .color-mode-button,
@@ -1167,6 +1187,16 @@ body {
 
   .content-column {
     padding: 0;
+  }
+
+  .app-utility-bar {
+    top: 96px;
+    right: 16px;
+  }
+
+  .home-panel .hero-copy .eyebrow,
+  .panel-heading .section-label {
+    margin-bottom: 30px;
   }
 
   .tab-panel.card {

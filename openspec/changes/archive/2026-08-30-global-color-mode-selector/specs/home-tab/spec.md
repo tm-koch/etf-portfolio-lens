@@ -1,8 +1,5 @@
-# home-tab Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change add-home-tab. Update Purpose after archive.
-## Requirements
 ### Requirement: Home destination overview
 The web app SHALL provide a Home destination as the first item in the primary navigation. The Home destination SHALL contain the ETF Portfolio Lens introduction currently shown at the beginning of the application and SHALL be independently selectable from Portfolio, Compare, and Explore. The Home panel SHALL retain its build-information action, while color-mode selection SHALL be provided by the global app-level control rather than the build-information dialog.
 
@@ -21,15 +18,3 @@ The web app SHALL provide a Home destination as the first item in the primary na
 #### Scenario: Selecting Home changes the active panel
 - **WHEN** a user activates Home
 - **THEN** the Home panel becomes active and the Portfolio, Compare, and Explore panels become inactive
-
-### Requirement: Home portfolio summary
-The Home destination SHALL display live summary boxes for Positions, Share units, Underlying holdings, and Shared companies using the current selected portfolio state.
-
-#### Scenario: Summary reflects selected positions
-- **WHEN** the user adds, removes, or changes shares for a portfolio position
-- **THEN** the four Home summary boxes update to reflect the current portfolio state
-
-#### Scenario: Empty portfolio summary
-- **WHEN** no portfolio positions are selected
-- **THEN** Home displays zero values for the four summary boxes without failing to render
-

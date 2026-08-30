@@ -29,9 +29,25 @@
     <link rel="stylesheet" href="./styles.css?v=20260827-3" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
     <script src="https://unpkg.com/lucide@0.468.0" defer></script>
-    <script type="module" src="./app.js?v=20260827-3" defer></script>
+    <script type="module" src="./app.js?v=20260830-1" defer></script>
   </head>
   <body>
+    <header class="app-utility-bar" aria-label="Application utilities">
+      <div class="app-utility-content">
+        <span class="app-utility-label">Color mode</span>
+        <div class="color-mode-control" data-color-mode-control>
+          <button
+            class="color-mode-button"
+            id="color-mode-button"
+            type="button"
+            aria-haspopup="menu"
+            aria-expanded="false"
+            title="Change color mode"
+          ></button>
+          <div class="color-mode-menu" id="color-mode-menu" role="menu" aria-label="Color mode" hidden></div>
+        </div>
+      </div>
+    </header>
     <nav class="primary-navigation card" aria-label="Main sections">
       <div class="primary-navigation-items" id="primary-navigation-items"></div>
     </nav>
@@ -85,20 +101,6 @@
               <div>
                 <h3>Developer mode</h3>
                 <p>Preview alternate Explore layouts.</p>
-              </div>
-              <div class="color-mode-setting">
-                <span>Color mode</span>
-                <div class="color-mode-control" data-color-mode-control>
-                  <button
-                    class="color-mode-button"
-                    id="color-mode-button"
-                    type="button"
-                    aria-haspopup="menu"
-                    aria-expanded="false"
-                    title="Change color mode"
-                  ></button>
-                  <div class="color-mode-menu" id="color-mode-menu" role="menu" aria-label="Color mode" hidden></div>
-                </div>
               </div>
               <label class="switch-control">
                 <span>Compact Explore preview</span>

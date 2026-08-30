@@ -111,8 +111,23 @@ class WebContractTests(unittest.TestCase):
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
-        self.assertIn("<span>Color mode</span>", index)
-        self.assertIn('class="color-mode-setting"', index)
+        self.assertIn(
+            '<header class="app-utility-bar" aria-label="Application utilities">', index
+        )
+        self.assertIn('<span class="app-utility-label">Color mode</span>', index)
+        self.assertEqual(index.count('id="color-mode-button"'), 1)
+        self.assertEqual(index.count('id="color-mode-menu"'), 1)
+        self.assertNotIn('class="color-mode-setting"', index)
+        self.assertLess(
+            index.index('class="app-utility-bar"'),
+            index.index('class="primary-navigation card"'),
+        )
+        self.assertIn(".app-utility-bar {\n  position: absolute;", styles)
+        self.assertIn("top: 150px;", styles)
+        self.assertIn("top: 96px;", styles)
+        self.assertNotIn(".app-utility-bar {\n  width:", styles)
+        self.assertIn(".app-utility-content", styles)
+        self.assertIn(".app-utility-bar", styles)
         self.assertIn("--table-row-hover-background", styles)
         self.assertIn(
             "--table-sticky-row-background: rgba(255, 255, 255, 0.72);",
@@ -140,6 +155,28 @@ class WebContractTests(unittest.TestCase):
 
         self.assertIn("Automatic", readme)
         self.assertIn("localStorage", readme)
+
+    def test_global_color_mode_preserves_existing_behavior_hooks(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn("const COLOR_MODES = ['bright', 'automatic', 'dark'];", app)
+        self.assertIn("function saveColorMode()", app)
+        self.assertIn("function positionColorModeControl()", app)
+        self.assertIn(".eyebrow, .panel-heading .section-label", app)
+        self.assertIn("titleContainer = title?.closest('.hero, .panel-heading')", app)
+        self.assertIn("positionColorModeControl();", app)
+        self.assertIn(
+            "localStorage.setItem(COLOR_MODE_STORAGE_KEY, state.colorMode)", app
+        )
+        self.assertIn("function handleSystemColorModeChange()", app)
+        self.assertIn("renderComparisonCharts();", app)
+        self.assertIn("const modes = [", app)
+        self.assertIn("{ key: 'bright', label: 'Bright', icon: 'sun' }", app)
+        self.assertIn("{ key: 'automatic', label: 'Automatic', icon: 'monitor' }", app)
+        self.assertIn("{ key: 'dark', label: 'Dark', icon: 'moon' }", app)
+        self.assertIn('role="menu" aria-label="Color mode"', index)
+        self.assertIn('role="menuitemradio"', app)
 
     def test_dark_navigation_uses_a_theme_gradient(self) -> None:
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
