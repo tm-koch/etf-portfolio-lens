@@ -525,6 +525,30 @@ body {
   box-shadow: none;
 }
 
+@media (min-width: 761px) {
+  .home-panel .hero-meta {
+    padding-top: 54px;
+  }
+
+  #portfolio-panel .panel-heading {
+    margin-bottom: 37px;
+  }
+
+  #portfolio-panel .panel-heading > .inline-note {
+    transform: translateY(37px);
+  }
+
+  #comparison-panel .panel-heading,
+  #aggregated-panel .panel-heading {
+    margin-bottom: 37px;
+  }
+
+  #comparison-panel .panel-heading > .panel-copy,
+  #aggregated-panel .panel-heading > .panel-copy {
+    transform: translateY(37px);
+  }
+}
+
 .primary-navigation {
   position: sticky;
   top: 0;

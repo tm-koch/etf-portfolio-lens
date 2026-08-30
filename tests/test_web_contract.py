@@ -196,6 +196,36 @@ class WebContractTests(unittest.TestCase):
         )
         self.assertIn('title="Change color mode"', index)
 
+    def test_desktop_color_mode_clearance_preserves_mobile_boundary(self) -> None:
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        desktop_start = styles.index("@media (min-width: 761px) {")
+        desktop_end = styles.index(".primary-navigation {", desktop_start)
+        desktop_styles = styles[desktop_start:desktop_end]
+        self.assertIn(
+            ".home-panel .hero-meta {\n    padding-top: 54px;", desktop_styles
+        )
+        self.assertIn(
+            "#portfolio-panel .panel-heading {\n    margin-bottom: 37px;",
+            desktop_styles,
+        )
+        self.assertIn(
+            "#portfolio-panel .panel-heading > .inline-note {\n    transform: translateY(37px);",
+            desktop_styles,
+        )
+        self.assertIn(
+            "#comparison-panel .panel-heading,\n  #aggregated-panel .panel-heading {\n    margin-bottom: 37px;",
+            desktop_styles,
+        )
+        self.assertIn(
+            "#comparison-panel .panel-heading > .panel-copy,\n  #aggregated-panel .panel-heading > .panel-copy {\n    transform: translateY(37px);",
+            desktop_styles,
+        )
+
+        mobile_styles = styles[styles.index("@media (max-width: 760px)") :]
+        self.assertNotIn("padding-top: 54px;", mobile_styles)
+        self.assertNotIn("translateY(37px);", mobile_styles)
+
     def test_dark_navigation_uses_a_theme_gradient(self) -> None:
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
