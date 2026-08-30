@@ -193,6 +193,14 @@ class WebContractTests(unittest.TestCase):
             ".primary-navigation {\n  position: sticky;",
             styles,
         )
+        self.assertIn(
+            "  border: 0;\n  border-radius: 0 0 var(--radius) var(--radius);",
+            styles,
+        )
+        self.assertNotIn(
+            "    border-top: 1px solid var(--border);\n    background: var(--navigation-background);",
+            styles,
+        )
         self.assertIn("  background: var(--navigation-background);", styles)
         self.assertIn(
             ":root[data-color-mode='dark'] .primary-navigation::after {",

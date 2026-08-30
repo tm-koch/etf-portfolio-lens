@@ -535,6 +535,7 @@ body {
   max-width: 1408px;
   margin: 0 auto;
   padding: 10px;
+  border: 0;
   border-radius: 0 0 var(--radius) var(--radius);
   background: var(--navigation-background);
   box-shadow: 0 4px 14px rgba(22, 34, 58, 0.08);
@@ -1225,7 +1226,6 @@ body {
     height: calc(var(--mobile-nav-row-height) + 1px + var(--mobile-nav-safe-area));
     padding: 0 8px var(--mobile-nav-safe-area);
     border-radius: 0;
-    border-top: 1px solid var(--border);
     background: var(--navigation-background);
     box-shadow: 0 -2px 8px rgba(22, 34, 58, 0.10);
     backdrop-filter: none;
