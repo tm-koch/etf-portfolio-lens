@@ -149,10 +149,6 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
         self.assertIn(
-            "--navigation-edge-gradient: linear-gradient(180deg, rgba(32, 43, 56, 0.9), transparent);",
-            styles,
-        )
-        self.assertIn(
             "--navigation-background: rgba(23, 30, 40, 0.92);",
             styles,
         )
@@ -161,11 +157,28 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
         self.assertIn("  background: var(--navigation-background);", styles)
-        self.assertIn(".primary-navigation::after {", styles)
-        self.assertIn("  top: 100%;", styles)
-        self.assertIn("    bottom: 100%;", styles)
         self.assertIn(
-            "    background: var(--navigation-background);",
+            ":root[data-color-mode='dark'] .primary-navigation::after {",
+            styles,
+        )
+        self.assertIn(
+            "    background: linear-gradient(0deg, var(--table-header-background), transparent);",
+            styles,
+        )
+        self.assertIn(
+            "    height: 9px;\n    background: linear-gradient(0deg, var(--table-header-background), transparent);",
+            styles,
+        )
+        self.assertNotIn(
+            ":root[data-color-mode='bright'] .primary-navigation::after {",
+            styles,
+        )
+        self.assertIn(
+            ":root[data-color-mode='bright'] .primary-navigation {\n    background: #ffffff;",
+            styles,
+        )
+        self.assertIn(
+            ":root[data-color-mode='dark'] .primary-navigation {\n    background: var(--card-strong);",
             styles,
         )
 

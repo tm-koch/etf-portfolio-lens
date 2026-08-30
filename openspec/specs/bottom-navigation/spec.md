@@ -61,7 +61,17 @@ The navigation SHALL be presented before destination content in the document ord
 - **THEN** page content has enough bottom clearance for the stable navigation footprint and its safe-area inset so the navigation does not obscure reachable content
 
 ### Requirement: Safe-area and visual treatment
-The mobile navigation SHALL use a solid background, SHALL use a restrained visual boundary without a heavy shadow, SHALL reserve a stable safe-area region without changing the icon-and-label row geometry, and SHALL display a small static shadow above the navigation on mobile widths. Firefox Android SHALL not include a dynamically changing `env(safe-area-inset-bottom)` value in the navigation footprint.
+The mobile navigation SHALL use a solid theme-appropriate background, SHALL use a restrained visual boundary without a heavy shadow, SHALL reserve a stable safe-area region without changing the icon-and-label row geometry, and SHALL display a small static shadow above the navigation on mobile widths. Dark mode MAY additionally display a static edge gradient above the navigation; Bright mode SHALL not require an explicit navigation gradient edge. Firefox Android SHALL not include a dynamically changing `env(safe-area-inset-bottom)` value in the navigation footprint.
+
+#### Scenario: Bright mode uses the historical mobile surface
+
+- **WHEN** the viewport width is 760px or less and Bright is the effective color mode
+- **THEN** the mobile navigation uses the historical solid white surface represented by `#ffffff`
+
+#### Scenario: Dark mode uses an equivalent dark mobile surface
+
+- **WHEN** the viewport width is 760px or less and Dark is the effective color mode
+- **THEN** the mobile navigation uses the established solid dark elevated surface represented by `var(--card-strong)`
 
 #### Scenario: WebKit mobile device has a bottom safe area
 - **WHEN** a WebKit mobile browser reports a non-zero `env(safe-area-inset-bottom)` value
@@ -86,6 +96,11 @@ The mobile navigation SHALL use a solid background, SHALL use a restrained visua
 #### Scenario: Shadow is not animated
 - **WHEN** the user scrolls or switches navigation destinations
 - **THEN** the shadow remains static and no shadow transition or animation runs
+
+#### Scenario: Dark mode provides a mobile frame transition
+
+- **WHEN** the viewport width is 760px or less and Dark is the effective color mode
+- **THEN** a static 9px gradient edge transitions from a lighter dark-slate tone at the navigation separator to transparency over the dark frame without obscuring tab labels or icons
 
 ### Requirement: Active destination accessibility
 The navigation SHALL expose the active destination to keyboard and assistive-technology users. On mobile widths, the active destination SHALL use a transparent background with both its icon and label rendered in the accent blue.
@@ -187,4 +202,3 @@ The application SHALL render the primary navigation outside the constrained dest
 #### Scenario: Destination internals retain readable spacing
 - **WHEN** an active destination renders on a smartphone-sized viewport
 - **THEN** its content retains internal padding and its nested tables, charts, and grouped sections remain visually distinguishable
-
