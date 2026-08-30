@@ -159,6 +159,7 @@ class WebContractTests(unittest.TestCase):
     def test_global_color_mode_preserves_existing_behavior_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
         self.assertIn("const COLOR_MODES = ['bright', 'automatic', 'dark'];", app)
         self.assertIn("function saveColorMode()", app)
@@ -177,6 +178,23 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("{ key: 'dark', label: 'Dark', icon: 'moon' }", app)
         self.assertIn('role="menu" aria-label="Color mode"', index)
         self.assertIn('role="menuitemradio"', app)
+        self.assertIn(
+            "  .color-mode-button > span {\n    display: none;\n  }",
+            styles,
+        )
+        self.assertLess(
+            styles.index("  .color-mode-button > span {"),
+            styles.index("  body {", styles.index("@media (max-width: 760px) {")),
+        )
+        self.assertIn(
+            '<span>${selectedMode.label}</span>',
+            app,
+        )
+        self.assertIn(
+            '<span>${mode.label}</span>',
+            app,
+        )
+        self.assertIn('title="Change color mode"', index)
 
     def test_dark_navigation_uses_a_theme_gradient(self) -> None:
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")

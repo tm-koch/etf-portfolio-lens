@@ -1182,6 +1182,10 @@ body {
     --mobile-nav-safe-area: 0px;
   }
 
+  .color-mode-button > span {
+    display: none;
+  }
+
   body {
     padding: 0 0 calc(var(--mobile-nav-row-height) + 1px + var(--mobile-nav-safe-area));
   }
