@@ -187,11 +187,11 @@ class WebContractTests(unittest.TestCase):
             styles.index("  body {", styles.index("@media (max-width: 760px) {")),
         )
         self.assertIn(
-            '<span>${selectedMode.label}</span>',
+            "<span>${selectedMode.label}</span>",
             app,
         )
         self.assertIn(
-            '<span>${mode.label}</span>',
+            "<span>${mode.label}</span>",
             app,
         )
         self.assertIn('title="Change color mode"', index)
