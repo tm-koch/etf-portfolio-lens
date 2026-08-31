@@ -383,12 +383,14 @@ function buildPortfolioShareUrl(portfolio) {
 }
 
 function renderShareFeedback() {
-  if (!elements.shareStatus || !elements.shareFallbackUrl) {
+  if (!elements.shareStatus || !elements.shareFallbackUrl || !elements.shareFallbackLabel) {
     return;
   }
+  const hasFallbackUrl = Boolean(state.shareFallbackUrl);
   elements.shareStatus.textContent = state.shareFeedback;
   elements.shareFallbackUrl.value = state.shareFallbackUrl;
-  elements.shareFallbackUrl.hidden = !state.shareFallbackUrl;
+  elements.shareFallbackLabel.hidden = !hasFallbackUrl;
+  elements.shareFallbackUrl.hidden = !hasFallbackUrl;
 }
 
 async function sharePortfolio() {
@@ -1549,6 +1551,7 @@ async function bootstrap() {
   elements.portfolioHint = document.getElementById('portfolio-hint');
   elements.shareButton = document.getElementById('share-portfolio-button');
   elements.shareStatus = document.getElementById('share-portfolio-status');
+  elements.shareFallbackLabel = document.querySelector('.share-portfolio-url-label');
   elements.shareFallbackUrl = document.getElementById('share-portfolio-url');
   elements.comparisonToolbar = document.getElementById('comparison-toolbar');
   elements.sectorCanvas = document.getElementById('sector-chart');

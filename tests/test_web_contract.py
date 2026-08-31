@@ -94,7 +94,14 @@ class WebContractTests(unittest.TestCase):
             index.index('class="portfolio-import-control"'),
         )
         self.assertIn('aria-live="polite"', index)
+        self.assertIn('class="share-portfolio-url-label"', index)
+        self.assertIn(
+            'class="share-portfolio-url-label" for="share-portfolio-url" hidden', index
+        )
         self.assertIn('id="share-portfolio-url"', index)
+        self.assertIn("const hasFallbackUrl = Boolean(state.shareFallbackUrl);", app)
+        self.assertIn("elements.shareFallbackLabel.hidden = !hasFallbackUrl;", app)
+        self.assertIn("elements.shareFallbackUrl.hidden = !hasFallbackUrl;", app)
         self.assertIn("navigator.clipboard?.writeText", app)
         self.assertIn("latest published ETF data", app)
         self.assertIn(".share-portfolio-button", styles)
