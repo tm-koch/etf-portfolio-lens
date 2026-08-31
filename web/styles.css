@@ -1103,6 +1103,20 @@ body {
   background: var(--table-sticky-row-background);
 }
 
+.compact-explore-holding-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.compact-explore-rank {
+  flex: 0 0 24px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
 .compact-explore-table tbody tr:nth-child(odd) {
   background: var(--table-row-alt-background);
 }

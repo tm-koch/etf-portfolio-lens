@@ -184,6 +184,27 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("Automatic", readme)
         self.assertIn("localStorage", readme)
 
+    def test_compact_explore_supports_ranked_company_search(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn('id="compact-explore-search"', index)
+        self.assertIn('id="company-search" type="search"', index)
+        self.assertIn('placeholder="Search by company name"', index)
+        self.assertIn("companySearchTerm: '',", app)
+        self.assertIn("function buildCompactExploreRow(positions, company, rank)", app)
+        self.assertIn('class="compact-explore-rank" aria-label="Rank ${rank}"', app)
+        self.assertIn(
+            "const searchTerm = state.companySearchTerm.trim().toLowerCase();", app
+        )
+        self.assertIn("company.name.toLowerCase().includes(searchTerm)", app)
+        self.assertIn(".map((company, index) => ({ company, rank: index + 1 }))", app)
+        self.assertIn("elements.companySearch.addEventListener('input'", app)
+        self.assertIn("state.companySearchTerm = event.target.value;", app)
+        self.assertIn(".compact-explore-holding-content", styles)
+        self.assertIn(".compact-explore-rank", styles)
+
     def test_global_color_mode_preserves_existing_behavior_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

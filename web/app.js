@@ -12,6 +12,7 @@ const DARK_MODE_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 const defaultState = {
   activeTab: 'home',
   searchTerm: '',
+  companySearchTerm: '',
   portfolio: [],
   compactExplorePreview: false,
   colorMode: 'automatic',
@@ -792,7 +793,7 @@ function buildCompanyRow(company, index) {
   `;
 }
 
-function buildCompactExploreRow(positions, company) {
+function buildCompactExploreRow(positions, company, rank) {
   const contributionByTicker = new Map(
     company.contributors.map((contributor) => [contributor.ticker, contributor])
   );
@@ -804,7 +805,10 @@ function buildCompactExploreRow(positions, company) {
   return `
     <tr>
       <th scope="row" class="compact-explore-holding" title="${company.name}">
-        <span class="compact-explore-holding-name">${company.name}</span>
+        <span class="compact-explore-holding-content">
+          <span class="compact-explore-rank" aria-label="Rank ${rank}">${rank}</span>
+          <span class="compact-explore-holding-name">${company.name}</span>
+        </span>
       </th>
       <td class="compact-explore-number compact-explore-total">${formatPercent(company.displayWeight)}</td>
       ${etfCells}
@@ -852,7 +856,7 @@ function appendCompanyBatch() {
     const template = document.createElement('template');
     template.innerHTML = ranked
       .slice(start, end)
-      .map((company) => buildCompactExploreRow(positions, company))
+      .map((company, index) => buildCompactExploreRow(positions, company, start + index + 1))
       .join('');
     elements.companyList.querySelector('.compact-explore-table tbody').appendChild(template.content);
   } else {
@@ -1183,6 +1187,7 @@ function renderCompanyList() {
   state.companyRanked = ranked;
   state.companyVisibleCount = 0;
   disconnectCompanyObserver();
+  elements.compactExploreSearch.hidden = !state.compactExplorePreview;
 
   if (state.compactExplorePreview) {
     if (!ranked.length) {
@@ -1191,8 +1196,24 @@ function renderCompanyList() {
       return;
     }
 
-    elements.companyHint.textContent = 'Holdings ranked by total portfolio exposure.';
+    const searchTerm = state.companySearchTerm.trim().toLowerCase();
     elements.companyList.innerHTML = buildCompactExploreTable(positions);
+
+    if (searchTerm) {
+      const matches = ranked
+        .map((company, index) => ({ company, rank: index + 1 }))
+        .filter(({ company }) => company.name.toLowerCase().includes(searchTerm));
+      elements.companyHint.textContent = matches.length
+        ? `${matches.length} matching compan${matches.length === 1 ? 'y' : 'ies'}.`
+        : 'No companies match the current search.';
+      elements.companyList.querySelector('.compact-explore-table tbody').innerHTML = matches
+        .map(({ company, rank }) => buildCompactExploreRow(positions, company, rank))
+        .join('');
+      state.companyVisibleCount = matches.length;
+      return;
+    }
+
+    elements.companyHint.textContent = 'Holdings ranked by total portfolio exposure.';
     appendCompanyBatch();
     if (state.companyVisibleCount < ranked.length) {
       const sentinel = document.createElement('div');
@@ -1397,6 +1418,15 @@ async function bootstrap() {
   elements.catalogSearch.addEventListener('input', (event) => {
     state.searchTerm = event.target.value;
     renderCatalog();
+  });
+
+  elements.companySearch = document.getElementById('company-search');
+  elements.compactExploreSearch = document.getElementById('compact-explore-search');
+  elements.companySearch.addEventListener('input', (event) => {
+    state.companySearchTerm = event.target.value;
+    if (state.activeTab === 'aggregated' && state.compactExplorePreview) {
+      renderCompanyList();
+    }
   });
 
   document.addEventListener('click', (event) => {
