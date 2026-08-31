@@ -3,7 +3,7 @@ Define the versioned, serverless sharing and startup validation contract for ETF
 ## Requirements
 ### Requirement: Create a shareable portfolio link
 
-The Portfolio tab SHALL provide an accessible share action that serializes the current ETF positions, share counts, and any persisted imported price, currency, value, and CHF-normalized value into a versioned URL fragment without requiring a server-side share service. The fallback share-link label and URL input SHALL remain hidden until the share action generates a valid URL.
+The Portfolio tab SHALL provide an accessible share action that serializes the current ETF positions, share counts, and any persisted imported price, currency, value, and CHF-normalized value into a versioned URL fragment without requiring a server-side share service. The fallback share-link label and URL input SHALL remain hidden in both visibility and layout until the share action generates a valid URL.
 
 #### Scenario: Share a populated portfolio
 
@@ -13,12 +13,12 @@ The Portfolio tab SHALL provide an accessible share action that serializes the c
 #### Scenario: Share link is initially hidden
 
 - **WHEN** the Portfolio tab is rendered before the user has generated a share URL
-- **THEN** the share-link label and URL input are hidden while the accessible share action remains available
+- **THEN** the share-link label and URL input are hidden, occupy no layout space, and the accessible share action remains available
 
 #### Scenario: Share an empty portfolio
 
 - **WHEN** the user activates the share action with no selected positions
-- **THEN** the application reports that there is no portfolio to share, does not create a link containing an invalid portfolio, and keeps the share-link label and URL input hidden
+- **THEN** the application reports that there is no portfolio to share, does not create a link containing an invalid portfolio, and keeps the share-link label and URL input hidden without reserving layout space
 
 #### Scenario: Clipboard access is available
 

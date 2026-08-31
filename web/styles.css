@@ -682,6 +682,10 @@ body {
   font-size: 0.88rem;
 }
 
+.share-portfolio-url-label[hidden] {
+  display: none;
+}
+
 .share-portfolio-url-label input {
   width: 100%;
   min-width: 0;

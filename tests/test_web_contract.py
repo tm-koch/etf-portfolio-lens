@@ -104,6 +104,7 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("elements.shareFallbackUrl.hidden = !hasFallbackUrl;", app)
         self.assertIn("navigator.clipboard?.writeText", app)
         self.assertIn("latest published ETF data", app)
+        self.assertIn(".share-portfolio-url-label[hidden]", styles)
         self.assertIn(".share-portfolio-button", styles)
         self.assertIn(".portfolio-sharing", styles)
 
