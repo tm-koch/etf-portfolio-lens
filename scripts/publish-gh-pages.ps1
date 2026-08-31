@@ -54,6 +54,7 @@ try {
     'index.html',
     'styles.css',
     'app.js',
+    'portfolio-import.js',
     'charts.js',
     'data.js',
     'package.json'

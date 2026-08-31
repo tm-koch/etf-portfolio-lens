@@ -1,4 +1,5 @@
 from pathlib import Path
+import re
 import unittest
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -6,6 +7,17 @@ WEB_ROOT = REPOSITORY_ROOT / "web"
 
 
 class WebContractTests(unittest.TestCase):
+    def test_publish_script_includes_app_local_javascript_modules(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        publish_script = (
+            REPOSITORY_ROOT / "scripts" / "publish-gh-pages.ps1"
+        ).read_text(encoding="utf-8")
+
+        imported_modules = re.findall(r"from ['\"]\./([^'\"]+\.js)['\"]", app)
+        for module in imported_modules:
+            self.assertTrue((WEB_ROOT / module).is_file())
+            self.assertIn(f"'{module}'", publish_script)
+
     def test_portfolio_ui_polish_contract_covers_provenance_and_presentation(
         self,
     ) -> None:
