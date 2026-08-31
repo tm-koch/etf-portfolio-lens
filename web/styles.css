@@ -624,6 +624,56 @@ body {
   font-size: clamp(1.5rem, 3vw, 2.4rem);
 }
 
+.share-portfolio-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 16px;
+  color: #ffffff;
+  background: var(--accent);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.share-portfolio-button svg {
+  width: 17px;
+  height: 17px;
+}
+
+.share-portfolio-feedback {
+  display: grid;
+  gap: 8px;
+}
+
+.share-portfolio-feedback p {
+  min-height: 1.4em;
+  margin: 0;
+  color: var(--muted);
+}
+
+.share-portfolio-url-label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.share-portfolio-url-label input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: var(--text);
+  background: var(--input-background);
+  font: inherit;
+}
+
 .portfolio-layout,
 .aggregation-layout,
 .metric-stack {
@@ -1319,6 +1369,10 @@ body {
   .panel-heading {
     flex-direction: column;
     align-items: start;
+  }
+
+  .share-portfolio-button {
+    width: 100%;
   }
 
   .company-row-head {

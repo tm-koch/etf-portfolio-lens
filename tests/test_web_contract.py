@@ -6,6 +6,30 @@ WEB_ROOT = REPOSITORY_ROOT / "web"
 
 
 class WebContractTests(unittest.TestCase):
+    def test_portfolio_sharing_contract_covers_encoding_loading_and_feedback(
+        self,
+    ) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn("const SHARE_FRAGMENT_KEY = 'portfolio';", app)
+        self.assertIn("const SHARE_PAYLOAD_VERSION = 1;", app)
+        self.assertIn("function encodePortfolioShare(portfolio)", app)
+        self.assertIn("function decodePortfolioShare(value)", app)
+        self.assertIn("Number.isFinite(position.shares)", app)
+        self.assertIn("seenIsins.has(isin)", app)
+        self.assertIn("readPortfolioShareFromUrl()", app)
+        self.assertIn("sharedPortfolio.status === 'valid'", app)
+        self.assertIn("state.portfolio = loadPortfolioState();", app)
+        self.assertIn('id="share-portfolio-button"', index)
+        self.assertIn("data-share-portfolio", index)
+        self.assertIn('aria-live="polite"', index)
+        self.assertIn('id="share-portfolio-url"', index)
+        self.assertIn("navigator.clipboard?.writeText", app)
+        self.assertIn("latest published ETF data", app)
+        self.assertIn(".share-portfolio-button", styles)
+
     def test_selected_positions_have_mobile_and_accessibility_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

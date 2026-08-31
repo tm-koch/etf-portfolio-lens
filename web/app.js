@@ -5,6 +5,8 @@ const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
 const COMPACT_EXPLORE_STORAGE_KEY = 'etf-lens.compact-explore-preview.v1';
 const COLOR_MODE_STORAGE_KEY = 'etf-lens.color-mode.v1';
+const SHARE_FRAGMENT_KEY = 'portfolio';
+const SHARE_PAYLOAD_VERSION = 1;
 const COLOR_MODES = ['bright', 'automatic', 'dark'];
 const DARK_MODE_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 const defaultState = {
@@ -14,6 +16,8 @@ const defaultState = {
   compactExplorePreview: false,
   colorMode: 'automatic',
   effectiveColorMode: 'bright',
+  shareFeedback: '',
+  shareFallbackUrl: '',
 };
 
 const chartRefs = {
@@ -237,6 +241,123 @@ function loadPortfolioState() {
 
 function savePortfolioState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state.portfolio));
+}
+
+function encodeBase64Url(value) {
+  const bytes = new TextEncoder().encode(value);
+  let binary = '';
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+function decodeBase64Url(value) {
+  const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
+  const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), '=');
+  const binary = atob(padded);
+  const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
+  return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+}
+
+function normalizeSharedPortfolio(portfolio) {
+  if (!Array.isArray(portfolio)) {
+    return null;
+  }
+
+  const normalized = [];
+  const seenIsins = new Set();
+  for (const position of portfolio) {
+    if (
+      !position ||
+      typeof position.isin !== 'string' ||
+      !position.isin.trim() ||
+      typeof position.shares !== 'number' ||
+      !Number.isFinite(position.shares) ||
+      position.shares < 0
+    ) {
+      return null;
+    }
+    const isin = position.isin.trim().toUpperCase();
+    if (seenIsins.has(isin)) {
+      return null;
+    }
+    seenIsins.add(isin);
+    normalized.push({ isin, shares: position.shares });
+  }
+  return normalized;
+}
+
+function encodePortfolioShare(portfolio) {
+  const normalizedPortfolio = normalizeSharedPortfolio(portfolio);
+  if (!normalizedPortfolio?.length) {
+    return null;
+  }
+  return encodeBase64Url(
+    JSON.stringify({ version: SHARE_PAYLOAD_VERSION, portfolio: normalizedPortfolio })
+  );
+}
+
+function decodePortfolioShare(value) {
+  if (!value) {
+    return { status: 'missing', portfolio: null };
+  }
+  try {
+    const parsed = JSON.parse(decodeBase64Url(value));
+    if (parsed?.version !== SHARE_PAYLOAD_VERSION) {
+      return { status: 'invalid', portfolio: null };
+    }
+    const portfolio = normalizeSharedPortfolio(parsed.portfolio);
+    return portfolio ? { status: 'valid', portfolio } : { status: 'invalid', portfolio: null };
+  } catch {
+    return { status: 'invalid', portfolio: null };
+  }
+}
+
+function readPortfolioShareFromUrl() {
+  const params = new URLSearchParams(window.location.hash.replace(/^#/, ''));
+  return decodePortfolioShare(params.get(SHARE_FRAGMENT_KEY));
+}
+
+function buildPortfolioShareUrl(portfolio) {
+  const encoded = encodePortfolioShare(portfolio);
+  if (!encoded) {
+    return null;
+  }
+  const url = new URL(window.location.href);
+  url.hash = `${SHARE_FRAGMENT_KEY}=${encoded}`;
+  return url.toString();
+}
+
+function renderShareFeedback() {
+  if (!elements.shareStatus || !elements.shareFallbackUrl) {
+    return;
+  }
+  elements.shareStatus.textContent = state.shareFeedback;
+  elements.shareFallbackUrl.value = state.shareFallbackUrl;
+  elements.shareFallbackUrl.hidden = !state.shareFallbackUrl;
+}
+
+async function sharePortfolio() {
+  const url = buildPortfolioShareUrl(state.portfolio);
+  if (!url) {
+    state.shareFeedback = 'Add at least one position before creating a share link.';
+    state.shareFallbackUrl = '';
+    renderShareFeedback();
+    return;
+  }
+
+  state.shareFallbackUrl = url;
+  try {
+    if (!navigator.clipboard?.writeText) {
+      throw new Error('Clipboard unavailable');
+    }
+    await navigator.clipboard.writeText(url);
+    state.shareFeedback = 'Share link copied. It uses the latest published ETF data when opened.';
+  } catch {
+    state.shareFeedback = 'Automatic copying is unavailable. Copy the link from the field below.';
+  }
+  renderShareFeedback();
 }
 
 function formatPercent(value) {
@@ -1118,6 +1239,7 @@ function renderAll() {
   renderCompanyList();
   renderWarnings();
   updateSummary();
+  renderShareFeedback();
 }
 
 function setTab(tabName) {
@@ -1172,12 +1294,16 @@ async function bootstrap() {
   elements.summaryGrid = document.getElementById('summary-grid');
   elements.navigationItems = document.getElementById('primary-navigation-items');
   renderNavigation();
+  window.lucide?.createIcons();
   elements.tabButtons = [...document.querySelectorAll('.tab-button')];
   elements.tabPanels = [...document.querySelectorAll('.tab-panel')];
   elements.catalogSearch = document.getElementById('catalog-search');
   elements.catalogList = document.getElementById('catalog-list');
   elements.positionsBody = document.getElementById('positions-tbody');
   elements.portfolioHint = document.getElementById('portfolio-hint');
+  elements.shareButton = document.getElementById('share-portfolio-button');
+  elements.shareStatus = document.getElementById('share-portfolio-status');
+  elements.shareFallbackUrl = document.getElementById('share-portfolio-url');
   elements.comparisonToolbar = document.getElementById('comparison-toolbar');
   elements.sectorCanvas = document.getElementById('sector-chart');
   elements.sectorLegend = document.getElementById('sector-legend');
@@ -1232,8 +1358,19 @@ async function bootstrap() {
 
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
-  state.portfolio = loadPortfolioState();
-  state.activeTab = loadActiveTab();
+  const sharedPortfolio = readPortfolioShareFromUrl();
+  if (sharedPortfolio.status === 'valid') {
+    state.portfolio = sharedPortfolio.portfolio;
+    state.activeTab = 'portfolio';
+    state.shareFeedback = 'Shared portfolio loaded using the latest published ETF data.';
+    savePortfolioState();
+  } else {
+    state.portfolio = loadPortfolioState();
+    state.activeTab = loadActiveTab();
+    if (sharedPortfolio.status === 'invalid') {
+      state.shareFeedback = 'This share link could not be loaded. Your local portfolio was kept.';
+    }
+  }
   positionColorModeControl();
   state.compactExplorePreview = loadCompactExplorePreview();
   elements.compactExplorePreview.checked = state.compactExplorePreview;
@@ -1281,6 +1418,12 @@ async function bootstrap() {
     const addButton = event.target.closest('[data-add-etf]');
     if (addButton) {
       addPosition(addButton.dataset.addEtf);
+      return;
+    }
+
+    const shareButton = event.target.closest('[data-share-portfolio]');
+    if (shareButton) {
+      void sharePortfolio();
       return;
     }
 
