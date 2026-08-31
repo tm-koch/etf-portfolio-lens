@@ -58,6 +58,7 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("function formatChfValue(value)", app)
         self.assertIn('replace(/,/g, "\'")', app)
         self.assertIn("{ label: 'Total value', value: totalValueChf }", app)
+        self.assertIn(": formatChfValue(0);", app)
         self.assertIn("value >= 0", app)
         self.assertIn("'Unavailable'", app)
 

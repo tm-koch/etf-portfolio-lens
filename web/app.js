@@ -1080,7 +1080,7 @@ function updateSummary() {
     .filter((value) => Number.isFinite(value) && value >= 0);
   const totalValueChf = importedValues.length
     ? formatChfValue(importedValues.reduce((sum, value) => sum + value, 0))
-    : 'Unavailable';
+    : formatChfValue(0);
   const uniqueEtfs = positions.length;
   const totalHoldings = positions.reduce((sum, position) => sum + (position.snapshot?.holdings?.length || 0), 0);
   const overlapCount = aggregateCompanyExposure(positions).ranked.filter((item) => item.etfs.size > 1).length;
