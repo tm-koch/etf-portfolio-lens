@@ -1095,7 +1095,7 @@ body {
 }
 
 .compact-explore-table .compact-explore-holding {
-  min-width: 220px;
+  min-width: 300px;
   text-align: left;
   position: sticky;
   left: 0;
@@ -1117,7 +1117,7 @@ body {
 
 .compact-explore-table .compact-explore-holding-name {
   display: block;
-  max-width: 220px;
+  max-width: 300px;
   overflow: hidden;
   background: linear-gradient(90deg, var(--text) 0%, var(--text) 78%, var(--muted) 94%, transparent 100%);
   background-clip: text;

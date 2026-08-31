@@ -158,7 +158,11 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
         self.assertIn(
-            ".compact-explore-table .compact-explore-holding {\n  min-width: 220px;",
+            ".compact-explore-table .compact-explore-holding {\n  min-width: 300px;",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table .compact-explore-holding-name {\n  display: block;\n  max-width: 300px;",
             styles,
         )
         self.assertIn(
