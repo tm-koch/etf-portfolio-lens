@@ -28,6 +28,7 @@
     />
     <link rel="stylesheet" href="./styles.css?v=20260831-1" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
     <script src="https://unpkg.com/lucide@0.468.0" defer></script>
     <script type="module" src="./app.js?v=20260831-1" defer></script>
   </head>
@@ -124,19 +125,54 @@
               <span class="dot"></span>
               <span>Browser persistence is local only.</span>
             </div>
-            <button class="share-portfolio-button" id="share-portfolio-button" data-share-portfolio type="button">
-              <i data-lucide="share-2" aria-hidden="true"></i>
-              <span>Share portfolio</span>
-            </button>
           </div>
 
-          <div class="share-portfolio-feedback" aria-live="polite">
-            <p id="share-portfolio-status"></p>
-            <label class="share-portfolio-url-label" for="share-portfolio-url">
-              <span>Share link</span>
-              <input id="share-portfolio-url" type="url" readonly hidden />
-            </label>
-          </div>
+          <label class="portfolio-import-control" for="portfolio-import-file">
+            <span class="portfolio-import-label">Import Saxo Bank PDF</span>
+            <span>Drop a holdings report here or choose a PDF.</span>
+            <span>Imported PDF data stays in this browser and is never uploaded.</span>
+            <input id="portfolio-import-file" type="file" accept="application/pdf,.pdf" />
+          </label>
+
+          <p class="portfolio-import-status" id="portfolio-import-status" role="status" aria-live="polite"></p>
+          <button class="secondary-button portfolio-import-debug" id="portfolio-import-debug" type="button" hidden>
+            Download extracted PDF text
+          </button>
+
+          <dialog class="import-dialog" id="portfolio-import-dialog" aria-labelledby="portfolio-import-title">
+            <div class="import-dialog-content">
+              <div class="import-dialog-heading">
+                <div>
+                  <p class="section-label">Review import</p>
+                  <h2 id="portfolio-import-title">Review Saxo Bank holdings</h2>
+                </div>
+                <button class="build-dialog-close" id="portfolio-import-close" type="button" aria-label="Close import review">
+                  <i data-lucide="x" aria-hidden="true"></i>
+                </button>
+              </div>
+              <p id="portfolio-import-summary">Check the proposed values before replacing your portfolio.</p>
+              <div class="import-table-wrap">
+                <table class="import-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Use</th>
+                      <th scope="col">ETF / ISIN</th>
+                      <th scope="col">Shares</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Currency</th>
+                      <th scope="col">Value</th>
+                      <th scope="col">Value CHF</th>
+                    </tr>
+                  </thead>
+                  <tbody id="portfolio-import-tbody"></tbody>
+                </table>
+              </div>
+              <div class="import-dialog-actions">
+                <button class="secondary-button" id="portfolio-import-cancel" type="button">Cancel</button>
+                <button class="primary-button" id="portfolio-import-confirm" type="button">Replace portfolio</button>
+              </div>
+            </div>
+          </dialog>
 
           <div class="portfolio-layout">
             <div class="catalog-column">
@@ -159,6 +195,8 @@
                       <tr>
                         <th>ETF</th>
                         <th>Shares</th>
+                        <th>Price</th>
+                        <th>Value CHF</th>
                         <th>Weight</th>
                         <th>Remove</th>
                       </tr>
@@ -167,6 +205,20 @@
                   </table>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <div class="portfolio-sharing" aria-label="Portfolio sharing">
+            <button class="share-portfolio-button" id="share-portfolio-button" data-share-portfolio type="button">
+              <i data-lucide="share-2" aria-hidden="true"></i>
+              <span>Share portfolio</span>
+            </button>
+            <div class="share-portfolio-feedback" aria-live="polite">
+              <p id="share-portfolio-status"></p>
+              <label class="share-portfolio-url-label" for="share-portfolio-url">
+                <span>Share link</span>
+                <input id="share-portfolio-url" type="url" readonly hidden />
+              </label>
             </div>
           </div>
         </section>

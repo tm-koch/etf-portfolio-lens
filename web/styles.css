@@ -650,6 +650,13 @@ body {
   gap: 8px;
 }
 
+.portfolio-sharing {
+  display: grid;
+  gap: 12px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
 .share-portfolio-feedback p {
   min-height: 1.4em;
   margin: 0;
@@ -680,6 +687,149 @@ body {
   display: grid;
   gap: 18px;
   grid-template-columns: 1fr;
+}
+
+.portfolio-import-control {
+  display: grid;
+  gap: 4px;
+  justify-self: start;
+  min-width: 210px;
+  padding: 10px 14px;
+  border: 1px dashed var(--accent);
+  border-radius: 12px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.portfolio-import-control:hover,
+.portfolio-import-control.is-dragging {
+  background: var(--table-row-hover-background);
+  color: var(--text);
+}
+
+.portfolio-import-label {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.portfolio-import-control input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.portfolio-import-status {
+  min-height: 1.4em;
+  margin: 12px 0 0;
+  color: var(--muted);
+}
+
+.portfolio-import-privacy {
+  margin: -8px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.import-dialog {
+  width: min(1100px, calc(100vw - 32px));
+  max-width: 1100px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 0;
+  color: var(--text);
+  background: var(--card-strong);
+  box-shadow: 0 24px 70px rgba(22, 34, 58, 0.24);
+}
+
+.import-dialog::backdrop {
+  background: rgba(8, 15, 28, 0.6);
+}
+
+.import-dialog-content {
+  display: grid;
+  gap: 18px;
+  padding: 24px;
+}
+
+.import-dialog-heading,
+.import-dialog-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.import-table-wrap {
+  overflow-x: auto;
+}
+
+.import-table {
+  width: 100%;
+  min-width: 780px;
+  border-collapse: collapse;
+}
+
+.import-table th,
+.import-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.import-table th {
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.import-row-meta {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.import-row-warning {
+  background: rgba(247, 185, 85, 0.12);
+}
+
+.import-input,
+.import-currency {
+  width: 100px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--input-background);
+  font: inherit;
+}
+
+.primary-button,
+.secondary-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primary-button {
+  color: #ffffff;
+  background: var(--accent);
+}
+
+.secondary-button {
+  color: var(--text);
+  background: var(--table-row-hover-background);
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .portfolio-layout {

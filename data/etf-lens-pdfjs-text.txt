@@ -1,0 +1,37 @@
+--- Page 1 ---
+Saxo Bank Transaktions- und Saldenbericht
+Bestände - (000000), CHF
+Börsengehandelte Produkte (ETF, ETC, ETN)
+Gesamt
+
+--- Page 2 ---
+
+--- Page 3 ---
+Saxo Bank Transaktions- und Saldenbericht
+Bestände - (000000), CHF
+Börsengehandelte Produkte (ETF, ETC, ETN)
+Example ETF 1 (ISIN: XX0000000001)
+EX01:demo 1000000001 CHF 01-Jan-2000 12 1,0000 10,0000 12,0000 1,00 % 1,44 144,00
+Example ETF 2 (ISIN: XX0000000002)
+EX02:demo 1000000002 CHF 02-Jan-2000 23 1,0000 20,0000 23,0000 2,00 % 10,58 529,00
+Example ETF 3 (ISIN: XX0000000003)
+EX03:demo 1000000003 CHF 03-Jan-2000 34 1,0000 30,0000 34,0000 3,00 % 34,68 1.156,00
+Gesamt
+
+--- Page 4 ---
+
+--- Page 5 ---
+
+--- Page 6 ---
+
+--- Page 7 ---
+
+--- Page 8 ---
+Saxo Bank Transaktions- und Saldenbericht
+Bestände - EUR
+Börsengehandelte Produkte (ETF, ETC, ETN)
+Example ETF 4 (ISIN: XX0000000004)
+EX04:demo 1000000004 EUR 04-Jan-2000 45 1,0000 40,0000 45,0000 4,00 % 81,00 2.025,00
+Example ETF 5 (ISIN: XX0000000005)
+EX05:demo 1000000005 EUR 05-Jan-2000 56 1,0000 50,0000 56,0000 5,00 % 140,00 2.800,00
+Gesamt

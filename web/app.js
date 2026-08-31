@@ -1,5 +1,6 @@
 import { buildCatalogMaps, loadBuildInfo, loadPublishedCatalog, loadSnapshot } from './data.js?v=20260816-3';
 import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-3';
+import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
@@ -14,6 +15,7 @@ const defaultState = {
   searchTerm: '',
   companySearchTerm: '',
   portfolio: [],
+  importReviewRows: [],
   compactExplorePreview: false,
   colorMode: 'automatic',
   effectiveColorMode: 'bright',
@@ -234,7 +236,7 @@ function loadPortfolioState() {
       return [];
     }
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
+    return normalizePortfolioPositions(parsed);
   } catch {
     return [];
   }
@@ -242,6 +244,27 @@ function loadPortfolioState() {
 
 function savePortfolioState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state.portfolio));
+}
+
+function normalizePortfolioPositions(portfolio) {
+  if (!Array.isArray(portfolio)) {
+    return [];
+  }
+  const seenIsins = new Set();
+  return portfolio.flatMap((position) => {
+    const isin = typeof position?.isin === 'string' ? position.isin.trim().toUpperCase() : '';
+    const shares = Number(position?.shares);
+    if (!isin || seenIsins.has(isin) || !Number.isFinite(shares) || shares < 0) {
+      return [];
+    }
+    seenIsins.add(isin);
+    const normalized = { isin, shares };
+    if (Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalized.price = Number(position.price);
+    if (typeof position.currency === 'string' && ['CHF', 'EUR'].includes(position.currency.toUpperCase())) normalized.currency = position.currency.toUpperCase();
+    if (Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalized.value = Number(position.value);
+    if (Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalized.valueChf = Number(position.valueChf);
+    return [normalized];
+  });
 }
 
 function encodeBase64Url(value) {
@@ -284,7 +307,12 @@ function normalizeSharedPortfolio(portfolio) {
       return null;
     }
     seenIsins.add(isin);
-    normalized.push({ isin, shares: position.shares });
+    const normalizedPosition = { isin, shares: position.shares };
+    if (Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalizedPosition.price = Number(position.price);
+    if (typeof position.currency === 'string' && ['CHF', 'EUR'].includes(position.currency.toUpperCase())) normalizedPosition.currency = position.currency.toUpperCase();
+    if (Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalizedPosition.value = Number(position.value);
+    if (Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalizedPosition.valueChf = Number(position.valueChf);
+    normalized.push(normalizedPosition);
   }
   return normalized;
 }
@@ -523,14 +551,19 @@ function getSelectedPositions() {
 }
 
 function getTotalShareUnits(positions) {
-  return positions.reduce((sum, position) => sum + Math.max(position.shares, 0), 0);
+  return positions.reduce((sum, position) => sum + getPositionWeightBase(position), 0);
+}
+
+function getPositionWeightBase(position) {
+  const valueChf = Number(position.valueChf);
+  return Number.isFinite(valueChf) && valueChf > 0 ? valueChf : Math.max(Number(position.shares) || 0, 0);
 }
 
 function getPositionWeight(position, totalShareUnits) {
   if (!totalShareUnits) {
     return 0;
   }
-  return (Math.max(position.shares, 0) / totalShareUnits) * 100;
+  return (getPositionWeightBase(position) / totalShareUnits) * 100;
 }
 
 function roundExposurePercent(value) {
@@ -1046,13 +1079,15 @@ function renderCatalog() {
 function renderPositions() {
   const positions = getSelectedPositions();
   if (!positions.length) {
-    elements.positionsBody.innerHTML = '<tr><td colspan="4"><div class="empty-state">No positions yet. Search the catalog and add an ETF.</div></td></tr>';
+      elements.positionsBody.innerHTML = '<tr><td colspan="6"><div class="empty-state">No positions yet. Search the catalog and add an ETF.</div></td></tr>';
     elements.portfolioHint.textContent = 'The portfolio is empty.';
     return;
   }
 
   const totalShareUnits = getTotalShareUnits(positions);
-  elements.portfolioHint.textContent = 'Share counts act as the portfolio weighting proxy until ETF unit prices are published.';
+  elements.portfolioHint.textContent = positions.some((position) => Number.isFinite(position.valueChf))
+    ? 'Weights use imported CHF values; positions without a value use their share count.'
+    : 'Share counts act as the portfolio weighting proxy until ETF unit prices are imported.';
 
   elements.positionsBody.innerHTML = positions
     .map((position) => {
@@ -1068,6 +1103,8 @@ function renderPositions() {
           <td class="position-shares" data-label="Shares">
             <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="1" value="${position.shares}" data-shares-input="${position.isin}" />
           </td>
+          <td class="position-price" data-label="Price">${position.price !== undefined ? `${position.currency || 'CHF'} ${Number(position.price).toFixed(2)}` : 'Not imported'}</td>
+          <td class="position-value" data-label="Value CHF">${position.valueChf !== undefined ? `CHF ${Number(position.valueChf).toFixed(2)}` : 'Not imported'}</td>
           <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
           <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>
         </tr>
@@ -1252,6 +1289,130 @@ function updateCompanySearchClearButton() {
   elements.companySearchClear.hidden = !elements.companySearch.value;
 }
 
+function formatImportedMoney(value, currency = 'CHF') {
+  if (!Number.isFinite(Number(value))) {
+    return 'Invalid';
+  }
+  return `${currency} ${Number(value).toFixed(2)}`;
+}
+
+function renderImportReview() {
+  const validRows = state.importReviewRows.filter((row) => row.included && !row.warnings.length && row.matchStatus === 'matched');
+  elements.importSummary.textContent = `${state.importReviewRows.length} rows found. ${validRows.length} will replace the existing portfolio.`;
+  elements.importTbody.innerHTML = state.importReviewRows
+    .map((row, index) => {
+      const warning = row.warnings.length ? ` ${row.warnings.join('; ')}` : row.matchStatus === 'unmatched' ? ' ISIN is not in the catalog.' : '';
+      const label = row.entry ? `${row.entry.ticker} · ${row.entry.name}` : row.isin;
+      return `
+        <tr class="import-row ${warning ? 'import-row-warning' : ''}">
+          <td><input type="checkbox" aria-label="Include ${label}" data-import-include="${index}" ${row.included ? 'checked' : ''} ${row.matchStatus !== 'matched' ? 'disabled' : ''} /></td>
+          <td><strong>${label}</strong><span class="import-row-meta">${row.isin} · Page ${row.pageNumber}${warning ? ` · ${warning}` : ''}</span></td>
+          <td><input class="import-input" type="number" min="0" step="1" value="${row.shares ?? ''}" data-import-shares="${index}" /></td>
+          <td><input class="import-input" type="number" min="0" step="0.0001" value="${row.price ?? ''}" data-import-price="${index}" /></td>
+          <td><select class="import-currency" data-import-currency="${index}"><option value="CHF" ${row.currency === 'CHF' ? 'selected' : ''}>CHF</option><option value="EUR" ${row.currency === 'EUR' ? 'selected' : ''}>EUR</option></select></td>
+          <td data-import-value="${index}">${formatImportedMoney(row.value, row.currency)}</td>
+          <td data-import-value-chf="${index}">${formatImportedMoney(row.valueChf)}</td>
+        </tr>
+      `;
+    })
+    .join('');
+  elements.importConfirm.disabled = !validRows.length;
+}
+
+function updateImportRow(index, field, value) {
+  const row = state.importReviewRows[index];
+  if (!row) return;
+  if (field === 'currency') row.currency = value;
+  else row[field] = Number(value);
+  const calculated = calculateImportedPosition(Number(row.shares), Number(row.price), row.currency);
+  row.value = calculated.value;
+  row.valueChf = calculated.valueChf;
+  row.warnings = [];
+  if (!Number.isFinite(row.shares) || row.shares < 0) row.warnings.push('Shares are missing or invalid');
+  if (!Number.isFinite(row.price) || row.price < 0) row.warnings.push('Price is missing or invalid');
+  refreshImportReviewTotals();
+}
+
+function refreshImportReviewTotals() {
+  const validRows = state.importReviewRows.filter((row) => row.included && !row.warnings.length && row.matchStatus === 'matched');
+  elements.importSummary.textContent = `${state.importReviewRows.length} rows found. ${validRows.length} will replace the existing portfolio.`;
+  for (const [index, row] of state.importReviewRows.entries()) {
+    const value = elements.importTbody.querySelector(`[data-import-value="${index}"]`);
+    const valueChf = elements.importTbody.querySelector(`[data-import-value-chf="${index}"]`);
+    if (value) value.textContent = formatImportedMoney(row.value, row.currency);
+    if (valueChf) valueChf.textContent = formatImportedMoney(row.valueChf);
+  }
+  elements.importConfirm.disabled = !validRows.length;
+}
+
+function showImportDialog(rows) {
+  state.importReviewRows = rows;
+  renderImportReview();
+  if (typeof elements.importDialog.showModal === 'function') elements.importDialog.showModal();
+  else elements.importDialog.setAttribute('open', '');
+}
+
+function closeImportDialog() {
+  if (typeof elements.importDialog.close === 'function') elements.importDialog.close();
+  else elements.importDialog.removeAttribute('open');
+  state.importReviewRows = [];
+}
+
+function downloadExtractedPdfText() {
+  const pages = window.__etfLensPdfImportPages || [];
+  const text = pages.map((page) => `--- Page ${page.pageNumber} ---\n${page.text}`).join('\n\n');
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/plain;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'etf-lens-pdfjs-text.txt';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+async function importPortfolioFile(file) {
+  if (!file) return;
+  if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+    elements.importStatus.textContent = 'Select a PDF holdings report.';
+    return;
+  }
+  elements.importStatus.textContent = `Reading ${file.name} locally...`;
+  elements.importDebug.hidden = true;
+  try {
+    const pages = await extractPdfPages(file);
+    window.__etfLensPdfImportPages = pages;
+    elements.importDebug.hidden = false;
+    const rows = matchImportedRows(parseSaxoPages(pages), state.catalogMaps);
+    if (!rows.length) throw new Error('No ETF holdings were found in the supported Saxo sections.');
+    showImportDialog(rows);
+    elements.importStatus.textContent = 'Review the proposed positions before replacing the portfolio.';
+  } catch (error) {
+    elements.importStatus.textContent = error.message;
+    if (window.__etfLensPdfImportPages?.length) elements.importDebug.hidden = false;
+  }
+}
+
+function confirmImport() {
+  const positions = state.importReviewRows
+    .filter((row) => row.included && row.matchStatus === 'matched' && !row.warnings.length && row.entry)
+    .map((row) => ({
+      isin: row.isin,
+      shares: row.shares,
+      price: row.price,
+      currency: row.currency,
+      value: row.value,
+      valueChf: row.valueChf,
+    }));
+  if (!positions.length) {
+    elements.importStatus.textContent = 'No valid catalog positions are selected for import.';
+    return;
+  }
+  state.portfolio = positions;
+  savePortfolioState();
+  closeImportDialog();
+  elements.importStatus.textContent = `Imported ${positions.length} ETF position${positions.length === 1 ? '' : 's'} and replaced the portfolio.`;
+  renderAll();
+}
+
 function renderAll() {
   renderCatalog();
   renderPositions();
@@ -1346,6 +1507,16 @@ async function bootstrap() {
   elements.buildDetailsExtra = document.getElementById('build-details-extra');
   elements.buildWarningList = document.getElementById('build-warning-list');
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
+  elements.importDialog = document.getElementById('portfolio-import-dialog');
+  elements.importDialogClose = document.getElementById('portfolio-import-close');
+  elements.importDialogCancel = document.getElementById('portfolio-import-cancel');
+  elements.importConfirm = document.getElementById('portfolio-import-confirm');
+  elements.importTbody = document.getElementById('portfolio-import-tbody');
+  elements.importSummary = document.getElementById('portfolio-import-summary');
+  elements.importStatus = document.getElementById('portfolio-import-status');
+  elements.importDebug = document.getElementById('portfolio-import-debug');
+  elements.importFile = document.getElementById('portfolio-import-file');
+  elements.importControl = document.querySelector('.portfolio-import-control');
   elements.colorModeButton = document.getElementById('color-mode-button');
   elements.colorModeMenu = document.getElementById('color-mode-menu');
   elements.colorModeUtility = document.querySelector('.app-utility-bar');
@@ -1445,6 +1616,45 @@ async function bootstrap() {
     elements.companySearch.focus();
   });
   updateCompanySearchClearButton();
+
+  elements.importFile.addEventListener('change', (event) => {
+    void importPortfolioFile(event.target.files?.[0]);
+    event.target.value = '';
+  });
+  elements.importDebug.addEventListener('click', downloadExtractedPdfText);
+  elements.importControl.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    elements.importControl.classList.add('is-dragging');
+  });
+  elements.importControl.addEventListener('dragleave', () => elements.importControl.classList.remove('is-dragging'));
+  elements.importControl.addEventListener('drop', (event) => {
+    event.preventDefault();
+    elements.importControl.classList.remove('is-dragging');
+    void importPortfolioFile(event.dataTransfer.files?.[0]);
+  });
+  elements.importDialogClose.addEventListener('click', closeImportDialog);
+  elements.importDialogCancel.addEventListener('click', closeImportDialog);
+  elements.importConfirm.addEventListener('click', confirmImport);
+  elements.importDialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeImportDialog();
+  });
+  elements.importTbody.addEventListener('input', (event) => {
+    const input = event.target.closest('[data-import-shares], [data-import-price]');
+    if (!input) return;
+    const field = input.dataset.importShares !== undefined ? 'shares' : 'price';
+    updateImportRow(Number(input.dataset.importShares ?? input.dataset.importPrice), field, input.value);
+  });
+  elements.importTbody.addEventListener('change', (event) => {
+    const include = event.target.closest('[data-import-include]');
+    if (include) {
+      state.importReviewRows[Number(include.dataset.importInclude)].included = include.checked;
+      renderImportReview();
+      return;
+    }
+    const currency = event.target.closest('[data-import-currency]');
+    if (currency) updateImportRow(Number(currency.dataset.importCurrency), 'currency', currency.value);
+  });
 
   document.addEventListener('click', (event) => {
     const colorModeOption = event.target.closest('[data-color-mode-option]');

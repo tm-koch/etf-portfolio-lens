@@ -24,11 +24,25 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("state.portfolio = loadPortfolioState();", app)
         self.assertIn('id="share-portfolio-button"', index)
         self.assertIn("data-share-portfolio", index)
+        self.assertIn('class="portfolio-sharing"', index)
+        self.assertIn("Import Saxo Bank PDF", index)
+        self.assertIn(
+            "Imported PDF data stays in this browser and is never uploaded.", index
+        )
+        self.assertLess(
+            index.index('class="portfolio-import-control"'),
+            index.index('class="portfolio-sharing"'),
+        )
+        self.assertLess(
+            index.index('</div>\n\n          <label class="portfolio-import-control"'),
+            index.index('class="portfolio-import-control"'),
+        )
         self.assertIn('aria-live="polite"', index)
         self.assertIn('id="share-portfolio-url"', index)
         self.assertIn("navigator.clipboard?.writeText", app)
         self.assertIn("latest published ETF data", app)
         self.assertIn(".share-portfolio-button", styles)
+        self.assertIn(".portfolio-sharing", styles)
 
     def test_selected_positions_have_mobile_and_accessibility_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
@@ -41,6 +55,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('data-label="ETF"', app)
         self.assertIn('data-label="Shares"', app)
         self.assertIn('data-label="Weight"', app)
+        self.assertIn(
+            "return (getPositionWeightBase(position) / totalShareUnits) * 100;", app
+        )
         self.assertIn('data-label="Remove"', app)
         self.assertIn(
             'data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>',
@@ -220,6 +237,29 @@ class WebContractTests(unittest.TestCase):
             ".company-search-control input::-webkit-search-cancel-button {\n  -webkit-appearance: none;\n  appearance: none;",
             styles,
         )
+
+    def test_saxo_pdf_import_contract_covers_review_and_value_weighting(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        importer = (WEB_ROOT / "portfolio-import.js").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", index
+        )
+        self.assertIn('id="portfolio-import-file"', index)
+        self.assertIn('accept="application/pdf,.pdf"', index)
+        self.assertIn('id="portfolio-import-dialog"', index)
+        self.assertIn('id="portfolio-import-confirm"', index)
+        self.assertIn("extractPdfPages", app)
+        self.assertIn("matchImportedRows", app)
+        self.assertIn("state.portfolio = positions;", app)
+        self.assertIn("valueChf", app)
+        self.assertIn("function normalizePortfolioPositions", app)
+        self.assertIn("function parseSaxoPages", importer)
+        self.assertIn("bestande", importer)
+        self.assertIn("EUR_TO_CHF_RATE = 1", importer)
+        self.assertIn("matchStatus: entry ? 'matched' : 'unmatched'", importer)
+        self.assertIn("pdf.worker.min.js", importer)
 
     def test_global_color_mode_preserves_existing_behavior_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
