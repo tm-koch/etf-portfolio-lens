@@ -362,6 +362,18 @@ body {
   color: var(--accent);
 }
 
+.build-data {
+  display: grid;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.build-data h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
 .build-details-extra {
   display: grid;
   gap: 12px;
@@ -652,7 +664,7 @@ body {
 
 .portfolio-sharing {
   display: grid;
-  gap: 12px;
+  gap: 20px;
   padding-top: 6px;
   border-top: 1px solid var(--border);
 }
@@ -953,13 +965,28 @@ body {
 }
 
 .catalog-title span,
-.position-name span,
 .company-meta,
 .position-meta,
 .warning-item,
 .rollup-card .subtext {
   color: var(--muted);
   font-size: 0.88rem;
+}
+
+.positions-table .position-name {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.positions-table .position-name span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-overflow: ellipsis;
 }
 
 .catalog-item button,

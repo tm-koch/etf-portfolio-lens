@@ -97,6 +97,10 @@
             </div>
             <p id="build-dialog-description">Source, deployment, and ETF data provenance for this web UI.</p>
             <dl class="build-metadata" id="build-metadata"></dl>
+            <section class="build-data" aria-labelledby="build-data-title">
+              <h3 id="build-data-title">Data</h3>
+              <dl class="build-metadata" id="build-data"></dl>
+            </section>
             <div class="build-details-extra" id="build-details-extra" hidden></div>
             <div class="developer-settings">
               <div>
@@ -106,6 +110,10 @@
               <label class="switch-control">
                 <span>Compact Explore preview</span>
                 <input id="compact-explore-preview" data-compact-explore-preview type="checkbox" role="switch" />
+              </label>
+              <label class="switch-control">
+                <span>Portfolio import debug</span>
+                <input id="portfolio-import-debug-enabled" type="checkbox" role="switch" />
               </label>
             </div>
             <section class="build-dialog-warnings" aria-labelledby="build-warnings-title">

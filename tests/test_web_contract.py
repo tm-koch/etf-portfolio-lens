@@ -6,6 +6,49 @@ WEB_ROOT = REPOSITORY_ROOT / "web"
 
 
 class WebContractTests(unittest.TestCase):
+    def test_portfolio_ui_polish_contract_covers_provenance_and_presentation(
+        self,
+    ) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn('id="build-data-title"', index)
+        self.assertIn('id="build-data"', index)
+        self.assertIn("function renderBuildData()", app)
+        self.assertIn("entry.snapshotPath || 'Unavailable'", app)
+        self.assertNotIn(
+            '<div class="position-meta">Snapshot: ${entry.snapshotPath}</div>', app
+        )
+        self.assertIn("<span>· ${position.entry.name}</span>", app)
+        self.assertIn(".positions-table .position-name", styles)
+        self.assertIn("gap: 20px;", styles)
+
+    def test_portfolio_ui_polish_contract_covers_debug_preference_and_metrics(
+        self,
+    ) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('id="portfolio-import-debug-enabled"', index)
+        self.assertIn('id="portfolio-import-debug"', index)
+        self.assertIn("const PORTFOLIO_IMPORT_DEBUG_STORAGE_KEY", app)
+        self.assertIn("function loadPortfolioImportDebug()", app)
+        self.assertIn("function savePortfolioImportDebug()", app)
+        self.assertIn(
+            "state.portfolioImportDebug && window.__etfLensPdfImportPages?.length", app
+        )
+        self.assertIn("savePortfolioImportDebug();", app)
+        self.assertIn("const shareCountTotal = positions.reduce", app)
+        self.assertIn(
+            "{ label: 'Share units', value: formatCount(shareCountTotal) }", app
+        )
+        self.assertIn("function formatChfValue(value)", app)
+        self.assertIn('replace(/,/g, "\'")', app)
+        self.assertIn("{ label: 'Total value', value: totalValueChf }", app)
+        self.assertIn("value >= 0", app)
+        self.assertIn("'Unavailable'", app)
+
     def test_portfolio_sharing_contract_covers_encoding_loading_and_feedback(
         self,
     ) -> None:

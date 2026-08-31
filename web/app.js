@@ -5,6 +5,7 @@ import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSax
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
 const COMPACT_EXPLORE_STORAGE_KEY = 'etf-lens.compact-explore-preview.v1';
+const PORTFOLIO_IMPORT_DEBUG_STORAGE_KEY = 'etf-lens.portfolio-import-debug.v1';
 const COLOR_MODE_STORAGE_KEY = 'etf-lens.color-mode.v1';
 const SHARE_FRAGMENT_KEY = 'portfolio';
 const SHARE_PAYLOAD_VERSION = 1;
@@ -214,6 +215,29 @@ function saveCompactExplorePreview() {
   }
 }
 
+function loadPortfolioImportDebug() {
+  try {
+    return localStorage.getItem(PORTFOLIO_IMPORT_DEBUG_STORAGE_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+function savePortfolioImportDebug() {
+  try {
+    localStorage.setItem(PORTFOLIO_IMPORT_DEBUG_STORAGE_KEY, String(state.portfolioImportDebug));
+  } catch {
+    // Browser storage may be unavailable in private or restricted contexts.
+  }
+}
+
+function updateImportDebugVisibility() {
+  if (!elements.importDebug) {
+    return;
+  }
+  elements.importDebug.hidden = !(state.portfolioImportDebug && window.__etfLensPdfImportPages?.length);
+}
+
 function renderNavigation() {
   elements.navigationItems.innerHTML = NAVIGATION_DESTINATIONS
     .map(
@@ -397,6 +421,10 @@ function formatCount(value) {
   return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
 }
 
+function formatChfValue(value) {
+  return `CHF ${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, "'")}`;
+}
+
 function formatBuildTimestamp(value) {
   if (!value) {
     return 'Unavailable (local development)';
@@ -438,12 +466,42 @@ function appendBuildMetadataRow(container, label, valueNode) {
   container.append(term, description);
 }
 
+function renderBuildData() {
+  if (!elements.buildData) {
+    return;
+  }
+  elements.buildData.replaceChildren();
+  appendBuildMetadataRow(
+    elements.buildData,
+    'ETF data timestamp',
+    document.createTextNode(formatBuildTimestamp(state.buildInfo?.data?.timestamp))
+  );
+  const positions = state.portfolio
+    .map((position) => state.catalogMaps?.byIsin.get(position.isin))
+    .filter(Boolean);
+  if (!positions.length) {
+    const status = document.createElement('p');
+    status.className = 'build-metadata-status';
+    status.textContent = 'No ETFs selected.';
+    elements.buildData.append(status);
+    return;
+  }
+  for (const entry of positions) {
+    appendBuildMetadataRow(
+      elements.buildData,
+      `${entry.ticker} snapshot`,
+      document.createTextNode(entry.snapshotPath || 'Unavailable')
+    );
+  }
+}
+
 function renderBuildInfo() {
   if (!elements.buildMetadata) {
     return;
   }
 
   elements.buildMetadata.replaceChildren();
+  renderBuildData();
   elements.buildDetailsExtra.replaceChildren();
   elements.buildDetailsExtra.hidden = true;
   renderBuildWarnings();
@@ -481,12 +539,6 @@ function renderBuildInfo() {
     'Publish timestamp',
     document.createTextNode(formatBuildTimestamp(state.buildInfo.publishedAt))
   );
-  appendBuildMetadataRow(
-    elements.buildMetadata,
-    'ETF data timestamp',
-    document.createTextNode(formatBuildTimestamp(state.buildInfo.data?.timestamp))
-  );
-
   const details = state.buildInfo.details;
   if (details && typeof details === 'object' && !Array.isArray(details) && Object.keys(details).length > 0) {
     const heading = document.createElement('h3');
@@ -1022,14 +1074,21 @@ function applyChartFrameSizing() {
 
 function updateSummary() {
   const positions = getSelectedPositions();
-  const totalShareUnits = getTotalShareUnits(positions);
+  const shareCountTotal = positions.reduce((sum, position) => sum + Math.max(Number(position.shares) || 0, 0), 0);
+  const importedValues = positions
+    .map((position) => Number(position.valueChf))
+    .filter((value) => Number.isFinite(value) && value >= 0);
+  const totalValueChf = importedValues.length
+    ? formatChfValue(importedValues.reduce((sum, value) => sum + value, 0))
+    : 'Unavailable';
   const uniqueEtfs = positions.length;
   const totalHoldings = positions.reduce((sum, position) => sum + (position.snapshot?.holdings?.length || 0), 0);
   const overlapCount = aggregateCompanyExposure(positions).ranked.filter((item) => item.etfs.size > 1).length;
 
   const cards = [
     { label: 'Positions', value: formatCount(uniqueEtfs) },
-    { label: 'Share units', value: formatCount(totalShareUnits) },
+    { label: 'Share units', value: formatCount(shareCountTotal) },
+    { label: 'Total value', value: totalValueChf },
     { label: 'Underlying holdings', value: formatCount(totalHoldings) },
     { label: 'Shared companies', value: formatCount(overlapCount) },
   ];
@@ -1069,7 +1128,6 @@ function renderCatalog() {
               ${selected ? 'Added' : 'Add'}
             </button>
           </div>
-          <div class="position-meta">Snapshot: ${entry.snapshotPath}</div>
         </article>
       `;
     })
@@ -1097,7 +1155,7 @@ function renderPositions() {
           <td class="position-identity" data-label="ETF">
             <div class="position-name">
               <strong>${position.entry.ticker}</strong>
-              <span>${position.entry.name}</span>
+              <span>· ${position.entry.name}</span>
             </div>
           </td>
           <td class="position-shares" data-label="Shares">
@@ -1376,18 +1434,19 @@ async function importPortfolioFile(file) {
     return;
   }
   elements.importStatus.textContent = `Reading ${file.name} locally...`;
-  elements.importDebug.hidden = true;
+  window.__etfLensPdfImportPages = null;
+  updateImportDebugVisibility();
   try {
     const pages = await extractPdfPages(file);
     window.__etfLensPdfImportPages = pages;
-    elements.importDebug.hidden = false;
+    updateImportDebugVisibility();
     const rows = matchImportedRows(parseSaxoPages(pages), state.catalogMaps);
     if (!rows.length) throw new Error('No ETF holdings were found in the supported Saxo sections.');
     showImportDialog(rows);
     elements.importStatus.textContent = 'Review the proposed positions before replacing the portfolio.';
   } catch (error) {
     elements.importStatus.textContent = error.message;
-    if (window.__etfLensPdfImportPages?.length) elements.importDebug.hidden = false;
+    updateImportDebugVisibility();
   }
 }
 
@@ -1416,6 +1475,7 @@ function confirmImport() {
 function renderAll() {
   renderCatalog();
   renderPositions();
+  renderBuildData();
   renderComparisonToolbar(getSelectedPositions());
   renderComparisonCharts();
   if (state.activeTab === 'comparison') {
@@ -1504,9 +1564,11 @@ async function bootstrap() {
   elements.buildDialog = document.getElementById('build-dialog');
   elements.buildDialogClose = document.getElementById('build-dialog-close');
   elements.buildMetadata = document.getElementById('build-metadata');
+  elements.buildData = document.getElementById('build-data');
   elements.buildDetailsExtra = document.getElementById('build-details-extra');
   elements.buildWarningList = document.getElementById('build-warning-list');
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
+  elements.portfolioImportDebugEnabled = document.getElementById('portfolio-import-debug-enabled');
   elements.importDialog = document.getElementById('portfolio-import-dialog');
   elements.importDialogClose = document.getElementById('portfolio-import-close');
   elements.importDialogCancel = document.getElementById('portfolio-import-cancel');
@@ -1522,8 +1584,10 @@ async function bootstrap() {
   elements.colorModeUtility = document.querySelector('.app-utility-bar');
 
   state.colorMode = loadColorMode();
+  state.portfolioImportDebug = loadPortfolioImportDebug();
   applyColorMode();
   renderColorModeControl();
+  elements.portfolioImportDebugEnabled.checked = state.portfolioImportDebug;
   renderBuildInfo();
   elements.aboutBuildButton.addEventListener('click', openBuildDialog);
   elements.buildDialogClose.addEventListener('click', closeBuildDialog);
@@ -1554,6 +1618,7 @@ async function bootstrap() {
 
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
+  renderBuildData();
   const sharedPortfolio = readPortfolioShareFromUrl();
   if (sharedPortfolio.status === 'valid') {
     state.portfolio = sharedPortfolio.portfolio;
@@ -1620,6 +1685,11 @@ async function bootstrap() {
   elements.importFile.addEventListener('change', (event) => {
     void importPortfolioFile(event.target.files?.[0]);
     event.target.value = '';
+  });
+  elements.portfolioImportDebugEnabled.addEventListener('change', (event) => {
+    state.portfolioImportDebug = event.target.checked;
+    savePortfolioImportDebug();
+    updateImportDebugVisibility();
   });
   elements.importDebug.addEventListener('click', downloadExtractedPdfText);
   elements.importControl.addEventListener('dragover', (event) => {
