@@ -52,7 +52,7 @@ The compact holdings matrix SHALL display the holding name, the existing total p
 - **THEN** the application SHALL append the next batch of ranked rows without replacing the existing rows
 
 ### Requirement: Responsive table overflow
-The compact holdings matrix SHALL remain readable when its intrinsic width exceeds the viewport by providing horizontal scrolling within the table container. Numeric columns SHALL retain stable widths, the holding-name column SHALL remain visible while horizontally scrolling, and table content SHALL remain accessible on desktop and mobile-sized viewports. On widescreen layouts, the sticky holding-name column SHALL provide a minimum width of `300px`, and holding names SHALL be allowed up to `300px` of visible width. Holding names that exceed the available mobile width SHALL be visually faded toward their clipped end and SHALL expose the full name through a hover tip. The sticky holding-name body column SHALL be slightly transparent so horizontally scrolling cells remain faintly visible beneath it, while the sticky header SHALL remain opaque for readability.
+The compact holdings matrix SHALL remain readable when its intrinsic width exceeds the viewport by providing horizontal scrolling within the table container. Numeric columns SHALL retain stable widths, the holding-name column SHALL remain visible while horizontally scrolling, and table content SHALL remain accessible on desktop and mobile-sized viewports. On widescreen layouts, the sticky holding-name column SHALL provide a minimum width of `300px`, and holding names SHALL be allowed up to `300px` of visible width. Holding names that exceed the available mobile width SHALL be visually faded toward their clipped end and SHALL expose the full name through a hover tip. The sticky holding-name body column SHALL be slightly transparent so horizontally scrolling cells remain faintly visible beneath it, while the sticky header SHALL remain opaque for readability. The rank and holding name within each sticky cell SHALL remain on one visual line, with the name taking the remaining available width and retaining the existing clipping and hover disclosure behavior.
 
 #### Scenario: Wide ETF matrix on a narrow viewport
 - **WHEN** the number of selected ETF columns exceeds the available viewport width
@@ -60,11 +60,11 @@ The compact holdings matrix SHALL remain readable when its intrinsic width excee
 
 #### Scenario: Sticky column at rest
 - **WHEN** the compact Explore matrix is displayed on a widescreen viewport before horizontal scrolling
-- **THEN** the sticky body holding column SHALL provide at least `300px` of width, and its holding-name content SHALL be allowed up to `300px` before clipping, while the sticky header remains opaque
+- **THEN** the sticky body holding column SHALL provide at least `300px` of width, and its rank and holding-name content SHALL remain on one line while the holding-name content is allowed up to `300px` before clipping, while the sticky header remains opaque
 
 #### Scenario: Long holding name on mobile
 - **WHEN** a holding name exceeds half of the available mobile line width
-- **THEN** the displayed name SHALL be clipped with a visual fade and its full value SHALL be available through the cell hover tip while the sticky cell remains readable and sized responsively to `36vw`
+- **THEN** the displayed rank and name SHALL remain on one line, the name SHALL be clipped with a visual fade, and its full value SHALL be available through the cell hover tip while the sticky cell remains readable and sized responsively to `36vw`
 
 #### Scenario: Hovered holding row
 - **WHEN** the user hovers over a compact Explore holdings row
@@ -109,11 +109,20 @@ The compact Explore preview SHALL display a visible positive integer rank for ev
 - **THEN** the company SHALL retain its rank from the unfiltered portfolio ranking rather than being renumbered from one
 
 ### Requirement: Live company-name filtering
-The compact Explore preview SHALL provide a company search field that updates the displayed table on every input event. Matching SHALL use the trimmed search value, case-insensitively, as a substring of the aggregated company name only. When the search value is empty, the preview SHALL restore the complete ranked list using its existing first-20-plus-infinite-scroll behavior. When the search value is non-empty, the preview SHALL display every matching company and SHALL display no company rows when there are no matches.
+The compact Explore preview SHALL provide a company search field that updates the displayed table on every input event. Matching SHALL use the trimmed search value, case-insensitively, as a substring of the aggregated company name only. The search control SHALL provide an application-owned clear button that is visible when the search contains text and is usable with pointer, touch, and keyboard input. When activated, the clear button SHALL empty the search, restore the unfiltered first-20 ranked rows and their infinite-scroll sentinel, and return focus to the search input. The implementation MAY suppress vendor-native search cancel UI only to avoid displaying duplicate clear controls; clear behavior SHALL remain owned by the application. When the search value is empty, the preview SHALL restore the complete ranked list using its existing first-20-plus-infinite-scroll behavior. When the search value is non-empty, the preview SHALL display every matching company and SHALL display no company rows when there are no matches.
 
 #### Scenario: Search updates while typing
 - **WHEN** the user types or edits a value in the company search field
 - **THEN** the compact Explore table SHALL update immediately without requiring a submit action or page reload
+- **THEN** the compact Explore table SHALL update immediately without requiring a submit action or page reload, and the clear button SHALL reflect whether the field contains text
+
+#### Scenario: Clear button restores the full table
+- **WHEN** the user activates the visible clear button after entering a company search value
+- **THEN** the search input SHALL become empty, the unfiltered first 20 ranked company rows SHALL be displayed, the infinite-scroll sentinel SHALL be restored when more rows remain, and focus SHALL return to the search input
+
+#### Scenario: Clear button is available across browsers
+- **WHEN** the compact Explore search is displayed in a browser without a native search cancel control, including Firefox mobile
+- **THEN** the application-owned clear button SHALL remain visible for non-empty values and SHALL provide a touch target of at least 44px without relying on vendor-specific search pseudo-elements for its clear behavior
 
 #### Scenario: Company name substring match
 - **WHEN** the search value matches part of one or more aggregated company names regardless of letter case
@@ -130,4 +139,3 @@ The compact Explore preview SHALL provide a company search field that updates th
 #### Scenario: No company matches
 - **WHEN** the company search value is non-empty and no aggregated company name contains the value
 - **THEN** the compact Explore table SHALL contain no company rows
-

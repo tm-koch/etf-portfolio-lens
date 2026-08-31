@@ -162,7 +162,7 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
         self.assertIn(
-            ".compact-explore-table .compact-explore-holding-name {\n  display: block;\n  max-width: 300px;",
+            ".compact-explore-table .compact-explore-holding-name {\n  display: block;\n  min-width: 0;\n  flex: 1 1 auto;\n  max-width: 300px;",
             styles,
         )
         self.assertIn(
@@ -192,6 +192,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('id="compact-explore-search"', index)
         self.assertIn('id="company-search" type="search"', index)
         self.assertIn('placeholder="Search by company name"', index)
+        self.assertIn('id="company-search-clear"', index)
+        self.assertIn('aria-label="Clear company search"', index)
+        self.assertIn('data-lucide="x"', index)
         self.assertIn("companySearchTerm: '',", app)
         self.assertIn("function buildCompactExploreRow(positions, company, rank)", app)
         self.assertIn('class="compact-explore-rank" aria-label="Rank ${rank}"', app)
@@ -202,8 +205,21 @@ class WebContractTests(unittest.TestCase):
         self.assertIn(".map((company, index) => ({ company, rank: index + 1 }))", app)
         self.assertIn("elements.companySearch.addEventListener('input'", app)
         self.assertIn("state.companySearchTerm = event.target.value;", app)
+        self.assertIn("function updateCompanySearchClearButton()", app)
+        self.assertIn("elements.companySearchClear.addEventListener('click'", app)
+        self.assertIn("elements.companySearch.value = '';", app)
+        self.assertIn("elements.companySearch.focus();", app)
         self.assertIn(".compact-explore-holding-content", styles)
         self.assertIn(".compact-explore-rank", styles)
+        self.assertIn("flex-wrap: nowrap;", styles)
+        self.assertIn("white-space: nowrap;", styles)
+        self.assertIn(".company-search-clear", styles)
+        self.assertIn("width: 44px;", styles)
+        self.assertIn("height: 44px;", styles)
+        self.assertIn(
+            ".company-search-control input::-webkit-search-cancel-button {\n  -webkit-appearance: none;\n  appearance: none;",
+            styles,
+        )
 
     def test_global_color_mode_preserves_existing_behavior_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")

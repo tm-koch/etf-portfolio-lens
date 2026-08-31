@@ -713,6 +713,52 @@ body {
   font: inherit;
 }
 
+.company-search-control {
+  position: relative;
+}
+
+.company-search-control input {
+  padding-right: 56px;
+  appearance: none;
+}
+
+.company-search-control input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.company-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  place-items: center;
+  transform: translateY(-50%);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.company-search-clear:hover,
+.company-search-clear:focus-visible {
+  background: var(--table-row-hover-background);
+  color: var(--text);
+}
+
+.company-search-clear svg {
+  width: 18px;
+  height: 18px;
+}
+
+.company-search-clear[hidden] {
+  display: none;
+}
+
 .catalog-list {
   display: grid;
   gap: 10px;
@@ -1108,6 +1154,8 @@ body {
   align-items: center;
   gap: 10px;
   min-width: 0;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .compact-explore-rank {
@@ -1131,6 +1179,8 @@ body {
 
 .compact-explore-table .compact-explore-holding-name {
   display: block;
+  min-width: 0;
+  flex: 1 1 auto;
   max-width: 300px;
   overflow: hidden;
   background: linear-gradient(90deg, var(--text) 0%, var(--text) 78%, var(--muted) 94%, transparent 100%);

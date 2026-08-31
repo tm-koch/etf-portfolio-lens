@@ -238,7 +238,12 @@
               </div>
               <label class="search-box compact-explore-search" id="compact-explore-search" hidden>
                 <span>Search companies</span>
-                <input id="company-search" type="search" placeholder="Search by company name" />
+                <div class="company-search-control">
+                  <input id="company-search" type="search" placeholder="Search by company name" />
+                  <button class="company-search-clear" id="company-search-clear" type="button" aria-label="Clear company search" hidden>
+                    <i data-lucide="x" aria-hidden="true"></i>
+                  </button>
+                </div>
               </label>
               <div class="company-list" id="company-list"></div>
             </div>

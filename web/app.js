@@ -1248,6 +1248,10 @@ function renderWarnings() {
   renderBuildWarnings();
 }
 
+function updateCompanySearchClearButton() {
+  elements.companySearchClear.hidden = !elements.companySearch.value;
+}
+
 function renderAll() {
   renderCatalog();
   renderPositions();
@@ -1421,13 +1425,26 @@ async function bootstrap() {
   });
 
   elements.companySearch = document.getElementById('company-search');
+  elements.companySearchClear = document.getElementById('company-search-clear');
   elements.compactExploreSearch = document.getElementById('compact-explore-search');
   elements.companySearch.addEventListener('input', (event) => {
     state.companySearchTerm = event.target.value;
+    updateCompanySearchClearButton();
     if (state.activeTab === 'aggregated' && state.compactExplorePreview) {
       renderCompanyList();
     }
   });
+  elements.companySearchClear.addEventListener('click', (event) => {
+    event.preventDefault();
+    elements.companySearch.value = '';
+    state.companySearchTerm = '';
+    updateCompanySearchClearButton();
+    if (state.activeTab === 'aggregated' && state.compactExplorePreview) {
+      renderCompanyList();
+    }
+    elements.companySearch.focus();
+  });
+  updateCompanySearchClearButton();
 
   document.addEventListener('click', (event) => {
     const colorModeOption = event.target.closest('[data-color-mode-option]');
