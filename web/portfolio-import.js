@@ -166,7 +166,7 @@ export function parseSaxoPages(pages) {
 
 export async function extractPdfPages(file, pdfjs = window.pdfjsLib) {
   if (!pdfjs) throw new Error('PDF.js is unavailable. Reload the page and try again.');
-  pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  pdfjs.GlobalWorkerOptions.workerSrc = new URL('./vendor/pdf.worker.min.js', import.meta.url).href;
   const document = await pdfjs.getDocument({ data: await file.arrayBuffer() }).promise;
   const pages = [];
   for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {

@@ -50,18 +50,33 @@ try {
 
   New-Item -ItemType Directory -Force -Path (Join-Path $tempRoot 'data') | Out-Null
 
-  $webFiles = @(
+  $requiredWebFiles = @(
     'index.html',
     'styles.css',
     'app.js',
     'portfolio-import.js',
     'charts.js',
     'data.js',
-    'package.json'
+    'package.json',
+    'manifest.json',
+    'sw.js',
+    'icons/launchericon-192x192.png',
+    'icons/launchericon-512x512.png',
+    'vendor/chart.umd.min.js',
+    'vendor/lucide.js',
+    'vendor/pdf.min.js',
+    'vendor/pdf.worker.min.js'
   )
 
-  foreach ($file in $webFiles) {
-    Copy-Item -Force (Join-Path $repoRoot (Join-Path 'web' $file)) (Join-Path $tempRoot $file)
+  foreach ($file in $requiredWebFiles) {
+    $sourcePath = Join-Path $repoRoot (Join-Path 'web' $file)
+    if (-not (Test-Path $sourcePath -PathType Leaf)) {
+      throw "Required web asset is missing: $sourcePath"
+    }
+    $destinationPath = Join-Path $tempRoot $file
+    $destinationDirectory = Split-Path $destinationPath -Parent
+    New-Item -ItemType Directory -Force -Path $destinationDirectory | Out-Null
+    Copy-Item -Force $sourcePath $destinationPath
   }
 
   Copy-Item -Force (Join-Path $repoRoot 'README.md') (Join-Path $tempRoot 'README.md')

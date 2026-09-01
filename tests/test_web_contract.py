@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import re
 import unittest
 
@@ -7,6 +8,43 @@ WEB_ROOT = REPOSITORY_ROOT / "web"
 
 
 class WebContractTests(unittest.TestCase):
+    def test_pwa_assets_and_local_runtime_contract(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        importer = (WEB_ROOT / "portfolio-import.js").read_text(encoding="utf-8")
+        publish_script = (
+            REPOSITORY_ROOT / "scripts" / "publish-gh-pages.ps1"
+        ).read_text(encoding="utf-8")
+        manifest = json.loads((WEB_ROOT / "manifest.json").read_text(encoding="utf-8"))
+
+        self.assertEqual(manifest["name"], "ETF Porfolio Lens")
+        self.assertEqual(manifest["short_name"], "ETF Porfolio Lens")
+        self.assertEqual(manifest["display"], "standalone")
+        self.assertEqual(
+            [icon["sizes"] for icon in manifest["icons"]], ["192x192", "512x512"]
+        )
+        self.assertIn('rel="manifest" href="./manifest.json"', index)
+        self.assertIn('<meta name="theme-color" content="#152033" />', index)
+        self.assertIn('src="./vendor/chart.umd.min.js"', index)
+        self.assertIn('src="./vendor/pdf.min.js"', index)
+        self.assertIn('src="./vendor/lucide.js"', index)
+        self.assertIn("navigator.serviceWorker.register('./sw.js')", app)
+        self.assertIn("./vendor/pdf.worker.min.js", importer)
+        for path in (
+            "icons/launchericon-192x192.png",
+            "icons/launchericon-512x512.png",
+            "vendor/chart.umd.min.js",
+            "vendor/lucide.js",
+            "vendor/pdf.min.js",
+            "vendor/pdf.worker.min.js",
+        ):
+            self.assertTrue((WEB_ROOT / path).is_file())
+            self.assertIn(path, publish_script)
+
+        self.assertIn("manifest.json", publish_script)
+        self.assertIn("sw.js", publish_script)
+        self.assertIn("Required web asset is missing", publish_script)
+
     def test_publish_script_includes_app_local_javascript_modules(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         publish_script = (
@@ -60,7 +98,10 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("{ label: 'Total value', value: totalValueChf }", app)
         self.assertIn(": formatChfValue(0);", app)
         self.assertIn("cards[1].value = 'Not available';", app)
-        self.assertIn("const shareInputStep = state.portfolioMode === 'percentage' ? '0.1' : '1';", app)
+        self.assertIn(
+            "const shareInputStep = state.portfolioMode === 'percentage' ? '0.1' : '1';",
+            app,
+        )
         self.assertIn("Number(position.shares).toFixed(1)", app)
         self.assertIn("value >= 0", app)
         self.assertIn("'Unavailable'", app)
@@ -89,10 +130,12 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("position.valueChf !== undefined", app)
         self.assertIn("function confirmImport()", app)
         self.assertIn("state.portfolioMode = 'full';", app)
-        self.assertNotIn("elements.importControl.hidden = state.portfolioMode === 'percentage';", app)
+        self.assertNotIn(
+            "elements.importControl.hidden = state.portfolioMode === 'percentage';", app
+        )
         self.assertIn("Share percentages only", index)
         self.assertIn('id="private-share-portfolio-button"', index)
-        self.assertIn("data-share-mode=\"percentage\"", index)
+        self.assertIn('data-share-mode="percentage"', index)
         self.assertIn('id="share-portfolio-button"', index)
         self.assertIn("data-share-portfolio", index)
         self.assertIn('class="portfolio-sharing"', index)
@@ -322,9 +365,7 @@ class WebContractTests(unittest.TestCase):
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         importer = (WEB_ROOT / "portfolio-import.js").read_text(encoding="utf-8")
 
-        self.assertIn(
-            "cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js", index
-        )
+        self.assertIn('src="./vendor/pdf.min.js"', index)
         self.assertIn('id="portfolio-import-file"', index)
         self.assertIn('accept="application/pdf,.pdf"', index)
         self.assertIn('id="portfolio-import-dialog"', index)
@@ -338,7 +379,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("bestande", importer)
         self.assertIn("EUR_TO_CHF_RATE = 1", importer)
         self.assertIn("matchStatus: entry ? 'matched' : 'unmatched'", importer)
-        self.assertIn("pdf.worker.min.js", importer)
+        self.assertIn(
+            "new URL('./vendor/pdf.worker.min.js', import.meta.url).href", importer
+        )
 
     def test_global_color_mode_preserves_existing_behavior_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")

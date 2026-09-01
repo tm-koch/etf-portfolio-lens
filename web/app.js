@@ -1889,6 +1889,11 @@ async function bootstrap() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch((error) => {
+      console.warn('ETF Portfolio Lens service worker registration failed.', error);
+    });
+  }
   bootstrap().catch((error) => {
     document.body.innerHTML = `<pre style="white-space: pre-wrap; padding: 24px; color: #fff;">Failed to start ETF Portfolio Lens: ${error.message}</pre>`;
     console.error(error);
