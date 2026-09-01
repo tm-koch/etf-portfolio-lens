@@ -9,6 +9,8 @@ const PORTFOLIO_IMPORT_DEBUG_STORAGE_KEY = 'etf-lens.portfolio-import-debug.v1';
 const COLOR_MODE_STORAGE_KEY = 'etf-lens.color-mode.v1';
 const SHARE_FRAGMENT_KEY = 'portfolio';
 const SHARE_PAYLOAD_VERSION = 1;
+const PRIVATE_SHARE_PAYLOAD_VERSION = 2;
+const PORTFOLIO_MODES = ['full', 'percentage'];
 const COLOR_MODES = ['bright', 'automatic', 'dark'];
 const DARK_MODE_MEDIA_QUERY = '(prefers-color-scheme: dark)';
 const defaultState = {
@@ -16,6 +18,7 @@ const defaultState = {
   searchTerm: '',
   companySearchTerm: '',
   portfolio: [],
+  portfolioMode: 'full',
   importReviewRows: [],
   compactExplorePreview: false,
   colorMode: 'automatic',
@@ -257,17 +260,21 @@ function loadPortfolioState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      return [];
+      return { mode: 'full', portfolio: [] };
     }
     const parsed = JSON.parse(raw);
-    return normalizePortfolioPositions(parsed);
+    if (Array.isArray(parsed)) {
+      return { mode: 'full', portfolio: normalizePortfolioPositions(parsed) };
+    }
+    const mode = PORTFOLIO_MODES.includes(parsed?.mode) ? parsed.mode : 'full';
+    return { mode, portfolio: normalizePortfolioPositions(parsed?.portfolio) };
   } catch {
-    return [];
+    return { mode: 'full', portfolio: [] };
   }
 }
 
 function savePortfolioState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.portfolio));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ mode: state.portfolioMode, portfolio: state.portfolio }));
 }
 
 function normalizePortfolioPositions(portfolio) {
@@ -341,6 +348,38 @@ function normalizeSharedPortfolio(portfolio) {
   return normalized;
 }
 
+function normalizePrivatePortfolio(portfolio) {
+  if (!Array.isArray(portfolio)) {
+    return null;
+  }
+
+  const normalized = [];
+  const seenIsins = new Set();
+  for (const position of portfolio) {
+    if (
+      !position ||
+      typeof position.isin !== 'string' ||
+      !position.isin.trim() ||
+      typeof position.shares !== 'number' ||
+      !Number.isFinite(position.shares) ||
+      position.shares < 0 ||
+      position.price !== undefined ||
+      position.currency !== undefined ||
+      position.value !== undefined ||
+      position.valueChf !== undefined
+    ) {
+      return null;
+    }
+    const isin = position.isin.trim().toUpperCase();
+    if (seenIsins.has(isin)) {
+      return null;
+    }
+    seenIsins.add(isin);
+    normalized.push({ isin, shares: position.shares });
+  }
+  return normalized.some((position) => position.shares > 0) ? normalized : null;
+}
+
 function encodePortfolioShare(portfolio) {
   const normalizedPortfolio = normalizeSharedPortfolio(portfolio);
   if (!normalizedPortfolio?.length) {
@@ -351,19 +390,46 @@ function encodePortfolioShare(portfolio) {
   );
 }
 
+function encodePrivatePortfolioShare(positions) {
+  const totalShareUnits = getTotalShareUnits(positions);
+  if (!totalShareUnits) {
+    return null;
+  }
+  const normalizedPortfolio = normalizePrivatePortfolio(
+    positions.map((position) => ({
+      isin: position.isin,
+      shares: getPositionWeight(position, totalShareUnits),
+    }))
+  );
+  if (!normalizedPortfolio) {
+    return null;
+  }
+  return encodeBase64Url(
+    JSON.stringify({ version: PRIVATE_SHARE_PAYLOAD_VERSION, mode: 'percentage', portfolio: normalizedPortfolio })
+  );
+}
+
 function decodePortfolioShare(value) {
   if (!value) {
-    return { status: 'missing', portfolio: null };
+    return { status: 'missing', mode: 'full', portfolio: null };
   }
   try {
     const parsed = JSON.parse(decodeBase64Url(value));
+    if (parsed?.version === PRIVATE_SHARE_PAYLOAD_VERSION && parsed?.mode === 'percentage') {
+      const portfolio = normalizePrivatePortfolio(parsed.portfolio);
+      return portfolio
+        ? { status: 'valid', mode: 'percentage', portfolio }
+        : { status: 'invalid', mode: 'full', portfolio: null };
+    }
     if (parsed?.version !== SHARE_PAYLOAD_VERSION) {
-      return { status: 'invalid', portfolio: null };
+      return { status: 'invalid', mode: 'full', portfolio: null };
     }
     const portfolio = normalizeSharedPortfolio(parsed.portfolio);
-    return portfolio ? { status: 'valid', portfolio } : { status: 'invalid', portfolio: null };
+    return portfolio
+      ? { status: 'valid', mode: 'full', portfolio }
+      : { status: 'invalid', mode: 'full', portfolio: null };
   } catch {
-    return { status: 'invalid', portfolio: null };
+    return { status: 'invalid', mode: 'full', portfolio: null };
   }
 }
 
@@ -372,8 +438,10 @@ function readPortfolioShareFromUrl() {
   return decodePortfolioShare(params.get(SHARE_FRAGMENT_KEY));
 }
 
-function buildPortfolioShareUrl(portfolio) {
-  const encoded = encodePortfolioShare(portfolio);
+function buildPortfolioShareUrl(portfolio, mode = 'full') {
+  const encoded = mode === 'percentage'
+    ? encodePrivatePortfolioShare(portfolio)
+    : encodePortfolioShare(portfolio);
   if (!encoded) {
     return null;
   }
@@ -393,8 +461,11 @@ function renderShareFeedback() {
   elements.shareFallbackUrl.hidden = !hasFallbackUrl;
 }
 
-async function sharePortfolio() {
-  const url = buildPortfolioShareUrl(state.portfolio);
+async function sharePortfolio(mode = 'full') {
+  if (state.portfolioMode === 'percentage') {
+    mode = 'percentage';
+  }
+  const url = buildPortfolioShareUrl(getSelectedPositions(), mode);
   if (!url) {
     state.shareFeedback = 'Add at least one position before creating a share link.';
     state.shareFallbackUrl = '';
@@ -408,7 +479,9 @@ async function sharePortfolio() {
       throw new Error('Clipboard unavailable');
     }
     await navigator.clipboard.writeText(url);
-    state.shareFeedback = 'Share link copied. It uses the latest published ETF data when opened.';
+    state.shareFeedback = mode === 'percentage'
+      ? 'Private share link copied. It contains allocation weights only.'
+      : 'Share link copied. It uses the latest published ETF data when opened.';
   } catch {
     state.shareFeedback = 'Automatic copying is unavailable. Copy the link from the field below.';
   }
@@ -609,6 +682,9 @@ function getTotalShareUnits(positions) {
 }
 
 function getPositionWeightBase(position) {
+  if (state.portfolioMode === 'percentage') {
+    return Math.max(Number(position.shares) || 0, 0);
+  }
   const valueChf = Number(position.valueChf);
   return Number.isFinite(valueChf) && valueChf > 0 ? valueChf : Math.max(Number(position.shares) || 0, 0);
 }
@@ -1080,7 +1156,9 @@ function updateSummary() {
   const importedValues = positions
     .map((position) => Number(position.valueChf))
     .filter((value) => Number.isFinite(value) && value >= 0);
-  const totalValueChf = importedValues.length
+  const totalValueChf = state.portfolioMode === 'percentage'
+    ? 'Not available'
+    : importedValues.length
     ? formatChfValue(importedValues.reduce((sum, value) => sum + value, 0))
     : formatChfValue(0);
   const uniqueEtfs = positions.length;
@@ -1094,6 +1172,9 @@ function updateSummary() {
     { label: 'Underlying holdings', value: formatCount(totalHoldings) },
     { label: 'Shared companies', value: formatCount(overlapCount) },
   ];
+  if (state.portfolioMode === 'percentage') {
+    cards[1].value = 'Not available';
+  }
 
   elements.summaryGrid.innerHTML = cards
     .map(
@@ -1145,13 +1226,17 @@ function renderPositions() {
   }
 
   const totalShareUnits = getTotalShareUnits(positions);
-  elements.portfolioHint.textContent = positions.some((position) => Number.isFinite(position.valueChf))
+  elements.portfolioHint.textContent = state.portfolioMode === 'percentage'
+    ? 'Shares represent relative allocation units in this private portfolio; weights are normalized for analysis.'
+    : positions.some((position) => Number.isFinite(position.valueChf))
     ? 'Weights use imported CHF values; positions without a value use their share count.'
     : 'Share counts act as the portfolio weighting proxy until ETF unit prices are imported.';
 
   elements.positionsBody.innerHTML = positions
     .map((position) => {
       const weight = getPositionWeight(position, totalShareUnits);
+      const shareInputStep = state.portfolioMode === 'percentage' ? '0.1' : '1';
+      const shareInputValue = state.portfolioMode === 'percentage' ? Number(position.shares).toFixed(1) : position.shares;
       return `
         <tr class="position-row">
           <td class="position-identity" data-label="ETF">
@@ -1161,7 +1246,7 @@ function renderPositions() {
             </div>
           </td>
           <td class="position-shares" data-label="Shares">
-            <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="1" value="${position.shares}" data-shares-input="${position.isin}" />
+            <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
           </td>
           <td class="position-price" data-label="Price">${position.price !== undefined ? `${position.currency || 'CHF'} ${Number(position.price).toFixed(2)}` : 'Not imported'}</td>
           <td class="position-value" data-label="Value CHF">${position.valueChf !== undefined ? `CHF ${Number(position.valueChf).toFixed(2)}` : 'Not imported'}</td>
@@ -1468,6 +1553,7 @@ function confirmImport() {
     return;
   }
   state.portfolio = positions;
+  state.portfolioMode = 'full';
   savePortfolioState();
   closeImportDialog();
   elements.importStatus.textContent = `Imported ${positions.length} ETF position${positions.length === 1 ? '' : 's'} and replaced the portfolio.`;
@@ -1625,11 +1711,16 @@ async function bootstrap() {
   const sharedPortfolio = readPortfolioShareFromUrl();
   if (sharedPortfolio.status === 'valid') {
     state.portfolio = sharedPortfolio.portfolio;
+    state.portfolioMode = sharedPortfolio.mode;
     state.activeTab = 'portfolio';
-    state.shareFeedback = 'Shared portfolio loaded using the latest published ETF data.';
+    state.shareFeedback = sharedPortfolio.mode === 'percentage'
+      ? 'Private portfolio loaded. Shares represent relative allocation units only.'
+      : 'Shared portfolio loaded using the latest published ETF data.';
     savePortfolioState();
   } else {
-    state.portfolio = loadPortfolioState();
+    const savedPortfolio = loadPortfolioState();
+    state.portfolio = savedPortfolio.portfolio;
+    state.portfolioMode = savedPortfolio.mode;
     state.activeTab = loadActiveTab();
     if (sharedPortfolio.status === 'invalid') {
       state.shareFeedback = 'This share link could not be loaded. Your local portfolio was kept.';
@@ -1753,7 +1844,7 @@ async function bootstrap() {
 
     const shareButton = event.target.closest('[data-share-portfolio]');
     if (shareButton) {
-      void sharePortfolio();
+      void sharePortfolio(shareButton.dataset.shareMode || 'full');
       return;
     }
 

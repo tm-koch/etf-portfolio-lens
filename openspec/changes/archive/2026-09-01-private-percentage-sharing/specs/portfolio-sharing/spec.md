@@ -1,6 +1,5 @@
-## Purpose
-Define the versioned, serverless sharing and startup validation contract for ETF portfolios.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Create a shareable portfolio link
 
 The Portfolio tab SHALL provide accessible full and private share actions that serialize the current ETF positions into a versioned URL fragment without requiring a server-side share service. A full share action SHALL serialize selected ETF ISINs, share counts, and available persisted imported valuation fields. A private share action SHALL serialize selected ETF ISINs and derived relative weighting units only, excluding all absolute valuation fields. The fallback share-link label and URL input SHALL remain hidden in both visibility and layout until a share action generates a valid URL.

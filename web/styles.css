@@ -533,7 +533,7 @@ body {
 }
 
 .home-panel .hero {
-  padding: 6px;
+  padding: 0;
   box-shadow: none;
 }
 
@@ -544,6 +544,7 @@ body {
 
   #portfolio-panel .panel-heading {
     margin-bottom: 37px;
+    gap: 18px;
   }
 
   #portfolio-panel .panel-heading > .inline-note {
@@ -665,8 +666,7 @@ body {
 .portfolio-sharing {
   display: grid;
   gap: 20px;
-  padding-top: 6px;
-  border-top: 1px solid var(--border);
+  margin-top: 16px;
 }
 
 .share-portfolio-feedback p {
@@ -1614,6 +1614,10 @@ body {
   .panel-heading {
     flex-direction: column;
     align-items: start;
+  }
+
+  #portfolio-panel .panel-heading {
+    gap: 32px;
   }
 
   .share-portfolio-button {
