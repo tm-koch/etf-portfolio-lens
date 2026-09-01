@@ -103,3 +103,50 @@ pwsh -NoProfile -File .\scripts\publish-gh-pages.ps1
 ```
 
 Add `-NoPush` if you want to build and commit the publish tree locally without pushing it yet.
+
+## PWA Installation on Android
+
+Once the website has been converted into a valid PWA, installing it on Android is very simple.
+
+### Method 1: Install directly from Chrome (recommended)
+
+1. Open the PWA URL in **Chrome** on Android.
+2. Wait a few seconds for Chrome to recognize it as installable.
+3. One of the following will appear:
+
+- **Install app**
+- **Add to Home Screen**
+- An install icon in the address or menu bar
+
+4. Tap **Install**.
+5. The app icon is added to the home screen and app drawer.
+
+The app will then:
+
+- Launch in full screen
+- Hide the browser address bar
+- Appear like a regular Android app
+
+### Method 2: Via Chrome menu
+
+If no popup appears:
+
+1. Open the website in Chrome.
+2. Tap the **⋮** menu in the top right.
+3. Select **Install app** or **Add to Home screen**.
+4. Confirm.
+
+The PWA-related page styling uses the following rules:
+
+```css
+a {
+    text-decoration: none;
+    color: #464feb;
+}
+tr th, tr td {
+    border: 1px solid #e6e6e6;
+}
+tr th {
+    background-color: #f5f5f5;
+}
+```
