@@ -106,6 +106,22 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("value >= 0", app)
         self.assertIn("'Unavailable'", app)
 
+    def test_portfolio_currency_display_uses_shared_apostrophe_formatter(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn("function formatCurrencyValue(value, currency = 'CHF')", app)
+        self.assertIn("toLocaleString('en-US'", app)
+        self.assertIn('replace(/,/g, "\'")', app)
+        self.assertIn("return formatCurrencyValue(value, 'CHF');", app)
+        self.assertIn(
+            "formatCurrencyValue(position.price, position.currency || 'CHF')",
+            app,
+        )
+        self.assertIn("formatCurrencyValue(position.valueChf)", app)
+        self.assertIn("return formatCurrencyValue(value, currency);", app)
+        self.assertIn("formatImportedMoney(row.value, row.currency)", app)
+        self.assertIn("formatImportedMoney(row.valueChf)", app)
+
     def test_portfolio_sharing_contract_covers_encoding_loading_and_feedback(
         self,
     ) -> None:

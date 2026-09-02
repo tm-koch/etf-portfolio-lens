@@ -1,8 +1,6 @@
 ## Purpose
 Define local Saxo Bank holdings PDF import, review, currency normalization, and portfolio replacement behavior.
-
 ## Requirements
-
 ### Requirement: Import a Saxo holdings PDF locally
 The Portfolio tab SHALL provide a file drop and file-selection control that accepts PDF files and parses them entirely in the browser using PDF.js without sending the file to a server. The importer SHALL recognize Saxo Bank transaction and balance reports and SHALL reject unsupported or unrecognized documents without changing the existing portfolio.
 
@@ -41,11 +39,11 @@ The importer SHALL match proposed rows to the published ETF catalog by case-inse
 - **THEN** the row is marked unmatched, remains visible with its raw values, and cannot be included
 
 ### Requirement: Review and edit proposed import values
-Before applying an import, the application SHALL show a review dialog containing every extracted row, its match status, and editable inclusion, shares, price, and currency fields. The dialog SHALL show calculated value and CHF-normalized value for each included valid row, using an explicit fixed conversion of `1 EUR = 1 CHF`.
+Before applying an import, the application SHALL show a review dialog containing every extracted row, its match status, and editable inclusion, shares, price, and currency fields. The dialog SHALL show calculated value and CHF-normalized value for each included valid row using the selected source currency, exactly two decimal places, and apostrophe-separated thousands for displayed monetary values, with an explicit fixed conversion of `1 EUR = 1 CHF`.
 
 #### Scenario: User corrects an extracted row
 - **WHEN** the user edits shares, price, or currency in the review dialog
-- **THEN** the row's value and CHF value recalculate immediately using the edited values
+- **THEN** the row's value and CHF value recalculate immediately and display exactly two decimal places with apostrophe-separated thousands
 
 #### Scenario: User excludes a matched row
 - **WHEN** the user clears the inclusion control for a matched row

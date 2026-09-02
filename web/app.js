@@ -502,8 +502,12 @@ function formatCount(value) {
   return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
 }
 
+function formatCurrencyValue(value, currency = 'CHF') {
+  return `${currency} ${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, "'")}`;
+}
+
 function formatChfValue(value) {
-  return `CHF ${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, "'")}`;
+  return formatCurrencyValue(value, 'CHF');
 }
 
 function formatBuildTimestamp(value) {
@@ -1254,8 +1258,8 @@ function renderPositions() {
           <td class="position-shares" data-label="Shares">
             <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
           </td>
-          <td class="position-price" data-label="Price">${position.price !== undefined ? `${position.currency || 'CHF'} ${Number(position.price).toFixed(2)}` : 'Not imported'}</td>
-          <td class="position-value" data-label="Value CHF">${position.valueChf !== undefined ? `CHF ${Number(position.valueChf).toFixed(2)}` : 'Not imported'}</td>
+          <td class="position-price" data-label="Price">${position.price !== undefined ? formatCurrencyValue(position.price, position.currency || 'CHF') : 'Not imported'}</td>
+          <td class="position-value" data-label="Value CHF">${position.valueChf !== undefined ? formatCurrencyValue(position.valueChf) : 'Not imported'}</td>
           <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
           <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>
         </tr>
@@ -1458,7 +1462,7 @@ function formatImportedMoney(value, currency = 'CHF') {
   if (!Number.isFinite(Number(value))) {
     return 'Invalid';
   }
-  return `${currency} ${Number(value).toFixed(2)}`;
+  return formatCurrencyValue(value, currency);
 }
 
 function renderImportReview() {
