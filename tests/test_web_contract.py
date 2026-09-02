@@ -429,6 +429,36 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("if (state.companyVisibleCount < ranked.length) {", app)
         self.assertIn("ensureCompanyObserver();", app)
 
+    def test_catalog_search_supports_an_explore_matching_clear_button(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn('id="catalog-search" type="search"', index)
+        self.assertIn('id="catalog-search-clear"', index)
+        self.assertIn('aria-label="Clear ETF catalog search"', index)
+        self.assertIn('data-lucide="x"', index)
+        self.assertIn(
+            "elements.catalogSearchClear = document.getElementById('catalog-search-clear');",
+            app,
+        )
+        self.assertIn("function updateSearchClearButton(input, button)", app)
+        self.assertIn("button.hidden = !input.value;", app)
+        self.assertIn("elements.catalogSearch.addEventListener('input'", app)
+        self.assertIn(
+            "updateSearchClearButton(elements.catalogSearch, elements.catalogSearchClear);",
+            app,
+        )
+        self.assertIn("elements.catalogSearchClear.addEventListener('click'", app)
+        self.assertIn("elements.catalogSearch.value = '';", app)
+        self.assertIn("state.searchTerm = '';", app)
+        self.assertIn("elements.catalogSearch.focus();", app)
+        self.assertIn("const term = state.searchTerm.trim().toLowerCase();", app)
+        self.assertIn(
+            ".company-search-control input::-webkit-search-cancel-button", styles
+        )
+        self.assertIn(".company-search-clear[hidden]", styles)
+
     def test_saxo_pdf_import_contract_covers_review_and_value_weighting(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

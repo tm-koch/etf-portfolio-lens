@@ -188,7 +188,12 @@
             <div class="catalog-column">
               <label class="search-box">
                 <span>Search the ETF catalog</span>
-                <input id="catalog-search" type="search" placeholder="Search by name, ticker, or ISIN" />
+                <div class="company-search-control">
+                  <input id="catalog-search" type="search" placeholder="Search by name, ticker, or ISIN" />
+                  <button class="company-search-clear" id="catalog-search-clear" type="button" aria-label="Clear ETF catalog search" hidden>
+                    <i data-lucide="x" aria-hidden="true"></i>
+                  </button>
+                </div>
               </label>
               <div class="catalog-list" id="catalog-list" aria-live="polite"></div>
             </div>

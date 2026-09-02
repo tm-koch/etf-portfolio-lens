@@ -1454,8 +1454,12 @@ function renderWarnings() {
   renderBuildWarnings();
 }
 
+function updateSearchClearButton(input, button) {
+  button.hidden = !input.value;
+}
+
 function updateCompanySearchClearButton() {
-  elements.companySearchClear.hidden = !elements.companySearch.value;
+  updateSearchClearButton(elements.companySearch, elements.companySearchClear);
 }
 
 function formatImportedMoney(value, currency = 'CHF') {
@@ -1660,6 +1664,7 @@ async function bootstrap() {
   elements.tabButtons = [...document.querySelectorAll('.tab-button')];
   elements.tabPanels = [...document.querySelectorAll('.tab-panel')];
   elements.catalogSearch = document.getElementById('catalog-search');
+  elements.catalogSearchClear = document.getElementById('catalog-search-clear');
   elements.catalogList = document.getElementById('catalog-list');
   elements.positionsBody = document.getElementById('positions-tbody');
   elements.portfolioHint = document.getElementById('portfolio-hint');
@@ -1777,11 +1782,6 @@ async function bootstrap() {
     }
   }
 
-  elements.catalogSearch.addEventListener('input', (event) => {
-    state.searchTerm = event.target.value;
-    renderCatalog();
-  });
-
   elements.companySearch = document.getElementById('company-search');
   elements.companySearchClear = document.getElementById('company-search-clear');
   elements.compactExploreSearch = document.getElementById('compact-explore-search');
@@ -1803,6 +1803,20 @@ async function bootstrap() {
     elements.companySearch.focus();
   });
   updateCompanySearchClearButton();
+
+  elements.catalogSearch.addEventListener('input', (event) => {
+    state.searchTerm = event.target.value;
+    updateSearchClearButton(elements.catalogSearch, elements.catalogSearchClear);
+    renderCatalog();
+  });
+  elements.catalogSearchClear.addEventListener('click', (event) => {
+    event.preventDefault();
+    elements.catalogSearch.value = '';
+    state.searchTerm = '';
+    updateSearchClearButton(elements.catalogSearch, elements.catalogSearchClear);
+    renderCatalog();
+    elements.catalogSearch.focus();
+  });
 
   elements.importFile.addEventListener('change', (event) => {
     void importPortfolioFile(event.target.files?.[0]);
