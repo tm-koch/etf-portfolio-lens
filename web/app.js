@@ -1370,6 +1370,7 @@ function renderCompanyList() {
   state.companyVisibleCount = 0;
   disconnectCompanyObserver();
   elements.compactExploreSearch.hidden = !state.compactExplorePreview;
+  const searchTerm = state.companySearchTerm.trim().toLowerCase();
 
   if (state.compactExplorePreview) {
     if (!ranked.length) {
@@ -1378,7 +1379,6 @@ function renderCompanyList() {
       return;
     }
 
-    const searchTerm = state.companySearchTerm.trim().toLowerCase();
     elements.companyList.innerHTML = buildCompactExploreTable(positions);
 
     if (searchTerm) {
@@ -1410,6 +1410,20 @@ function renderCompanyList() {
   if (!ranked.length) {
     elements.companyList.innerHTML = '<div class="empty-state">Add positions to calculate company exposure.</div>';
     elements.companyHint.textContent = 'No look-through exposure is available yet.';
+    return;
+  }
+
+  if (searchTerm) {
+    const matches = ranked
+      .map((company, index) => ({ company, rank: index + 1 }))
+      .filter(({ company }) => company.name.toLowerCase().includes(searchTerm));
+    elements.companyHint.textContent = matches.length
+      ? `${matches.length} matching compan${matches.length === 1 ? 'y' : 'ies'}.`
+      : 'No companies match the current search.';
+    elements.companyList.innerHTML = matches
+      .map(({ company, rank }) => buildCompanyRow(company, rank - 1))
+      .join('');
+    state.companyVisibleCount = matches.length;
     return;
   }
 
@@ -1760,7 +1774,7 @@ async function bootstrap() {
   elements.companySearch.addEventListener('input', (event) => {
     state.companySearchTerm = event.target.value;
     updateCompanySearchClearButton();
-    if (state.activeTab === 'aggregated' && state.compactExplorePreview) {
+    if (state.activeTab === 'aggregated') {
       renderCompanyList();
     }
   });
@@ -1769,7 +1783,7 @@ async function bootstrap() {
     elements.companySearch.value = '';
     state.companySearchTerm = '';
     updateCompanySearchClearButton();
-    if (state.activeTab === 'aggregated' && state.compactExplorePreview) {
+    if (state.activeTab === 'aggregated') {
       renderCompanyList();
     }
     elements.companySearch.focus();

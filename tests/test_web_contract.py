@@ -360,6 +360,28 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
+    def test_standard_explore_uses_the_company_search_filter(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "const searchTerm = state.companySearchTerm.trim().toLowerCase();", app
+        )
+        self.assertIn(
+            "if (state.activeTab === 'aggregated') {\n      renderCompanyList();\n    }",
+            app,
+        )
+        self.assertIn(
+            "elements.companyList.innerHTML = matches\n      .map(({ company, rank }) => buildCompanyRow(company, rank - 1))\n      .join('');",
+            app,
+        )
+        self.assertIn("state.companyVisibleCount = matches.length;", app)
+        self.assertIn(
+            "elements.companyHint.textContent = 'Showing the top 20 holdings. Scroll down to load more.';",
+            app,
+        )
+        self.assertIn("if (state.companyVisibleCount < ranked.length) {", app)
+        self.assertIn("ensureCompanyObserver();", app)
+
     def test_saxo_pdf_import_contract_covers_review_and_value_weighting(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
