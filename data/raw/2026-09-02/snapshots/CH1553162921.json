@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-02",
-    "generated_at": "2026-09-02T18:55:12.247611+00:00",
+    "generated_at": "2026-09-02T19:00:27.754726+00:00",
     "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch1553162921-ubs-spi-extra-etf-pd001.html",
     "resolved_download_url": "data\\raw\\2026-09-02\\downloads\\CH1553162921.xls",
     "source_format": "xls",
@@ -8442,7 +8442,7 @@
   },
   "provenance": {
     "security_master_version": "tickers.txt",
-    "security_master_source_url": "file:///C:/Git/etf-portfolio-lens/data/raw/2026-08-29/downloads/tickers.txt",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
     "security_master_download_path": "data\\raw\\2026-09-02\\downloads\\tickers.txt",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-09-02\\downloads\\CH1553162921.xls",

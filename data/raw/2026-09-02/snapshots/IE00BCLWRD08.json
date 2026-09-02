@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-02",
-    "generated_at": "2026-09-02T18:55:00.089683+00:00",
+    "generated_at": "2026-09-02T19:00:19.928000+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/257270/ishares-msci-emu-mid-cap-ucits-etf/1495092304805.ajax?fileType=csv&fileName=EMUM_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-09-02\\downloads\\IE00BCLWRD08.csv",
     "source_format": "csv",
@@ -7211,7 +7211,7 @@
   },
   "provenance": {
     "security_master_version": "tickers.txt",
-    "security_master_source_url": "file:///C:/Git/etf-portfolio-lens/data/raw/2026-08-29/downloads/tickers.txt",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
     "security_master_download_path": "data\\raw\\2026-09-02\\downloads\\tickers.txt",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-09-02\\downloads\\IE00BCLWRD08.csv",

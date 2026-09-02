@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-02",
-    "generated_at": "2026-09-02T18:55:07.487332+00:00",
+    "generated_at": "2026-09-02T19:00:23.784892+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/264107/ishares-spi-ch-fund/1495092304805.ajax?fileType=csv&fileName=CHSPI_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-09-02\\downloads\\CH0237935652.csv",
     "source_format": "csv",
@@ -10745,7 +10745,7 @@
           "Exchange": "SIX Swiss Exchange",
           "Market Currency": "CHF"
         },
-        "enrichment_source": "override",
+        "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
         "match": {
           "status": "overridden",
@@ -10754,7 +10754,7 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "name"
           ],
           "missing_elements": [],
           "warning": null
@@ -11330,7 +11330,7 @@
   },
   "provenance": {
     "security_master_version": "tickers.txt",
-    "security_master_source_url": "file:///C:/Git/etf-portfolio-lens/data/raw/2026-08-29/downloads/tickers.txt",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
     "security_master_download_path": "data\\raw\\2026-09-02\\downloads\\tickers.txt",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-09-02\\downloads\\CH0237935652.csv",
