@@ -461,6 +461,12 @@ function renderShareFeedback() {
   elements.shareFallbackUrl.hidden = !hasFallbackUrl;
 }
 
+function clearShareFeedback() {
+  state.shareFeedback = '';
+  state.shareFallbackUrl = '';
+  renderShareFeedback();
+}
+
 async function sharePortfolio(mode = 'full') {
   if (state.portfolioMode === 'percentage') {
     mode = 'percentage';
@@ -1568,6 +1574,7 @@ function confirmImport() {
   }
   state.portfolio = positions;
   state.portfolioMode = 'full';
+  clearShareFeedback();
   savePortfolioState();
   closeImportDialog();
   elements.importStatus.textContent = `Imported ${positions.length} ETF position${positions.length === 1 ? '' : 's'} and replaced the portfolio.`;
@@ -1620,6 +1627,7 @@ function addPosition(isin) {
     return;
   }
   state.portfolio = [...state.portfolio, { isin, shares: 1 }];
+  clearShareFeedback();
   savePortfolioState();
   renderAll();
 }
@@ -1628,12 +1636,14 @@ function updatePositionShares(isin, shares) {
   state.portfolio = state.portfolio.map((position) =>
     position.isin === isin ? { ...position, shares } : position
   );
+  clearShareFeedback();
   savePortfolioState();
   renderAll();
 }
 
 function removePosition(isin) {
   state.portfolio = state.portfolio.filter((position) => position.isin !== isin);
+  clearShareFeedback();
   savePortfolioState();
   renderAll();
 }

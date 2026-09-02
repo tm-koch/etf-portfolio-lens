@@ -166,6 +166,37 @@ class WebContractTests(unittest.TestCase):
         self.assertIn(".share-portfolio-button", styles)
         self.assertIn(".portfolio-sharing", styles)
 
+    def test_portfolio_mutations_clear_share_feedback_without_rewriting_url(
+        self,
+    ) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn("function clearShareFeedback()", app)
+        self.assertIn("state.shareFeedback = '';", app)
+        self.assertIn("state.shareFallbackUrl = '';", app)
+        for function_name in (
+            "confirmImport",
+            "addPosition",
+            "updatePositionShares",
+            "removePosition",
+        ):
+            function_body = re.search(
+                rf"function {function_name}\(.*?(?=\nfunction |\nasync function |\Z)",
+                app,
+                re.DOTALL,
+            )
+            self.assertIsNotNone(function_body)
+            self.assertIn("clearShareFeedback();", function_body.group(0))
+        import_function = re.search(
+            r"async function importPortfolioFile\(.*?(?=\nfunction |\nasync function |\Z)",
+            app,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(import_function)
+        self.assertNotIn("clearShareFeedback();", import_function.group(0))
+        self.assertNotIn("history.replaceState", app)
+        self.assertNotIn("history.pushState", app)
+
     def test_selected_positions_have_mobile_and_accessibility_hooks(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
