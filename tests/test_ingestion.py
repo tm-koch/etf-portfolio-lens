@@ -10,6 +10,7 @@ from urllib.error import URLError
 from email.message import Message
 from unittest.mock import patch
 
+from etf_ingestion_backend.catalog import build_catalog
 from etf_ingestion_backend.fetching import (
     AmundiHoldingsError,
     DownloadError,
@@ -19,7 +20,11 @@ from etf_ingestion_backend.fetching import (
 )
 from etf_ingestion_backend.pipeline import IngestionPipeline
 from etf_ingestion_backend.normalization import normalize_row, parse_weight_float
-from etf_ingestion_backend.parsing import parse_xlsx_bytes, parse_xlsx_file
+from etf_ingestion_backend.parsing import (
+    parse_csv_file,
+    parse_xlsx_bytes,
+    parse_xlsx_file,
+)
 from etf_ingestion_backend.registry import load_registry
 from etf_ingestion_backend.sector_taxonomy import normalize_sector_label
 from etf_ingestion_backend.security_master import SecurityMaster, SecurityRecord
@@ -69,7 +74,48 @@ class IngestionTests(unittest.TestCase):
         cls.security_master_fixture.cleanup()
 
     def test_registry_has_five_supported_sources(self) -> None:
-        self.assertEqual(7, len(self.registry.entries))
+        self.assertEqual(8, len(self.registry.entries))
+
+    def test_registry_contains_cssmi_metadata_and_complete_fixture(self) -> None:
+        entry = self.registry.select_by_isins(["CH0008899764"])[0]
+
+        self.assertEqual("CSSMI", entry.ticker)
+        self.assertEqual("iShares SMI® ETF (CH)", entry.name)
+        self.assertEqual("iShares", entry.provider)
+        self.assertEqual(
+            "https://www.ishares.com/ch/individual/en/products/261154/"
+            "ishares-smi-ch-fund/1495092304805.ajax?fileType=csv&"
+            "fileName=CSSMI_holdings&dataType=fund",
+            entry.source_url,
+        )
+        self.assertEqual("csv", entry.expected_format)
+        self.assertEqual("ishares_csv_v1", entry.parser_id)
+        self.assertEqual("data/example/CSSMI_holdings.csv", entry.fixture_path)
+
+        parsed = parse_csv_file(ROOT / entry.fixture_path)
+        self.assertEqual(25, len(parsed.rows))
+        self.assertEqual(
+            [
+                "Ticker",
+                "Name",
+                "Sector",
+                "Asset Class",
+                "Market Value",
+                "Weight (%)",
+                "Notional Value",
+                "Shares",
+                "Price",
+                "Location",
+                "Exchange",
+                "Market Currency",
+            ],
+            parsed.headers,
+        )
+        self.assertAlmostEqual(
+            99.99,
+            sum(float(row["Weight (%)"]) for row in parsed.rows),
+            places=2,
+        )
 
     def test_registry_contains_ubs_spi_extra_metadata(self) -> None:
         entry = self.registry.select_by_isins(["CH1553162921"])[0]
@@ -137,7 +183,7 @@ class IngestionTests(unittest.TestCase):
             )
             results = pipeline.run(self.registry.entries, use_fixtures=True)
 
-            self.assertEqual(7, len(results))
+            self.assertEqual(8, len(results))
             for result in results:
                 self.assertTrue(result.snapshot_path.exists())
                 snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
@@ -669,6 +715,72 @@ class IngestionTests(unittest.TestCase):
                     for holding in excluded_holdings
                 )
             )
+
+    def test_strict_cssmi_resolves_equities_and_excludes_non_company_rows(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                (
+                    ROOT / "data" / "raw" / "2026-08-29" / "downloads" / "tickers.txt"
+                ).as_uri(),
+                ROOT / "data" / "security_overrides.json",
+            )
+            result = pipeline.run(
+                self.registry.select_by_isins(["CH0008899764"]),
+                use_fixtures=True,
+                strict=True,
+            )[0]
+
+            snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
+            equity_holdings = [
+                holding
+                for holding in snapshot["holdings"]
+                if holding["classification"]["asset_class"] == "Equity"
+            ]
+            non_company_holdings = [
+                holding
+                for holding in snapshot["holdings"]
+                if holding["classification"]["asset_class"] != "Equity"
+            ]
+
+            self.assertEqual(20, len(equity_holdings))
+            self.assertTrue(
+                all(
+                    holding["security"]["isin"]
+                    and holding["security"]["company_id"]
+                    and holding["security"]["canonical_name"]
+                    for holding in equity_holdings
+                )
+            )
+            logn = next(
+                holding
+                for holding in equity_holdings
+                if holding["security"]["ticker"] == "LOGN"
+            )
+            self.assertEqual("CH0025751329", logn["security"]["isin"])
+            self.assertEqual("overridden", logn["provenance"]["match"]["status"])
+
+            self.assertEqual(5, len(non_company_holdings))
+            self.assertTrue(
+                all(
+                    holding["provenance"]["match"]["status"] == "excluded"
+                    and holding["security"]["company_id"] is None
+                    for holding in non_company_holdings
+                )
+            )
+            usd_cash = next(
+                holding
+                for holding in non_company_holdings
+                if holding["security"]["name"] == "USD CASH"
+            )
+            self.assertIsNone(usd_cash["security"]["isin"])
+            self.assertEqual("USD", usd_cash["security"]["ticker"])
+
+            catalog = build_catalog([result.etf], [result])
+            self.assertEqual("CH0008899764", catalog["etfs"][0]["isin"])
+            self.assertEqual("CSSMI", catalog["etfs"][0]["ticker"])
+            self.assertIn("CH0008899764.json", catalog["etfs"][0]["snapshotPath"])
 
     def test_sector_normalization_maps_cash_style_aliases_to_unknown(self) -> None:
         master = SecurityMaster(

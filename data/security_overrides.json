@@ -75,6 +75,10 @@
       "set": {"isin": "CH0025751329", "company_id": "logitech-international-sa", "canonical_name": "Logitech International SA"}
     },
     {
+      "match": {"ticker": "LOGN", "exchange": "SIX", "holding_name": "LOGITECH INTERNATIONAL"},
+      "set": {"isin": "CH0025751329", "company_id": "logitech-international-sa", "canonical_name": "Logitech International SA"}
+    },
+    {
       "match": {"ticker": "SCHP", "exchange": "SIX", "holding_name": "SCHINDLER HOLDING PAR AG"},
       "set": {"isin": "CH0024638196", "company_id": "schindler-holding-ag", "canonical_name": "Schindler Holding AG"}
     },

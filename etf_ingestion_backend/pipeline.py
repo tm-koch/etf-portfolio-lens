@@ -44,7 +44,9 @@ SPMCHA_CLASSIFICATION_ISINS = {
 
 
 def _is_strict_identity_exempt(holding: NormalizedHolding) -> bool:
-    return (holding.name or "").strip().upper() in STRICT_IDENTITY_EXEMPTIONS
+    return (holding.name or "").strip().upper() in STRICT_IDENTITY_EXEMPTIONS or (
+        holding.match and holding.match.status == "excluded"
+    )
 
 
 @dataclass(slots=True)

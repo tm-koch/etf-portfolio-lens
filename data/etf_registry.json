@@ -57,6 +57,16 @@
       "fixture_path": "data/example/CHSPI_holdings.csv"
     },
     {
+      "isin": "CH0008899764",
+      "ticker": "CSSMI",
+      "name": "iShares SMI® ETF (CH)",
+      "provider": "iShares",
+      "source_url": "https://www.ishares.com/ch/individual/en/products/261154/ishares-smi-ch-fund/1495092304805.ajax?fileType=csv&fileName=CSSMI_holdings&dataType=fund",
+      "expected_format": "csv",
+      "parser_id": "ishares_csv_v1",
+      "fixture_path": "data/example/CSSMI_holdings.csv"
+    },
+    {
       "isin": "CH0130595124",
       "ticker": "SPMCHA",
       "name": "UBS ETF (CH) – SPI Mid (CHF) A-dis",

@@ -94,6 +94,16 @@ def _company_id(name: str | None, isin: str | None) -> str | None:
     return value or (f"instrument-{isin.casefold()}" if isin else None)
 
 
+def _is_non_company_holding(holding: NormalizedHolding) -> bool:
+    sector = _normalize_key(holding.sector)
+    asset_class = _normalize_key(holding.asset_class)
+    return sector == "cash and/or derivatives" or asset_class in {
+        "cash",
+        "cash collateral and margins",
+        "futures",
+    }
+
+
 def normalize_row(
     raw_row: dict[str, Any],
     security_master: SecurityMaster,
@@ -213,15 +223,18 @@ def normalize_row(
         override and holding.isin and holding.company_id and holding.canonical_name
     )
 
-    match = security_master.match(holding)
+    non_company_holding = _is_non_company_holding(holding)
+    match = None if non_company_holding else security_master.match(holding)
     holding.match = MatchDiagnostics(
-        status=match.status,
-        matched_by=match.matched_by,
-        attempted=match.attempted,
-        missing_elements=match.missing_elements,
-        warning=match.warning,
+        status="excluded" if non_company_holding else match.status,
+        matched_by=None if non_company_holding else match.matched_by,
+        attempted=[] if non_company_holding else match.attempted,
+        missing_elements=[] if non_company_holding else match.missing_elements,
+        warning=None if non_company_holding else match.warning,
     )
-    if match.record:
+    if non_company_holding:
+        holding.enrichment_source = "provider_classification"
+    elif match.record:
         enrich_holding(holding, match.record)
         holding.enrichment_source = "security_master"
     else:
@@ -235,7 +248,7 @@ def normalize_row(
             ).strip()
             if source_label:
                 holding.name = source_label
-        if not complete_override:
+        if not complete_override and not non_company_holding:
             fallback_identifier = holding.ticker or holding.name or "<unknown>"
             warning = (
                 match.warning
@@ -251,7 +264,7 @@ def normalize_row(
 
     if override:
         holding.enrichment_source = (
-            "override+security_master" if match.record else "override"
+            "override+security_master" if match and match.record else "override"
         )
         holding.match.status = "overridden"
         holding.match.matched_by = "override"
@@ -259,10 +272,10 @@ def normalize_row(
             holding.match.warning = None
     if holding.canonical_name:
         holding.name = holding.canonical_name
-    elif match.record:
+    elif match and match.record:
         holding.canonical_name = match.record.name
         holding.name = holding.canonical_name
-    if holding.name and not holding.company_id:
+    if holding.name and not holding.company_id and not non_company_holding:
         holding.company_id = _company_id(holding.name, holding.isin)
 
     return holding
