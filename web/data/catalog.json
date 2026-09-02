@@ -45,6 +45,13 @@
       "snapshotPath": "/data/raw/2026-09-02/snapshots/CH0008899764.json"
     },
     {
+      "isin": "CH0019852802",
+      "ticker": "CSSMIM",
+      "name": "iShares SMIM® ETF (CH)",
+      "provider": "iShares",
+      "snapshotPath": "/data/raw/2026-09-02/snapshots/CH0019852802.json"
+    },
+    {
       "isin": "CH0130595124",
       "ticker": "SPMCHA",
       "name": "UBS ETF (CH) – SPI Mid (CHF) A-dis",

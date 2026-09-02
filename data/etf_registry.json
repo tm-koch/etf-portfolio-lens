@@ -67,6 +67,16 @@
       "fixture_path": "data/example/CSSMI_holdings.csv"
     },
     {
+      "isin": "CH0019852802",
+      "ticker": "CSSMIM",
+      "name": "iShares SMIM® ETF (CH)",
+      "provider": "iShares",
+      "source_url": "https://www.ishares.com/ch/individual/en/products/261155/ishares-smim-ch-fund/1495092304805.ajax?fileType=csv&fileName=CSSMIM_holdings&dataType=fund",
+      "expected_format": "csv",
+      "parser_id": "ishares_csv_v1",
+      "fixture_path": "data/example/CSSMIM_holdings.csv"
+    },
+    {
       "isin": "CH0130595124",
       "ticker": "SPMCHA",
       "name": "UBS ETF (CH) – SPI Mid (CHF) A-dis",
