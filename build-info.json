@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "repositoryUrl": "https://github.com/tm-koch/etf-portfolio-lens",
+  "source": {
+    "commit": "c810c1b6558a7baab178dcdcba4435bfde4bcccb",
+    "commitTimestamp": "2026-09-05T12:29:18+02:00"
+  },
+  "publishedAt": "2026-09-05T10:30:25.5511528Z",
+  "data": {
+    "timestamp": "2026-09-02"
+  },
+  "details": {}
+}
