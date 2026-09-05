@@ -630,6 +630,33 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
+    def test_mobile_navigation_feedback_preserves_tab_activation(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn(
+            ".primary-navigation .tab-button {\n  -webkit-tap-highlight-color: transparent;",
+            styles,
+        )
+        self.assertIn(
+            ".primary-navigation .tab-button:focus-visible {\n  outline: 3px solid var(--focus-ring);\n  outline-offset: 2px;",
+            styles,
+        )
+        self.assertIn(
+            "  .primary-navigation .tab-button:active {\n    background: color-mix(in srgb, var(--accent) 14%, transparent);",
+            styles,
+        )
+
+        set_tab_start = app.index("function setTab(tabName) {")
+        set_tab_end = app.index("\nfunction addPosition", set_tab_start)
+        set_tab = app[set_tab_start:set_tab_end]
+        self.assertIn("button.classList.toggle('active', isActive);", set_tab)
+        self.assertIn("button.setAttribute('aria-current', 'page');", set_tab)
+        self.assertIn(
+            "panel.classList.toggle('active', panel.dataset.panel === state.activeTab);",
+            set_tab,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

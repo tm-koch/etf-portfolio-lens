@@ -633,6 +633,15 @@ body {
   gap: 5px;
 }
 
+.primary-navigation .tab-button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.primary-navigation .tab-button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
 .navigation-icon {
   width: 20px;
   height: 20px;
@@ -1622,6 +1631,10 @@ body {
     gap: 3px;
     font-size: 0.8rem;
     font-weight: 400;
+  }
+
+  .primary-navigation .tab-button:active {
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
   }
 
   .primary-navigation .navigation-icon {
