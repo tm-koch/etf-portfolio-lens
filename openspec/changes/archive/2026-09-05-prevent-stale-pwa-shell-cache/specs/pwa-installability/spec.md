@@ -1,8 +1,5 @@
-# pwa-installability Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change pwa-android-app. Update Purpose after archive.
-## Requirements
 ### Requirement: Provide an installable web app manifest
 
 The published site SHALL provide a valid same-origin web app manifest with application name and short name `ETF Portfolio Lens`, a stable `id` for the published application, standalone display mode, start URL, theme color, background color, and the supplied valid 192x192 and 512x512 PNG icons copied from `doc/launchericon-192x192.png` and `doc/launchericon-512x512.png`. The manifest SHALL be served as part of the same cache generation as the published document and service worker.
@@ -54,4 +51,3 @@ The installed PWA SHALL preserve local portfolio persistence, URL-fragment shari
 
 - **WHEN** an installed user opens a valid shared portfolio URL
 - **THEN** the URL fragment is processed and the linked portfolio loads before local fallback state
-

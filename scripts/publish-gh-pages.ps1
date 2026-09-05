@@ -25,6 +25,11 @@ function Invoke-Git {
 
 $repoRoot = (Invoke-Git -Args @('rev-parse', '--show-toplevel')).Trim()
 Set-Location $repoRoot
+$cacheGenerationScript = Join-Path $repoRoot 'scripts\pwa-cache-generation.ps1'
+if (-not (Test-Path $cacheGenerationScript -PathType Leaf)) {
+  throw "PWA cache-generation helper is missing: $cacheGenerationScript"
+}
+. $cacheGenerationScript
 $sourceCommit = (Invoke-Git -Args @('rev-parse', 'HEAD')).Trim()
 $sourceCommitTimestamp = (Invoke-Git -Args @('show', '-s', '--format=%cI', 'HEAD')).Trim()
 
@@ -83,6 +88,14 @@ try {
 
   Copy-Item -Force (Join-Path $repoRoot 'web\data\catalog.json') (Join-Path $tempRoot 'data\catalog.json')
   Copy-Item -Recurse -Force (Join-Path $repoRoot 'data\raw') (Join-Path $tempRoot 'data')
+
+  $cacheGeneration = Get-PwaCacheGeneration -Root $tempRoot
+  $publishedServiceWorker = Join-Path $tempRoot 'sw.js'
+  Set-PwaServiceWorkerGeneration -ServiceWorkerPath $publishedServiceWorker -Generation $cacheGeneration
+  $publishedWorkerContent = Get-Content -Raw -LiteralPath $publishedServiceWorker
+  if ((Get-PwaServiceWorkerGeneration -ServiceWorkerContent $publishedWorkerContent) -ne $cacheGeneration) {
+    throw "Published service worker cache generation does not match the staged PWA assets: $cacheGeneration"
+  }
 
   $catalog = Get-Content (Join-Path $tempRoot 'data\catalog.json') -Raw | ConvertFrom-Json
   $buildInfo = [ordered]@{

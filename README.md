@@ -110,6 +110,8 @@ Validate the public PWA assets after deployment:
 pwsh -NoProfile -File .\scripts\validate-pwa-deployment.ps1
 ```
 
+The publisher derives a deterministic cache generation from the PWA shell and manifest assets, injects it into the published service worker, and rejects a mixed-generation publication. Existing browsers receive the new shell after the normal service-worker update cycle; a rollback should be republished through the same script so it receives a new validated generation.
+
 ## PWA Installation on Android
 
 Once the website has been converted into a valid PWA, installing it on Android is very simple.

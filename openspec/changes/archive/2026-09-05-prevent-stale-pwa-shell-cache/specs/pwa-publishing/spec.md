@@ -1,8 +1,5 @@
-# pwa-publishing Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change pwa-android-app. Update Purpose after archive.
-## Requirements
 ### Requirement: Publish all PWA assets
 
 The GitHub Pages publishing process SHALL copy the manifest, service worker, the supplied `doc/launchericon-192x192.png` and `doc/launchericon-512x512.png` files, locally served critical frontend dependencies, and the install-promotion application code into the published site at paths reachable by the application. The publication validation SHALL verify the public HTTPS responses for the manifest, service worker, and icons after deployment. The published service worker SHALL contain the cache generation produced for that publication, and validation SHALL verify that generation against the publication's cache-sensitive shell inputs.
@@ -59,4 +56,3 @@ The publisher SHALL fail clearly when a required PWA asset is missing and SHALL 
 
 - **WHEN** the publisher cannot calculate or inject a cache generation consistently
 - **THEN** it reports the generation error and exits unsuccessfully without publishing an inconsistent PWA tree
-

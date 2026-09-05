@@ -5,6 +5,13 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+$repositoryRoot = (Get-Item $PSScriptRoot).Parent.FullName
+$cacheGenerationScript = Join-Path $repositoryRoot 'scripts\pwa-cache-generation.ps1'
+if (-not (Test-Path $cacheGenerationScript -PathType Leaf)) {
+  throw "PWA cache-generation helper is missing: $cacheGenerationScript"
+}
+. $cacheGenerationScript
+
 $normalizedBaseUrl = if ($BaseUrl.EndsWith('/')) { $BaseUrl } else { "$BaseUrl/" }
 if (-not $normalizedBaseUrl.StartsWith('https://')) {
   throw "PWA deployment validation requires an HTTPS BaseUrl: $normalizedBaseUrl"
@@ -33,7 +40,7 @@ function Test-PwaAsset {
 
 $index = Test-PwaAsset -Path '' -ExpectedContentType 'text/html'
 $manifestResponse = Test-PwaAsset -Path 'manifest.json' -ExpectedContentType 'application/json'
-Test-PwaAsset -Path 'sw.js' -ExpectedContentType 'application/javascript' | Out-Null
+$serviceWorkerResponse = Test-PwaAsset -Path 'sw.js' -ExpectedContentType 'application/javascript'
 Test-PwaAsset -Path 'icons/launchericon-192x192.png' -ExpectedContentType 'image/png' | Out-Null
 Test-PwaAsset -Path 'icons/launchericon-512x512.png' -ExpectedContentType 'image/png' | Out-Null
 
@@ -60,6 +67,33 @@ if (-not $manifestLink) {
 $resolvedManifestLink = [Uri]::new([Uri]$normalizedBaseUrl, $manifestLink).AbsoluteUri
 if ($resolvedManifestLink -ne $manifestUri.AbsoluteUri) {
   throw "Manifest link resolves to $resolvedManifestLink instead of $manifestUri"
+}
+
+$validationRoot = Join-Path ([System.IO.Path]::GetTempPath()) "etf-lens-pwa-validation-$PID"
+New-Item -ItemType Directory -Force -Path $validationRoot | Out-Null
+try {
+  foreach ($relativePath in Get-PwaCacheSensitivePaths) {
+    $url = [Uri]::new([Uri]$normalizedBaseUrl, $relativePath).AbsoluteUri
+    $response = Invoke-WebRequest -Uri $url -Method Get -UseBasicParsing
+    if ($response.StatusCode -ne 200) {
+      throw "$url returned HTTP $($response.StatusCode)"
+    }
+    $localPath = Join-Path $validationRoot $relativePath
+    New-Item -ItemType Directory -Force -Path (Split-Path $localPath -Parent) | Out-Null
+    [System.IO.File]::WriteAllBytes($localPath, $response.RawContentStream.ToArray())
+  }
+
+  $expectedGeneration = Get-PwaCacheGeneration -Root $validationRoot
+  $actualGeneration = Get-PwaServiceWorkerGeneration -ServiceWorkerContent $serviceWorkerResponse.Content
+  if ($actualGeneration -ne $expectedGeneration) {
+    throw "Published service worker cache generation '$actualGeneration' does not match the published shell generation '$expectedGeneration'."
+  }
+  Write-Host "OK published shell cache generation [$actualGeneration]"
+}
+finally {
+  if (Test-Path $validationRoot) {
+    Remove-Item -Recurse -Force $validationRoot
+  }
 }
 
 Write-Host 'PWA deployment validation passed.'

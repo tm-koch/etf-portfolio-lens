@@ -19,6 +19,10 @@ class WebContractTests(unittest.TestCase):
         deployment_validator = (
             REPOSITORY_ROOT / "scripts" / "validate-pwa-deployment.ps1"
         ).read_text(encoding="utf-8")
+        cache_generation_helper = (
+            REPOSITORY_ROOT / "scripts" / "pwa-cache-generation.ps1"
+        ).read_text(encoding="utf-8")
+        service_worker = (WEB_ROOT / "sw.js").read_text(encoding="utf-8")
         manifest = json.loads((WEB_ROOT / "manifest.json").read_text(encoding="utf-8"))
 
         self.assertEqual(manifest["name"], "ETF Portfolio Lens")
@@ -63,6 +67,12 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("PWA deployment validation passed", deployment_validator)
         self.assertIn("ETF Portfolio Lens", deployment_validator)
         self.assertIn("Content-Type", deployment_validator)
+        self.assertIn("Get-PwaCacheGeneration", publish_script)
+        self.assertIn("Set-PwaServiceWorkerGeneration", publish_script)
+        self.assertIn("Get-PwaCacheGeneration", deployment_validator)
+        self.assertIn("Get-PwaServiceWorkerGeneration", deployment_validator)
+        self.assertIn("__PWA_CACHE_GENERATION__", service_worker)
+        self.assertIn("Get-PwaCacheSensitivePaths", cache_generation_helper)
 
     def test_publish_script_includes_app_local_javascript_modules(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

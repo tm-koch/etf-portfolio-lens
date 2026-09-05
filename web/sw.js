@@ -1,4 +1,4 @@
-const CACHE_VERSION = '20260901-1';
+const CACHE_VERSION = '__PWA_CACHE_GENERATION__';
 const SHELL_CACHE = `etf-lens-shell-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `etf-lens-runtime-${CACHE_VERSION}`;
 const MAX_RUNTIME_ENTRIES = 24;
