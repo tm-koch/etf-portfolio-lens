@@ -64,6 +64,7 @@ const state = {
 };
 
 const elements = {};
+let deferredInstallPrompt = null;
 
 const NAVIGATION_DESTINATIONS = [
   { key: 'home', label: 'Home', icon: 'house' },
@@ -74,6 +75,45 @@ const NAVIGATION_DESTINATIONS = [
 
 function getNavigationDestination(key) {
   return NAVIGATION_DESTINATIONS.find((destination) => destination.key === key) || null;
+}
+
+function isStandaloneDisplayMode() {
+  return window.matchMedia?.('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function isMobileViewport() {
+  return window.matchMedia?.('(max-width: 760px)').matches ?? false;
+}
+
+function updateInstallAction() {
+  if (!elements.installAppButton) {
+    return;
+  }
+  elements.installAppButton.hidden = !deferredInstallPrompt
+    || isStandaloneDisplayMode()
+    || !isMobileViewport()
+    || state.activeTab !== 'home';
+}
+
+function handleBeforeInstallPrompt(event) {
+  event.preventDefault();
+  deferredInstallPrompt = event;
+  updateInstallAction();
+}
+
+async function promptToInstall() {
+  const installPrompt = deferredInstallPrompt;
+  if (!installPrompt) {
+    return;
+  }
+  deferredInstallPrompt = null;
+  updateInstallAction();
+  try {
+    await installPrompt.prompt();
+    await installPrompt.userChoice;
+  } catch (error) {
+    console.warn('ETF Portfolio Lens install prompt failed.', error);
+  }
 }
 
 function isColorMode(value) {
@@ -1621,6 +1661,7 @@ function setTab(tabName) {
     panel.classList.toggle('active', panel.dataset.panel === state.activeTab);
   }
   positionColorModeControl();
+  updateInstallAction();
   if (state.activeTab === 'comparison') {
     applyChartFrameSizing();
     renderComparisonCharts();
@@ -1703,12 +1744,15 @@ async function bootstrap() {
   elements.importControl = document.querySelector('.portfolio-import-control');
   elements.colorModeButton = document.getElementById('color-mode-button');
   elements.colorModeMenu = document.getElementById('color-mode-menu');
+  elements.installAppButton = document.getElementById('install-app-button');
   elements.colorModeUtility = document.querySelector('.app-utility-bar');
+  window.matchMedia?.('(max-width: 760px)').addEventListener('change', updateInstallAction);
 
   state.colorMode = loadColorMode();
   state.portfolioImportDebug = loadPortfolioImportDebug();
   applyColorMode();
   renderColorModeControl();
+  updateInstallAction();
   elements.portfolioImportDebugEnabled.checked = state.portfolioImportDebug;
   renderBuildInfo();
   elements.aboutBuildButton.addEventListener('click', openBuildDialog);
@@ -1760,6 +1804,7 @@ async function bootstrap() {
     }
   }
   positionColorModeControl();
+  updateInstallAction();
   state.compactExplorePreview = loadCompactExplorePreview();
   elements.compactExplorePreview.checked = state.compactExplorePreview;
 
@@ -1876,6 +1921,10 @@ async function bootstrap() {
       }
       return;
     }
+    if (event.target.closest('#install-app-button')) {
+      void promptToInstall();
+      return;
+    }
     toggleColorModeMenu(false);
 
     const addButton = event.target.closest('[data-add-etf]');
@@ -1930,6 +1979,11 @@ async function bootstrap() {
   setTab(state.activeTab);
 }
 
+window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  updateInstallAction();
+});
 window.addEventListener('DOMContentLoaded', () => {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch((error) => {

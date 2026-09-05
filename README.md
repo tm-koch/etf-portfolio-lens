@@ -104,6 +104,12 @@ pwsh -NoProfile -File .\scripts\publish-gh-pages.ps1
 
 Add `-NoPush` if you want to build and commit the publish tree locally without pushing it yet.
 
+Validate the public PWA assets after deployment:
+
+```powershell
+pwsh -NoProfile -File .\scripts\validate-pwa-deployment.ps1
+```
+
 ## PWA Installation on Android
 
 Once the website has been converted into a valid PWA, installing it on Android is very simple.

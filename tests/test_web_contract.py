@@ -11,24 +11,40 @@ class WebContractTests(unittest.TestCase):
     def test_pwa_assets_and_local_runtime_contract(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
         importer = (WEB_ROOT / "portfolio-import.js").read_text(encoding="utf-8")
         publish_script = (
             REPOSITORY_ROOT / "scripts" / "publish-gh-pages.ps1"
         ).read_text(encoding="utf-8")
+        deployment_validator = (
+            REPOSITORY_ROOT / "scripts" / "validate-pwa-deployment.ps1"
+        ).read_text(encoding="utf-8")
         manifest = json.loads((WEB_ROOT / "manifest.json").read_text(encoding="utf-8"))
 
-        self.assertEqual(manifest["name"], "ETF Porfolio Lens")
-        self.assertEqual(manifest["short_name"], "ETF Porfolio Lens")
+        self.assertEqual(manifest["name"], "ETF Portfolio Lens")
+        self.assertEqual(manifest["short_name"], "ETF Portfolio Lens")
+        self.assertEqual(manifest["id"], "./")
         self.assertEqual(manifest["display"], "standalone")
         self.assertEqual(
             [icon["sizes"] for icon in manifest["icons"]], ["192x192", "512x512"]
         )
         self.assertIn('rel="manifest" href="./manifest.json"', index)
+        self.assertIn("<title>ETF Portfolio Lens</title>", index)
+        self.assertIn('id="install-app-button"', index)
+        self.assertIn('title="Install app"', index)
         self.assertIn('<meta name="theme-color" content="#152033" />', index)
         self.assertIn('src="./vendor/chart.umd.min.js"', index)
         self.assertIn('src="./vendor/pdf.min.js"', index)
         self.assertIn('src="./vendor/lucide.js"', index)
         self.assertIn("navigator.serviceWorker.register('./sw.js')", app)
+        self.assertIn("beforeinstallprompt", app)
+        self.assertIn("appinstalled", app)
+        self.assertIn("function promptToInstall()", app)
+        self.assertIn("function isStandaloneDisplayMode()", app)
+        self.assertIn("function isMobileViewport()", app)
+        self.assertIn("state.activeTab !== 'home'", app)
+        self.assertIn("(max-width: 760px)", app)
+        self.assertIn(".install-app-button:not([hidden])", styles)
         self.assertIn("./vendor/pdf.worker.min.js", importer)
         for path in (
             "icons/launchericon-192x192.png",
@@ -44,6 +60,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("manifest.json", publish_script)
         self.assertIn("sw.js", publish_script)
         self.assertIn("Required web asset is missing", publish_script)
+        self.assertIn("PWA deployment validation passed", deployment_validator)
+        self.assertIn("ETF Portfolio Lens", deployment_validator)
+        self.assertIn("Content-Type", deployment_validator)
 
     def test_publish_script_includes_app_local_javascript_modules(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

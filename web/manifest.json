@@ -1,7 +1,8 @@
 {
-  "name": "ETF Porfolio Lens",
-  "short_name": "ETF Porfolio Lens",
+  "name": "ETF Portfolio Lens",
+  "short_name": "ETF Portfolio Lens",
   "description": "Explore ETF portfolio look-through exposure.",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
