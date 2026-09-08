@@ -5,6 +5,7 @@ import io
 import json
 import tempfile
 import unittest
+from datetime import date
 from pathlib import Path
 from urllib.error import URLError
 from email.message import Message
@@ -73,8 +74,8 @@ class IngestionTests(unittest.TestCase):
     def tearDownClass(cls) -> None:
         cls.security_master_fixture.cleanup()
 
-    def test_registry_has_five_supported_sources(self) -> None:
-        self.assertEqual(9, len(self.registry.entries))
+    def test_registry_has_eleven_supported_sources(self) -> None:
+        self.assertEqual(11, len(self.registry.entries))
 
     def test_registry_contains_cssmi_metadata_and_complete_fixture(self) -> None:
         entry = self.registry.select_by_isins(["CH0008899764"])[0]
@@ -179,6 +180,64 @@ class IngestionTests(unittest.TestCase):
             entry.fixture_path,
         )
 
+    def test_registry_contains_new_ubs_etf_metadata(self) -> None:
+        expected = {
+            "CH0111762537": (
+                "SMIM",
+                "UBS SMIM® ETF CHF dis",
+                "https://www.ubs.com/ch/en/assetmanagement/funds/etf/"
+                "ch0111762537-ubs-smim-etf-pd001.html",
+                "data/example/UBSFunds_Constituents_1788893117279.xls",
+            ),
+            "CH1447931341": (
+                "SMI",
+                "UBS SMI® ETF CHF acc",
+                "https://www.ubs.com/ch/en/assetmanagement/funds/etf/"
+                "ch1447931341-ubs-smi-etf-pd001.html",
+                "data/example/UBSFunds_Constituents_1788893234352.xls",
+            ),
+        }
+
+        for isin, (ticker, name, source_url, fixture_path) in expected.items():
+            entry = self.registry.select_by_isins([isin])[0]
+            self.assertEqual(ticker, entry.ticker)
+            self.assertEqual(name, entry.name)
+            self.assertEqual("UBS", entry.provider)
+            self.assertEqual(source_url, entry.source_url)
+            self.assertEqual("xls", entry.expected_format)
+            self.assertEqual("ubs_xml_xls_v1", entry.parser_id)
+            self.assertEqual(fixture_path, entry.fixture_path)
+            self.assertTrue((ROOT / fixture_path).exists())
+
+    def test_new_ubs_fixtures_preserve_complete_holdings(self) -> None:
+        expected = {
+            "CH0111762537": (30, 100.0),
+            "CH1447931341": (20, 99.99999),
+        }
+
+        for isin, (row_count, weight_total) in expected.items():
+            entry = self.registry.select_by_isins([isin])[0]
+            parsed = parse_xlsx_bytes(
+                (ROOT / entry.fixture_path).read_bytes(),
+                stop_at_empty_row=True,
+            )
+
+            self.assertEqual(row_count, len(parsed.rows))
+            self.assertEqual(
+                ["Securities", "ISIN", "Sedol Code", "Currency", "Price", "Weight %"],
+                parsed.headers,
+            )
+            self.assertTrue(all(row["ISIN"].strip() for row in parsed.rows))
+            self.assertTrue(all(row["Weight %"].strip() for row in parsed.rows))
+            self.assertAlmostEqual(
+                weight_total,
+                sum(float(row["Weight %"]) for row in parsed.rows),
+                places=4,
+            )
+            self.assertFalse(
+                any("Quelle: UBS AG" in row["Securities"] for row in parsed.rows)
+            )
+
     def test_ubs_spi_extra_fixture_preserves_complete_holdings(self) -> None:
         path = ROOT / "data" / "example" / "UBSFunds_Constituents_1786975364611.xls"
 
@@ -218,6 +277,46 @@ class IngestionTests(unittest.TestCase):
                 )
             )
 
+    def test_new_ubs_snapshots_use_registry_identity_and_source_fields(self) -> None:
+        expected = {
+            "CH0111762537": ("SMIM", "UBS SMIM® ETF CHF dis", 30),
+            "CH1447931341": ("SMI", "UBS SMI® ETF CHF acc", 20),
+        }
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
+            )
+            results = pipeline.run(
+                self.registry.select_by_isins(list(expected)),
+                use_fixtures=True,
+            )
+
+            for result in results:
+                ticker, name, holding_count = expected[result.etf.isin]
+                snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
+                self.assertEqual(result.etf.isin, snapshot["etf"]["isin"])
+                self.assertEqual(ticker, snapshot["etf"]["ticker"])
+                self.assertEqual(name, snapshot["etf"]["name"])
+                self.assertEqual("ubs_xml_xls_v1", snapshot["snapshot"]["parser_id"])
+                self.assertEqual(
+                    holding_count, snapshot["aggregates"]["counts"]["holdings"]
+                )
+                self.assertTrue(
+                    all(
+                        holding["provenance"]["source_fields"].get("ISIN")
+                        for holding in snapshot["holdings"]
+                    )
+                )
+                self.assertTrue(
+                    all(
+                        holding["provenance"]["source_fields"].get("Currency")
+                        for holding in snapshot["holdings"]
+                    )
+                )
+
     def test_fixtures_generate_snapshots(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             pipeline = IngestionPipeline(
@@ -227,7 +326,7 @@ class IngestionTests(unittest.TestCase):
             )
             results = pipeline.run(self.registry.entries, use_fixtures=True)
 
-            self.assertEqual(9, len(results))
+            self.assertEqual(11, len(results))
             for result in results:
                 self.assertTrue(result.snapshot_path.exists())
                 snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
@@ -455,6 +554,33 @@ class IngestionTests(unittest.TestCase):
         ):
             with self.assertRaisesRegex(DownloadError, "returned HTML"):
                 fetch_url("https://example.test/product", Path(temp_dir))
+
+    def test_live_download_failure_does_not_publish_partial_snapshot(self) -> None:
+        security_master_download = DownloadedSource(
+            source_path=Path(self.security_master_source_url[8:]),
+            download_path=Path(self.security_master_source_url[8:]),
+            content_type="text/csv",
+        )
+
+        with tempfile.TemporaryDirectory() as temp_dir, patch(
+            "etf_ingestion_backend.pipeline.fetch_url",
+            side_effect=[
+                security_master_download,
+                DownloadError("Download URL returned HTML without a file link"),
+            ],
+        ):
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
+            )
+            with self.assertRaisesRegex(DownloadError, "returned HTML"):
+                pipeline.run(
+                    self.registry.select_by_isins(["CH0111762537"]),
+                )
+
+            snapshots_dir = Path(temp_dir) / date.today().isoformat() / "snapshots"
+            self.assertEqual([], list(snapshots_dir.glob("*.json")))
 
     def test_eumd_rejects_top_ten_response_before_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

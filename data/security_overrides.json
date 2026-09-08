@@ -36,6 +36,32 @@
     },
     {
       "match": {
+        "isin": "CH0210483332"
+      },
+      "set": {
+        "company_id": "richemont",
+        "canonical_name": "Compagnie Financiere Richemont SA",
+        "sector": "Consumer Discretionary",
+        "asset_class": "Equity",
+        "country": "Switzerland",
+        "exchange": "SIX"
+      }
+    },
+    {
+      "match": {
+        "isin": "CH0432492467"
+      },
+      "set": {
+        "company_id": "alcon-ag",
+        "canonical_name": "Alcon AG",
+        "sector": "Health Care",
+        "asset_class": "Equity",
+        "country": "Switzerland",
+        "exchange": "SIX"
+      }
+    },
+    {
+      "match": {
         "isin": "CH0012032113"
       },
       "set": {

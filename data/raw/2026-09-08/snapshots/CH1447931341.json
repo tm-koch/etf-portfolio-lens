@@ -1,0 +1,1070 @@
+{
+  "schema_version": "1.0",
+  "etf": {
+    "isin": "CH1447931341",
+    "ticker": "SMI",
+    "name": "UBS SMI® ETF CHF acc",
+    "provider": "UBS",
+    "domicile": null,
+    "base_currency": null
+  },
+  "snapshot": {
+    "as_of": "2026-09-08",
+    "generated_at": "2026-09-08T19:10:03.135801+00:00",
+    "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch1447931341-ubs-smi-etf-pd001.html",
+    "resolved_download_url": "data\\raw\\2026-09-08\\downloads\\CH1447931341.xls",
+    "source_format": "xls",
+    "parser_id": "ubs_xml_xls_v1"
+  },
+  "holdings": [
+    {
+      "security": {
+        "isin": "CH1499059983",
+        "ticker": null,
+        "name": "Roche Holding AG",
+        "company_id": "roche-holding",
+        "canonical_name": "Roche Holding AG"
+      },
+      "classification": {
+        "asset_class": null,
+        "sector": null,
+        "region": null,
+        "country": null,
+        "exchange": null,
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 16.98798,
+        "market_value": null,
+        "shares": null,
+        "price": 357.0,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "ROCHE HLDG PC PRP",
+          "ISIN": "CH1499059983",
+          "Sedol Code": "BTMJD19",
+          "Currency": "CHF",
+          "Price": "357",
+          "Weight %": "16.98798"
+        },
+        "enrichment_source": "override",
+        "exchange_code": null,
+        "match": {
+          "status": "overridden",
+          "matched_by": "override",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [
+            "ticker",
+            "exchange"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0012005267",
+        "ticker": "NOVN",
+        "name": "Novartis AG",
+        "company_id": "novartis-ag",
+        "canonical_name": "Novartis AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 16.76815,
+        "market_value": null,
+        "shares": null,
+        "price": 129.58,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "NOVARTIS AG-REG",
+          "ISIN": "CH0012005267",
+          "Sedol Code": "7103065",
+          "Currency": "CHF",
+          "Price": "129.58",
+          "Weight %": "16.76815"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0038863350",
+        "ticker": "NESN",
+        "name": "Nestlé S.A.",
+        "company_id": "nestl-s-a",
+        "canonical_name": "Nestlé S.A."
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Real Estate",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 13.66778,
+        "market_value": null,
+        "shares": null,
+        "price": 78.31,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "NESTLE SA-REG",
+          "ISIN": "CH0038863350",
+          "Sedol Code": "7123870",
+          "Currency": "CHF",
+          "Price": "78.31",
+          "Weight %": "13.66778"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0244767585",
+        "ticker": "UBSG",
+        "name": "UBS Group AG",
+        "company_id": "ubs-group-ag",
+        "canonical_name": "UBS Group AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 9.31147,
+        "market_value": null,
+        "shares": null,
+        "price": 44.81,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "UBS GROUP AG-REG",
+          "ISIN": "CH0244767585",
+          "Sedol Code": "BRJL176",
+          "Currency": "CHF",
+          "Price": "44.81",
+          "Weight %": "9.31147"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0012221716",
+        "ticker": "ABBN",
+        "name": "ABB Ltd",
+        "company_id": "abb-ltd",
+        "canonical_name": "ABB Ltd"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 8.20437,
+        "market_value": null,
+        "shares": null,
+        "price": 77.76,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "ABB LTD-REG",
+          "ISIN": "CH0012221716",
+          "Sedol Code": "7108899",
+          "Currency": "CHF",
+          "Price": "77.76",
+          "Weight %": "8.20437"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0210483332",
+        "ticker": null,
+        "name": "Compagnie Financiere Richemont SA",
+        "company_id": "richemont",
+        "canonical_name": "Compagnie Financiere Richemont SA"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Consumer Discretionary",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 6.75322,
+        "market_value": null,
+        "shares": null,
+        "price": 185.45,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "CIE FINANCIERE RICHEMO-A REG",
+          "ISIN": "CH0210483332",
+          "Sedol Code": "BCRWZ18",
+          "Currency": "CHF",
+          "Price": "185.45",
+          "Weight %": "6.75322"
+        },
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "overridden",
+          "matched_by": "override",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [
+            "ticker"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0011075394",
+        "ticker": "ZURN",
+        "name": "Zurich Insurance Group AG",
+        "company_id": "zurich-insurance-group-ag",
+        "canonical_name": "Zurich Insurance Group AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 6.25224,
+        "market_value": null,
+        "shares": null,
+        "price": 601.6,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "ZURICH INSURANCE GROUP AG",
+          "ISIN": "CH0011075394",
+          "Sedol Code": "5983816",
+          "Currency": "CHF",
+          "Price": "601.6",
+          "Weight %": "6.25224"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0126881561",
+        "ticker": "SREN",
+        "name": "Swiss Re AG",
+        "company_id": "swiss-re-ag",
+        "canonical_name": "Swiss Re AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 2.88931,
+        "market_value": null,
+        "shares": null,
+        "price": 142.85,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "SWISS RE AG",
+          "ISIN": "CH0126881561",
+          "Sedol Code": "B545MG5",
+          "Currency": "CHF",
+          "Price": "142.85",
+          "Weight %": "2.88931"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0013841017",
+        "ticker": "LONN",
+        "name": "Lonza Group AG",
+        "company_id": "lonza-group-ag",
+        "canonical_name": "Lonza Group AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 2.69208,
+        "market_value": null,
+        "shares": null,
+        "price": 567.2,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "LONZA GROUP AG-REG",
+          "ISIN": "CH0013841017",
+          "Sedol Code": "7333378",
+          "Currency": "CHF",
+          "Price": "567.2",
+          "Weight %": "2.69208"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0012214059",
+        "ticker": "HOLN",
+        "name": "Holcim AG",
+        "company_id": "holcim-ag",
+        "canonical_name": "Holcim AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 2.67279,
+        "market_value": null,
+        "shares": null,
+        "price": 73.84,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "HOLCIM LTD",
+          "ISIN": "CH0012214059",
+          "Sedol Code": "7110753",
+          "Currency": "CHF",
+          "Price": "73.84",
+          "Weight %": "2.67279"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0418792922",
+        "ticker": "SIKA",
+        "name": "Sika AG",
+        "company_id": "sika-ag",
+        "canonical_name": "Sika AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 2.0865,
+        "market_value": null,
+        "shares": null,
+        "price": 191.95,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "SIKA AG-REG",
+          "ISIN": "CH0418792922",
+          "Sedol Code": "BF2DSG3",
+          "Currency": "CHF",
+          "Price": "191.95",
+          "Weight %": "2.0865"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0432492467",
+        "ticker": null,
+        "name": "Alcon AG",
+        "company_id": "alcon-ag",
+        "canonical_name": "Alcon AG"
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Health Care",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 1.93889,
+        "market_value": null,
+        "shares": null,
+        "price": 57.3,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "ALCON INC",
+          "ISIN": "CH0432492467",
+          "Sedol Code": "BJT1GR5",
+          "Currency": "CHF",
+          "Price": "57.3",
+          "Weight %": "1.93889"
+        },
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "overridden",
+          "matched_by": "override",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [
+            "ticker"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0014852781",
+        "ticker": "SLHN",
+        "name": "Swiss Life Holding AG",
+        "company_id": "swiss-life-holding-ag",
+        "canonical_name": "Swiss Life Holding AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 1.80459,
+        "market_value": null,
+        "shares": null,
+        "price": 938.4,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "SWISS LIFE HOLDING AG-REG",
+          "ISIN": "CH0014852781",
+          "Sedol Code": "7437805",
+          "Currency": "CHF",
+          "Price": "938.4",
+          "Weight %": "1.80459"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0010645932",
+        "ticker": "GIVN",
+        "name": "Givaudan SA",
+        "company_id": "givaudan-sa",
+        "canonical_name": "Givaudan SA"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 1.68438,
+        "market_value": null,
+        "shares": null,
+        "price": null,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "GIVAUDAN-REG",
+          "ISIN": "CH0010645932",
+          "Sedol Code": "5980613",
+          "Currency": "CHF",
+          "Price": "3,250.00",
+          "Weight %": "1.68438"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0030170408",
+        "ticker": "GEBN",
+        "name": "Geberit AG",
+        "company_id": "geberit-ag",
+        "canonical_name": "Geberit AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 1.29092,
+        "market_value": null,
+        "shares": null,
+        "price": 563.4,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "GEBERIT AG-REG",
+          "ISIN": "CH0030170408",
+          "Sedol Code": "B1WGG93",
+          "Currency": "CHF",
+          "Price": "563.4",
+          "Weight %": "1.29092"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH1430134226",
+        "ticker": "AMRZ",
+        "name": "Amerize Inc.",
+        "company_id": "amerize-inc",
+        "canonical_name": "Amerize Inc."
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Materials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 1.27085,
+        "market_value": null,
+        "shares": null,
+        "price": 35.47,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "AMRIZE RG",
+          "ISIN": "CH1430134226",
+          "Sedol Code": "BV5F675",
+          "Currency": "CHF",
+          "Price": "35.47",
+          "Weight %": "1.27085"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0008742519",
+        "ticker": "SCMN",
+        "name": "Swisscom AG",
+        "company_id": "swisscom-ag",
+        "canonical_name": "Swisscom AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Communication Services",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 1.08865,
+        "market_value": null,
+        "shares": null,
+        "price": 633.5,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "SWISSCOM AG-REG",
+          "ISIN": "CH0008742519",
+          "Sedol Code": "5533976",
+          "Currency": "CHF",
+          "Price": "633.5",
+          "Weight %": "1.08865"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0024608827",
+        "ticker": "PGHN",
+        "name": "Partners Group Holding AG",
+        "company_id": "partners-group-holding-ag",
+        "canonical_name": "Partners Group Holding AG"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Financials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 1.03719,
+        "market_value": null,
+        "shares": null,
+        "price": 679.0,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "PARTNERS GROUP HOLDING AG",
+          "ISIN": "CH0024608827",
+          "Sedol Code": "B119QG0",
+          "Currency": "CHF",
+          "Price": "679",
+          "Weight %": "1.03719"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0025751329",
+        "ticker": null,
+        "name": "Logitech International S.A.",
+        "company_id": "logitech-international-sa",
+        "canonical_name": "Logitech International S.A."
+      },
+      "classification": {
+        "asset_class": "Equity",
+        "sector": "Information Technology",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 0.80612,
+        "market_value": null,
+        "shares": null,
+        "price": 82.32,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "LOGITECH INTERNATIONAL-REG",
+          "ISIN": "CH0025751329",
+          "Sedol Code": "B18ZRK2",
+          "Currency": "CHF",
+          "Price": "82.32",
+          "Weight %": "0.80612"
+        },
+        "enrichment_source": "override",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "overridden",
+          "matched_by": "override",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [
+            "ticker"
+          ],
+          "warning": null
+        }
+      }
+    },
+    {
+      "security": {
+        "isin": "CH0025238863",
+        "ticker": "KNIN",
+        "name": "Kuehne & Nagel",
+        "company_id": "kuehne-nagel",
+        "canonical_name": "Kuehne & Nagel"
+      },
+      "classification": {
+        "asset_class": "Stock",
+        "sector": "Industrials",
+        "region": "Europe",
+        "country": "Switzerland",
+        "exchange": "SIX",
+        "market_currency": "CHF"
+      },
+      "exposure": {
+        "weight_pct": 0.79251,
+        "market_value": null,
+        "shares": null,
+        "price": 211.3,
+        "notional_value": null,
+        "currency_exposure": "CHF"
+      },
+      "provenance": {
+        "source_fields": {
+          "Securities": "KUEHNE + NAGEL INTL AG-REG",
+          "ISIN": "CH0025238863",
+          "Sedol Code": "B142S60",
+          "Currency": "CHF",
+          "Price": "211.3",
+          "Weight %": "0.79251"
+        },
+        "enrichment_source": "security_master",
+        "exchange_code": "SIX",
+        "match": {
+          "status": "matched",
+          "matched_by": "isin",
+          "attempted": [
+            "isin"
+          ],
+          "missing_elements": [],
+          "warning": null
+        }
+      }
+    }
+  ],
+  "aggregates": {
+    "sector_weights": [
+      {
+        "name": "Health Care",
+        "weight_pct": 21.3991
+      },
+      {
+        "name": "Financials",
+        "weight_pct": 21.2948
+      },
+      {
+        "name": "Unknown",
+        "weight_pct": 16.988
+      },
+      {
+        "name": "Real Estate",
+        "weight_pct": 13.6678
+      },
+      {
+        "name": "Industrials",
+        "weight_pct": 10.2878
+      },
+      {
+        "name": "Materials",
+        "weight_pct": 7.7145
+      },
+      {
+        "name": "Consumer Discretionary",
+        "weight_pct": 6.7532
+      },
+      {
+        "name": "Communication Services",
+        "weight_pct": 1.0886
+      },
+      {
+        "name": "Information Technology",
+        "weight_pct": 0.8061
+      }
+    ],
+    "region_weights": [
+      {
+        "name": "Europe",
+        "weight_pct": 83.012
+      },
+      {
+        "name": "Unknown",
+        "weight_pct": 16.988
+      }
+    ],
+    "currency_weights": [
+      {
+        "name": "CHF",
+        "weight_pct": 100.0
+      }
+    ],
+    "top_holdings": [
+      {
+        "ticker": null,
+        "name": "Roche Holding AG",
+        "weight_pct": 16.988
+      },
+      {
+        "ticker": "NOVN",
+        "name": "Novartis AG",
+        "weight_pct": 16.7681
+      },
+      {
+        "ticker": "NESN",
+        "name": "Nestlé S.A.",
+        "weight_pct": 13.6678
+      },
+      {
+        "ticker": "UBSG",
+        "name": "UBS Group AG",
+        "weight_pct": 9.3115
+      },
+      {
+        "ticker": "ABBN",
+        "name": "ABB Ltd",
+        "weight_pct": 8.2044
+      },
+      {
+        "ticker": null,
+        "name": "Compagnie Financiere Richemont SA",
+        "weight_pct": 6.7532
+      },
+      {
+        "ticker": "ZURN",
+        "name": "Zurich Insurance Group AG",
+        "weight_pct": 6.2522
+      },
+      {
+        "ticker": "SREN",
+        "name": "Swiss Re AG",
+        "weight_pct": 2.8893
+      },
+      {
+        "ticker": "LONN",
+        "name": "Lonza Group AG",
+        "weight_pct": 2.6921
+      },
+      {
+        "ticker": "HOLN",
+        "name": "Holcim AG",
+        "weight_pct": 2.6728
+      }
+    ],
+    "counts": {
+      "holdings": 20
+    }
+  },
+  "provenance": {
+    "security_master_version": "tickers.xls",
+    "security_master_source_url": "file:///C:/Git/etf-portfolio-lens/data/raw/2026-08-19/downloads/tickers.csv",
+    "security_master_download_path": "data\\raw\\2026-09-08\\downloads\\tickers.xls",
+    "warnings": [],
+    "raw_download_path": "data\\raw\\2026-09-08\\downloads\\CH1447931341.xls",
+    "domicile": null,
+    "base_currency": null
+  }
+}

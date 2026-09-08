@@ -95,6 +95,26 @@
       "expected_format": "xls",
       "parser_id": "ubs_xml_xls_v1",
       "fixture_path": "data/example/UBSFunds_Constituents_1786975364611.xls"
+    },
+    {
+      "isin": "CH0111762537",
+      "ticker": "SMIM",
+      "name": "UBS SMIM® ETF CHF dis",
+      "provider": "UBS",
+      "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch0111762537-ubs-smim-etf-pd001.html",
+      "expected_format": "xls",
+      "parser_id": "ubs_xml_xls_v1",
+      "fixture_path": "data/example/UBSFunds_Constituents_1788893117279.xls"
+    },
+    {
+      "isin": "CH1447931341",
+      "ticker": "SMI",
+      "name": "UBS SMI® ETF CHF acc",
+      "provider": "UBS",
+      "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch1447931341-ubs-smi-etf-pd001.html",
+      "expected_format": "xls",
+      "parser_id": "ubs_xml_xls_v1",
+      "fixture_path": "data/example/UBSFunds_Constituents_1788893234352.xls"
     }
   ]
 }
