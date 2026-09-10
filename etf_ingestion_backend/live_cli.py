@@ -15,6 +15,7 @@ from .live_adapters import (
     fetch_and_parse,
     parse_frankfurter_rate,
     parse_swiss_trade_csv,
+    parse_yahoo_chart,
 )
 from .live_market_data import (
     FXRate,
@@ -32,6 +33,7 @@ FRANKFURTER_URLS = {
 
 QUOTE_ADAPTERS = {
     "swiss_csv_v1": parse_swiss_trade_csv,
+    "yahoo_chart_v1": parse_yahoo_chart,
 }
 
 
@@ -44,7 +46,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--trading-date", type=date.fromisoformat, default=None)
     parser.add_argument(
         "--quote-url-template",
-        help="Swiss CSV URL template for local runs and tests; {isin} is substituted.",
+        help="Quote URL template for local runs and tests; {isin} or {ticker} is substituted.",
     )
     return parser
 
@@ -57,19 +59,22 @@ def _fetch_url(url: str) -> bytes:
         return response.read()
 
 
-def _format_secret_url(template: str, isin: str) -> str:
-    return template.replace("{isin}", isin)
+def _format_secret_url(template: str, isin: str, ticker: str | None) -> str:
+    identifier = ticker if ticker is not None else isin
+    placeholder = "{ticker}" if ticker is not None else "{isin}"
+    return template.replace(placeholder, identifier)
 
 
-def _validate_quote_url_template(template: str) -> None:
-    parsed = urlsplit(template.replace("{isin}", "TESTISIN"))
+def _validate_quote_url_template(template: str, ticker: str | None) -> None:
+    placeholder = "{ticker}" if ticker is not None else "{isin}"
+    parsed = urlsplit(template.replace(placeholder, "TESTIDENTIFIER"))
     if (
-        "{isin}" not in template
+        placeholder not in template
         or parsed.scheme not in {"http", "https"}
         or not parsed.netloc
     ):
         raise LiveFetchError(
-            "configured quote URL template must be an absolute HTTP(S) URL containing {isin}"
+            f"configured quote URL template must be an absolute HTTP(S) URL containing {placeholder}"
         )
 
 
@@ -104,15 +109,19 @@ def fetch_live_prices(
                 raise LiveFetchError(
                     f"missing configured source secret {config.secret_name}"
                 )
-            _validate_quote_url_template(template)
-            url = _format_secret_url(template, config.isin)
             parser = QUOTE_ADAPTERS.get(config.adapter_id)
             if parser is None:
                 raise LiveFetchError(f"unsupported quote adapter {config.adapter_id}")
+            _validate_quote_url_template(template, config.ticker)
+            url = _format_secret_url(template, config.isin, config.ticker)
             result = fetch_and_parse(
                 url,
                 lambda payload, config=config, parser=parser: parser(
-                    payload, config.isin, config.currency, trading_date
+                    payload,
+                    config.isin,
+                    config.currency,
+                    trading_date,
+                    config.ticker,
                 ),
                 fetcher,
             )

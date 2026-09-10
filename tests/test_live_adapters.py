@@ -11,11 +11,36 @@ from etf_ingestion_backend.live_adapters import (
     LiveFetchError,
     parse_frankfurter_rate,
     parse_swiss_trade_csv,
+    parse_yahoo_chart,
 )
 from etf_ingestion_backend.live_cli import fetch_live_prices
 
 
 class LiveAdapterTests(unittest.TestCase):
+    def test_yahoo_chart_parses_eur_market_quote(self) -> None:
+        payload = b'{"chart":{"result":[{"meta":{"currency":"EUR","regularMarketPrice":10.342,"regularMarketTime":1789054501}}],"error":null}}'
+
+        quote = parse_yahoo_chart(payload, "IE00BF20LF40", "EUR", ticker="EUMD.L")
+
+        self.assertEqual(10.342, quote.price)
+        self.assertEqual("EUR", quote.currency)
+        self.assertEqual("EUMD.L", quote.ticker)
+        self.assertEqual("2026-09-10T15:35:01Z", quote.quoted_at)
+
+    def test_yahoo_chart_rejects_invalid_responses(self) -> None:
+        invalid_payloads = (
+            '{"chart":{"error":{"description":"not found"},"result":null}}',
+            '{"chart":{"error":null,"result":[{}]}}',
+            '{"chart":{"error":null,"result":[{"meta":{"currency":"USD","regularMarketPrice":1,"regularMarketTime":1}}]}}',
+            '{"chart":{"error":null,"result":[{"meta":{"currency":"EUR","regularMarketPrice":-1,"regularMarketTime":1}}]}}',
+            '{"chart":{"error":null,"result":[{"meta":{"currency":"EUR","regularMarketPrice":1,"regularMarketTime":0}}]}}',
+        )
+
+        for payload in invalid_payloads:
+            with self.subTest(payload=payload):
+                with self.assertRaises(Exception):
+                    parse_yahoo_chart(payload, "IE00BF20LF40", "EUR", ticker="EUMD.L")
+
     def test_swiss_csv_selects_latest_valid_row(self) -> None:
         payload = """Trading date;2026-09-10\nTime;Price;Volume\n09:01;101,20;10\ninvalid;bad;\n15:30:01;103.40;5\n12:00;102.00;2\n"""
         quote = parse_swiss_trade_csv(payload, "CH0008899764", "CHF")
@@ -128,6 +153,38 @@ class LiveAdapterTests(unittest.TestCase):
             self.assertEqual(202.4, artifact.quotes["CH0019852802"].price)
             self.assertIn("https://one.example/CH0008899764", requests)
             self.assertIn("https://two.example/CH0019852802", requests)
+
+    def test_ticker_quote_uses_ticker_url_and_preserves_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            config = root / "config.json"
+            output = root / "live_prices.json"
+            config.write_text(
+                '{"schema_version":1,"quotes":[{"isin":"IE00BF20LF40",'
+                '"ticker":"EUMD.L","adapter_id":"yahoo_chart_v1",'
+                '"currency":"EUR","quote_url_template_secret":"YAHOO_URL"}]}',
+                encoding="utf-8",
+            )
+            requests: list[str] = []
+
+            def fetcher(url: str) -> bytes:
+                requests.append(url)
+                if "yahoo.example" in url:
+                    return b'{"chart":{"result":[{"meta":{"currency":"EUR","regularMarketPrice":10.342,"regularMarketTime":1789054501}}],"error":null}}'
+                if "from=USD" in url:
+                    return b'{"amount":1,"base":"USD","date":"2026-09-10","rates":{"CHF":0.81}}'
+                return b'{"amount":1,"base":"EUR","date":"2026-09-10","rates":{"CHF":0.93}}'
+
+            with patch.dict(
+                os.environ, {"YAHOO_URL": "https://yahoo.example/{ticker}"}
+            ):
+                artifact = fetch_live_prices(config, output, fetcher=fetcher)
+
+            self.assertIn("https://yahoo.example/EUMD.L", requests)
+            self.assertEqual("EUMD.L", artifact.quotes["IE00BF20LF40"].ticker)
+            self.assertEqual(
+                "EUMD.L", artifact.to_dict()["quotes"]["IE00BF20LF40"]["ticker"]
+            )
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import io
 import json
 import re
 from datetime import date, datetime, timezone
+from math import isfinite
 from typing import Callable, Mapping
 
 from .live_market_data import FXRate, LiveMarketDataError, Quote, _validate_currency
@@ -60,7 +61,9 @@ def parse_swiss_trade_csv(
     isin: str,
     currency: str,
     trading_date: date | None = None,
+    ticker: str | None = None,
 ) -> Quote:
+    del ticker
     _validate_currency(currency)
     text = (
         payload.decode("utf-8-sig", errors="replace")
@@ -108,6 +111,68 @@ def parse_swiss_trade_csv(
     if latest_timestamp is None or latest_price is None:
         raise LiveMarketDataError("Swiss trade CSV contains no valid trade rows")
     return Quote(isin, latest_price, currency, latest_timestamp, "available")
+
+
+def parse_yahoo_chart(
+    payload: bytes | str,
+    isin: str,
+    currency: str,
+    trading_date: date | None = None,
+    ticker: str | None = None,
+) -> Quote:
+    del trading_date
+    if not ticker:
+        raise LiveMarketDataError("Yahoo chart quotes require a ticker")
+    if currency != "EUR":
+        raise LiveMarketDataError("Yahoo chart quotes must use EUR currency")
+    text = payload.decode("utf-8") if isinstance(payload, bytes) else payload
+    try:
+        document = json.loads(text)
+    except json.JSONDecodeError as error:
+        raise LiveMarketDataError("Yahoo chart response is not valid JSON") from error
+    if not isinstance(document, Mapping):
+        raise LiveMarketDataError("Yahoo chart response must be an object")
+    chart = document.get("chart")
+    if not isinstance(chart, Mapping):
+        raise LiveMarketDataError("Yahoo chart response is missing chart data")
+    error = chart.get("error")
+    if error not in (None, {}):
+        raise LiveMarketDataError("Yahoo chart response contains an error")
+    results = chart.get("result")
+    if not isinstance(results, list) or len(results) != 1:
+        raise LiveMarketDataError("Yahoo chart response is missing result metadata")
+    meta = results[0].get("meta") if isinstance(results[0], Mapping) else None
+    if not isinstance(meta, Mapping):
+        raise LiveMarketDataError("Yahoo chart response is missing quote metadata")
+    if meta.get("currency") != currency:
+        raise LiveMarketDataError("Yahoo chart response has unsupported currency")
+    price = meta.get("regularMarketPrice")
+    timestamp = meta.get("regularMarketTime")
+    if (
+        not isinstance(price, (int, float))
+        or isinstance(price, bool)
+        or not isfinite(price)
+        or price < 0
+    ):
+        raise LiveMarketDataError("Yahoo chart response has an invalid market price")
+    if not isinstance(timestamp, int) or isinstance(timestamp, bool) or timestamp <= 0:
+        raise LiveMarketDataError(
+            "Yahoo chart response has an invalid market timestamp"
+        )
+    try:
+        quoted_at = datetime.fromtimestamp(timestamp, tz=timezone.utc)
+    except (OverflowError, OSError, ValueError) as error:
+        raise LiveMarketDataError(
+            "Yahoo chart response has an invalid market timestamp"
+        ) from error
+    return Quote(
+        isin,
+        float(price),
+        currency,
+        quoted_at.isoformat().replace("+00:00", "Z"),
+        "available",
+        ticker=ticker,
+    )
 
 
 def parse_frankfurter_rate(payload: bytes | str, pair: str) -> FXRate:

@@ -1,6 +1,15 @@
 name: Refresh live ETF market data
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/live-market-data.yml'
+      - 'data/live_price_config.json'
+      - 'etf_ingestion_backend/**'
+      - 'scripts/publish-gh-pages.ps1'
+      - 'README.md'
   workflow_dispatch:
   schedule:
     # Fixed 22:00 CET (UTC+1) year-round; no CEST adjustment.
@@ -30,6 +39,7 @@ jobs:
       - name: Fetch and stage live market data
         env:
           SWISS_QUOTE_URL_TEMPLATE: ${{ secrets.SWISS_QUOTE_URL_TEMPLATE }}
+          YAHOO_QUOTE_URL_TEMPLATE: ${{ secrets.YAHOO_QUOTE_URL_TEMPLATE }}
         run: python -m etf_ingestion_backend.live_cli --config data/live_price_config.json --output data/live_prices.json
 
       - name: Validate staged artifact

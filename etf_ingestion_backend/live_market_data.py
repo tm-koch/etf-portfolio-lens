@@ -47,6 +47,16 @@ def _validate_isin(value: str) -> str:
     return value
 
 
+def _validate_ticker(value: str, field_name: str = "ticker") -> str:
+    if (
+        not isinstance(value, str)
+        or not value.strip()
+        or any(character.isspace() for character in value)
+    ):
+        raise LiveMarketDataError(f"{field_name} must be a non-empty ticker")
+    return value
+
+
 def _reject_public_source_fields(value: Mapping[str, Any], field_name: str) -> None:
     leaked = PUBLIC_SOURCE_FIELDS.intersection(value)
     if leaked:
@@ -61,6 +71,7 @@ class QuoteConfig:
     adapter_id: str
     currency: str
     secret_name: str = "SWISS_QUOTE_URL_TEMPLATE"
+    ticker: str | None = None
 
     def __post_init__(self) -> None:
         _validate_isin(self.isin)
@@ -71,14 +82,21 @@ class QuoteConfig:
             )
         if not self.secret_name or not re.fullmatch(r"[A-Z0-9_]+", self.secret_name):
             raise LiveMarketDataError("secret_name must be an environment-style name")
+        if self.ticker is not None:
+            _validate_ticker(self.ticker)
+        if self.adapter_id == "yahoo_chart_v1" and self.ticker is None:
+            raise LiveMarketDataError("yahoo_chart_v1 requires a ticker")
 
     def to_dict(self) -> dict[str, str]:
-        return {
+        result = {
             "isin": self.isin,
             "adapter_id": self.adapter_id,
             "currency": self.currency,
             "secret_name": self.secret_name,
         }
+        if self.ticker is not None:
+            result["ticker"] = self.ticker
+        return result
 
 
 @dataclass(frozen=True, slots=True)
@@ -88,6 +106,7 @@ class Quote:
     currency: str
     quoted_at: str | None
     status: str
+    ticker: str | None = None
 
     def __post_init__(self) -> None:
         _validate_isin(self.isin)
@@ -98,6 +117,8 @@ class Quote:
             raise LiveMarketDataError("quote price must be a non-negative number")
         if self.quoted_at is not None:
             _validate_timestamp(self.quoted_at, "quoted_at")
+        if self.ticker is not None:
+            _validate_ticker(self.ticker)
         if self.status not in {"available", "unavailable"}:
             raise LiveMarketDataError("quote status must be available or unavailable")
         if self.status == "available" and (
@@ -106,12 +127,16 @@ class Quote:
             raise LiveMarketDataError("available quotes require price and quoted_at")
 
     def to_dict(self) -> dict[str, Any]:
-        return {
+        result = {
+            "isin": self.isin,
             "price": self.price,
             "currency": self.currency,
             "quoted_at": self.quoted_at,
             "status": self.status,
         }
+        if self.ticker is not None:
+            result["ticker"] = self.ticker
+        return result
 
 
 @dataclass(frozen=True, slots=True)
@@ -185,7 +210,11 @@ class LivePricesArtifact:
             if not isinstance(raw_quote, Mapping):
                 raise LiveMarketDataError(f"quote {isin} must be an object")
             _reject_public_source_fields(raw_quote, f"quote {isin}")
-            quotes[isin] = Quote(isin=isin, **raw_quote)
+            quote_data = dict(raw_quote)
+            embedded_isin = quote_data.pop("isin", isin)
+            if embedded_isin != isin:
+                raise LiveMarketDataError(f"quote {isin} ISIN does not match map key")
+            quotes[isin] = Quote(isin=isin, **quote_data)
         fx: dict[str, FXRate] = {}
         for pair, raw_rate in _mapping(document, "fx").items():
             if not isinstance(raw_rate, Mapping):

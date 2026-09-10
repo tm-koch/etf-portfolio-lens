@@ -1,8 +1,5 @@
-# live-market-data Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change live-etf-prices. Update Purpose after archive.
-## Requirements
 ### Requirement: Normalize live ETF quotes
 The live-data pipeline SHALL produce a versioned JSON artifact containing at least one normalized quote record per configured ETF, with ISIN, numeric price, currency, quote timestamp, trading date when available, status, and provider lookup ticker when the configured adapter requires one. Provider URLs, credentials, raw responses, and provider identities SHALL NOT appear in the artifact. The artifact SHALL remain keyed by ISIN.
 
@@ -51,37 +48,3 @@ The ticker-based adapter SHALL parse the chart response's regular market price, 
 #### Scenario: Unsupported or invalid chart data is rejected
 - **WHEN** the chart response currency is not EUR, the price is negative or non-finite, or the timestamp is invalid
 - **THEN** the adapter reports a validation failure and the pipeline does not publish a replacement artifact
-
-### Requirement: Normalize supported daily FX reference rates
-The pipeline SHALL retrieve and publish timestamped latest daily reference rates for EUR/CHF and USD/CHF from Frankfurter, and SHALL support CHF as an identity conversion currency.
-
-#### Scenario: EUR position is valued in CHF
-- **WHEN** a valid EUR/CHF rate exists
-- **THEN** the valuation layer converts the EUR quote or imported EUR value to CHF using that rate
-
-#### Scenario: USD position is valued in CHF
-- **WHEN** a valid USD/CHF rate exists
-- **THEN** the valuation layer converts the USD quote or imported USD value to CHF using that rate
-
-### Requirement: Preserve timestamps without age rejection
-The pipeline SHALL retain quote and FX timestamps and SHALL NOT reject an otherwise valid FX or market quote solely because it is older than the current workflow time.
-
-#### Scenario: Weekend execution uses the latest available data
-- **WHEN** the action runs on a weekend and the source returns the most recent available quote or FX observation
-- **THEN** the data is published with its original timestamp and status rather than being rejected solely for age
-
-### Requirement: Provide hybrid effective valuation
-The application SHALL calculate each full-portfolio position using a valid live quote and supported FX rate when available, fall back to the persisted imported CHF-normalized value when live valuation is unavailable, and mark the effective source. A position with neither valid source SHALL remain unavailable.
-
-#### Scenario: Live valuation is available
-- **WHEN** a position has shares, a valid published live quote, and a required FX rate
-- **THEN** its effective CHF value uses shares multiplied by live price and FX conversion and is marked live
-
-#### Scenario: Live valuation is unavailable
-- **WHEN** a position lacks a valid live quote or required FX rate but has a persisted imported CHF value
-- **THEN** its effective CHF value uses the imported value and is marked imported fallback
-
-#### Scenario: Both valuations are unavailable
-- **WHEN** a position has neither a usable live valuation nor an imported CHF value
-- **THEN** its effective value is unavailable and is excluded from monetary totals while remaining visible
-

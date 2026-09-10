@@ -81,17 +81,29 @@ class LiveMarketDataTests(unittest.TestCase):
                 "CH0111762537",
                 "CH1447931341",
                 "IE00B44Z5B48",
+                "IE00BF20LF40",
+                "LU0908500753",
+                "IE00BCLWRD08",
             ],
             [entry.isin for entry in config],
         )
         self.assertEqual(
-            {"SWISS_QUOTE_URL_TEMPLATE"}, {entry.secret_name for entry in config}
+            {"SWISS_QUOTE_URL_TEMPLATE", "YAHOO_QUOTE_URL_TEMPLATE"},
+            {entry.secret_name for entry in config},
         )
         public_config = json.loads(config_path.read_text(encoding="utf-8"))
         self.assertNotIn("quote_url_template_secret", public_config)
         self.assertEqual(
-            {"SWISS_QUOTE_URL_TEMPLATE"},
+            {"SWISS_QUOTE_URL_TEMPLATE", "YAHOO_QUOTE_URL_TEMPLATE"},
             {entry["quote_url_template_secret"] for entry in public_config["quotes"]},
+        )
+        self.assertEqual(
+            {
+                "IE00BF20LF40": "EUMD.L",
+                "LU0908500753": "LYP6.DE",
+                "IE00BCLWRD08": "IS3H.DE",
+            },
+            {entry.isin: entry.ticker for entry in config if entry.ticker is not None},
         )
         self.assertNotIn("source_url", public_config)
         self.assertNotIn("url_template", public_config)
@@ -103,6 +115,8 @@ class LiveMarketDataTests(unittest.TestCase):
         self.assertEqual("swiss_csv_v1", config.to_dict()["adapter_id"])
         with self.assertRaises(LiveMarketDataError):
             QuoteConfig("CH0008899764", "https-provider", "CHF", "QUOTE_URL")
+        with self.assertRaises(LiveMarketDataError):
+            QuoteConfig("CH0008899764", "yahoo_chart_v1", "EUR", "QUOTE_URL")
 
 
 if __name__ == "__main__":

@@ -1,8 +1,5 @@
-# scheduled-market-data-publication Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change live-etf-prices. Update Purpose after archive.
-## Requirements
 ### Requirement: Run the scheduled market-data workflow
 The repository SHALL provide a GitHub Actions workflow with manual dispatch, a daily schedule at 21:00 UTC representing fixed 22:00 CET (UTC+1) year-round, and a push trigger limited to relevant changes on `main`. Relevant changes include live-data source/configuration, workflow, backend, parser, and publication inputs; generated `data/live_prices.json` changes SHALL be excluded from the push paths.
 
@@ -43,4 +40,3 @@ The workflow SHALL publish a new live-data artifact and dated commit only after 
 #### Scenario: Complete update succeeds
 - **WHEN** all configured Swiss and ticker-based quotes and FX rates validate successfully
 - **THEN** the workflow writes the artifact, commits with the update date, and invokes the GitHub Pages publisher
-

@@ -1,6 +1,6 @@
 import { buildCatalogMaps, loadBuildInfo, loadLivePrices, loadPublishedCatalog, loadSnapshot } from './data.js?v=20260910-1';
 import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-3';
-import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js';
+import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js?v=20260910-2';
 import { getEffectiveValuation } from './valuation.js';
 import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
 
@@ -1411,7 +1411,7 @@ function updateImportRow(index, field, value) {
   if (!row) return;
   if (field === 'currency') row.currency = value;
   else row[field] = Number(value);
-  const calculated = calculateImportedPosition(Number(row.shares), Number(row.price), row.currency);
+  const calculated = calculateImportedPosition(Number(row.shares), Number(row.price), row.currency, state.livePrices?.fx);
   row.value = calculated.value;
   row.valueChf = calculated.valueChf;
   row.warnings = [];
@@ -1469,7 +1469,7 @@ async function importPortfolioFile(file) {
     const pages = await extractPdfPages(file);
     window.__etfLensPdfImportPages = pages;
     updateImportDebugVisibility();
-    const rows = matchImportedRows(parseSaxoPages(pages), state.catalogMaps);
+    const rows = matchImportedRows(parseSaxoPages(pages, state.livePrices?.fx), state.catalogMaps);
     if (!rows.length) throw new Error('No ETF holdings were found in the supported Saxo sections.');
     showImportDialog(rows);
     elements.importStatus.textContent = 'Review the proposed positions before replacing the portfolio.';

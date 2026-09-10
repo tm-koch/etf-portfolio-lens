@@ -1,55 +1,87 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-10T21:31:11Z",
+  "generated_at": "2026-09-10T21:34:22Z",
   "status": "complete",
   "quotes": {
     "CH0008899764": {
+      "isin": "CH0008899764",
       "price": 142.44,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:36:51Z",
       "status": "available"
     },
     "CH0019852802": {
+      "isin": "CH0019852802",
       "price": 319.35,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:36:51Z",
       "status": "available"
     },
     "CH0237935652": {
+      "isin": "CH0237935652",
       "price": 164.78,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:36:51Z",
       "status": "available"
     },
     "CH0130595124": {
+      "isin": "CH0130595124",
       "price": 129.58,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:36:51Z",
       "status": "available"
     },
     "CH1553162921": {
+      "isin": "CH1553162921",
       "price": 12.832,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:28:25.290000Z",
       "status": "available"
     },
     "CH0111762537": {
+      "isin": "CH0111762537",
       "price": 307.9,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:36:51Z",
       "status": "available"
     },
     "CH1447931341": {
+      "isin": "CH1447931341",
       "price": 3.924,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:36:51Z",
       "status": "available"
     },
     "IE00B44Z5B48": {
+      "isin": "IE00B44Z5B48",
       "price": 265.35,
       "currency": "CHF",
       "quoted_at": "2026-09-10T17:36:51Z",
       "status": "available"
+    },
+    "IE00BF20LF40": {
+      "isin": "IE00BF20LF40",
+      "price": 10.342,
+      "currency": "EUR",
+      "quoted_at": "2026-09-10T15:35:01Z",
+      "status": "available",
+      "ticker": "EUMD.L"
+    },
+    "LU0908500753": {
+      "isin": "LU0908500753",
+      "price": 313.45,
+      "currency": "EUR",
+      "quoted_at": "2026-09-10T15:35:50Z",
+      "status": "available",
+      "ticker": "LYP6.DE"
+    },
+    "IE00BCLWRD08": {
+      "isin": "IE00BCLWRD08",
+      "price": 80.51,
+      "currency": "EUR",
+      "quoted_at": "2026-09-10T15:35:54Z",
+      "status": "available",
+      "ticker": "IS3H.DE"
     }
   },
   "fx": {

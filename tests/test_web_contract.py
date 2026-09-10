@@ -83,6 +83,11 @@ class WebContractTests(unittest.TestCase):
             REPOSITORY_ROOT / ".github" / "workflows" / "live-market-data.yml"
         ).read_text(encoding="utf-8")
         self.assertIn("cron: '0 21 * * *'", workflow)
+        self.assertIn("push:", workflow)
+        self.assertIn("branches:\n      - main", workflow)
+        self.assertIn("data/live_price_config.json", workflow)
+        self.assertIn("YAHOO_QUOTE_URL_TEMPLATE", workflow)
+        self.assertNotIn("data/live_prices.json", workflow.split("concurrency:", 1)[0])
         self.assertIn("workflow_dispatch", workflow)
         self.assertIn("SWISS_QUOTE_URL_TEMPLATE", workflow)
         self.assertNotIn("QUOTE_URL_CH0008899764", workflow)

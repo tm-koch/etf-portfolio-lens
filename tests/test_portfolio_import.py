@@ -36,6 +36,28 @@ class PortfolioImportTests(unittest.TestCase):
         self.assertEqual(rows[0]["price"], 172.02)
         self.assertEqual(rows[0]["value"], 30619.56)
 
+    def test_eur_import_value_is_converted_with_published_fx_rate(self) -> None:
+        expression = (
+            f"import {{calculateImportedPosition}} from '{IMPORTER_MODULE}'; "
+            "console.log(JSON.stringify(calculateImportedPosition(10, 25, 'EUR', "
+            "{'EUR/CHF': {rate: 0.94}})));"
+        )
+        position = self.run_node(expression)
+        self.assertEqual(position["value"], 250)
+        self.assertAlmostEqual(position["valueChf"], 235)
+
+    def test_usd_import_value_converts_and_missing_fx_stays_unavailable(self) -> None:
+        expression = (
+            f"import {{calculateImportedPosition}} from '{IMPORTER_MODULE}'; "
+            "console.log(JSON.stringify(["
+            "calculateImportedPosition(2, 50, 'USD', {'USD/CHF': {rate: 0.88}}),"
+            "calculateImportedPosition(2, 50, 'EUR')"
+            "]));"
+        )
+        positions = self.run_node(expression)
+        self.assertAlmostEqual(positions[0]["valueChf"], 88)
+        self.assertIsNone(positions[1]["valueChf"])
+
     def test_saxo_parser_rejects_non_saxo_text(self) -> None:
         expression = (
             f"import {{parseSaxoPages}} from '{IMPORTER_MODULE}'; "

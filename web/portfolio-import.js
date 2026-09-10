@@ -29,11 +29,18 @@ export function parseGermanNumber(value) {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-export function calculateImportedPosition(shares, price, currency) {
+function getFxRate(currency, fxRates) {
+  if (currency === 'CHF') return 1;
+  const rate = fxRates?.[`${currency}/CHF`]?.rate;
+  return Number.isFinite(Number(rate)) && Number(rate) > 0 ? Number(rate) : null;
+}
+
+export function calculateImportedPosition(shares, price, currency, fxRates = {}) {
   const value = shares * price;
+  const rate = getFxRate(currency, fxRates);
   return {
     value,
-    valueChf: currency === 'CHF' ? value : null,
+    valueChf: rate === null ? null : value * rate,
   };
 }
 
@@ -89,7 +96,7 @@ function parseSaxoNumericColumns(text) {
   };
 }
 
-function extractHoldingRows(text, pageNumber) {
+function extractHoldingRows(text, pageNumber, fxRates = {}) {
   const sectionStart = text.search(/Börsengehandelte Produkte\s*\(ETF,\s*ETC,\s*ETN\)/i);
   const sectionText = sectionStart >= 0 ? text.slice(sectionStart) : text;
   const sectionEnd = sectionText.search(/\nGesamt\b/i);
@@ -117,8 +124,8 @@ function extractHoldingRows(text, pageNumber) {
     const price = parsedColumns?.price ?? (rowMatch ? parseGermanNumber(rowMatch[4]) : null);
     const marketValue = parsedColumns?.marketValue ?? (rowMatch ? parseGermanNumber(rowMatch[6]) : null);
     const derived = shares !== null && price !== null && currency
-      ? calculateImportedPosition(shares, price, currency)
-      : { value: marketValue, valueChf: currency === 'EUR' && marketValue !== null ? marketValue * EUR_TO_CHF_RATE : marketValue };
+      ? calculateImportedPosition(shares, price, currency, fxRates)
+      : { value: marketValue, valueChf: marketValue === null ? null : calculateImportedPosition(1, marketValue, currency, fxRates).valueChf };
     rows.push({
       isin,
       shares,
@@ -143,7 +150,7 @@ export function validateImportedRow(row) {
   return { ...row, warnings };
 }
 
-export function parseSaxoPages(pages) {
+export function parseSaxoPages(pages, fxRates = {}) {
   const fullText = pages.map((page) => page.text).join(' ');
   const normalizedFullText = normalizeSearchText(fullText);
   if (!SAXO_MARKERS.every((marker) => normalizedFullText.includes(marker))) {
@@ -153,7 +160,7 @@ export function parseSaxoPages(pages) {
   if (!holdingsPages.length) {
     throw new Error('No Saxo holdings pages were found in this PDF.');
   }
-  const rows = holdingsPages.flatMap((page) => extractHoldingRows(page.text, page.pageNumber));
+  const rows = holdingsPages.flatMap((page) => extractHoldingRows(page.text, page.pageNumber, fxRates));
   const seen = new Set();
   return rows.map((row) => {
     const validated = validateImportedRow(row);

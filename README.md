@@ -15,7 +15,19 @@ The refresh workflow is manually dispatchable and runs at 21:00 UTC, representin
 }
 ```
 
-Use a different secret name and adapter ID for an ETF from another provider, then add an explicit matching secret mapping to `.github/workflows/live-market-data.yml`. This allows different providers and parsers to coexist. The runner uses secrets only during the fetch and publishes an all-or-nothing artifact.
+Use a different secret name and adapter ID for an ETF from another provider, then add an explicit matching secret mapping to `.github/workflows/live-market-data.yml`. Ticker-based adapters add a provider lookup ticker and use `{ticker}` in their private template, for example:
+
+```json
+{
+    "isin": "IE00BF20LF40",
+    "ticker": "EUMD.L",
+    "adapter_id": "yahoo_chart_v1",
+    "currency": "EUR",
+    "quote_url_template_secret": "YAHOO_QUOTE_URL_TEMPLATE"
+}
+```
+
+Set the private ticker template locally as `$env:YAHOO_QUOTE_URL_TEMPLATE = "https://<private-provider-endpoint>/{ticker}"`, or provision the same name as a GitHub repository secret. Do not commit the value or print it in logs. Relevant source and configuration pushes to `main` refresh the data automatically; generated `data/live_prices.json` commits do not retrigger the workflow. The runner uses secrets only during the fetch and publishes an all-or-nothing artifact.
 
 ### Manually generate live data
 

@@ -48,6 +48,27 @@
       "adapter_id": "swiss_csv_v1",
       "currency": "CHF",
       "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "IE00BF20LF40",
+      "ticker": "EUMD.L",
+      "adapter_id": "yahoo_chart_v1",
+      "currency": "EUR",
+      "quote_url_template_secret": "YAHOO_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "LU0908500753",
+      "ticker": "LYP6.DE",
+      "adapter_id": "yahoo_chart_v1",
+      "currency": "EUR",
+      "quote_url_template_secret": "YAHOO_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "IE00BCLWRD08",
+      "ticker": "IS3H.DE",
+      "adapter_id": "yahoo_chart_v1",
+      "currency": "EUR",
+      "quote_url_template_secret": "YAHOO_QUOTE_URL_TEMPLATE"
     }
   ]
 }
