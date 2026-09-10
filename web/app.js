@@ -607,13 +607,16 @@ function getPositionValuation(position) {
 }
 
 function renderValuationModeControl() {
-  if (!elements.portfolioValuationControl || !elements.portfolioValuation) {
+  if (!elements.portfolioValuationControl || !elements.portfolioValuation || !elements.portfolioValuationStatus) {
     return;
   }
   const isPercentagePortfolio = state.portfolioMode === 'percentage';
   elements.portfolioValuationControl.hidden = isPercentagePortfolio;
   elements.portfolioValuation.disabled = isPercentagePortfolio;
   elements.portfolioValuation.value = state.valuationMode;
+  elements.portfolioValuationStatus.hidden = isPercentagePortfolio;
+  elements.portfolioValuationStatus.querySelector('[data-valuation-status-label]').textContent = state.valuationMode === 'imported' ? 'Imported' : 'Live';
+  elements.portfolioValuationStatus.querySelector('.dot').hidden = state.valuationMode !== 'latest';
 }
 
 function getTotalShareUnits(positions) {
@@ -1158,14 +1161,18 @@ function renderCatalog() {
 
 function renderPositions() {
   const positions = getSelectedPositions();
+  const isPercentagePortfolio = state.portfolioMode === 'percentage';
+  document.querySelectorAll('.positions-table thead [data-private-hidden]').forEach((header) => {
+    header.hidden = isPercentagePortfolio;
+  });
   if (!positions.length) {
-      elements.positionsBody.innerHTML = '<tr><td colspan="6"><div class="empty-state">No positions yet. Search the catalog and add an ETF.</div></td></tr>';
+    elements.positionsBody.innerHTML = `<tr><td colspan="${isPercentagePortfolio ? 3 : 6}"><div class="empty-state">No positions yet. Search the catalog and add an ETF.</div></td></tr>`;
     elements.portfolioHint.textContent = 'The portfolio is empty.';
     return;
   }
 
   const totalShareUnits = getTotalShareUnits(positions);
-  elements.portfolioHint.textContent = state.portfolioMode === 'percentage'
+  elements.portfolioHint.textContent = isPercentagePortfolio
     ? 'Shares represent relative allocation units in this private portfolio; weights are normalized for analysis.'
     : positions.some((position) => Number.isFinite(getPositionValuation(position).valueChf))
     ? state.valuationMode === 'imported'
@@ -1175,10 +1182,20 @@ function renderPositions() {
 
   elements.positionsBody.innerHTML = positions
     .map((position) => {
-      const valuation = getPositionValuation(position);
       const weight = getPositionWeight(position, totalShareUnits);
-      const shareInputStep = state.portfolioMode === 'percentage' ? '0.1' : '1';
-      const shareInputValue = state.portfolioMode === 'percentage' ? Number(position.shares).toFixed(1) : position.shares;
+      const valuation = isPercentagePortfolio ? null : getPositionValuation(position);
+      const shareInputStep = isPercentagePortfolio ? '0.1' : '1';
+      const shareInputValue = isPercentagePortfolio ? Number(position.shares).toFixed(1) : position.shares;
+      const valuationCells = isPercentagePortfolio
+        ? ''
+        : `
+          <td class="position-price" data-label="Price">${valuation.price !== null ? formatCurrencyValue(valuation.price, valuation.currency) : 'Unavailable'}</td>
+          <td class="position-value" data-label="Value CHF">${valuation.valueChf !== null ? formatCurrencyValue(valuation.valueChf) : 'Unavailable'}</td>`;
+      const allocationCells = isPercentagePortfolio
+        ? `<td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>`
+        : `
+          <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
+          <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>`;
       return `
         <tr class="position-row">
           <td class="position-identity" data-label="ETF">
@@ -1190,10 +1207,8 @@ function renderPositions() {
           <td class="position-shares" data-label="Shares">
             <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
           </td>
-          <td class="position-price" data-label="Price">${valuation.price !== null ? formatCurrencyValue(valuation.price, valuation.currency) : 'Unavailable'}</td>
-          <td class="position-value" data-label="Value CHF">${valuation.valueChf !== null ? `${formatCurrencyValue(valuation.valueChf)} (${valuation.status})` : 'Unavailable'}</td>
-          <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
-          <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>
+          ${valuationCells}
+          ${allocationCells}
         </tr>
       `;
     })
@@ -1634,6 +1649,7 @@ async function bootstrap() {
   elements.positionsBody = document.getElementById('positions-tbody');
   elements.portfolioValuationControl = document.getElementById('portfolio-valuation-control');
   elements.portfolioValuation = document.getElementById('portfolio-valuation');
+  elements.portfolioValuationStatus = document.getElementById('portfolio-valuation-status');
   elements.portfolioHint = document.getElementById('portfolio-hint');
   elements.shareButton = document.getElementById('share-portfolio-button');
   elements.shareStatus = document.getElementById('share-portfolio-status');

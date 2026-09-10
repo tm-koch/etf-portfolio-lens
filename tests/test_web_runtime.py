@@ -7,6 +7,36 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
+    def test_percentage_position_rendering_skips_valuation_resolution(self) -> None:
+        app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+
+        render_start = app.index("function renderPositions()")
+        render_end = app.index("function renderComparisonToolbar", render_start)
+        render_positions = app[render_start:render_end]
+
+        self.assertIn(
+            "const valuation = isPercentagePortfolio ? null : getPositionValuation(position);",
+            render_positions,
+        )
+        self.assertIn(
+            "const valuationCells = isPercentagePortfolio\n        ? ''",
+            render_positions,
+        )
+        self.assertIn(
+            "const weight = getPositionWeight(position, totalShareUnits);",
+            render_positions,
+        )
+        self.assertIn(
+            "const totalShareUnits = getTotalShareUnits(positions);", render_positions
+        )
+        self.assertIn(
+            "const valueChf = Number(getPositionValuation(position).valueChf);", app
+        )
+        self.assertIn(
+            "if (state.portfolioMode === 'percentage') {\n    return Math.max(Number(position.shares) || 0, 0);",
+            app,
+        )
+
     def test_share_links_preserve_compatibility_and_private_payload_boundaries(
         self,
     ) -> None:

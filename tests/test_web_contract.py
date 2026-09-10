@@ -148,7 +148,7 @@ class WebContractTests(unittest.TestCase):
         self.assertIn(": formatChfValue(0);", app)
         self.assertIn("cards[1].value = 'Not available';", app)
         self.assertIn(
-            "const shareInputStep = state.portfolioMode === 'percentage' ? '0.1' : '1';",
+            "const shareInputStep = isPercentagePortfolio ? '0.1' : '1';",
             app,
         )
         self.assertIn("Number(position.shares).toFixed(1)", app)
@@ -166,7 +166,10 @@ class WebContractTests(unittest.TestCase):
             "getEffectiveValuation(position, state.livePrices, state.valuationMode)",
             app,
         )
-        self.assertIn("const valuation = getPositionValuation(position);", app)
+        self.assertIn(
+            "const valuation = isPercentagePortfolio ? null : getPositionValuation(position);",
+            app,
+        )
         self.assertIn(
             'id="portfolio-valuation-control"',
             (WEB_ROOT / "index.html").read_text(encoding="utf-8"),
@@ -175,11 +178,64 @@ class WebContractTests(unittest.TestCase):
             'id="portfolio-valuation"',
             (WEB_ROOT / "index.html").read_text(encoding="utf-8"),
         )
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        self.assertIn('id="portfolio-valuation-status"', index)
+        self.assertIn('class="portfolio-valuation-row"', index)
+        self.assertIn("data-valuation-status-label", index)
+        self.assertIn("state.valuationMode === 'imported' ? 'Imported' : 'Live'", app)
+        self.assertIn("state.valuationMode !== 'latest'", app)
+        self.assertIn("formatCurrencyValue(valuation.valueChf) : 'Unavailable'", app)
+        self.assertNotIn(
+            "formatCurrencyValue(valuation.valueChf)} (${valuation.status})", app
+        )
+        self.assertIn("@keyframes live-status-pulse", styles)
+        self.assertIn("animation: live-status-pulse 2.8s ease-in-out infinite;", styles)
+        self.assertIn(".portfolio-valuation-row {", styles)
+        self.assertIn("align-items: flex-start;", styles)
+        self.assertIn("width: 100%;", styles)
+        self.assertIn("margin: 34px 0 0 auto;", styles)
+        self.assertIn("align-self: flex-start;", styles)
+        self.assertIn("align-self: start;", styles)
+        self.assertIn("flex-direction: column;", styles)
         self.assertIn("return formatCurrencyValue(value, currency);", app)
         self.assertIn("formatImportedMoney(row.value, row.currency)", app)
         self.assertIn("formatImportedMoney(row.valueChf)", app)
         self.assertIn("function getImportReviewPrice(row)", app)
         self.assertIn("price.readOnly = !reviewPrice.editable;", app)
+
+    def test_percentage_portfolio_omits_valuation_columns(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn('id="portfolio-valuation-control"', index)
+        self.assertIn(
+            'id="portfolio-valuation-control" for="portfolio-valuation" hidden', index
+        )
+        self.assertIn('class="position-weight" data-private-hidden', index)
+        self.assertIn('class="position-remove">Remove</th>', index)
+        self.assertIn(
+            "const isPercentagePortfolio = state.portfolioMode === 'percentage';",
+            app,
+        )
+        self.assertIn('colspan="${isPercentagePortfolio ? 3 : 6}"', app)
+        self.assertIn("const valuationCells = isPercentagePortfolio\n        ? ''", app)
+        self.assertIn(
+            'const allocationCells = isPercentagePortfolio\n        ? `<td class="position-remove"',
+            app,
+        )
+        self.assertIn("header.hidden = isPercentagePortfolio;", app)
+        self.assertIn(
+            "const valuation = isPercentagePortfolio ? null : getPositionValuation(position);",
+            app,
+        )
+        self.assertIn("grid-template-areas:", styles)
+        self.assertIn('"shares weight remove";', styles)
+        self.assertIn(
+            ".positions-table-wrap {\n    overflow-x: visible;\n    margin-top: 16px;",
+            styles,
+        )
 
     def test_portfolio_sharing_contract_covers_encoding_loading_and_feedback(
         self,

@@ -816,6 +816,18 @@ body {
   font-size: 0.84rem;
 }
 
+.portfolio-valuation-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.portfolio-valuation-row .portfolio-valuation-control {
+  margin-top: 12px;
+}
+
 .import-dialog .portfolio-valuation-control {
   margin-top: 0;
 }
@@ -1511,6 +1523,48 @@ body {
   color: var(--muted);
 }
 
+.portfolio-valuation-status {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 8px;
+  margin: 34px 0 0 auto;
+}
+
+.portfolio-valuation-status .dot {
+  animation: live-status-pulse 2.8s ease-in-out infinite;
+}
+
+.portfolio-valuation-status .dot[hidden] {
+  display: none;
+}
+
+@keyframes live-status-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.92);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-valuation-row {
+    align-items: start;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .portfolio-valuation-status {
+    align-self: start;
+    margin: 12px 0 0;
+  }
+}
+
 .empty-state {
   padding: 18px;
   color: var(--muted);
@@ -1746,6 +1800,7 @@ body {
 
   .positions-table-wrap {
     overflow-x: visible;
+    margin-top: 16px;
   }
 
   .positions-table,
