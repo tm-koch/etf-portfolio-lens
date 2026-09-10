@@ -14,14 +14,23 @@ function getConversion(artifact, currency) {
   return { rate: Number(rate.rate), quotedAt: rate.quoted_at || null };
 }
 
-export function getEffectiveValuation(position, livePrices) {
+export function getEffectiveValuation(position, livePrices, valuationMode = position?.valuationMode) {
+  const hasExplicitMode = arguments.length >= 3;
   const importedValueChf = Number(position?.valueChf);
   const quote = livePrices?.quotes?.[position?.isin];
   const currency = String(quote?.currency || position?.currency || 'CHF').toUpperCase();
+  const importedValue = Number(position?.value);
+  const importedConversion = getConversion(livePrices, String(position?.currency || 'CHF').toUpperCase());
+  const derivedImportedValueChf = Number.isFinite(importedValue) && importedValue >= 0 && importedConversion
+    ? importedValue * importedConversion.rate
+    : null;
+  const resolvedImportedValueChf = Number.isFinite(importedValueChf) && importedValueChf >= 0
+    ? importedValueChf
+    : derivedImportedValueChf;
   const shares = Number(position?.shares);
   const price = Number(quote?.price);
   const conversion = getConversion(livePrices, currency);
-  if (position?.valuationMode !== 'imported' && quote?.status === 'available' && Number.isFinite(price) && price >= 0 && Number.isFinite(shares) && shares >= 0 && conversion) {
+  if (valuationMode !== 'imported' && quote?.status === 'available' && Number.isFinite(price) && price >= 0 && Number.isFinite(shares) && shares >= 0 && conversion) {
     return {
       status: 'live',
       price,
@@ -31,12 +40,12 @@ export function getEffectiveValuation(position, livePrices) {
       fxAt: conversion.quotedAt,
     };
   }
-  if (Number.isFinite(importedValueChf) && importedValueChf >= 0) {
+  if (Number.isFinite(resolvedImportedValueChf) && resolvedImportedValueChf >= 0) {
     return {
-      status: 'fallback',
+      status: hasExplicitMode && valuationMode === 'imported' ? 'imported' : 'fallback',
       price: Number.isFinite(Number(position?.price)) ? Number(position.price) : null,
       currency: String(position?.currency || 'CHF').toUpperCase(),
-      valueChf: importedValueChf,
+      valueChf: resolvedImportedValueChf,
       quoteAt: null,
       fxAt: null,
     };

@@ -807,6 +807,29 @@ body {
   padding: 24px;
 }
 
+.portfolio-valuation-control {
+  display: grid;
+  gap: 6px;
+  width: min(100%, 320px);
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.import-dialog .portfolio-valuation-control {
+  margin-top: 0;
+}
+
+.portfolio-valuation-control select {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  background: var(--card-strong);
+  font: inherit;
+}
+
 .import-dialog-heading,
 .import-dialog-actions {
   display: flex;

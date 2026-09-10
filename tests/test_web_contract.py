@@ -162,18 +162,24 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("toLocaleString('en-US'", app)
         self.assertIn('replace(/,/g, "\'")', app)
         self.assertIn("return formatCurrencyValue(value, 'CHF');", app)
-        self.assertIn("getEffectiveValuation(position, state.livePrices)", app)
         self.assertIn(
-            "formatCurrencyValue(getEffectiveValuation(position, state.livePrices).price",
+            "getEffectiveValuation(position, state.livePrices, state.valuationMode)",
             app,
         )
+        self.assertIn("const valuation = getPositionValuation(position);", app)
         self.assertIn(
-            "formatCurrencyValue(getEffectiveValuation(position, state.livePrices).valueChf)",
-            app,
+            'id="portfolio-valuation-control"',
+            (WEB_ROOT / "index.html").read_text(encoding="utf-8"),
+        )
+        self.assertIn(
+            'id="portfolio-valuation"',
+            (WEB_ROOT / "index.html").read_text(encoding="utf-8"),
         )
         self.assertIn("return formatCurrencyValue(value, currency);", app)
         self.assertIn("formatImportedMoney(row.value, row.currency)", app)
         self.assertIn("formatImportedMoney(row.valueChf)", app)
+        self.assertIn("function getImportReviewPrice(row)", app)
+        self.assertIn("price.readOnly = !reviewPrice.editable;", app)
 
     def test_portfolio_sharing_contract_covers_encoding_loading_and_feedback(
         self,
@@ -186,7 +192,10 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("const SHARE_FRAGMENT_KEY = 'portfolio';", app)
         self.assertIn("const LEGACY_SHARE_PAYLOAD_VERSION = 1;", share)
         self.assertIn("const SHARE_PAYLOAD_VERSION = 2;", share)
-        self.assertIn("export function encodePortfolioShare(portfolio)", share)
+        self.assertIn(
+            "export function encodePortfolioShare(portfolio, valuationMode = 'latest')",
+            share,
+        )
         self.assertIn("export function decodePortfolioShare(value)", share)
         self.assertIn("Number.isFinite(position.shares)", share)
         self.assertIn("seenIsins.has(isin)", share)

@@ -85,13 +85,14 @@ function normalizePrivatePortfolio(portfolio) {
   return normalized.some((position) => position.shares > 0) ? normalized : null;
 }
 
-export function encodePortfolioShare(portfolio) {
+export function encodePortfolioShare(portfolio, valuationMode = 'latest') {
   const normalizedPortfolio = normalizeSharedPortfolio(portfolio);
   if (!normalizedPortfolio?.length) {
     return null;
   }
+  const normalizedMode = valuationMode === 'imported' ? 'imported' : 'latest';
   return encodeBase64Url(
-    JSON.stringify({ version: SHARE_PAYLOAD_VERSION, portfolio: normalizedPortfolio })
+    JSON.stringify({ version: SHARE_PAYLOAD_VERSION, valuationMode: normalizedMode, portfolio: normalizedPortfolio })
   );
 }
 
@@ -130,9 +131,13 @@ export function decodePortfolioShare(value) {
       return { status: 'invalid', mode: 'full', portfolio: null };
     }
     const portfolio = normalizeSharedPortfolio(parsed.portfolio);
-    return portfolio
-      ? { status: 'valid', mode: 'full', portfolio }
-      : { status: 'invalid', mode: 'full', portfolio: null };
+    if (!portfolio) {
+      return { status: 'invalid', mode: 'full', portfolio: null };
+    }
+    if (parsed.version === SHARE_PAYLOAD_VERSION) {
+      return { status: 'valid', mode: 'full', valuationMode: parsed.valuationMode === 'imported' ? 'imported' : 'latest', portfolio };
+    }
+    return { status: 'valid', mode: 'full', portfolio };
   } catch {
     return { status: 'invalid', mode: 'full', portfolio: null };
   }

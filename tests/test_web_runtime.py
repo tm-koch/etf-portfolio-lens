@@ -86,6 +86,8 @@ const cases = [
   getEffectiveValuation({ isin: 'CHF_ETF', shares: 2 }, livePrices),
   getEffectiveValuation({ isin: 'EUR_ETF', shares: 3 }, livePrices),
   getEffectiveValuation({ isin: 'CHF_ETF', shares: 2, price: 90, valueChf: 180, valuationMode: 'imported' }, livePrices),
+  getEffectiveValuation({ isin: 'CHF_ETF', shares: 2, price: 90, valueChf: 180 }, livePrices, 'imported'),
+  getEffectiveValuation({ isin: 'EUR_ETF', shares: 3, price: 50, currency: 'EUR', value: 150 }, livePrices, 'imported'),
   getEffectiveValuation({ isin: 'EUR_ETF', shares: 3, valueChf: 140 }, { ...livePrices, fx: {} }),
   getEffectiveValuation({ isin: 'MISSING', shares: 1 }, livePrices),
 ];
@@ -101,12 +103,23 @@ console.log(JSON.stringify(cases));
         values = json.loads(result.stdout)
         self.assertEqual(
             [value["status"] for value in values],
-            ["live", "live", "fallback", "fallback", "unavailable"],
+            [
+                "live",
+                "live",
+                "fallback",
+                "imported",
+                "imported",
+                "fallback",
+                "unavailable",
+            ],
         )
         self.assertAlmostEqual(values[0]["valueChf"], 202.5)
         self.assertAlmostEqual(values[1]["valueChf"], 144)
         self.assertEqual(values[2]["valueChf"], 180)
-        self.assertEqual(values[3]["valueChf"], 140)
+        self.assertEqual(values[3]["valueChf"], 180)
+        self.assertEqual(values[4]["valueChf"], 144)
+        self.assertEqual(values[5]["valueChf"], 140)
+        self.assertIsNone(values[6]["valueChf"])
 
 
 if __name__ == "__main__":

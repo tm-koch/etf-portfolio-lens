@@ -32,7 +32,7 @@
     <script src="./vendor/chart.umd.min.js" defer></script>
     <script src="./vendor/pdf.min.js" defer></script>
     <script src="./vendor/lucide.js" defer></script>
-    <script type="module" src="./app.js?v=20260910-1" defer></script>
+    <script type="module" src="./app.js?v=20260911-3" defer></script>
   </head>
   <body>
     <header class="app-utility-bar" aria-label="Application utilities">
@@ -165,7 +165,7 @@
                 </button>
               </div>
               <p id="portfolio-import-summary">Check the proposed values before replacing your portfolio.</p>
-              <label class="import-valuation-control" for="portfolio-import-valuation">
+              <label class="import-valuation-control portfolio-valuation-control" for="portfolio-import-valuation">
                 <span>Valuation after import</span>
                 <select id="portfolio-import-valuation">
                   <option value="latest">Use latest published valuation</option>
@@ -214,6 +214,13 @@
                 <div class="subcard-heading">
                   <h3>Selected positions</h3>
                   <p id="portfolio-hint">Add an ETF to start building the portfolio.</p>
+                  <label class="import-valuation-control portfolio-valuation-control" id="portfolio-valuation-control" for="portfolio-valuation">
+                    <span>Valuation basis</span>
+                    <select id="portfolio-valuation">
+                      <option value="latest">Latest published valuation</option>
+                      <option value="imported">Imported broker valuation</option>
+                    </select>
+                  </label>
                 </div>
                 <div class="positions-table-wrap">
                   <table class="positions-table">
