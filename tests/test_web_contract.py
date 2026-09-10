@@ -99,6 +99,15 @@ class WebContractTests(unittest.TestCase):
         self.assertNotIn("git push", workflow)
         self.assertIn("HEAD:$Branch", publish_script)
         self.assertIn("--force-with-lease", publish_script)
+        identity_name = 'git config user.name "github-actions[bot]"'
+        identity_email = 'git config user.email "41898282+github-actions[bot]@users.noreply.github.com"'
+        publish_step = workflow.index("- name: Publish GitHub Pages")
+        self.assertIn(identity_name, workflow)
+        self.assertIn(identity_email, workflow)
+        self.assertNotIn("config', 'user.name'", publish_script)
+        self.assertNotIn("config', 'user.email'", publish_script)
+        self.assertLess(workflow.index(identity_name), publish_step)
+        self.assertLess(workflow.index(identity_email), publish_step)
 
     def test_publish_script_includes_app_local_javascript_modules(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
