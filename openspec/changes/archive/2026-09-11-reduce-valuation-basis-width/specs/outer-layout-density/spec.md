@@ -1,8 +1,5 @@
-# outer-layout-density Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change reduce-outer-layout-spacing. Update Purpose after archive.
-## Requirements
 ### Requirement: Reduced outer page spacing
 
 The web application SHALL use approximately one-third less spacing at the outer page shell on desktop and tablet-sized viewports, including the gap between top-level sections and the horizontal page gutter around constrained content. The application SHALL retain its centered maximum content width and SHALL NOT reduce internal component spacing as part of this capability.
@@ -54,4 +51,3 @@ The portfolio-level and import-dialog valuation basis controls SHALL use a maxim
 
 - **WHEN** the import review dialog renders its valuation control
 - **THEN** that control SHALL use the same maximum width of 224px without changing its labels, options, or behavior
-
