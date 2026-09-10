@@ -93,6 +93,12 @@ class WebContractTests(unittest.TestCase):
         self.assertNotIn("QUOTE_URL_CH0008899764", workflow)
         self.assertNotIn("https://", workflow)
         self.assertNotIn("-NoPush", workflow)
+        self.assertIn("run: ./scripts/publish-gh-pages.ps1", workflow)
+        self.assertNotIn("git add data/live_prices.json", workflow)
+        self.assertNotIn("git commit", workflow)
+        self.assertNotIn("git push", workflow)
+        self.assertIn("HEAD:$Branch", publish_script)
+        self.assertIn("--force-with-lease", publish_script)
 
     def test_publish_script_includes_app_local_javascript_modules(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

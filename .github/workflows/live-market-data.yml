@@ -45,19 +45,6 @@ jobs:
       - name: Validate staged artifact
         run: python -c "import json; from pathlib import Path; from etf_ingestion_backend.live_market_data import LivePricesArtifact; LivePricesArtifact.from_dict(json.loads(Path('data/live_prices.json').read_text(encoding='utf-8')))"
 
-      - name: Commit validated update
-        shell: bash
-        run: |
-          if git diff --quiet -- data/live_prices.json; then
-            echo "No live market data changes detected."
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add data/live_prices.json
-          git commit -m "Refresh live ETF market data $(date -u +%F)"
-          git push
-
       - name: Publish GitHub Pages
         if: success()
         shell: pwsh
