@@ -23,21 +23,17 @@ The web app SHALL provide a Home destination as the first item in the primary na
 - **THEN** the Home panel becomes active and the Portfolio, Compare, and Explore panels become inactive
 
 ### Requirement: Home portfolio summary
-The Home destination SHALL display live summary boxes for Positions, Share units, Total value, Underlying holdings, and Shared companies using the current selected portfolio state. Total value SHALL use the existing CHF currency format with exactly two decimal places and apostrophe-separated thousands for finite non-negative imported valuation totals. When no portfolio positions are selected, or no finite non-negative imported valuation values are available, Total value SHALL display `CHF 0.00` rather than an unavailable-data label.
+The Home destination SHALL display live summary boxes for Positions, Share units, Total value, Underlying holdings, and Shared companies using the current selected portfolio state. Total value SHALL use the sum of finite non-negative effective CHF valuations from the hybrid valuation policy, including live values and explicitly marked imported fallbacks, with exactly two decimal places and apostrophe-separated thousands. When no portfolio positions are selected, or no finite effective CHF valuations are available, Total value SHALL display `CHF 0.00`.
 
 #### Scenario: Summary reflects selected positions
-- **WHEN** a user adds, removes, or changes shares for a portfolio position
-- **THEN** the five Home summary boxes update to reflect the current portfolio state
+- **WHEN** a user adds, removes, changes shares, or changes valuation mode for a portfolio position
+- **THEN** the five Home summary boxes update to reflect the current effective portfolio state
 
-#### Scenario: Empty portfolio summary
-- **WHEN** no portfolio positions are selected
-- **THEN** Home displays `0` for Positions, Share units, Underlying holdings, and Shared companies, displays `CHF 0.00` for Total value, and does not fail to render
+#### Scenario: Live and fallback values are combined
+- **WHEN** selected positions contain a mixture of live effective values and imported fallback values
+- **THEN** Total value displays the sum of both finite effective values and the interface exposes that fallback data is present
 
-#### Scenario: Portfolio has no imported valuation data
-- **WHEN** selected positions exist but none has a finite non-negative imported valuation value
-- **THEN** Home displays `CHF 0.00` for Total value without changing the other summary values
-
-#### Scenario: Portfolio has imported valuation data
-- **WHEN** selected positions include finite non-negative imported valuation values
-- **THEN** Total value displays their sum with exactly two decimal places and apostrophe-separated thousands
+#### Scenario: No effective valuation is available
+- **WHEN** selected positions exist but none has a finite effective CHF valuation
+- **THEN** Home displays `CHF 0.00` for Total value without inventing a value
 

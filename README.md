@@ -1,5 +1,52 @@
 # ETF Portfolio Lens
 
+## Live market data
+
+The published PWA reads the same-origin `data/live_prices.json` artifact. It prefers a valid live ETF quote converted to CHF with Frankfurter's latest daily `EUR/CHF` or `USD/CHF` reference rate, falls back to the imported broker CHF value when necessary, and marks positions unavailable when neither value exists. Quote and FX timestamps remain visible in build details; provider identities, URLs, credentials, and raw responses are never published.
+
+The refresh workflow is manually dispatchable and runs at 21:00 UTC, representing fixed 22:00 CET (UTC+1) year-round. During Swiss CEST it therefore runs at 23:00 Europe/Zurich. Each quote entry names its own repository secret, such as `SWISS_QUOTE_URL_TEMPLATE`, containing a private provider URL template with `{isin}` as its substitution token:
+
+```json
+{
+    "isin": "CH0008899764",
+    "adapter_id": "swiss_csv_v1",
+    "currency": "CHF",
+    "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+}
+```
+
+Use a different secret name and adapter ID for an ETF from another provider, then add an explicit matching secret mapping to `.github/workflows/live-market-data.yml`. This allows different providers and parsers to coexist. The runner uses secrets only during the fetch and publishes an all-or-nothing artifact.
+
+### Manually generate live data
+
+From PowerShell at the repository root, activate the project virtual environment:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+Set the private URL-template secret for the current shell. The value must be an absolute HTTP(S) URL containing `{isin}`; do not commit it or print it in logs:
+
+```powershell
+$env:SWISS_QUOTE_URL_TEMPLATE = "https://<private-provider-endpoint>/{isin}"
+```
+
+Generate the artifact with the same command used by GitHub Actions:
+
+```powershell
+python -m etf_ingestion_backend.live_cli `
+    --config data/live_price_config.json `
+    --output data/live_prices.json
+```
+
+To generate quotes for a specific trading date, add `--trading-date YYYY-MM-DD`. The command fetches every configured ETF and both FX rates, and updates `data/live_prices.json` only after the complete result validates. You can verify the result with:
+
+```powershell
+python -c "import json; from pathlib import Path; data=json.loads(Path('data/live_prices.json').read_text(encoding='utf-8')); print(data['status'], len(data['quotes']), 'quotes,', len(data['fx']), 'FX rates')"
+```
+
+To avoid activating the environment, replace `python` in these commands with `.\.venv\Scripts\python.exe`. For entries using other providers, set each environment variable named by `quote_url_template_secret` before running the command.
+
 This repository now contains a Python backend for retrieving, normalizing, and storing ETF holdings snapshots for ETF Portfolio Lens.
 
 ## Ingestion

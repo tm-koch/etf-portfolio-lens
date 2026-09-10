@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "quotes": [
+    {
+      "isin": "CH0008899764",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "CH0019852802",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "CH0237935652",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "CH0130595124",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "CH1553162921",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "CH0111762537",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "CH1447931341",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "IE00B44Z5B48",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    }
+  ]
+}

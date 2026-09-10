@@ -41,10 +41,18 @@ function Test-PwaAsset {
 $index = Test-PwaAsset -Path '' -ExpectedContentType 'text/html'
 $manifestResponse = Test-PwaAsset -Path 'manifest.json' -ExpectedContentType 'application/json'
 $serviceWorkerResponse = Test-PwaAsset -Path 'sw.js' -ExpectedContentType 'application/javascript'
+ $livePricesResponse = Test-PwaAsset -Path 'data/live_prices.json' -ExpectedContentType 'application/json'
 Test-PwaAsset -Path 'icons/launchericon-192x192.png' -ExpectedContentType 'image/png' | Out-Null
 Test-PwaAsset -Path 'icons/launchericon-512x512.png' -ExpectedContentType 'image/png' | Out-Null
 
 $manifest = $manifestResponse.Content | ConvertFrom-Json
+$livePrices = $livePricesResponse.Content | ConvertFrom-Json
+if ($livePrices.schema_version -ne 1 -or -not $livePrices.generated_at -or -not $livePrices.status) {
+  throw 'Published live market data artifact is invalid.'
+}
+if ($livePrices.PSObject.Properties.Name -match 'source_url|resolved_url|provider|raw_response') {
+  throw 'Published live market data artifact contains prohibited source fields.'
+}
 $manifestUri = [Uri]::new([Uri]$normalizedBaseUrl, 'manifest.json')
 if (-not $manifest.id) {
   throw 'Published manifest does not define a stable id.'

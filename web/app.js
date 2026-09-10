@@ -1,6 +1,8 @@
-import { buildCatalogMaps, loadBuildInfo, loadPublishedCatalog, loadSnapshot } from './data.js?v=20260816-3';
+import { buildCatalogMaps, loadBuildInfo, loadLivePrices, loadPublishedCatalog, loadSnapshot } from './data.js?v=20260910-1';
 import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-3';
 import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js';
+import { getEffectiveValuation } from './valuation.js';
+import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
@@ -8,8 +10,6 @@ const COMPACT_EXPLORE_STORAGE_KEY = 'etf-lens.compact-explore-preview.v1';
 const PORTFOLIO_IMPORT_DEBUG_STORAGE_KEY = 'etf-lens.portfolio-import-debug.v1';
 const COLOR_MODE_STORAGE_KEY = 'etf-lens.color-mode.v1';
 const SHARE_FRAGMENT_KEY = 'portfolio';
-const SHARE_PAYLOAD_VERSION = 1;
-const PRIVATE_SHARE_PAYLOAD_VERSION = 2;
 const PORTFOLIO_MODES = ['full', 'percentage'];
 const COLOR_MODES = ['bright', 'automatic', 'dark'];
 const DARK_MODE_MEDIA_QUERY = '(prefers-color-scheme: dark)';
@@ -25,6 +25,7 @@ const defaultState = {
   effectiveColorMode: 'bright',
   shareFeedback: '',
   shareFallbackUrl: '',
+  importValuationMode: 'latest',
 };
 
 const chartRefs = {
@@ -56,6 +57,7 @@ const state = {
   catalogMaps: null,
   snapshots: new Map(),
   buildInfo: null,
+  livePrices: null,
   buildDialogReturnFocus: null,
   companyRanked: [],
   companyVisibleCount: 0,
@@ -330,147 +332,13 @@ function normalizePortfolioPositions(portfolio) {
     }
     seenIsins.add(isin);
     const normalized = { isin, shares };
+    if (position.valuationMode === 'imported' || position.valuationMode === 'latest') normalized.valuationMode = position.valuationMode;
     if (Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalized.price = Number(position.price);
-    if (typeof position.currency === 'string' && ['CHF', 'EUR'].includes(position.currency.toUpperCase())) normalized.currency = position.currency.toUpperCase();
+    if (typeof position.currency === 'string' && ['CHF', 'EUR', 'USD'].includes(position.currency.toUpperCase())) normalized.currency = position.currency.toUpperCase();
     if (Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalized.value = Number(position.value);
     if (Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalized.valueChf = Number(position.valueChf);
     return [normalized];
   });
-}
-
-function encodeBase64Url(value) {
-  const bytes = new TextEncoder().encode(value);
-  let binary = '';
-  for (const byte of bytes) {
-    binary += String.fromCharCode(byte);
-  }
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-}
-
-function decodeBase64Url(value) {
-  const normalized = value.replace(/-/g, '+').replace(/_/g, '/');
-  const padded = normalized.padEnd(normalized.length + ((4 - (normalized.length % 4)) % 4), '=');
-  const binary = atob(padded);
-  const bytes = Uint8Array.from(binary, (character) => character.charCodeAt(0));
-  return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
-}
-
-function normalizeSharedPortfolio(portfolio) {
-  if (!Array.isArray(portfolio)) {
-    return null;
-  }
-
-  const normalized = [];
-  const seenIsins = new Set();
-  for (const position of portfolio) {
-    if (
-      !position ||
-      typeof position.isin !== 'string' ||
-      !position.isin.trim() ||
-      typeof position.shares !== 'number' ||
-      !Number.isFinite(position.shares) ||
-      position.shares < 0
-    ) {
-      return null;
-    }
-    const isin = position.isin.trim().toUpperCase();
-    if (seenIsins.has(isin)) {
-      return null;
-    }
-    seenIsins.add(isin);
-    const normalizedPosition = { isin, shares: position.shares };
-    if (Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalizedPosition.price = Number(position.price);
-    if (typeof position.currency === 'string' && ['CHF', 'EUR'].includes(position.currency.toUpperCase())) normalizedPosition.currency = position.currency.toUpperCase();
-    if (Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalizedPosition.value = Number(position.value);
-    if (Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalizedPosition.valueChf = Number(position.valueChf);
-    normalized.push(normalizedPosition);
-  }
-  return normalized;
-}
-
-function normalizePrivatePortfolio(portfolio) {
-  if (!Array.isArray(portfolio)) {
-    return null;
-  }
-
-  const normalized = [];
-  const seenIsins = new Set();
-  for (const position of portfolio) {
-    if (
-      !position ||
-      typeof position.isin !== 'string' ||
-      !position.isin.trim() ||
-      typeof position.shares !== 'number' ||
-      !Number.isFinite(position.shares) ||
-      position.shares < 0 ||
-      position.price !== undefined ||
-      position.currency !== undefined ||
-      position.value !== undefined ||
-      position.valueChf !== undefined
-    ) {
-      return null;
-    }
-    const isin = position.isin.trim().toUpperCase();
-    if (seenIsins.has(isin)) {
-      return null;
-    }
-    seenIsins.add(isin);
-    normalized.push({ isin, shares: position.shares });
-  }
-  return normalized.some((position) => position.shares > 0) ? normalized : null;
-}
-
-function encodePortfolioShare(portfolio) {
-  const normalizedPortfolio = normalizeSharedPortfolio(portfolio);
-  if (!normalizedPortfolio?.length) {
-    return null;
-  }
-  return encodeBase64Url(
-    JSON.stringify({ version: SHARE_PAYLOAD_VERSION, portfolio: normalizedPortfolio })
-  );
-}
-
-function encodePrivatePortfolioShare(positions) {
-  const totalShareUnits = getTotalShareUnits(positions);
-  if (!totalShareUnits) {
-    return null;
-  }
-  const normalizedPortfolio = normalizePrivatePortfolio(
-    positions.map((position) => ({
-      isin: position.isin,
-      shares: getPositionWeight(position, totalShareUnits),
-    }))
-  );
-  if (!normalizedPortfolio) {
-    return null;
-  }
-  return encodeBase64Url(
-    JSON.stringify({ version: PRIVATE_SHARE_PAYLOAD_VERSION, mode: 'percentage', portfolio: normalizedPortfolio })
-  );
-}
-
-function decodePortfolioShare(value) {
-  if (!value) {
-    return { status: 'missing', mode: 'full', portfolio: null };
-  }
-  try {
-    const parsed = JSON.parse(decodeBase64Url(value));
-    if (parsed?.version === PRIVATE_SHARE_PAYLOAD_VERSION && parsed?.mode === 'percentage') {
-      const portfolio = normalizePrivatePortfolio(parsed.portfolio);
-      return portfolio
-        ? { status: 'valid', mode: 'percentage', portfolio }
-        : { status: 'invalid', mode: 'full', portfolio: null };
-    }
-    if (parsed?.version !== SHARE_PAYLOAD_VERSION) {
-      return { status: 'invalid', mode: 'full', portfolio: null };
-    }
-    const portfolio = normalizeSharedPortfolio(parsed.portfolio);
-    return portfolio
-      ? { status: 'valid', mode: 'full', portfolio }
-      : { status: 'invalid', mode: 'full', portfolio: null };
-  } catch {
-    return { status: 'invalid', mode: 'full', portfolio: null };
-  }
 }
 
 function readPortfolioShareFromUrl() {
@@ -480,7 +348,7 @@ function readPortfolioShareFromUrl() {
 
 function buildPortfolioShareUrl(portfolio, mode = 'full') {
   const encoded = mode === 'percentage'
-    ? encodePrivatePortfolioShare(portfolio)
+    ? encodePrivatePortfolioShare(portfolio, getTotalShareUnits, getPositionWeight)
     : encodePortfolioShare(portfolio);
   if (!encoded) {
     return null;
@@ -600,6 +468,11 @@ function renderBuildData() {
     elements.buildData,
     'ETF data timestamp',
     document.createTextNode(formatBuildTimestamp(state.buildInfo?.data?.timestamp))
+  );
+  appendBuildMetadataRow(
+    elements.buildData,
+    'Live data',
+    document.createTextNode(state.livePrices ? `${formatBuildTimestamp(state.livePrices.generated_at)} (${state.livePrices.status})` : 'Unavailable')
   );
   const positions = state.portfolio
     .map((position) => state.catalogMaps?.byIsin.get(position.isin))
@@ -735,7 +608,7 @@ function getPositionWeightBase(position) {
   if (state.portfolioMode === 'percentage') {
     return Math.max(Number(position.shares) || 0, 0);
   }
-  const valueChf = Number(position.valueChf);
+  const valueChf = Number(getEffectiveValuation(position, state.livePrices).valueChf);
   return Number.isFinite(valueChf) && valueChf > 0 ? valueChf : Math.max(Number(position.shares) || 0, 0);
 }
 
@@ -1203,13 +1076,13 @@ function applyChartFrameSizing() {
 function updateSummary() {
   const positions = getSelectedPositions();
   const shareCountTotal = positions.reduce((sum, position) => sum + Math.max(Number(position.shares) || 0, 0), 0);
-  const importedValues = positions
-    .map((position) => Number(position.valueChf))
+  const effectiveValues = positions
+    .map((position) => Number(getEffectiveValuation(position, state.livePrices).valueChf))
     .filter((value) => Number.isFinite(value) && value >= 0);
   const totalValueChf = state.portfolioMode === 'percentage'
     ? 'Not available'
-    : importedValues.length
-    ? formatChfValue(importedValues.reduce((sum, value) => sum + value, 0))
+    : effectiveValues.length
+    ? formatChfValue(effectiveValues.reduce((sum, value) => sum + value, 0))
     : formatChfValue(0);
   const uniqueEtfs = positions.length;
   const totalHoldings = positions.reduce((sum, position) => sum + (position.snapshot?.holdings?.length || 0), 0);
@@ -1278,8 +1151,8 @@ function renderPositions() {
   const totalShareUnits = getTotalShareUnits(positions);
   elements.portfolioHint.textContent = state.portfolioMode === 'percentage'
     ? 'Shares represent relative allocation units in this private portfolio; weights are normalized for analysis.'
-    : positions.some((position) => Number.isFinite(position.valueChf))
-    ? 'Weights use imported CHF values; positions without a value use their share count.'
+    : positions.some((position) => Number.isFinite(getEffectiveValuation(position, state.livePrices).valueChf))
+    ? 'Weights use live values where available and imported CHF values as fallback.'
     : 'Share counts act as the portfolio weighting proxy until ETF unit prices are imported.';
 
   elements.positionsBody.innerHTML = positions
@@ -1298,8 +1171,8 @@ function renderPositions() {
           <td class="position-shares" data-label="Shares">
             <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
           </td>
-          <td class="position-price" data-label="Price">${position.price !== undefined ? formatCurrencyValue(position.price, position.currency || 'CHF') : 'Not imported'}</td>
-          <td class="position-value" data-label="Value CHF">${position.valueChf !== undefined ? formatCurrencyValue(position.valueChf) : 'Not imported'}</td>
+          <td class="position-price" data-label="Price">${getEffectiveValuation(position, state.livePrices).price !== null ? formatCurrencyValue(getEffectiveValuation(position, state.livePrices).price, getEffectiveValuation(position, state.livePrices).currency) : 'Unavailable'}</td>
+          <td class="position-value" data-label="Value CHF">${getEffectiveValuation(position, state.livePrices).valueChf !== null ? `${formatCurrencyValue(getEffectiveValuation(position, state.livePrices).valueChf)} (${getEffectiveValuation(position, state.livePrices).status})` : 'Unavailable'}</td>
           <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
           <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>
         </tr>
@@ -1522,7 +1395,7 @@ function renderImportReview() {
           <td><strong>${label}</strong><span class="import-row-meta">${row.isin} · Page ${row.pageNumber}${warning ? ` · ${warning}` : ''}</span></td>
           <td><input class="import-input" type="number" min="0" step="1" value="${row.shares ?? ''}" data-import-shares="${index}" /></td>
           <td><input class="import-input" type="number" min="0" step="0.0001" value="${row.price ?? ''}" data-import-price="${index}" /></td>
-          <td><select class="import-currency" data-import-currency="${index}"><option value="CHF" ${row.currency === 'CHF' ? 'selected' : ''}>CHF</option><option value="EUR" ${row.currency === 'EUR' ? 'selected' : ''}>EUR</option></select></td>
+          <td><select class="import-currency" data-import-currency="${index}"><option value="CHF" ${row.currency === 'CHF' ? 'selected' : ''}>CHF</option><option value="EUR" ${row.currency === 'EUR' ? 'selected' : ''}>EUR</option><option value="USD" ${row.currency === 'USD' ? 'selected' : ''}>USD</option></select></td>
           <td data-import-value="${index}">${formatImportedMoney(row.value, row.currency)}</td>
           <td data-import-value-chf="${index}">${formatImportedMoney(row.valueChf)}</td>
         </tr>
@@ -1530,6 +1403,7 @@ function renderImportReview() {
     })
     .join('');
   elements.importConfirm.disabled = !validRows.length;
+  elements.importValuation.value = state.importValuationMode;
 }
 
 function updateImportRow(index, field, value) {
@@ -1615,6 +1489,7 @@ function confirmImport() {
       currency: row.currency,
       value: row.value,
       valueChf: row.valueChf,
+      valuationMode: state.importValuationMode,
     }));
   if (!positions.length) {
     elements.importStatus.textContent = 'No valid catalog positions are selected for import.';
@@ -1736,6 +1611,7 @@ async function bootstrap() {
   elements.importDialogClose = document.getElementById('portfolio-import-close');
   elements.importDialogCancel = document.getElementById('portfolio-import-cancel');
   elements.importConfirm = document.getElementById('portfolio-import-confirm');
+  elements.importValuation = document.getElementById('portfolio-import-valuation');
   elements.importTbody = document.getElementById('portfolio-import-tbody');
   elements.importSummary = document.getElementById('portfolio-import-summary');
   elements.importStatus = document.getElementById('portfolio-import-status');
@@ -1784,6 +1660,7 @@ async function bootstrap() {
 
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
+  state.livePrices = await loadLivePrices();
   renderBuildData();
   const sharedPortfolio = readPortfolioShareFromUrl();
   if (sharedPortfolio.status === 'valid') {
@@ -1886,6 +1763,9 @@ async function bootstrap() {
   elements.importDialogClose.addEventListener('click', closeImportDialog);
   elements.importDialogCancel.addEventListener('click', closeImportDialog);
   elements.importConfirm.addEventListener('click', confirmImport);
+  elements.importValuation.addEventListener('change', () => {
+    state.importValuationMode = elements.importValuation.value === 'imported' ? 'imported' : 'latest';
+  });
   elements.importDialog.addEventListener('cancel', (event) => {
     event.preventDefault();
     closeImportDialog();

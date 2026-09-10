@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-09-10T20:19:34Z",
+  "status": "complete",
+  "quotes": {
+    "CH0008899764": {
+      "price": 142.44,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:36:51Z",
+      "status": "available"
+    },
+    "CH0019852802": {
+      "price": 319.35,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:36:51Z",
+      "status": "available"
+    },
+    "CH0237935652": {
+      "price": 164.78,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:36:51Z",
+      "status": "available"
+    },
+    "CH0130595124": {
+      "price": 129.58,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:36:51Z",
+      "status": "available"
+    },
+    "CH1553162921": {
+      "price": 12.832,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:28:25.290000Z",
+      "status": "available"
+    },
+    "CH0111762537": {
+      "price": 307.9,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:36:51Z",
+      "status": "available"
+    },
+    "CH1447931341": {
+      "price": 3.924,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:36:51Z",
+      "status": "available"
+    },
+    "IE00B44Z5B48": {
+      "price": 265.35,
+      "currency": "CHF",
+      "quoted_at": "2026-09-10T17:36:51Z",
+      "status": "available"
+    }
+  },
+  "fx": {
+    "EUR/CHF": {
+      "rate": 0.9432,
+      "quoted_at": "2026-09-10T00:00:00Z",
+      "status": "available"
+    },
+    "USD/CHF": {
+      "rate": 0.81198,
+      "quoted_at": "2026-09-10T00:00:00Z",
+      "status": "available"
+    }
+  }
+}

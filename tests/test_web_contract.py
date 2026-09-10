@@ -73,6 +73,21 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("Get-PwaServiceWorkerGeneration", deployment_validator)
         self.assertIn("__PWA_CACHE_GENERATION__", service_worker)
         self.assertIn("Get-PwaCacheSensitivePaths", cache_generation_helper)
+        self.assertIn("live_prices.json", publish_script)
+        self.assertIn("live_prices.json", deployment_validator)
+        self.assertTrue((REPOSITORY_ROOT / "data" / "live_prices.json").is_file())
+        self.assertIn(
+            "LIVE_PRICES_URL", (WEB_ROOT / "data.js").read_text(encoding="utf-8")
+        )
+        workflow = (
+            REPOSITORY_ROOT / ".github" / "workflows" / "live-market-data.yml"
+        ).read_text(encoding="utf-8")
+        self.assertIn("cron: '0 21 * * *'", workflow)
+        self.assertIn("workflow_dispatch", workflow)
+        self.assertIn("SWISS_QUOTE_URL_TEMPLATE", workflow)
+        self.assertNotIn("QUOTE_URL_CH0008899764", workflow)
+        self.assertNotIn("https://", workflow)
+        self.assertNotIn("-NoPush", workflow)
 
     def test_publish_script_includes_app_local_javascript_modules(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
@@ -142,11 +157,15 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("toLocaleString('en-US'", app)
         self.assertIn('replace(/,/g, "\'")', app)
         self.assertIn("return formatCurrencyValue(value, 'CHF');", app)
+        self.assertIn("getEffectiveValuation(position, state.livePrices)", app)
         self.assertIn(
-            "formatCurrencyValue(position.price, position.currency || 'CHF')",
+            "formatCurrencyValue(getEffectiveValuation(position, state.livePrices).price",
             app,
         )
-        self.assertIn("formatCurrencyValue(position.valueChf)", app)
+        self.assertIn(
+            "formatCurrencyValue(getEffectiveValuation(position, state.livePrices).valueChf)",
+            app,
+        )
         self.assertIn("return formatCurrencyValue(value, currency);", app)
         self.assertIn("formatImportedMoney(row.value, row.currency)", app)
         self.assertIn("formatImportedMoney(row.valueChf)", app)
@@ -156,24 +175,30 @@ class WebContractTests(unittest.TestCase):
     ) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        share = (WEB_ROOT / "share.js").read_text(encoding="utf-8")
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
         self.assertIn("const SHARE_FRAGMENT_KEY = 'portfolio';", app)
-        self.assertIn("const SHARE_PAYLOAD_VERSION = 1;", app)
-        self.assertIn("function encodePortfolioShare(portfolio)", app)
-        self.assertIn("function decodePortfolioShare(value)", app)
-        self.assertIn("Number.isFinite(position.shares)", app)
-        self.assertIn("seenIsins.has(isin)", app)
+        self.assertIn("const LEGACY_SHARE_PAYLOAD_VERSION = 1;", share)
+        self.assertIn("const SHARE_PAYLOAD_VERSION = 2;", share)
+        self.assertIn("export function encodePortfolioShare(portfolio)", share)
+        self.assertIn("export function decodePortfolioShare(value)", share)
+        self.assertIn("Number.isFinite(position.shares)", share)
+        self.assertIn("seenIsins.has(isin)", share)
         self.assertIn("readPortfolioShareFromUrl()", app)
         self.assertIn("sharedPortfolio.status === 'valid'", app)
         self.assertIn("const savedPortfolio = loadPortfolioState();", app)
         self.assertIn("state.portfolioMode = savedPortfolio.mode;", app)
-        self.assertIn("const PRIVATE_SHARE_PAYLOAD_VERSION = 2;", app)
-        self.assertIn("function normalizePrivatePortfolio(portfolio)", app)
-        self.assertIn("function encodePrivatePortfolioShare(positions)", app)
-        self.assertIn("mode: 'percentage'", app)
-        self.assertIn("position.valueChf !== undefined", app)
+        self.assertIn("const PRIVATE_SHARE_PAYLOAD_VERSION = 2;", share)
+        self.assertIn("function normalizePrivatePortfolio(portfolio)", share)
+        self.assertIn("export function encodePrivatePortfolioShare(positions", share)
+        self.assertIn("mode: 'percentage'", share)
+        self.assertIn("position.valueChf !== undefined", share)
         self.assertIn("function confirmImport()", app)
+        self.assertIn('id="portfolio-import-valuation"', index)
+        self.assertIn("state.importValuationMode", app)
+        self.assertIn("valuationMode: state.importValuationMode", app)
+        self.assertIn("parsed?.version !== LEGACY_SHARE_PAYLOAD_VERSION", share)
         self.assertIn("state.portfolioMode = 'full';", app)
         self.assertNotIn(
             "elements.importControl.hidden = state.portfolioMode === 'percentage';", app
@@ -505,7 +530,8 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("function normalizePortfolioPositions", app)
         self.assertIn("function parseSaxoPages", importer)
         self.assertIn("bestande", importer)
-        self.assertIn("EUR_TO_CHF_RATE = 1", importer)
+        self.assertNotIn("EUR_TO_CHF_RATE = 1", importer)
+        self.assertIn("SUPPORTED_CURRENCIES = new Set(['CHF', 'EUR', 'USD'])", importer)
         self.assertIn("matchStatus: entry ? 'matched' : 'unmatched'", importer)
         self.assertIn(
             "new URL('./vendor/pdf.worker.min.js', import.meta.url).href", importer

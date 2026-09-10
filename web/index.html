@@ -32,7 +32,7 @@
     <script src="./vendor/chart.umd.min.js" defer></script>
     <script src="./vendor/pdf.min.js" defer></script>
     <script src="./vendor/lucide.js" defer></script>
-    <script type="module" src="./app.js?v=20260901-1" defer></script>
+    <script type="module" src="./app.js?v=20260910-1" defer></script>
   </head>
   <body>
     <header class="app-utility-bar" aria-label="Application utilities">
@@ -165,6 +165,13 @@
                 </button>
               </div>
               <p id="portfolio-import-summary">Check the proposed values before replacing your portfolio.</p>
+              <label class="import-valuation-control" for="portfolio-import-valuation">
+                <span>Valuation after import</span>
+                <select id="portfolio-import-valuation">
+                  <option value="latest">Use latest published valuation</option>
+                  <option value="imported">Use imported valuation</option>
+                </select>
+              </label>
               <div class="import-table-wrap">
                 <table class="import-table">
                   <thead>

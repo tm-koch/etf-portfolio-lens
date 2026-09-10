@@ -1,9 +1,11 @@
 const CATALOG_URL = './data/catalog.json';
 const BUILD_INFO_URL = './build-info.json';
+const LIVE_PRICES_URL = './data/live_prices.json';
 
 /** @typedef {{ isin: string, ticker: string, name: string, provider: string, snapshotPath: string }} CatalogEntry */
 /** @typedef {{ generatedAt: string, basis: string, etfs: CatalogEntry[] }} PublishedCatalog */
-/** @typedef {{ schemaVersion: number, repositoryUrl?: string, source?: { commit?: string, commitTimestamp?: string }, publishedAt?: string, data?: { timestamp?: string }, details?: Record<string, unknown> }} BuildInfo */
+/** @typedef {{ schemaVersion: number, repositoryUrl?: string, source?: { commit?: string, commitTimestamp?: string }, publishedAt?: string, data?: { timestamp?: string, live?: { generatedAt?: string, status?: string } }, details?: Record<string, unknown> }} BuildInfo */
+/** @typedef {{ schema_version: number, generated_at: string, status: string, quotes: Record<string, { price?: number, currency?: string, quoted_at?: string, status?: string }>, fx: Record<string, { rate?: number, quoted_at?: string, status?: string }> }} LivePrices */
 
 async function fetchJson(url) {
   const response = await fetch(url);
@@ -50,6 +52,25 @@ export async function loadBuildInfo() {
       return null;
     }
     return buildInfo;
+  } catch {
+    return null;
+  }
+}
+
+export async function loadLivePrices() {
+  try {
+    /** @type {LivePrices} */
+    const artifact = await fetchJsonWithFallbacks([
+      LIVE_PRICES_URL,
+      '../data/live_prices.json',
+    ]);
+    if (!artifact || artifact.schema_version !== 1 || typeof artifact.generated_at !== 'string') {
+      return null;
+    }
+    if (!artifact.quotes || typeof artifact.quotes !== 'object' || !artifact.fx || typeof artifact.fx !== 'object') {
+      return null;
+    }
+    return artifact;
   } catch {
     return null;
   }

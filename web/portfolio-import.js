@@ -1,8 +1,7 @@
 const SAXO_MARKERS = ['saxo bank', 'transaktions und saldenbericht'];
 const SAXO_HOLDINGS_MARKER = 'bestande';
 const ISIN_PATTERN = /\b[A-Z]{2}[A-Z0-9]{9}\d\b/g;
-const SUPPORTED_CURRENCIES = new Set(['CHF', 'EUR']);
-const EUR_TO_CHF_RATE = 1;
+const SUPPORTED_CURRENCIES = new Set(['CHF', 'EUR', 'USD']);
 
 export function normalizeIsin(value) {
   return String(value || '').replace(/\s+/g, '').toUpperCase();
@@ -34,7 +33,7 @@ export function calculateImportedPosition(shares, price, currency) {
   const value = shares * price;
   return {
     value,
-    valueChf: currency === 'EUR' ? value * EUR_TO_CHF_RATE : value,
+    valueChf: currency === 'CHF' ? value : null,
   };
 }
 
@@ -68,7 +67,7 @@ function normalizePageText(items) {
 }
 
 function findCurrency(text) {
-  const match = text.match(/\b(CHF|EUR)\b/);
+  const match = text.match(/\b(CHF|EUR|USD)\b/);
   return match?.[1] || null;
 }
 

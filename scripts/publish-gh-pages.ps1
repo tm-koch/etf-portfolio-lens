@@ -59,9 +59,11 @@ try {
     'index.html',
     'styles.css',
     'app.js',
+    'share.js',
     'portfolio-import.js',
     'charts.js',
     'data.js',
+    'valuation.js',
     'package.json',
     'manifest.json',
     'sw.js',
@@ -87,6 +89,18 @@ try {
   Copy-Item -Force (Join-Path $repoRoot 'README.md') (Join-Path $tempRoot 'README.md')
 
   Copy-Item -Force (Join-Path $repoRoot 'web\data\catalog.json') (Join-Path $tempRoot 'data\catalog.json')
+  $livePricesPath = Join-Path $repoRoot 'data\live_prices.json'
+  if (-not (Test-Path $livePricesPath -PathType Leaf)) {
+    throw "Required live market data artifact is missing: $livePricesPath"
+  }
+  $livePrices = Get-Content $livePricesPath -Raw | ConvertFrom-Json
+  if ($livePrices.schema_version -ne 1 -or -not $livePrices.generated_at -or -not $livePrices.status) {
+    throw 'Live market data artifact is invalid.'
+  }
+  if ($livePrices.PSObject.Properties.Name -match 'source_url|resolved_url|provider|raw_response') {
+    throw 'Live market data artifact contains prohibited source fields.'
+  }
+  Copy-Item -Force $livePricesPath (Join-Path $tempRoot 'data\live_prices.json')
   Copy-Item -Recurse -Force (Join-Path $repoRoot 'data\raw') (Join-Path $tempRoot 'data')
 
   $cacheGeneration = Get-PwaCacheGeneration -Root $tempRoot
@@ -108,6 +122,10 @@ try {
     publishedAt = (Get-Date).ToUniversalTime().ToString('o')
     data = [ordered]@{
       timestamp = $catalog.generatedAt
+      live = [ordered]@{
+        generatedAt = $livePrices.generated_at
+        status = $livePrices.status
+      }
     }
     details = [ordered]@{}
   }
