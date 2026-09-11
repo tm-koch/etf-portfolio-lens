@@ -1108,6 +1108,112 @@ body {
   overflow-x: auto;
 }
 
+@media (min-width: 761px) {
+  .positions-table-wrap {
+    margin-top: 10px;
+  }
+
+  .positions-table thead {
+    display: none;
+  }
+
+  .positions-table tbody {
+    display: grid;
+    gap: 10px;
+  }
+
+  .positions-table .position-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+    grid-template-areas:
+      "identity identity identity identity remove"
+      "shares price value weight remove";
+    gap: 8px 16px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .positions-table .position-row--percentage {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "identity identity remove"
+      "shares weight remove";
+  }
+
+  .positions-table .position-row td {
+    display: flex;
+    min-width: 0;
+    padding: 0;
+    border-bottom: 0;
+  }
+
+  .positions-table .position-row td::before {
+    color: var(--muted);
+    font-size: 0.76rem;
+    line-height: 1.1;
+  }
+
+  .positions-table .position-identity {
+    grid-area: identity;
+    align-items: center;
+  }
+
+  .positions-table .position-shares {
+    grid-area: shares;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .positions-table .position-shares .position-input {
+    box-sizing: border-box;
+    height: 32px;
+    padding: 4px 12px;
+    transform: translateY(-4px);
+  }
+
+  .positions-table .position-shares::before,
+  .positions-table .position-price::before,
+  .positions-table .position-value::before,
+  .positions-table .position-weight::before {
+    content: attr(data-label);
+  }
+
+  .positions-table .position-price,
+  .positions-table .position-value,
+  .positions-table .position-weight {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .positions-table .position-metric-value {
+    display: inline-block;
+    transform: translateY(2px);
+  }
+
+  .positions-table .position-price {
+    grid-area: price;
+  }
+
+  .positions-table .position-value {
+    grid-area: value;
+  }
+
+  .positions-table .position-weight {
+    grid-area: weight;
+  }
+
+  .positions-table .position-remove {
+    grid-area: remove;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: stretch;
+  }
+}
+
 .positions-table {
   width: 100%;
   border-collapse: collapse;

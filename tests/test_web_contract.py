@@ -394,7 +394,7 @@ class WebContractTests(unittest.TestCase):
         )
         self.assertIn('data-label="Remove"', app)
         self.assertIn(
-            'data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>',
+            'data-label="Weight" aria-label="Weight ${formatPercent(weight)}"><span class="position-metric-value">${formatPercent(weight)}</span></td>',
             app,
         )
         self.assertIn('aria-label="Remove ${position.entry.ticker}"', app)
@@ -413,6 +413,45 @@ class WebContractTests(unittest.TestCase):
         mobile_row_styles = mobile_styles[mobile_row_start:mobile_row_end]
         self.assertNotIn("border-bottom: 0;", mobile_row_styles)
         self.assertIn("border-bottom: 0;", mobile_styles[mobile_row_end:])
+
+    def test_selected_positions_have_wide_two_line_card_hooks(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "class=\"position-row${isPercentagePortfolio ? ' position-row--percentage' : ''}\"",
+            app,
+        )
+        self.assertIn(
+            "grid-template-areas:\n      \"identity identity identity identity remove\"\n      \"shares price value weight remove\";",
+            styles,
+        )
+        self.assertIn(
+            "grid-template-areas:\n      \"identity identity remove\"\n      \"shares weight remove\";",
+            styles,
+        )
+        self.assertIn("border-radius: 18px;", styles)
+        self.assertIn("content: attr(data-label);", styles)
+        self.assertIn("gap: 8px 16px;", styles)
+        self.assertIn("padding: 12px 14px;", styles)
+        self.assertIn('class="position-metric-value"', app)
+        self.assertIn(
+            ".positions-table .position-metric-value {\n    display: inline-block;\n    transform: translateY(2px);",
+            styles,
+        )
+        self.assertIn(
+            ".positions-table-wrap {\n    margin-top: 10px;\n  }",
+            styles,
+        )
+        self.assertIn("flex-direction: column;", styles)
+        self.assertIn(
+            ".positions-table .position-shares .position-input {\n    box-sizing: border-box;\n    height: 32px;\n    padding: 4px 12px;\n    transform: translateY(-4px);",
+            styles,
+        )
+        self.assertIn(
+            ".positions-table .position-remove {\n    grid-area: remove;\n    align-items: center;\n    justify-content: flex-end;",
+            styles,
+        )
 
     def test_build_dialog_retains_current_selection_warnings(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
