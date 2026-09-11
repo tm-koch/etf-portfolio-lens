@@ -816,6 +816,11 @@ body {
   font-size: 0.84rem;
 }
 
+.portfolio-valuation-control[hidden],
+.portfolio-valuation-status[hidden] {
+  display: none;
+}
+
 .portfolio-valuation-row {
   display: flex;
   align-items: flex-start;

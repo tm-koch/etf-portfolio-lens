@@ -251,6 +251,10 @@ class WebContractTests(unittest.TestCase):
             app,
         )
         self.assertIn(
+            ".portfolio-valuation-control[hidden],\n.portfolio-valuation-status[hidden] {\n  display: none;\n}",
+            styles,
+        )
+        self.assertIn(
             "const valuation = isPercentagePortfolio ? null : getPositionValuation(position);",
             app,
         )
