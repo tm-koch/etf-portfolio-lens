@@ -25,11 +25,16 @@ The application SHALL render each selected ETF position without requiring horizo
 
 ### Requirement: Mobile position controls remain usable
 
-The mobile position layout SHALL preserve editing of Shares, display of the existing Weight value without duplicated inline warning text, and removal of the selected ETF. The Weight value SHALL be vertically centered within the lower control row alongside the Shares input and Remove control. Each control SHALL retain an accessible name and SHALL remain usable by keyboard and pointer input.
+The mobile position layout SHALL preserve editing of Shares, display of the existing Weight value without duplicated inline warning text, and removal of the selected ETF. The Shares input SHALL retain the fixed wide-mode width of `84px`, while the surrounding mobile card SHALL remain responsive. The Weight value SHALL be vertically centered within the lower control row alongside the Shares input and Remove control. Each control SHALL retain an accessible name and SHALL remain usable by keyboard and pointer input.
 
 #### Scenario: Shares are edited on mobile
 - **WHEN** the user changes a Shares input in a mobile position entry
 - **THEN** the application SHALL preserve the existing position-editing behavior and update the displayed portfolio state
+
+#### Scenario: Mobile Shares input keeps the shared fixed width
+
+- **WHEN** a selected ETF position is displayed at a supported mobile viewport width
+- **THEN** its Shares input SHALL use the same fixed `84px` width as the wide selected-position layout instead of expanding to fill the mobile grid column
 
 #### Scenario: Position is removed on mobile
 - **WHEN** the user activates Remove in a mobile position entry
