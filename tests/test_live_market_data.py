@@ -12,6 +12,7 @@ from etf_ingestion_backend.live_market_data import (
     QuoteConfig,
     load_quote_config,
 )
+from etf_ingestion_backend.live_summary import render_live_market_data_summary
 
 
 class LiveMarketDataTests(unittest.TestCase):
@@ -66,6 +67,32 @@ class LiveMarketDataTests(unittest.TestCase):
         self.assertEqual(
             "unavailable", artifact.to_dict()["quotes"]["CH0008899764"]["status"]
         )
+
+    def test_summary_renders_sorted_quotes_fx_and_unavailable_values(self) -> None:
+        artifact = LivePricesArtifact(
+            generated_at=self.timestamp,
+            quotes={
+                "CH0008899764": Quote(
+                    "CH0008899764", 123.45, "CHF", self.timestamp, "available"
+                ),
+                "CH0019852802": Quote("CH0019852802", None, "EUR", None, "unavailable"),
+            },
+            fx={
+                "USD/CHF": FXRate("USD/CHF", None, None, "unavailable"),
+                "EUR/CHF": FXRate("EUR/CHF", 0.94, self.timestamp, "available"),
+            },
+        )
+
+        summary = render_live_market_data_summary(artifact)
+
+        self.assertLess(summary.index("CH0008899764"), summary.index("CH0019852802"))
+        self.assertLess(summary.index("EUR/CHF"), summary.index("USD/CHF"))
+        self.assertIn("| CH0008899764 | CHF 123.45 |", summary)
+        self.assertIn("| CH0019852802 | Unavailable |", summary)
+        self.assertIn("| EUR/CHF | 0.94 |", summary)
+        self.assertIn("| USD/CHF | Unavailable |", summary)
+        self.assertNotIn("source_url", summary)
+        self.assertNotIn("provider", summary)
 
     def test_public_quote_configuration_has_no_urls(self) -> None:
         root = Path(__file__).resolve().parents[1]

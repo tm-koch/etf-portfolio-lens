@@ -101,13 +101,26 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("--force-with-lease", publish_script)
         identity_name = 'git config user.name "github-actions[bot]"'
         identity_email = 'git config user.email "41898282+github-actions[bot]@users.noreply.github.com"'
+        self.assertIn("- name: Render live market data summary", workflow)
+        self.assertIn("id: live-summary", workflow)
+        self.assertIn(
+            "python -m etf_ingestion_backend.live_summary --input data/live_prices.json --output live-market-data-summary.md",
+            workflow,
+        )
+        self.assertIn(
+            'cat live-market-data-summary.md >> "$GITHUB_STEP_SUMMARY"', workflow
+        )
+        self.assertIn("echo 'markdown<<LIVE_MARKET_DATA_SUMMARY'", workflow)
+        self.assertIn("echo 'LIVE_MARKET_DATA_SUMMARY'", workflow)
         publish_step = workflow.index("- name: Publish GitHub Pages")
+        summary_step = workflow.index("- name: Render live market data summary")
         self.assertIn(identity_name, workflow)
         self.assertIn(identity_email, workflow)
         self.assertNotIn("config', 'user.name'", publish_script)
         self.assertNotIn("config', 'user.email'", publish_script)
         self.assertLess(workflow.index(identity_name), publish_step)
         self.assertLess(workflow.index(identity_email), publish_step)
+        self.assertLess(summary_step, publish_step)
 
     def test_publish_script_includes_app_local_javascript_modules(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
