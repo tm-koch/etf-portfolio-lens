@@ -222,7 +222,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("function getImportReviewPrice(row)", app)
         self.assertIn("price.readOnly = !reviewPrice.editable;", app)
 
-    def test_percentage_portfolio_omits_valuation_columns(self) -> None:
+    def test_percentage_portfolio_keeps_weight_and_omits_valuation_columns(
+        self,
+    ) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
@@ -231,19 +233,23 @@ class WebContractTests(unittest.TestCase):
         self.assertIn(
             'id="portfolio-valuation-control" for="portfolio-valuation" hidden', index
         )
-        self.assertIn('class="position-weight" data-private-hidden', index)
+        self.assertIn('class="position-weight">Weight</th>', index)
         self.assertIn('class="position-remove">Remove</th>', index)
         self.assertIn(
             "const isPercentagePortfolio = state.portfolioMode === 'percentage';",
             app,
         )
-        self.assertIn('colspan="${isPercentagePortfolio ? 3 : 6}"', app)
+        self.assertIn('colspan="${isPercentagePortfolio ? 4 : 6}"', app)
         self.assertIn("const valuationCells = isPercentagePortfolio\n        ? ''", app)
         self.assertIn(
-            'const allocationCells = isPercentagePortfolio\n        ? `<td class="position-remove"',
+            'const allocationCells = isPercentagePortfolio\n        ? `\n          <td class="position-weight"',
             app,
         )
         self.assertIn("header.hidden = isPercentagePortfolio;", app)
+        self.assertIn(
+            "elements.portfolioValuationStatus.hidden = isPercentagePortfolio;",
+            app,
+        )
         self.assertIn(
             "const valuation = isPercentagePortfolio ? null : getPositionValuation(position);",
             app,

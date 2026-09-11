@@ -37,6 +37,37 @@ class WebRuntimeTests(unittest.TestCase):
             app,
         )
 
+    def test_private_portfolio_hides_valuation_status_after_rerenders(self) -> None:
+        app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+
+        render_control_start = app.index("function renderValuationModeControl()")
+        render_control_end = app.index(
+            "function getTotalShareUnits", render_control_start
+        )
+        render_control = app[render_control_start:render_control_end]
+
+        self.assertIn(
+            "const isPercentagePortfolio = state.portfolioMode === 'percentage';",
+            render_control,
+        )
+        self.assertIn(
+            "elements.portfolioValuationStatus.hidden = isPercentagePortfolio;",
+            render_control,
+        )
+        self.assertIn("renderValuationModeControl();\n  renderCatalog();", app)
+        self.assertIn("state.portfolioMode = sharedPortfolio.mode;", app)
+
+    def test_full_portfolio_status_preserves_live_and_imported_behavior(self) -> None:
+        app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+        styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn("state.valuationMode === 'imported' ? 'Imported' : 'Live'", app)
+        self.assertIn(
+            "elements.portfolioValuationStatus.querySelector('.dot').hidden = state.valuationMode !== 'latest';",
+            app,
+        )
+        self.assertIn("animation: live-status-pulse 2.8s ease-in-out infinite;", styles)
+
     def test_share_links_preserve_compatibility_and_private_payload_boundaries(
         self,
     ) -> None:

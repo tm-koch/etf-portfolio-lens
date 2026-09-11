@@ -1166,7 +1166,7 @@ function renderPositions() {
     header.hidden = isPercentagePortfolio;
   });
   if (!positions.length) {
-    elements.positionsBody.innerHTML = `<tr><td colspan="${isPercentagePortfolio ? 3 : 6}"><div class="empty-state">No positions yet. Search the catalog and add an ETF.</div></td></tr>`;
+    elements.positionsBody.innerHTML = `<tr><td colspan="${isPercentagePortfolio ? 4 : 6}"><div class="empty-state">No positions yet. Search the catalog and add an ETF.</div></td></tr>`;
     elements.portfolioHint.textContent = 'The portfolio is empty.';
     return;
   }
@@ -1192,7 +1192,9 @@ function renderPositions() {
           <td class="position-price" data-label="Price">${valuation.price !== null ? formatCurrencyValue(valuation.price, valuation.currency) : 'Unavailable'}</td>
           <td class="position-value" data-label="Value CHF">${valuation.valueChf !== null ? formatCurrencyValue(valuation.valueChf) : 'Unavailable'}</td>`;
       const allocationCells = isPercentagePortfolio
-        ? `<td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>`
+        ? `
+          <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
+          <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>`
         : `
           <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}">${formatPercent(weight)}</td>
           <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>`;
