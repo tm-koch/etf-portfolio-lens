@@ -50,6 +50,12 @@
       "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
     },
     {
+      "isin": "IE0009HF1MK9",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
       "isin": "IE00BF20LF40",
       "ticker": "EUMD.L",
       "adapter_id": "yahoo_chart_v1",

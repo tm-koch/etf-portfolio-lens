@@ -108,14 +108,14 @@ function extractHoldingRows(text, pageNumber, fxRates = {}) {
       return parseSaxoNumericColumns(holdingsText.slice(match.index, end));
     })
     .filter(Boolean);
-  const sectionCurrency = holdingsText.match(/Bestände[^\n]*\b(CHF|EUR)\b/i)?.[1]?.toUpperCase() || null;
+  const sectionCurrency = holdingsText.match(/Bestände[^\n]*\b(CHF|EUR|USD)\b/i)?.[1]?.toUpperCase() || null;
   const rows = [];
   for (const [index, match] of isinMatches.entries()) {
     const isin = normalizeIsin(match[0]);
     const end = isinMatches[index + 1]?.index ?? holdingsText.length;
     const context = holdingsText.slice(Math.max(0, match.index - 180), end);
     const rowMatch = context.match(
-      /(?:[A-Z0-9]+:[a-z]+)\s+\d+\s+(CHF|EUR)\s+\d{1,2}-[A-Za-z]{3}-\d{4}\s+([\d.,]+)\s+1[,.]0000\s+([\d.,]+)\s+([\d.,]+)\s+[\d.,]+\s*%\s+([\d.,]+)\s+([\d.,]+)/i
+      /(?:[A-Z0-9]+:[a-z]+)\s+\d+\s+(CHF|EUR|USD)\s+\d{1,2}-[A-Za-z]{3}-\d{4}\s+([\d.,]+)\s+1[,.]0000\s+([\d.,]+)\s+([\d.,]+)\s+[\d.,]+\s*%\s+([\d.,]+)\s+([\d.,]+)/i
     );
     const numericColumns = numericRows[index] || null;
     const parsedColumns = numericColumns || parseSaxoNumericColumns(context);

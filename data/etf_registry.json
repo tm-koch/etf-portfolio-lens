@@ -27,6 +27,26 @@
       }
     },
     {
+      "isin": "IE0009HF1MK9",
+      "ticker": "WEBGCHF",
+      "name": "Amundi Prime All Country World UCITS ETF Dist",
+      "provider": "Amundi",
+      "source_url": "https://www.amundietf.ch/en/professional/products/equity/amundi-prime-all-country-world-ucits-etf-dist/ie0009hf1mk9",
+      "expected_format": "xlsx",
+      "parser_id": "amundi_landing_xlsx_v1",
+      "fixture_path": "data/example/Fund Holdings_Amundi Prime All Country World UCITS ETF Dist_IE0009HF1MK9_16_09_2026.xlsx",
+      "fetcher_id": "amundi_product_page_v1",
+      "fetcher_context": {
+        "countryCode": "CHE",
+        "languageCode": "en",
+        "userProfileName": "INSTIT"
+      },
+      "share_class_currency": "USD",
+      "exchange": "SIX Swiss Exchange",
+      "listing_ticker": "WEBGCHF",
+      "listing_currency": "CHF"
+    },
+    {
       "isin": "IE00BF20LF40",
       "ticker": "EUMD",
       "name": "iShares MSCI Europe Mid Cap UCITS ETF EUR (Acc)",

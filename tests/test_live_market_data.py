@@ -108,6 +108,7 @@ class LiveMarketDataTests(unittest.TestCase):
                 "CH0111762537",
                 "CH1447931341",
                 "IE00B44Z5B48",
+                "IE0009HF1MK9",
                 "IE00BF20LF40",
                 "LU0908500753",
                 "IE00BCLWRD08",
@@ -132,6 +133,10 @@ class LiveMarketDataTests(unittest.TestCase):
             },
             {entry.isin: entry.ticker for entry in config if entry.ticker is not None},
         )
+        new_entry = next(entry for entry in config if entry.isin == "IE0009HF1MK9")
+        self.assertEqual("swiss_csv_v1", new_entry.adapter_id)
+        self.assertEqual("CHF", new_entry.currency)
+        self.assertIsNone(new_entry.ticker)
         self.assertNotIn("source_url", public_config)
         self.assertNotIn("url_template", public_config)
 

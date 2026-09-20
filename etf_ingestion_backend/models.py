@@ -35,6 +35,10 @@ class ETFSourceEntry:
     fixture_path: str | None = None
     fetcher_id: str | None = None
     fetcher_context: dict[str, str] = field(default_factory=dict)
+    share_class_currency: str | None = None
+    exchange: str | None = None
+    listing_ticker: str | None = None
+    listing_currency: str | None = None
 
 
 @dataclass(slots=True)
@@ -108,16 +112,26 @@ class ETFSnapshot:
     provenance: dict[str, Any]
 
     def to_dict(self) -> dict[str, Any]:
+        etf = {
+            "isin": self.etf.isin,
+            "ticker": self.etf.ticker,
+            "name": self.etf.name,
+            "provider": self.etf.provider,
+            "domicile": self.provenance.get("domicile"),
+            "base_currency": self.provenance.get("base_currency"),
+        }
+        for field_name in (
+            "share_class_currency",
+            "exchange",
+            "listing_ticker",
+            "listing_currency",
+        ):
+            value = getattr(self.etf, field_name)
+            if value is not None:
+                etf[field_name] = value
         return {
             "schema_version": "1.0",
-            "etf": {
-                "isin": self.etf.isin,
-                "ticker": self.etf.ticker,
-                "name": self.etf.name,
-                "provider": self.etf.provider,
-                "domicile": self.provenance.get("domicile"),
-                "base_currency": self.provenance.get("base_currency"),
-            },
+            "etf": etf,
             "snapshot": {
                 "as_of": self.as_of,
                 "generated_at": self.generated_at,

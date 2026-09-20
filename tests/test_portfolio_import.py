@@ -81,6 +81,35 @@ class PortfolioImportTests(unittest.TestCase):
         self.assertEqual(rows[0]["isin"], "IE00BF20LF40")
         self.assertEqual(rows[0]["shares"], 1429)
 
+    def test_saxo_parser_extracts_usd_source_currency(self) -> None:
+        text = (
+            "Saxo Bank CH Transaktions- und Saldenbericht Bestände - USD "
+            "Amundi Prime All Country World UCITS ETF Dist (ISIN: IE0009HF1MK9) "
+            "WEBGCHF:xswx 7655678456 USD 30-Jun-2026 100 1,0000 "
+            "15,0000 16,0000 10,00 % 1.600,00 1.600,00"
+        )
+        expression = (
+            f"import {{parseSaxoPages}} from '{IMPORTER_MODULE}'; "
+            f"console.log(JSON.stringify(parseSaxoPages([{json.dumps({'pageNumber': 8, 'text': text})}])));"
+        )
+        rows = self.run_node(expression)
+        self.assertEqual(rows[0]["isin"], "IE0009HF1MK9")
+        self.assertEqual(rows[0]["currency"], "USD")
+        self.assertEqual(rows[0]["shares"], 100)
+        self.assertEqual(rows[0]["price"], 16)
+
+    def test_chf_source_for_usd_share_class_remains_unconverted(self) -> None:
+        expression = (
+            f"import {{getEffectiveValuation}} from '{(REPOSITORY_ROOT / 'web' / 'valuation.js').as_uri()}'; "
+            "console.log(JSON.stringify(getEffectiveValuation({isin: 'IE0009HF1MK9', shares: 10, currency: 'CHF', valueChf: 150}, "
+            "{quotes: {IE0009HF1MK9: {status: 'available', price: 20, currency: 'CHF', quoted_at: '2026-09-20T10:00:00Z'}}, "
+            "fx: {'USD/CHF': {status: 'available', rate: 0.8}}}, 'latest')));"
+        )
+        valuation = self.run_node(expression)
+        self.assertEqual(valuation["currency"], "CHF")
+        self.assertEqual(valuation["valueChf"], 200)
+        self.assertIsNone(valuation["fxAt"])
+
     def test_saxo_parser_extracts_values_without_ticker_prefix(self) -> None:
         text = (
             "Saxo Bank CH Transaktions- und Saldenbericht Bestände CHF "

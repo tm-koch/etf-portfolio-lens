@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -15,6 +16,7 @@ from .fetching import (
 )
 from .models import ETFSnapshot, ETFSourceEntry, IngestionResult, NormalizedHolding
 from .normalization import normalize_row
+from .normalization import parse_weight_float
 from .overrides import OverrideRegistry
 from .parsing import parse_table
 from .registry import ETFRegistry
@@ -42,11 +44,35 @@ SPMCHA_CLASSIFICATION_ISINS = {
     "CH1484953687",
 }
 
+AMUNDI_ISIN_PATTERN = re.compile(r"^[A-Z]{2}[A-Z0-9]{9}[0-9]$")
+AMUNDI_MIN_WEIGHT_TOTAL = 99.0
+AMUNDI_MAX_WEIGHT_TOTAL = 100.5
+
 
 def _is_strict_identity_exempt(holding: NormalizedHolding) -> bool:
     return (holding.name or "").strip().upper() in STRICT_IDENTITY_EXEMPTIONS or (
         holding.match and holding.match.status == "excluded"
     )
+
+
+def _prepare_amundi_rows(rows: list[dict[str, object]]) -> list[dict[str, object]]:
+    valid_rows = [
+        row
+        for row in rows
+        if AMUNDI_ISIN_PATTERN.fullmatch(str(row.get("ISIN code", "")).strip())
+        and parse_weight_float(row.get("Weight"), "amundi_landing_xlsx_v1") is not None
+    ]
+    if not valid_rows:
+        raise ValueError("Amundi holdings contain no valid ISIN rows")
+    weight_total = sum(
+        parse_weight_float(row.get("Weight"), "amundi_landing_xlsx_v1") or 0
+        for row in valid_rows
+    )
+    if not AMUNDI_MIN_WEIGHT_TOTAL <= weight_total <= AMUNDI_MAX_WEIGHT_TOTAL:
+        raise ValueError(
+            "Amundi holdings have an invalid weight total: " f"{weight_total:.6f}%"
+        )
+    return valid_rows
 
 
 @dataclass(slots=True)
@@ -114,6 +140,8 @@ class IngestionPipeline:
                 else self._parse_downloaded_table(entry, downloaded)
             )
             rows = parsed_rows if parsed_rows is not None else parsed.rows
+            if entry.parser_id == "amundi_landing_xlsx_v1":
+                rows = _prepare_amundi_rows(rows)
             if entry.isin == "IE00BF20LF40" and len(rows) <= 10:
                 raise ValueError(
                     "Incomplete EUMD holdings: expected more than ten rows"

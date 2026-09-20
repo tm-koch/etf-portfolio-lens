@@ -54,9 +54,13 @@ def parse_float(value: Any) -> float | None:
     text = str(value).strip()
     if not text:
         return None
-    text = text.replace("’", "").replace("'", "").replace(",", ".")
-    text = re.sub(r"[^0-9.\-]", "", text)
-    if not text or text in {"-", "."}:
+    text = text.replace("’", "").replace("'", "")
+    if "," in text and "." in text:
+        text = text.replace(",", "")
+    else:
+        text = text.replace(",", ".")
+    text = re.sub(r"[^0-9eE.\-+]", "", text)
+    if not text or text in {"-", ".", "+"}:
         return None
     try:
         return float(text)

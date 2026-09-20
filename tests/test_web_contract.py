@@ -427,11 +427,11 @@ class WebContractTests(unittest.TestCase):
             app,
         )
         self.assertIn(
-            "grid-template-areas:\n      \"identity identity identity identity remove\"\n      \"shares price value weight remove\";",
+            'grid-template-areas:\n      "identity identity identity identity remove"\n      "shares price value weight remove";',
             styles,
         )
         self.assertIn(
-            "grid-template-areas:\n      \"identity identity remove\"\n      \"shares weight remove\";",
+            'grid-template-areas:\n      "identity identity remove"\n      "shares weight remove";',
             styles,
         )
         self.assertIn("border-radius: 18px;", styles)

@@ -27,17 +27,28 @@ def build_catalog(
     return {
         "generatedAt": run_date,
         "basis": "share_weighted",
-        "etfs": [
-            {
-                "isin": entry.isin,
-                "ticker": entry.ticker,
-                "name": entry.name,
-                "provider": entry.provider,
-                "snapshotPath": f"/data/raw/{run_date}/snapshots/{entry.isin}.json",
-            }
-            for entry in selected_entries
-        ],
+        "etfs": [_catalog_entry(entry, run_date) for entry in selected_entries],
     }
+
+
+def _catalog_entry(entry: ETFSourceEntry, run_date: str) -> dict[str, object]:
+    result: dict[str, object] = {
+        "isin": entry.isin,
+        "ticker": entry.ticker,
+        "name": entry.name,
+        "provider": entry.provider,
+        "snapshotPath": f"/data/raw/{run_date}/snapshots/{entry.isin}.json",
+    }
+    for field_name in (
+        "share_class_currency",
+        "exchange",
+        "listing_ticker",
+        "listing_currency",
+    ):
+        value = getattr(entry, field_name)
+        if value is not None:
+            result[field_name] = value
+    return result
 
 
 def write_catalog(catalog: dict[str, object], target_path: Path) -> None:

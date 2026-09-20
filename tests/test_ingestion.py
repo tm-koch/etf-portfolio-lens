@@ -20,6 +20,7 @@ from etf_ingestion_backend.fetching import (
     fetch_url,
 )
 from etf_ingestion_backend.pipeline import IngestionPipeline
+from etf_ingestion_backend.pipeline import _prepare_amundi_rows
 from etf_ingestion_backend.normalization import normalize_row, parse_weight_float
 from etf_ingestion_backend.parsing import (
     parse_csv_file,
@@ -74,8 +75,28 @@ class IngestionTests(unittest.TestCase):
     def tearDownClass(cls) -> None:
         cls.security_master_fixture.cleanup()
 
-    def test_registry_has_eleven_supported_sources(self) -> None:
-        self.assertEqual(11, len(self.registry.entries))
+    def test_registry_has_twelve_supported_sources(self) -> None:
+        self.assertEqual(12, len(self.registry.entries))
+
+    def test_registry_contains_amundi_prime_metadata(self) -> None:
+        entry = self.registry.select_by_isins(["IE0009HF1MK9"])[0]
+
+        self.assertEqual("WEBGCHF", entry.ticker)
+        self.assertEqual(
+            "Amundi Prime All Country World UCITS ETF Dist", entry.name
+        )
+        self.assertEqual("Amundi", entry.provider)
+        self.assertEqual(
+            "https://www.amundietf.ch/en/professional/products/equity/"
+            "amundi-prime-all-country-world-ucits-etf-dist/ie0009hf1mk9",
+            entry.source_url,
+        )
+        self.assertEqual("amundi_product_page_v1", entry.fetcher_id)
+        self.assertEqual("amundi_landing_xlsx_v1", entry.parser_id)
+        self.assertEqual("USD", entry.share_class_currency)
+        self.assertEqual("SIX Swiss Exchange", entry.exchange)
+        self.assertEqual("WEBGCHF", entry.listing_ticker)
+        self.assertEqual("CHF", entry.listing_currency)
 
     def test_registry_contains_cssmi_metadata_and_complete_fixture(self) -> None:
         entry = self.registry.select_by_isins(["CH0008899764"])[0]
@@ -326,7 +347,7 @@ class IngestionTests(unittest.TestCase):
             )
             results = pipeline.run(self.registry.entries, use_fixtures=True)
 
-            self.assertEqual(11, len(results))
+            self.assertEqual(12, len(results))
             for result in results:
                 self.assertTrue(result.snapshot_path.exists())
                 snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
@@ -643,6 +664,64 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual(619, len(parsed.rows))
         self.assertAlmostEqual(100.0, sum(values), places=4)
         self.assertLess(max(values), 10.0)
+
+    def test_amundi_prime_fixture_filters_footer_and_preserves_fractional_holdings(
+        self,
+    ) -> None:
+        path = (
+            ROOT
+            / "data"
+            / "example"
+            / (
+                "Fund Holdings_Amundi Prime All Country World UCITS ETF Dist_"
+                "IE0009HF1MK9_16_09_2026.xlsx"
+            )
+        )
+        parsed = parse_xlsx_file(path)
+        rows = _prepare_amundi_rows(parsed.rows)
+        weights = [
+            parse_weight_float(row["Weight"], "amundi_landing_xlsx_v1")
+            for row in rows
+        ]
+
+        self.assertEqual(
+            ["", "ISIN code", "Name", "Asset class", "Currency", "Weight", "Sector", "Country"],
+            parsed.headers,
+        )
+        self.assertEqual(3396, len(rows))
+        self.assertAlmostEqual(99.19855926930289, sum(weights), places=6)
+        self.assertEqual("BRKLBNACNPR9", rows[-1]["ISIN code"])
+        self.assertFalse(any("Source: Amundi" in row.get("ISIN code", "") for row in rows))
+
+    def test_amundi_prime_snapshot_uses_registry_identity_and_filtered_holdings(
+        self,
+    ) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
+            )
+            result = pipeline.run(
+                self.registry.select_by_isins(["IE0009HF1MK9"]), use_fixtures=True
+            )[0]
+            snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
+
+        self.assertEqual("IE0009HF1MK9", snapshot["etf"]["isin"])
+        self.assertEqual("WEBGCHF", snapshot["etf"]["ticker"])
+        self.assertEqual("USD", snapshot["etf"]["share_class_currency"])
+        self.assertEqual("CHF", snapshot["etf"]["listing_currency"])
+        self.assertEqual(3396, snapshot["aggregates"]["counts"]["holdings"])
+
+    def test_amundi_rows_with_invalid_weight_total_are_rejected(self) -> None:
+        rows = [
+            {
+                "ISIN code": "US67066G1040",
+                "Weight": "0.5",
+            }
+        ]
+        with self.assertRaisesRegex(ValueError, "invalid weight total"):
+            _prepare_amundi_rows(rows)
 
     def test_amundi_fetcher_maps_complete_composition(self) -> None:
         payload = {
