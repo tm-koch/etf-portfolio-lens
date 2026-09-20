@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T08:27:43.312728+00:00",
+    "generated_at": "2026-09-20T09:20:02.461384+00:00",
     "source_url": "https://www.amundietf.ch/en/professional/products/equity/amundi-core-stoxx-europe-600-ucits-etf-acc/lu0908500753",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\LU0908500753.xlsx",
     "source_format": "xlsx",
@@ -12604,9 +12604,9 @@
       "security": {
         "isin": "CH0010570767",
         "ticker": "LISP",
-        "name": "Chocoladefabriken Lindt & Spruengli AG Part",
-        "company_id": "chocoladefabriken-lindt-spruengli-ag-part",
-        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG Part"
+        "name": "Chocoladefabriken Lindt & Spruengli AG",
+        "company_id": "chocoladefabriken-lindt-spruengli-ag",
+        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -12635,11 +12635,11 @@
           "Sector": "Consumer Staples",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],

@@ -241,6 +241,14 @@ def normalize_row(
     elif match.record:
         enrich_holding(holding, match.record)
         holding.enrichment_source = "security_master"
+        if not override:
+            override = (overrides or OverrideRegistry.empty()).find(holding)
+            if override:
+                for field, value in override.set_values.items():
+                    if hasattr(holding, field) and value not in (None, ""):
+                        setattr(holding, field, value)
+                if holding.exchange:
+                    holding.exchange_code = normalize_exchange(holding.exchange)
     else:
         if not holding.name:
             source_label = (

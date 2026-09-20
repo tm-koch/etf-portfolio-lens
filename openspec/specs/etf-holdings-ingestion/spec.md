@@ -66,7 +66,7 @@ The EUMD download fix SHALL preserve deterministic fixture-based ingestion and t
 - **THEN** its `expected_format` remains `csv` and its `parser_id` remains `ishares_csv_v1`
 
 ### Requirement: Support controlled identity overrides
-The ETF holdings ingestion pipeline SHALL load a version-controlled override document and SHALL record the override source and applied selector in snapshot provenance. Complete overrides SHALL resolve an exact instrument even when the security master has no matching record. Overrides for context-bearing holdings SHALL be scoped by the provider's instrument context and SHALL NOT rely on a ticker-only selector.
+The ETF holdings ingestion pipeline SHALL load a version-controlled override document and SHALL record the override source and applied selector in snapshot provenance. Complete overrides SHALL resolve an exact instrument even when the security master has no matching record. Overrides for context-bearing holdings SHALL be scoped by the provider's instrument context and SHALL NOT rely on a ticker-only selector. Multiple distinct instruments SHALL be permitted to resolve to the same verified canonical `company_id` and `canonical_name` so company-level aggregation can unify share classes without merging their instrument identities.
 
 #### Scenario: Override document is loaded
 - **WHEN** ingestion starts with the configured override document
@@ -83,6 +83,10 @@ The ETF holdings ingestion pipeline SHALL load a version-controlled override doc
 #### Scenario: Override provenance is stored
 - **WHEN** an override contributes to a resolved holding
 - **THEN** the snapshot SHALL record that the override was applied and which matching strategy selected it
+
+#### Scenario: Distinct Lindt share classes share company aggregation identity
+- **WHEN** holdings with ISINs `CH0010570759` and `CH0010570767` are normalized using verified exact-ISIN overrides
+- **THEN** both holdings SHALL retain their own ISIN and ticker while using company ID `chocoladefabriken-lindt-spruengli-ag` and canonical name `Chocoladefabriken Lindt & Spruengli AG`
 
 ### Requirement: Provide strict enrichment validation
 

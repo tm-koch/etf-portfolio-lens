@@ -375,6 +375,24 @@
         "company_id": "taiwan-semiconductor-manufacturing-co",
         "canonical_name": "Taiwan Semiconductor Manufacturing Co."
       }
+    },
+    {
+      "match": {
+        "isin": "CH0010570759"
+      },
+      "set": {
+        "company_id": "chocoladefabriken-lindt-spruengli-ag",
+        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG"
+      }
+    },
+    {
+      "match": {
+        "isin": "CH0010570767"
+      },
+      "set": {
+        "company_id": "chocoladefabriken-lindt-spruengli-ag",
+        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG"
+      }
     }
   ]
 }

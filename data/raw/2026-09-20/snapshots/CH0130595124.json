@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T08:29:07.406731+00:00",
+    "generated_at": "2026-09-20T09:20:59.164805+00:00",
     "source_url": "https://www.ubs.com/9780d2d6-3ef1-4069-8ce9-69c94f32a317",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\CH0130595124.xls",
     "source_format": "xls",
@@ -579,9 +579,9 @@
       "security": {
         "isin": "CH0010570759",
         "ticker": "LISN",
-        "name": "Chocoladefabriken Lindt & Spruengli AG N",
-        "company_id": "chocoladefabriken-lindt-spruengli-ag-n",
-        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG N"
+        "name": "Chocoladefabriken Lindt & Spruengli AG",
+        "company_id": "chocoladefabriken-lindt-spruengli-ag",
+        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG"
       },
       "classification": {
         "asset_class": "Stock",
@@ -608,11 +608,11 @@
           "Price": "99,600.00",
           "Weight %": "2.51194"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
@@ -625,9 +625,9 @@
       "security": {
         "isin": "CH0010570767",
         "ticker": "LISP",
-        "name": "Chocoladefabriken Lindt & Spruengli AG Part",
-        "company_id": "chocoladefabriken-lindt-spruengli-ag-part",
-        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG Part"
+        "name": "Chocoladefabriken Lindt & Spruengli AG",
+        "company_id": "chocoladefabriken-lindt-spruengli-ag",
+        "canonical_name": "Chocoladefabriken Lindt & Spruengli AG"
       },
       "classification": {
         "asset_class": "Stock",
@@ -654,11 +654,11 @@
           "Price": "9,720.00",
           "Weight %": "2.45141"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],

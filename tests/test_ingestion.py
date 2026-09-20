@@ -915,6 +915,158 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual("Roche Holding AG", holding.name)
         self.assertEqual("overridden", holding.match.status)
 
+    def test_lindt_share_classes_share_company_identity(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    ticker="LISN",
+                    name="Chocoladefabriken Lindt & Spruengli AG N",
+                    exchange="SIX",
+                    sector="Consumer Staples",
+                    asset_type="Stock",
+                    country="Switzerland",
+                    country_code="CH",
+                    isin="CH0010570759",
+                    aliases=[],
+                ),
+                SecurityRecord(
+                    ticker="LISP",
+                    name="Chocoladefabriken Lindt & Spruengli AG Part",
+                    exchange="SIX",
+                    sector="Consumer Staples",
+                    asset_type="Stock",
+                    country="Switzerland",
+                    country_code="CH",
+                    isin="CH0010570767",
+                    aliases=[],
+                ),
+            ],
+            version="test",
+            warnings=[],
+        )
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+        rows = [
+            {
+                "Ticker": "LISN",
+                "Name": "Chocoladefabriken Lindt & Spruengli AG N",
+                "ISIN": "CH0010570759",
+                "Exchange": "SIX",
+                "Weight %": "1.25",
+            },
+            {
+                "Ticker": "LISP",
+                "Name": "Chocoladefabriken Lindt & Spruengli AG Part",
+                "ISIN": "CH0010570767",
+                "Exchange": "SIX",
+                "Weight %": "2.50",
+            },
+        ]
+
+        holdings = [
+            normalize_row(row, master, "test", "ishares_csv_v1", overrides=overrides)
+            for row in rows
+        ]
+
+        self.assertEqual(
+            ["CH0010570759", "CH0010570767"], [holding.isin for holding in holdings]
+        )
+        self.assertEqual(["LISN", "LISP"], [holding.ticker for holding in holdings])
+        self.assertEqual(
+            {"chocoladefabriken-lindt-spruengli-ag"},
+            {holding.company_id for holding in holdings},
+        )
+        self.assertEqual(
+            {"Chocoladefabriken Lindt & Spruengli AG"},
+            {holding.name for holding in holdings},
+        )
+        self.assertEqual(
+            [row["Name"] for row in rows],
+            [holding.source_fields["Name"] for holding in holdings],
+        )
+        self.assertEqual(
+            ["override+security_master"] * 2,
+            [holding.enrichment_source for holding in holdings],
+        )
+        self.assertEqual(
+            ["override"] * 2, [holding.match.matched_by for holding in holdings]
+        )
+
+    def test_lindt_override_does_not_match_unrelated_isin(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    ticker="LISN",
+                    name="Unrelated Security",
+                    exchange="SIX",
+                    sector="Consumer Staples",
+                    asset_type="Stock",
+                    country="Switzerland",
+                    country_code="CH",
+                    isin="CH9999999999",
+                    aliases=[],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        holding = normalize_row(
+            {
+                "Ticker": "LISN",
+                "Name": "Unrelated Security",
+                "ISIN": "CH9999999999",
+                "Exchange": "SIX",
+            },
+            master,
+            "test",
+            "ishares_csv_v1",
+            overrides=OverrideRegistry.from_json(
+                ROOT / "data" / "security_overrides.json"
+            ),
+        )
+
+        self.assertNotEqual("chocoladefabriken-lindt-spruengli-ag", holding.company_id)
+        self.assertNotEqual("Chocoladefabriken Lindt & Spruengli AG", holding.name)
+        self.assertNotEqual("override", holding.match.matched_by)
+
+    def test_lindt_override_applies_after_security_master_adds_isin(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    ticker="LISN",
+                    name="Chocoladefabriken Lindt & Spruengli AG N",
+                    exchange="SIX",
+                    sector="Consumer Staples",
+                    asset_type="Stock",
+                    country="Switzerland",
+                    country_code="CH",
+                    isin="CH0010570759",
+                    aliases=[],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        holding = normalize_row(
+            {
+                "Ticker": "LISN",
+                "Name": "CHOCOLADEFABRIKEN LINDT & SPRUENGL",
+                "Exchange": "SIX Swiss Exchange",
+            },
+            master,
+            "test",
+            "ishares_csv_v1",
+            overrides=OverrideRegistry.from_json(
+                ROOT / "data" / "security_overrides.json"
+            ),
+        )
+
+        self.assertEqual("CH0010570759", holding.isin)
+        self.assertEqual("chocoladefabriken-lindt-spruengli-ag", holding.company_id)
+        self.assertEqual("Chocoladefabriken Lindt & Spruengli AG", holding.name)
+        self.assertEqual("override", holding.match.matched_by)
+
     def test_strict_mode_rejects_unresolved_holdings_without_partial_snapshot(
         self,
     ) -> None:
@@ -1411,9 +1563,7 @@ class IngestionTests(unittest.TestCase):
         )
 
         self.assertEqual("TW0002330008", holding.isin)
-        self.assertEqual(
-            "taiwan-semiconductor-manufacturing-co", holding.company_id
-        )
+        self.assertEqual("taiwan-semiconductor-manufacturing-co", holding.company_id)
         self.assertEqual("Taiwan Semiconductor Manufacturing Co.", holding.name)
         self.assertEqual("Information Technology", holding.sector)
         self.assertEqual("overridden", holding.match.status)
@@ -1456,9 +1606,7 @@ class IngestionTests(unittest.TestCase):
 
         self.assertEqual("TW0002330009", holding.isin)
         self.assertEqual("Other Semiconductor Co.", holding.name)
-        self.assertNotEqual(
-            "taiwan-semiconductor-manufacturing-co", holding.company_id
-        )
+        self.assertNotEqual("taiwan-semiconductor-manufacturing-co", holding.company_id)
         self.assertEqual("matched", holding.match.status)
 
     def test_strict_context_conflict_writes_no_partial_snapshot(self) -> None:
