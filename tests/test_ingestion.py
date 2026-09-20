@@ -82,9 +82,7 @@ class IngestionTests(unittest.TestCase):
         entry = self.registry.select_by_isins(["IE0009HF1MK9"])[0]
 
         self.assertEqual("WEBGCHF", entry.ticker)
-        self.assertEqual(
-            "Amundi Prime All Country World UCITS ETF Dist", entry.name
-        )
+        self.assertEqual("Amundi Prime All Country World UCITS ETF Dist", entry.name)
         self.assertEqual("Amundi", entry.provider)
         self.assertEqual(
             "https://www.amundietf.ch/en/professional/products/equity/"
@@ -680,18 +678,28 @@ class IngestionTests(unittest.TestCase):
         parsed = parse_xlsx_file(path)
         rows = _prepare_amundi_rows(parsed.rows)
         weights = [
-            parse_weight_float(row["Weight"], "amundi_landing_xlsx_v1")
-            for row in rows
+            parse_weight_float(row["Weight"], "amundi_landing_xlsx_v1") for row in rows
         ]
 
         self.assertEqual(
-            ["", "ISIN code", "Name", "Asset class", "Currency", "Weight", "Sector", "Country"],
+            [
+                "",
+                "ISIN code",
+                "Name",
+                "Asset class",
+                "Currency",
+                "Weight",
+                "Sector",
+                "Country",
+            ],
             parsed.headers,
         )
         self.assertEqual(3396, len(rows))
         self.assertAlmostEqual(99.19855926930289, sum(weights), places=6)
         self.assertEqual("BRKLBNACNPR9", rows[-1]["ISIN code"])
-        self.assertFalse(any("Source: Amundi" in row.get("ISIN code", "") for row in rows))
+        self.assertFalse(
+            any("Source: Amundi" in row.get("ISIN code", "") for row in rows)
+        )
 
     def test_amundi_prime_snapshot_uses_registry_identity_and_filtered_holdings(
         self,
