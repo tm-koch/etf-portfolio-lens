@@ -1,8 +1,5 @@
-# build-provenance Specification
+## MODIFIED Requirements
 
-## Purpose
-Expose source, deployment, and ETF data timestamps through a secondary About/build-details surface and generated publish metadata.
-## Requirements
 ### Requirement: Secondary About build-details access
 
 The web app SHALL provide two secondary actions in the Home hero development/status area: `Build & preview` and `Data details`. Both actions SHALL remain outside the primary Portfolio, Compare, and Explore navigation and SHALL open their own in-page details surface without changing browser URL or history.
@@ -55,21 +52,6 @@ The Build & preview surface SHALL display the full source commit identifier when
 - **WHEN** the source commit or repository URL is unavailable
 - **THEN** the Build & preview surface displays a clear unavailable/local-development state without preventing the rest of the app from operating
 
-### Requirement: Publish provenance manifest
-The publishing workflow SHALL generate and publish a machine-readable provenance manifest containing the source revision, commit timestamp, publish timestamp, and aggregate ETF data timestamp.
-
-#### Scenario: Manifest matches published source
-- **WHEN** the publish workflow creates a deployment from a source revision
-- **THEN** the published manifest records the full commit identifier and commit timestamp for that source revision
-
-#### Scenario: Manifest records deployment time
-- **WHEN** the publish workflow creates a deployment
-- **THEN** the published manifest records the publish timestamp separately from the commit timestamp
-
-#### Scenario: Manifest records ETF data time
-- **WHEN** the publish workflow copies the catalog and ETF snapshots
-- **THEN** the published manifest records the aggregate catalog or snapshot generation timestamp used by the published data
-
 ### Requirement: Extensible and fault-tolerant metadata
 
 The provenance manifest SHALL include a versioned or extensible structure for future metadata fields, and failure to load or parse it SHALL not block the core portfolio UI. The Build & preview surface SHALL render optional build metadata without leaving a duplicate horizontal separator when that metadata is absent. The Data details surface SHALL retain one separator before its bottom current-selection warnings section.
@@ -105,4 +87,3 @@ The provenance manifest SHALL include the live-data generation timestamp and agg
 #### Scenario: Live data is unavailable
 - **WHEN** the deployment uses an earlier valid artifact because the update workflow failed
 - **THEN** Data details retain the earlier artifact timestamp and do not claim that a new live update succeeded
-

@@ -1,8 +1,5 @@
-# developer-selection-warnings Specification
+## MODIFIED Requirements
 
-## Purpose
-TBD - created by archiving change mobile-positions-layout-and-dev-warnings. Update Purpose after archive.
-## Requirements
 ### Requirement: Developer dialog selection warning summary
 
 The Data details dialog SHALL provide a clearly labeled current-selection warning section sourced from the same warning conditions used by the Explore warning panel. When warnings exist, the section SHALL show each current warning with enough context to identify the affected selection or aggregate condition.
@@ -30,4 +27,3 @@ The Data details dialog and Explore warning panel SHALL use the same current-sel
 #### Scenario: No current warnings
 - **WHEN** the current selection has no missing snapshots, empty snapshots, or aggregate warnings
 - **THEN** the Data details dialog SHALL show a concise no-current-warnings state or omit the warning list without displaying stale warnings
-

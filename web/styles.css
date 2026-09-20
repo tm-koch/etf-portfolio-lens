@@ -236,6 +236,12 @@ body {
   color: #234ec5;
 }
 
+.about-build-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+
 .about-build-icon {
   width: 16px;
   height: 16px;
@@ -243,7 +249,9 @@ body {
 
 .build-dialog {
   width: min(560px, calc(100% - 28px));
+  max-height: calc(100% - 28px);
   max-width: none;
+  overflow: auto;
   padding: 0;
   border: 1px solid var(--border);
   border-radius: var(--radius);

@@ -60,6 +60,7 @@ const state = {
   buildInfo: null,
   livePrices: null,
   buildDialogReturnFocus: null,
+  dataDialogReturnFocus: null,
   companyRanked: [],
   companyVisibleCount: 0,
   companyObserver: null,
@@ -462,17 +463,17 @@ function appendBuildMetadataRow(container, label, valueNode) {
 }
 
 function renderBuildData() {
-  if (!elements.buildData) {
+  if (!elements.dataDialogMetadata) {
     return;
   }
-  elements.buildData.replaceChildren();
+  elements.dataDialogMetadata.replaceChildren();
   appendBuildMetadataRow(
-    elements.buildData,
+    elements.dataDialogMetadata,
     'ETF data timestamp',
     document.createTextNode(formatBuildTimestamp(state.buildInfo?.data?.timestamp))
   );
   appendBuildMetadataRow(
-    elements.buildData,
+    elements.dataDialogMetadata,
     'Live data',
     document.createTextNode(state.livePrices ? `${formatBuildTimestamp(state.livePrices.generated_at)} (${state.livePrices.status})` : 'Unavailable')
   );
@@ -483,12 +484,12 @@ function renderBuildData() {
     const status = document.createElement('p');
     status.className = 'build-metadata-status';
     status.textContent = 'No ETFs selected.';
-    elements.buildData.append(status);
+    elements.dataDialogMetadata.append(status);
     return;
   }
   for (const entry of positions) {
     appendBuildMetadataRow(
-      elements.buildData,
+      elements.dataDialogMetadata,
       `${entry.ticker} snapshot`,
       document.createTextNode(entry.snapshotPath || 'Unavailable')
     );
@@ -563,11 +564,28 @@ function openBuildDialog() {
   }
 }
 
+function openDataDialog() {
+  state.dataDialogReturnFocus = document.activeElement;
+  if (typeof elements.dataDialog.showModal === 'function') {
+    elements.dataDialog.showModal();
+  } else {
+    elements.dataDialog.setAttribute('open', '');
+  }
+}
+
 function closeBuildDialog() {
   if (typeof elements.buildDialog.close === 'function') {
     elements.buildDialog.close();
   } else {
     elements.buildDialog.removeAttribute('open');
+  }
+}
+
+function closeDataDialog() {
+  if (typeof elements.dataDialog.close === 'function') {
+    elements.dataDialog.close();
+  } else {
+    elements.dataDialog.removeAttribute('open');
   }
 }
 
@@ -845,11 +863,11 @@ function renderWarningItems(container, items, emptyText) {
 }
 
 function renderBuildWarnings() {
-  if (!elements.buildWarningList) {
+  if (!elements.dataDialogWarningList) {
     return;
   }
   const items = state.catalogMaps ? getCurrentSelectionWarnings() : [];
-  renderWarningItems(elements.buildWarningList, items, 'No warnings detected in the current selection.');
+  renderWarningItems(elements.dataDialogWarningList, items, 'No warnings detected in the current selection.');
 }
 
 function buildCompanyRow(company, index) {
@@ -1667,13 +1685,16 @@ async function bootstrap() {
   elements.rollupGrid = document.getElementById('rollup-grid');
   elements.companyList = document.getElementById('company-list');
   elements.companyHint = document.getElementById('company-hint');
-  elements.aboutBuildButton = document.getElementById('about-build-button');
+  elements.buildDialogButton = document.getElementById('build-dialog-button');
+  elements.dataDialogButton = document.getElementById('data-dialog-button');
   elements.buildDialog = document.getElementById('build-dialog');
   elements.buildDialogClose = document.getElementById('build-dialog-close');
   elements.buildMetadata = document.getElementById('build-metadata');
-  elements.buildData = document.getElementById('build-data');
   elements.buildDetailsExtra = document.getElementById('build-details-extra');
-  elements.buildWarningList = document.getElementById('build-warning-list');
+  elements.dataDialog = document.getElementById('data-dialog');
+  elements.dataDialogClose = document.getElementById('data-dialog-close');
+  elements.dataDialogMetadata = document.getElementById('data-dialog-metadata');
+  elements.dataDialogWarningList = document.getElementById('data-dialog-warning-list');
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
   elements.portfolioImportDebugEnabled = document.getElementById('portfolio-import-debug-enabled');
   elements.importDialog = document.getElementById('portfolio-import-dialog');
@@ -1700,8 +1721,10 @@ async function bootstrap() {
   updateInstallAction();
   elements.portfolioImportDebugEnabled.checked = state.portfolioImportDebug;
   renderBuildInfo();
-  elements.aboutBuildButton.addEventListener('click', openBuildDialog);
+  elements.buildDialogButton.addEventListener('click', openBuildDialog);
+  elements.dataDialogButton.addEventListener('click', openDataDialog);
   elements.buildDialogClose.addEventListener('click', closeBuildDialog);
+  elements.dataDialogClose.addEventListener('click', closeDataDialog);
   elements.buildDialog.addEventListener('close', () => {
     state.buildDialogReturnFocus?.focus();
     state.buildDialogReturnFocus = null;
@@ -1710,10 +1733,22 @@ async function bootstrap() {
     event.preventDefault();
     closeBuildDialog();
   });
+  elements.dataDialog.addEventListener('close', () => {
+    state.dataDialogReturnFocus?.focus();
+    state.dataDialogReturnFocus = null;
+  });
+  elements.dataDialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeDataDialog();
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && elements.buildDialog.open) {
       event.preventDefault();
       closeBuildDialog();
+    }
+    if (event.key === 'Escape' && elements.dataDialog.open) {
+      event.preventDefault();
+      closeDataDialog();
     }
   });
   void loadBuildInfo().then((buildInfo) => {

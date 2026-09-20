@@ -79,10 +79,16 @@
               <div class="status-panel">
                 <strong>Development note</strong>
                 <p>Use the local web server to test the app on desktop or mobile-sized viewports.</p>
-                <button class="about-build-link" id="about-build-button" type="button">
-                  <i class="about-build-icon" data-lucide="info" aria-hidden="true"></i>
-                  <span>About this build</span>
-                </button>
+                <div class="about-build-actions">
+                  <button class="about-build-link" id="build-dialog-button" type="button">
+                    <i class="about-build-icon" data-lucide="wrench" aria-hidden="true"></i>
+                    <span>Build &amp; preview</span>
+                  </button>
+                  <button class="about-build-link" id="data-dialog-button" type="button">
+                    <i class="about-build-icon" data-lucide="database" aria-hidden="true"></i>
+                    <span>Data details</span>
+                  </button>
+                </div>
               </div>
             </div>
           </header>
@@ -95,18 +101,14 @@
             <div class="build-dialog-heading">
               <div>
                 <p class="section-label">Build details</p>
-                <h2 id="build-dialog-title">About this build</h2>
+                <h2 id="build-dialog-title">Build &amp; preview</h2>
               </div>
               <button class="build-dialog-close" id="build-dialog-close" type="button" aria-label="Close build details">
                 <i data-lucide="x" aria-hidden="true"></i>
               </button>
             </div>
-            <p id="build-dialog-description">Source, deployment, and ETF data provenance for this web UI.</p>
+            <p id="build-dialog-description">Source, deployment, and developer preview settings for this web UI.</p>
             <dl class="build-metadata" id="build-metadata"></dl>
-            <section class="build-data" aria-labelledby="build-data-title">
-              <h3 id="build-data-title">Data</h3>
-              <dl class="build-metadata" id="build-data"></dl>
-            </section>
             <div class="build-details-extra" id="build-details-extra" hidden></div>
             <div class="developer-settings">
               <div>
@@ -122,9 +124,28 @@
                 <input id="portfolio-import-debug-enabled" type="checkbox" role="switch" />
               </label>
             </div>
-            <section class="build-dialog-warnings" aria-labelledby="build-warnings-title">
-              <h3 id="build-warnings-title">Current selection warnings</h3>
-              <div class="warning-list" id="build-warning-list"></div>
+          </div>
+        </dialog>
+
+        <dialog class="build-dialog" id="data-dialog" aria-labelledby="data-dialog-title" aria-describedby="data-dialog-description">
+          <div class="build-dialog-content">
+            <div class="build-dialog-heading">
+              <div>
+                <p class="section-label">Data details</p>
+                <h2 id="data-dialog-title">Data details</h2>
+              </div>
+              <button class="build-dialog-close" id="data-dialog-close" type="button" aria-label="Close data details">
+                <i data-lucide="x" aria-hidden="true"></i>
+              </button>
+            </div>
+            <p id="data-dialog-description">ETF snapshots, live market data, and current selection quality.</p>
+            <section class="build-data" aria-labelledby="data-dialog-data-title">
+              <h3 id="data-dialog-data-title">Published data</h3>
+              <dl class="build-metadata" id="data-dialog-metadata"></dl>
+            </section>
+            <section class="build-dialog-warnings" aria-labelledby="data-dialog-warnings-title">
+              <h3 id="data-dialog-warnings-title">Current selection warnings</h3>
+              <div class="warning-list" id="data-dialog-warning-list"></div>
             </section>
           </div>
         </dialog>

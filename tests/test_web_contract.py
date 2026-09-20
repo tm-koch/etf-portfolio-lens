@@ -140,8 +140,12 @@ class WebContractTests(unittest.TestCase):
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
-        self.assertIn('id="build-data-title"', index)
-        self.assertIn('id="build-data"', index)
+        self.assertIn('id="data-dialog-data-title"', index)
+        self.assertIn('id="data-dialog-metadata"', index)
+        self.assertIn('id="build-dialog-button"', index)
+        self.assertIn('id="data-dialog-button"', index)
+        self.assertIn('id="build-dialog"', index)
+        self.assertIn('id="data-dialog"', index)
         self.assertIn("function renderBuildData()", app)
         self.assertIn("entry.snapshotPath || 'Unavailable'", app)
         self.assertNotIn(
@@ -384,8 +388,8 @@ class WebContractTests(unittest.TestCase):
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
         self.assertNotIn('id="warning-list"', index)
-        self.assertIn('id="build-warning-list"', index)
-        self.assertIn('id="build-warnings-title"', index)
+        self.assertIn('id="data-dialog-warning-list"', index)
+        self.assertIn('id="data-dialog-warnings-title"', index)
         self.assertIn('data-label="ETF"', app)
         self.assertIn('data-label="Shares"', app)
         self.assertIn('data-label="Weight"', app)
@@ -457,13 +461,13 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
-    def test_build_dialog_retains_current_selection_warnings(self) -> None:
+    def test_data_dialog_retains_current_selection_warnings(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
         self.assertIn("function getCurrentSelectionWarnings", app)
         self.assertIn("getCurrentSelectionWarnings()", app)
         self.assertIn("renderWarningItems(", app)
-        self.assertIn("elements.buildWarningList", app)
+        self.assertIn("elements.dataDialogWarningList", app)
 
     def test_warning_count_only_includes_incomplete_match_statuses(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
