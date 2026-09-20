@@ -1450,6 +1450,7 @@ class IngestionTests(unittest.TestCase):
                 master,
                 "test",
                 "ishares_csv_v1",
+                etf_ticker="ACWD",
             )
 
         self.assertIsNone(holding.isin)
@@ -1457,6 +1458,8 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual("ticker", holding.match.matched_by)
         self.assertIn("ticker+exchange", holding.match.attempted)
         self.assertIn("conflicts with holding context", holding.match.warning)
+        self.assertTrue(buffer.getvalue().startswith("WARNING: ACWD: "))
+        self.assertIn("CFR", buffer.getvalue())
         self.assertIn("conflicts with holding context", buffer.getvalue())
 
     def test_context_conflicting_ticker_does_not_block_unique_ticker_without_context(

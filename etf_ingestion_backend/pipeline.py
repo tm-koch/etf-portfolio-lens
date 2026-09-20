@@ -153,6 +153,7 @@ class IngestionPipeline:
                     source_name=entry.provider,
                     parser_id=entry.parser_id,
                     overrides=overrides,
+                    etf_ticker=entry.ticker,
                 )
                 for row in rows
             ]

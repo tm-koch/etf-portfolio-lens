@@ -114,6 +114,7 @@ def normalize_row(
     source_name: str,
     parser_id: str,
     overrides: OverrideRegistry | None = None,
+    etf_ticker: str | None = None,
 ) -> NormalizedHolding:
     isin = (
         raw_row.get("ISIN")
@@ -288,7 +289,8 @@ def normalize_row(
                     source_name,
                 )
             )
-            print(f"WARNING: {warning}", file=sys.stderr)
+            prefix = f"{etf_ticker}: " if etf_ticker else ""
+            print(f"WARNING: {prefix}{warning}", file=sys.stderr)
 
     if not holding.region:
         holding.region = _infer_region(holding.country)

@@ -39,7 +39,7 @@ const PORTFOLIO_REFERENCE_LABEL = 'Portfolio reference (share-weighted)';
 const COMPANY_BATCH_SIZE = 20;
 const CHART_FRAME_HEIGHT_DESKTOP = '680px';
 const CHART_FRAME_HEIGHT_MOBILE_TABLET = '420px';
-const INCOMPLETE_MATCH_STATUSES = new Set(['ambiguous', 'isin_only', 'unmatched']);
+const INCOMPLETE_MATCH_STATUSES = new Set(['ambiguous', 'unmatched']);
 
 const ETF_SEGMENT_COLORS = [
   '#67d3ff',
@@ -797,7 +797,7 @@ function aggregateCompanyExposure(positions) {
       INCOMPLETE_MATCH_STATUSES.has(holding?.provenance?.match?.status)
     ).length;
     if (unmatchedCount) {
-      warnings.push(`${position.entry.ticker}: ${unmatchedCount} holdings are unmatched or partially matched`);
+      warnings.push(`${position.entry.ticker}: ${unmatchedCount} holdings are unmatched or ambiguous`);
     }
   }
 

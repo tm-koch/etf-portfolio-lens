@@ -473,6 +473,10 @@ class WebContractTests(unittest.TestCase):
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
         self.assertIn(
+            "const INCOMPLETE_MATCH_STATUSES = new Set(['ambiguous', 'unmatched']);",
+            app,
+        )
+        self.assertNotIn(
             "const INCOMPLETE_MATCH_STATUSES = new Set(['ambiguous', 'isin_only', 'unmatched']);",
             app,
         )
