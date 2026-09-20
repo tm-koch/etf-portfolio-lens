@@ -223,6 +223,15 @@ def normalize_row(
                 setattr(holding, field, value)
         if holding.exchange:
             holding.exchange_code = normalize_exchange(holding.exchange)
+        if "isin" not in override.match and holding.isin:
+            exact_override = (overrides or OverrideRegistry.empty()).find(holding)
+            if exact_override and "isin" in exact_override.match:
+                override = exact_override
+                for field, value in override.set_values.items():
+                    if hasattr(holding, field) and value not in (None, ""):
+                        setattr(holding, field, value)
+                if holding.exchange:
+                    holding.exchange_code = normalize_exchange(holding.exchange)
     complete_override = bool(
         override and holding.isin and holding.company_id and holding.canonical_name
     )
@@ -260,7 +269,17 @@ def normalize_row(
             ).strip()
             if source_label:
                 holding.name = source_label
-        if not complete_override and not non_company_holding:
+        if match.status == "isin_only" and not complete_override:
+            holding.ticker = None
+            holding.exchange = None
+            holding.exchange_code = None
+            if holding.name and not holding.canonical_name:
+                holding.canonical_name = holding.name
+        if (
+            not complete_override
+            and not non_company_holding
+            and match.status in {"unmatched", "ambiguous"}
+        ):
             fallback_identifier = holding.ticker or holding.name or "<unknown>"
             warning = (
                 match.warning
@@ -280,6 +299,7 @@ def normalize_row(
         )
         holding.match.status = "overridden"
         holding.match.matched_by = "override"
+        holding.match.attempted.append("override:" + "+".join(sorted(override.match)))
         if complete_override:
             holding.match.warning = None
     if holding.canonical_name:
@@ -288,7 +308,11 @@ def normalize_row(
         holding.canonical_name = match.record.name
         holding.name = holding.canonical_name
     if holding.name and not holding.company_id and not non_company_holding:
-        holding.company_id = _company_id(holding.name, holding.isin)
+        holding.company_id = (
+            f"instrument-{holding.isin.casefold()}"
+            if holding.match and holding.match.status == "isin_only" and holding.isin
+            else _company_id(holding.name, holding.isin)
+        )
 
     return holding
 

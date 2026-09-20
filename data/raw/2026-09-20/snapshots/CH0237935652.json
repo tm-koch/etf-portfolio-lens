@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T09:20:57.602877+00:00",
+    "generated_at": "2026-09-20T10:30:42.395114+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/264107/ishares-spi-ch-fund/1495092304805.ajax?fileType=csv&fileName=CHSPI_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\CH0237935652.csv",
     "source_format": "csv",
@@ -116,7 +116,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -298,7 +299,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -333,7 +334,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -677,7 +679,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -712,7 +714,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1106,7 +1109,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1141,7 +1144,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1247,7 +1251,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:exchange+holding_name+ticker"
           ],
           "missing_elements": [],
           "warning": null
@@ -1366,16 +1371,16 @@
       "security": {
         "isin": "CH0102484968",
         "ticker": "BAER",
-        "name": "Julius Baer Gruppe AG",
-        "company_id": "julius-baer-gruppe-ag",
-        "canonical_name": "Julius Baer Gruppe AG"
+        "name": "Julius Baer Group AG",
+        "company_id": "julius-baer-group-ag",
+        "canonical_name": "Julius Baer Group AG"
       },
       "classification": {
         "asset_class": "Equity",
         "sector": "Financials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1410,7 +1415,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1484,7 +1490,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1519,7 +1525,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1625,7 +1632,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "ticker+exchange"
+            "ticker+exchange",
+            "override:isin"
           ],
           "missing_elements": [
             "isin"
@@ -1638,9 +1646,9 @@
       "security": {
         "isin": "CH0024638196",
         "ticker": "SCHP",
-        "name": "Schindler Holding AG",
-        "company_id": "schindler-holding-ag",
-        "canonical_name": "Schindler Holding AG"
+        "name": "Schindler Ps",
+        "company_id": "schindler-ps",
+        "canonical_name": "Schindler Ps"
       },
       "classification": {
         "asset_class": "Equity",
@@ -1679,7 +1687,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1785,7 +1794,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1891,7 +1901,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "ticker+exchange"
+            "ticker+exchange",
+            "override:isin"
           ],
           "missing_elements": [
             "isin"
@@ -2885,7 +2896,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -2920,7 +2931,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -3372,7 +3384,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -3407,7 +3419,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -4053,7 +4066,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -4613,7 +4627,7 @@
         "sector": "Industrials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -4648,7 +4662,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -4940,7 +4955,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -4975,7 +4990,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -5533,7 +5549,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -5568,7 +5584,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -5642,7 +5659,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -5677,7 +5694,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -5894,7 +5912,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -6273,7 +6292,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -6392,9 +6412,9 @@
       "security": {
         "isin": "NL0011832936",
         "ticker": "COPN",
-        "name": "Cosmo N.V.",
-        "company_id": "cosmo-nv",
-        "canonical_name": "Cosmo N.V."
+        "name": "COSMO Pharmaceuticals SA",
+        "company_id": "cosmo-pharmaceuticals-sa",
+        "canonical_name": "COSMO Pharmaceuticals SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -6433,7 +6453,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -6444,16 +6465,16 @@
       "security": {
         "isin": "CH1484953687",
         "ticker": "SMG",
-        "name": "SMG AG",
-        "company_id": "smg-ag",
-        "canonical_name": "SMG AG"
+        "name": "SMG Swiss Marketplace Group AG",
+        "company_id": "smg-swiss-marketplace-group-ag",
+        "canonical_name": "SMG Swiss Marketplace Group AG"
       },
       "classification": {
         "asset_class": "Equity",
         "sector": "Communication Services",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -6488,7 +6509,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -6651,7 +6673,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -6814,7 +6837,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -6869,7 +6893,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -7032,7 +7057,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -7478,7 +7504,7 @@
         "isin": "CH0008702190",
         "ticker": "CICN",
         "name": "Cicor Technologies Ltd.",
-        "company_id": "cicor-technologies-ag",
+        "company_id": "cicor-technologies-ltd",
         "canonical_name": "Cicor Technologies Ltd."
       },
       "classification": {
@@ -7521,7 +7547,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -7789,7 +7816,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:exchange+holding_name+ticker"
           ],
           "missing_elements": [],
           "warning": null
@@ -7844,7 +7872,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -8169,7 +8198,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -8925,7 +8955,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -9044,9 +9075,9 @@
       "security": {
         "isin": "CH0024666528",
         "ticker": "CNTL",
-        "name": "Centiel AG",
-        "company_id": "centiel-ag",
-        "canonical_name": "Centiel AG"
+        "name": "HT5 N LTD",
+        "company_id": "ht5-n-ltd",
+        "canonical_name": "HT5 N LTD"
       },
       "classification": {
         "asset_class": "Equity",
@@ -9085,7 +9116,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -9515,9 +9547,13 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:exchange+holding_name+ticker"
           ],
-          "missing_elements": [],
+          "missing_elements": [
+            "security_master"
+          ],
           "warning": null
         }
       }
@@ -9689,7 +9725,7 @@
         "isin": "NL0010733960",
         "ticker": "LMN",
         "name": "lastminute.com N.V.",
-        "company_id": "lastminute-nv",
+        "company_id": "lastminute-com-n-v",
         "canonical_name": "lastminute.com N.V."
       },
       "classification": {
@@ -9729,7 +9765,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -10644,7 +10681,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -10699,7 +10737,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -10754,7 +10793,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "name"
+            "name",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -10863,7 +10903,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -11080,9 +11121,13 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:exchange+holding_name+ticker"
           ],
-          "missing_elements": [],
+          "missing_elements": [
+            "security_master"
+          ],
           "warning": null
         }
       }
@@ -11135,9 +11180,13 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:exchange+holding_name+ticker"
           ],
-          "missing_elements": [],
+          "missing_elements": [
+            "security_master"
+          ],
           "warning": null
         }
       }

@@ -249,6 +249,17 @@ class SecurityMaster:
                 ambiguous_ticker_warning,
             )
 
+        if holding.isin:
+            attempted.append("source_isin")
+            return SecurityMatch(
+                None,
+                "isin_only",
+                "source_isin",
+                attempted,
+                missing_elements + ["security_master"],
+                f"source ISIN {holding.isin} is not present in the security master",
+            )
+
         warning = f"could not fully match holding {holding.ticker or holding.name or '<unknown>'}; missing={missing_elements or ['unknown']}"
         return SecurityMatch(
             None, "unmatched", None, attempted, missing_elements, warning

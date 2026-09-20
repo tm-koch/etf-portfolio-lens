@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T09:21:01.185279+00:00",
+    "generated_at": "2026-09-20T10:30:46.104491+00:00",
     "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch1553162921-ubs-spi-extra-etf-pd001.html",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\CH1553162921.xls",
     "source_format": "xls",
@@ -240,10 +240,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -334,10 +337,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -474,7 +480,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -514,13 +521,14 @@
           "Price": "259.8",
           "Weight %": "2.44796"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -612,7 +620,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -796,7 +805,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1624,10 +1634,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -1718,10 +1731,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -2421,9 +2437,9 @@
       "security": {
         "isin": "AT0000A3EPA4",
         "ticker": "AMS2",
-        "name": "AMS OSRAM AG",
+        "name": "ams-OSRAM AG",
         "company_id": "ams-osram-ag",
-        "canonical_name": "AMS OSRAM AG"
+        "canonical_name": "ams-OSRAM AG"
       },
       "classification": {
         "asset_class": "Stock",
@@ -2450,13 +2466,14 @@
           "Price": "19.58",
           "Weight %": "0.46042"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "VSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -2778,10 +2795,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -3056,10 +3076,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -3242,10 +3265,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -3669,9 +3695,9 @@
       "security": {
         "isin": "CH1110425654",
         "ticker": null,
-        "name": "MONTANA AEROSPACE AG",
+        "name": "Montana Aerospace AG",
         "company_id": "montana-aerospace-ag",
-        "canonical_name": null
+        "canonical_name": "Montana Aerospace AG"
       },
       "classification": {
         "asset_class": null,
@@ -3698,19 +3724,22 @@
           "Price": "26.45",
           "Weight %": "0.21378"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3753,10 +3782,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -3847,10 +3879,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -4263,10 +4298,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -4397,13 +4435,14 @@
           "Price": "60",
           "Weight %": "0.14175"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -4506,9 +4545,9 @@
       "security": {
         "isin": "CH0524026959",
         "ticker": null,
-        "name": "CHAM SWISS PROPERTIES AG",
+        "name": "Cham Swiss Properties AG",
         "company_id": "cham-swiss-properties-ag",
-        "canonical_name": null
+        "canonical_name": "Cham Swiss Properties AG"
       },
       "classification": {
         "asset_class": null,
@@ -4535,19 +4574,22 @@
           "Price": "24",
           "Weight %": "0.13396"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4555,9 +4597,9 @@
       "security": {
         "isin": "CH0001473559",
         "ticker": null,
-        "name": "BASELLANDS KANTONALBANK-CERT",
-        "company_id": "basellands-kantonalbank-cert",
-        "canonical_name": null
+        "name": "Basellandschaftliche Kantonalbank",
+        "company_id": "basellandschaftliche-kantonalbank",
+        "canonical_name": "Basellandschaftliche Kantonalbank"
       },
       "classification": {
         "asset_class": null,
@@ -4584,19 +4626,22 @@
           "Price": "1,070.00",
           "Weight %": "0.13305"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4650,9 +4695,9 @@
       "security": {
         "isin": "CH0284142913",
         "ticker": null,
-        "name": "PLAZZA AG-REG A",
-        "company_id": "plazza-ag-reg-a",
-        "canonical_name": null
+        "name": "Plazza AG",
+        "company_id": "plazza-ag",
+        "canonical_name": "Plazza AG"
       },
       "classification": {
         "asset_class": null,
@@ -4679,19 +4724,22 @@
           "Price": "429",
           "Weight %": "0.13039"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4791,9 +4839,9 @@
       "security": {
         "isin": "CH0386200239",
         "ticker": null,
-        "name": "MEDARTIS HOLDING AG",
+        "name": "Medartis Holding AG",
         "company_id": "medartis-holding-ag",
-        "canonical_name": null
+        "canonical_name": "Medartis Holding AG"
       },
       "classification": {
         "asset_class": null,
@@ -4820,19 +4868,22 @@
           "Price": "86.9",
           "Weight %": "0.12006"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4886,9 +4937,9 @@
       "security": {
         "isin": "CH0325094297",
         "ticker": null,
-        "name": "INVESTIS HOLDING SA",
+        "name": "Investis Holding SA",
         "company_id": "investis-holding-sa",
-        "canonical_name": null
+        "canonical_name": "Investis Holding SA"
       },
       "classification": {
         "asset_class": null,
@@ -4915,19 +4966,22 @@
           "Price": "150.5",
           "Weight %": "0.10397"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -5027,9 +5081,9 @@
       "security": {
         "isin": "CH0008702190",
         "ticker": null,
-        "name": "CICOR TECHNOLOGIES-REG",
-        "company_id": "cicor-technologies-reg",
-        "canonical_name": null
+        "name": "Cicor Technologies Ltd.",
+        "company_id": "cicor-technologies-ltd",
+        "canonical_name": "Cicor Technologies Ltd."
       },
       "classification": {
         "asset_class": null,
@@ -5056,19 +5110,22 @@
           "Price": "131.6",
           "Weight %": "0.08545"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -5950,9 +6007,9 @@
       "security": {
         "isin": "CH1129677105",
         "ticker": null,
-        "name": "MEDMIX AG",
+        "name": "medmix AG",
         "company_id": "medmix-ag",
-        "canonical_name": null
+        "canonical_name": "medmix AG"
       },
       "classification": {
         "asset_class": null,
@@ -5979,19 +6036,22 @@
           "Price": "9.14",
           "Weight %": "0.05278"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -6120,13 +6180,14 @@
           "Price": "7.1",
           "Weight %": "0.04944"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -6229,9 +6290,9 @@
       "security": {
         "isin": "CH0011339204",
         "ticker": null,
-        "name": "ASCOM HOLDING AG-REG",
-        "company_id": "ascom-holding-ag-reg",
-        "canonical_name": null
+        "name": "Ascom Holding AG",
+        "company_id": "ascom-holding-ag",
+        "canonical_name": "Ascom Holding AG"
       },
       "classification": {
         "asset_class": null,
@@ -6258,19 +6319,22 @@
           "Price": "5.53",
           "Weight %": "0.04683"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -6462,9 +6526,9 @@
       "security": {
         "isin": "CH0208062627",
         "ticker": null,
-        "name": "MEIER TOBLER GROUP AG",
+        "name": "Meier Tobler Group AG",
         "company_id": "meier-tobler-group-ag",
-        "canonical_name": null
+        "canonical_name": "Meier Tobler Group AG"
       },
       "classification": {
         "asset_class": null,
@@ -6491,19 +6555,22 @@
           "Price": "33.8",
           "Weight %": "0.03362"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -6696,8 +6763,8 @@
         "isin": "CH0256379097",
         "ticker": null,
         "name": "MOLECULAR PARTNERS AG",
-        "company_id": "molecular-partners-ag",
-        "canonical_name": null
+        "company_id": "instrument-ch0256379097",
+        "canonical_name": "MOLECULAR PARTNERS AG"
       },
       "classification": {
         "asset_class": null,
@@ -6727,16 +6794,18 @@
         "enrichment_source": "UBS",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": "source ISIN CH0256379097 is not present in the security master"
         }
       }
     },
@@ -7233,13 +7302,14 @@
           "Price": "12.3",
           "Weight %": "0.0141"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -7572,9 +7642,9 @@
       "security": {
         "isin": "CH0039542854",
         "ticker": null,
-        "name": "MCH GROUP AG",
+        "name": "MCH Group AG",
         "company_id": "mch-group-ag",
-        "canonical_name": null
+        "canonical_name": "MCH Group AG"
       },
       "classification": {
         "asset_class": null,
@@ -7601,19 +7671,22 @@
           "Price": "6.08",
           "Weight %": "0.00966"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -7713,9 +7786,9 @@
       "security": {
         "isin": "CH0102659627",
         "ticker": null,
-        "name": "GAM HOLDING AG",
+        "name": "GAM Holding AG",
         "company_id": "gam-holding-ag",
-        "canonical_name": null
+        "canonical_name": "GAM Holding AG"
       },
       "classification": {
         "asset_class": null,
@@ -7742,19 +7815,22 @@
           "Price": "0.08",
           "Weight %": "0.00625"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -7900,9 +7976,9 @@
       "security": {
         "isin": "CH1251125998",
         "ticker": null,
-        "name": "MINDMAZE THERAPEUTICS HOLDIN",
-        "company_id": "mindmaze-therapeutics-holdin",
-        "canonical_name": null
+        "name": "MindMaze Therapeutics Holding SA",
+        "company_id": "mindmaze-therapeutics-holding-sa",
+        "canonical_name": "MindMaze Therapeutics Holding SA"
       },
       "classification": {
         "asset_class": null,
@@ -7929,19 +8005,22 @@
           "Price": "0.23",
           "Weight %": "0.00403"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -8041,9 +8120,9 @@
       "security": {
         "isin": "CH0002277314",
         "ticker": null,
-        "name": "SCHLATTER INDUSTRIES AG",
+        "name": "Schlatter Industries AG",
         "company_id": "schlatter-industries-ag",
-        "canonical_name": null
+        "canonical_name": "Schlatter Industries AG"
       },
       "classification": {
         "asset_class": null,
@@ -8070,19 +8149,22 @@
           "Price": "19",
           "Weight %": "0.00263"
         },
-        "enrichment_source": "UBS",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding <unknown>; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },

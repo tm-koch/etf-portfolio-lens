@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T09:20:02.461384+00:00",
+    "generated_at": "2026-09-20T10:29:42.582321+00:00",
     "source_url": "https://www.amundietf.ch/en/professional/products/equity/amundi-core-stoxx-europe-600-ucits-etf-acc/lu0908500753",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\LU0908500753.xlsx",
     "source_format": "xlsx",
@@ -155,11 +155,14 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
           "warning": null
         }
@@ -217,9 +220,9 @@
       "security": {
         "isin": "GB00BP6MXD84",
         "ticker": null,
-        "name": "SHELL PLC EUR",
-        "company_id": "shell-plc-eur",
-        "canonical_name": null
+        "name": "Shell Plc",
+        "company_id": "shell-plc",
+        "canonical_name": "Shell Plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -248,20 +251,23 @@
           "Sector": "Energy",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SHELL PLC EUR; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -413,9 +419,9 @@
       "security": {
         "isin": "ES0113900J37",
         "ticker": null,
-        "name": "BANCO SANTANDER SA MADRID",
-        "company_id": "banco-santander-sa-madrid",
-        "canonical_name": null
+        "name": "Banco Santander S.A.",
+        "company_id": "banco-santander-s-a",
+        "canonical_name": "Banco Santander S.A."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -444,20 +450,23 @@
           "Sector": "Financials",
           "Country": "Spain"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BANCO SANTANDER SA MADRID; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -465,9 +474,9 @@
       "security": {
         "isin": "FR0000121972",
         "ticker": null,
-        "name": "SCHNEIDER ELECT SE",
-        "company_id": "schneider-elect-se",
-        "canonical_name": null
+        "name": "Schneider Electric SE",
+        "company_id": "schneider-electric-se",
+        "canonical_name": "Schneider Electric SE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -496,20 +505,23 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SCHNEIDER ELECT SE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -761,9 +773,9 @@
       "security": {
         "isin": "ES0113211835",
         "ticker": null,
-        "name": "BANCO BILBAO VIZCAYA ARGENTA",
-        "company_id": "banco-bilbao-vizcaya-argenta",
-        "canonical_name": null
+        "name": "Banco Bilbao Vizcaya Argentaria S.A.",
+        "company_id": "banco-bilbao-vizcaya-argentaria-s-a",
+        "canonical_name": "Banco Bilbao Vizcaya Argentaria S.A."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -792,20 +804,23 @@
           "Sector": "Financials",
           "Country": "Spain"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BANCO BILBAO VIZCAYA ARGENTA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -909,9 +924,9 @@
       "security": {
         "isin": "DE000ENER6Y0",
         "ticker": null,
-        "name": "SIEMENS ENERGY AG",
+        "name": "Siemens Energy AG",
         "company_id": "siemens-energy-ag",
-        "canonical_name": null
+        "canonical_name": "Siemens Energy AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -940,20 +955,23 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SIEMENS ENERGY AG; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1201,9 +1219,9 @@
       "security": {
         "isin": "FR0000131104",
         "ticker": null,
-        "name": "BNP PARIBAS",
-        "company_id": "bnp-paribas",
-        "canonical_name": null
+        "name": "BNP Paribas S.A. Class A",
+        "company_id": "bnp-paribas-s-a-class-a",
+        "canonical_name": "BNP Paribas S.A. Class A"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -1232,20 +1250,23 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BNP PARIBAS; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1253,9 +1274,9 @@
       "security": {
         "isin": "FR0000121014",
         "ticker": null,
-        "name": "LVMH MOET HENNESSY LOUIS VUI",
-        "company_id": "lvmh-moet-hennessy-louis-vui",
-        "canonical_name": null
+        "name": "LVMH Moet Hennessy Louis Vuitton SE",
+        "company_id": "lvmh-moet-hennessy-louis-vuitton-se",
+        "canonical_name": "LVMH Moet Hennessy Louis Vuitton SE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -1284,20 +1305,23 @@
           "Sector": "Consumer Discretionary",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding LVMH MOET HENNESSY LOUIS VUI; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1343,10 +1367,13 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -1500,9 +1527,9 @@
       "security": {
         "isin": "DE0005557508",
         "ticker": null,
-        "name": "DEUTSCHE TELEKOM NAMEN (XETRA)",
-        "company_id": "deutsche-telekom-namen-xetra",
-        "canonical_name": null
+        "name": "DEUTSCHE TELEKOM AG",
+        "company_id": "deutsche-telekom-ag",
+        "canonical_name": "DEUTSCHE TELEKOM AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -1531,20 +1558,23 @@
           "Sector": "Communication Services",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding DEUTSCHE TELEKOM NAMEN (XETRA); missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1600,9 +1630,9 @@
       "security": {
         "isin": "GB0007188757",
         "ticker": null,
-        "name": "RIO TINTO PLC (GBR)",
-        "company_id": "rio-tinto-plc-gbr",
-        "canonical_name": null
+        "name": "Rio Tinto plc",
+        "company_id": "rio-tinto-plc",
+        "canonical_name": "Rio Tinto plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -1631,20 +1661,23 @@
           "Sector": "Materials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding RIO TINTO PLC (GBR); missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1700,9 +1733,9 @@
       "security": {
         "isin": "GB00BN7SWP63",
         "ticker": null,
-        "name": "GSK PLC",
+        "name": "GSK plc",
         "company_id": "gsk-plc",
-        "canonical_name": null
+        "canonical_name": "GSK plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -1731,20 +1764,21 @@
           "Sector": "Health Care",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "ambiguous",
-          "matched_by": "name",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "name"
+            "name",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
             "exchange"
           ],
-          "warning": "ambiguous name match for GSK PLC: 2 candidates"
+          "warning": null
         }
       }
     },
@@ -1752,9 +1786,9 @@
       "security": {
         "isin": "FR0000120578",
         "ticker": null,
-        "name": "SANOFI - PARIS",
-        "company_id": "sanofi-paris",
-        "canonical_name": null
+        "name": "Sanofi SA",
+        "company_id": "sanofi-sa",
+        "canonical_name": "Sanofi SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -1783,20 +1817,23 @@
           "Sector": "Health Care",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SANOFI - PARIS; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -1804,9 +1841,9 @@
       "security": {
         "isin": "GB0002634946",
         "ticker": null,
-        "name": "BAE SYSTEMS PLC GBP",
-        "company_id": "bae-systems-plc-gbp",
-        "canonical_name": null
+        "name": "BAE Systems PLC",
+        "company_id": "bae-systems-plc",
+        "canonical_name": "BAE Systems PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -1835,20 +1872,23 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BAE SYSTEMS PLC GBP; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -2144,9 +2184,9 @@
       "security": {
         "isin": "FR0000125486",
         "ticker": null,
-        "name": "VINCI SA (PARIS)",
-        "company_id": "vinci-sa-paris",
-        "canonical_name": null
+        "name": "VINCI SA",
+        "company_id": "vinci-sa",
+        "canonical_name": "VINCI SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -2175,20 +2215,23 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding VINCI SA (PARIS); missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -2388,9 +2431,9 @@
       "security": {
         "isin": "ES0148396007",
         "ticker": null,
-        "name": "INDUSTRIA DE DISENO TEXTIL",
-        "company_id": "industria-de-diseno-textil",
-        "canonical_name": null
+        "name": "Industria de Diseno Textil S.A.",
+        "company_id": "industria-de-diseno-textil-s-a",
+        "canonical_name": "Industria de Diseno Textil S.A."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -2419,20 +2462,23 @@
           "Sector": "Consumer Discretionary",
           "Country": "Spain"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding INDUSTRIA DE DISENO TEXTIL; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -2536,9 +2582,9 @@
       "security": {
         "isin": "FR0000130809",
         "ticker": null,
-        "name": "SOCIETE GENERALE",
-        "company_id": "societe-generale",
-        "canonical_name": null
+        "name": "Societe Generale S.A. Class A",
+        "company_id": "societe-generale-s-a-class-a",
+        "canonical_name": "Societe Generale S.A. Class A"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -2567,20 +2613,23 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SOCIETE GENERALE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -2780,9 +2829,9 @@
       "security": {
         "isin": "GB00BTK05J60",
         "ticker": null,
-        "name": "ANGLO AMERICAN PLC GBP",
-        "company_id": "anglo-american-plc-gbp",
-        "canonical_name": null
+        "name": "Anglo American plc",
+        "company_id": "anglo-american-plc",
+        "canonical_name": "Anglo American plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -2811,20 +2860,23 @@
           "Sector": "Materials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ANGLO AMERICAN PLC GBP; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -2880,9 +2932,9 @@
       "security": {
         "isin": "FR0000121667",
         "ticker": null,
-        "name": "ESSILORLUXOTTICA",
-        "company_id": "essilorluxottica",
-        "canonical_name": null
+        "name": "EssilorLuxottica SA",
+        "company_id": "essilorluxottica-sa",
+        "canonical_name": "EssilorLuxottica SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -2911,20 +2963,23 @@
           "Sector": "Health Care",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ESSILORLUXOTTICA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3652,9 +3707,9 @@
       "security": {
         "isin": "NL0000334118",
         "ticker": null,
-        "name": "ASM INTERNATIONAL NV",
-        "company_id": "asm-international-nv",
-        "canonical_name": null
+        "name": "ASM International N.V.",
+        "company_id": "asm-international-n-v",
+        "canonical_name": "ASM International N.V."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -3683,20 +3738,23 @@
           "Sector": "Information Technology",
           "Country": "Netherlands"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ASM INTERNATIONAL NV; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -3752,9 +3810,9 @@
       "security": {
         "isin": "FR0000120644",
         "ticker": null,
-        "name": "DANONE",
-        "company_id": "danone",
-        "canonical_name": null
+        "name": "Danone SA",
+        "company_id": "danone-sa",
+        "canonical_name": "Danone SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -3783,20 +3841,23 @@
           "Sector": "Consumer Staples",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding DANONE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4093,8 +4154,8 @@
         "isin": "FR001400T5U9",
         "ticker": null,
         "name": "AIR LIQUIDE PRIME DE FIDELITE 2027",
-        "company_id": "air-liquide-prime-de-fidelite-2027",
-        "canonical_name": null
+        "company_id": "instrument-fr001400t5u9",
+        "canonical_name": "AIR LIQUIDE PRIME DE FIDELITE 2027"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -4126,17 +4187,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding AIR LIQUIDE PRIME DE FIDELITE 2027; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR001400T5U9 is not present in the security master"
         }
       }
     },
@@ -4144,9 +4207,9 @@
       "security": {
         "isin": "GB00BSZBP530",
         "ticker": null,
-        "name": "RECKITT BENCKISER GROUP PLC GBP",
-        "company_id": "reckitt-benckiser-group-plc-gbp",
-        "canonical_name": null
+        "name": "Reckitt Benckiser Group plc",
+        "company_id": "reckitt-benckiser-group-plc",
+        "canonical_name": "Reckitt Benckiser Group plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -4175,20 +4238,23 @@
           "Sector": "Consumer Staples",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding RECKITT BENCKISER GROUP PLC GBP; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4340,9 +4406,9 @@
       "security": {
         "isin": "AT0000652011",
         "ticker": null,
-        "name": "ERSTE GROUP BANK",
-        "company_id": "erste-group-bank",
-        "canonical_name": null
+        "name": "Erste Group Bank AG",
+        "company_id": "erste-group-bank-ag",
+        "canonical_name": "Erste Group Bank AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -4371,20 +4437,23 @@
           "Sector": "Financials",
           "Country": "Austria"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ERSTE GROUP BANK; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4584,9 +4653,9 @@
       "security": {
         "isin": "FR0000120073",
         "ticker": null,
-        "name": "AIR LIQUIDE SA",
+        "name": "Air Liquide SA",
         "company_id": "air-liquide-sa",
-        "canonical_name": null
+        "canonical_name": "Air Liquide SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -4615,20 +4684,23 @@
           "Sector": "Materials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding AIR LIQUIDE SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4684,9 +4756,9 @@
       "security": {
         "isin": "GB00BLGZ9862",
         "ticker": null,
-        "name": "TESCO PLC",
+        "name": "Tesco PLC",
         "company_id": "tesco-plc",
-        "canonical_name": null
+        "canonical_name": "Tesco PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -4715,20 +4787,23 @@
           "Sector": "Consumer Staples",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding TESCO PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4833,8 +4908,8 @@
         "isin": "FR001400UH43",
         "ticker": null,
         "name": "L OREAL PRIME DE FIDELITE 2027",
-        "company_id": "l-oreal-prime-de-fidelite-2027",
-        "canonical_name": null
+        "company_id": "instrument-fr001400uh43",
+        "canonical_name": "L OREAL PRIME DE FIDELITE 2027"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -4866,17 +4941,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding L OREAL PRIME DE FIDELITE 2027; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR001400UH43 is not present in the security master"
         }
       }
     },
@@ -4932,9 +5009,9 @@
       "security": {
         "isin": "FR0000133308",
         "ticker": null,
-        "name": "ORANGE",
-        "company_id": "orange",
-        "canonical_name": null
+        "name": "Orange SA",
+        "company_id": "orange-sa",
+        "canonical_name": "Orange SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -4963,20 +5040,23 @@
           "Sector": "Communication Services",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ORANGE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -4984,9 +5064,9 @@
       "security": {
         "isin": "GB00B1YW4409",
         "ticker": null,
-        "name": "3I GROUP PLC",
+        "name": "3i Group plc",
         "company_id": "3i-group-plc",
-        "canonical_name": null
+        "canonical_name": "3i Group plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -5015,20 +5095,23 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding 3I GROUP PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -5218,10 +5301,13 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -5327,9 +5413,9 @@
       "security": {
         "isin": "GB0007099541",
         "ticker": null,
-        "name": "PRUDENTIAL PLC",
+        "name": "Prudential plc",
         "company_id": "prudential-plc",
-        "canonical_name": null
+        "canonical_name": "Prudential plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -5358,20 +5444,23 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding PRUDENTIAL PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -5427,9 +5516,9 @@
       "security": {
         "isin": "FR0000120321",
         "ticker": null,
-        "name": "L OREAL",
-        "company_id": "l-oreal",
-        "canonical_name": null
+        "name": "L'Oreal S.A.",
+        "company_id": "l-oreal-s-a",
+        "canonical_name": "L'Oreal S.A."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -5458,20 +5547,23 @@
           "Sector": "Consumer Staples",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding L OREAL; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -5479,9 +5571,9 @@
       "security": {
         "isin": "ES0173516115",
         "ticker": null,
-        "name": "REPSOL SA",
+        "name": "Repsol SA",
         "company_id": "repsol-sa",
-        "canonical_name": null
+        "canonical_name": "Repsol SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -5510,20 +5602,23 @@
           "Sector": "Energy",
           "Country": "Spain"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding REPSOL SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -5819,9 +5914,9 @@
       "security": {
         "isin": "NL0011794037",
         "ticker": null,
-        "name": "KONINKLIJKE AHOLD DELHAIZE",
-        "company_id": "koninklijke-ahold-delhaize",
-        "canonical_name": null
+        "name": "Koninklijke Ahold Delhaize N.V.",
+        "company_id": "koninklijke-ahold-delhaize-n-v",
+        "canonical_name": "Koninklijke Ahold Delhaize N.V."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -5850,20 +5945,23 @@
           "Sector": "Consumer Staples",
           "Country": "Netherlands"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding KONINKLIJKE AHOLD DELHAIZE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -6399,9 +6497,9 @@
       "security": {
         "isin": "ES0109067019",
         "ticker": null,
-        "name": "AMADEUS IT GROUP SA",
-        "company_id": "amadeus-it-group-sa",
-        "canonical_name": null
+        "name": "Amadeus IT Group SA Class A",
+        "company_id": "amadeus-it-group-sa-class-a",
+        "canonical_name": "Amadeus IT Group SA Class A"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -6430,20 +6528,23 @@
           "Sector": "Consumer Discretionary",
           "Country": "Spain"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding AMADEUS IT GROUP SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -6548,8 +6649,8 @@
         "isin": "FR0014010OO5",
         "ticker": null,
         "name": "AIR LIQUIDE PRIME DE FIDELITE 2028",
-        "company_id": "air-liquide-prime-de-fidelite-2028",
-        "canonical_name": null
+        "company_id": "instrument-fr0014010oo5",
+        "canonical_name": "AIR LIQUIDE PRIME DE FIDELITE 2028"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -6581,17 +6682,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding AIR LIQUIDE PRIME DE FIDELITE 2028; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0014010OO5 is not present in the security master"
         }
       }
     },
@@ -6695,9 +6798,9 @@
       "security": {
         "isin": "DE000DTR0CK8",
         "ticker": null,
-        "name": "DAIMLER TRUCK HOLDING AG",
+        "name": "Daimler Truck Holding AG",
         "company_id": "daimler-truck-holding-ag",
-        "canonical_name": null
+        "canonical_name": "Daimler Truck Holding AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -6726,20 +6829,23 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding DAIMLER TRUCK HOLDING AG; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -6988,8 +7094,8 @@
         "isin": "FR001400U6U4",
         "ticker": null,
         "name": "ENGIE PRIME DE FIDELITE 2027",
-        "company_id": "engie-prime-de-fidelite-2027",
-        "canonical_name": null
+        "company_id": "instrument-fr001400u6u4",
+        "canonical_name": "ENGIE PRIME DE FIDELITE 2027"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -7021,17 +7127,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ENGIE PRIME DE FIDELITE 2027; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR001400U6U4 is not present in the security master"
         }
       }
     },
@@ -7039,9 +7147,9 @@
       "security": {
         "isin": "FR0000045072",
         "ticker": null,
-        "name": "CREDIT AGRICOLE SA",
+        "name": "Credit Agricole SA",
         "company_id": "credit-agricole-sa",
-        "canonical_name": null
+        "canonical_name": "Credit Agricole SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -7070,20 +7178,23 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding CREDIT AGRICOLE SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -7331,9 +7442,9 @@
       "security": {
         "isin": "NL0010773842",
         "ticker": null,
-        "name": "NN GROUP NV",
-        "company_id": "nn-group-nv",
-        "canonical_name": null
+        "name": "NN Group N.V.",
+        "company_id": "nn-group-n-v",
+        "canonical_name": "NN Group N.V."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -7362,20 +7473,23 @@
           "Sector": "Financials",
           "Country": "Netherlands"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding NN GROUP NV; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -7483,9 +7597,9 @@
       "security": {
         "isin": "GB0032089863",
         "ticker": null,
-        "name": "NEXT PLC",
+        "name": "Next plc",
         "company_id": "next-plc",
-        "canonical_name": null
+        "canonical_name": "Next plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -7514,20 +7628,23 @@
           "Sector": "Consumer Discretionary",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding NEXT PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -7535,9 +7652,9 @@
       "security": {
         "isin": "GB00BHJYC057",
         "ticker": null,
-        "name": "INTERCONTINENTAL HOTELS GROU",
-        "company_id": "intercontinental-hotels-grou",
-        "canonical_name": null
+        "name": "InterContinental Hotels Group PLC",
+        "company_id": "intercontinental-hotels-group-plc",
+        "canonical_name": "InterContinental Hotels Group PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -7566,20 +7683,23 @@
           "Sector": "Consumer Discretionary",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding INTERCONTINENTAL HOTELS GROU; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -7635,9 +7755,9 @@
       "security": {
         "isin": "DE0006047004",
         "ticker": null,
-        "name": "HEIDELBERGCEMENT AG",
-        "company_id": "heidelbergcement-ag",
-        "canonical_name": null
+        "name": "Heidelberg Materials AG",
+        "company_id": "heidelberg-materials-ag",
+        "canonical_name": "Heidelberg Materials AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -7666,20 +7786,23 @@
           "Sector": "Materials",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding HEIDELBERGCEMENT AG; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -7928,8 +8051,8 @@
         "isin": "FR0014013RC7",
         "ticker": null,
         "name": "L OREAL PRIME DE FIDELITE 2028",
-        "company_id": "l-oreal-prime-de-fidelite-2028",
-        "canonical_name": null
+        "company_id": "instrument-fr0014013rc7",
+        "canonical_name": "L OREAL PRIME DE FIDELITE 2028"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -7961,17 +8084,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding L OREAL PRIME DE FIDELITE 2028; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0014013RC7 is not present in the security master"
         }
       }
     },
@@ -8027,9 +8152,9 @@
       "security": {
         "isin": "DE0005785604",
         "ticker": null,
-        "name": "FRESENIUS SE & CO KGAA",
+        "name": "Fresenius SE & Co. KGaA",
         "company_id": "fresenius-se-co-kgaa",
-        "canonical_name": null
+        "canonical_name": "Fresenius SE & Co. KGaA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -8058,20 +8183,23 @@
           "Sector": "Health Care",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding FRESENIUS SE & CO KGAA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -8649,10 +8777,13 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -9036,10 +9167,13 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -9193,9 +9327,9 @@
       "security": {
         "isin": "FR0014003TT8",
         "ticker": null,
-        "name": "DASSAULT SYSTEMES SE",
+        "name": "Dassault Systemes SE",
         "company_id": "dassault-systemes-se",
-        "canonical_name": null
+        "canonical_name": "Dassault Systemes SE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -9224,20 +9358,23 @@
           "Sector": "Information Technology",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding DASSAULT SYSTEMES SE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -9437,9 +9574,9 @@
       "security": {
         "isin": "SE0000695876",
         "ticker": null,
-        "name": "ALFA LAVAL AB",
+        "name": "Alfa Laval AB",
         "company_id": "alfa-laval-ab",
-        "canonical_name": null
+        "canonical_name": "Alfa Laval AB"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -9468,20 +9605,23 @@
           "Sector": "Industrials",
           "Country": "Sweden"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ALFA LAVAL AB; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -9925,9 +10065,9 @@
       "security": {
         "isin": "SE0020050417",
         "ticker": null,
-        "name": "BOLIDEN AB",
+        "name": "Boliden AB",
         "company_id": "boliden-ab",
-        "canonical_name": null
+        "canonical_name": "Boliden AB"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -9956,20 +10096,23 @@
           "Sector": "Materials",
           "Country": "Sweden"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BOLIDEN AB; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -10409,9 +10552,9 @@
       "security": {
         "isin": "ES0130670112",
         "ticker": null,
-        "name": "ENDESA SA",
-        "company_id": "endesa-sa",
-        "canonical_name": null
+        "name": "Endesa S.A.",
+        "company_id": "endesa-s-a",
+        "canonical_name": "Endesa S.A."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -10440,20 +10583,23 @@
           "Sector": "Utilities",
           "Country": "Spain"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ENDESA SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -10701,9 +10847,9 @@
       "security": {
         "isin": "CH0025751329",
         "ticker": null,
-        "name": "Logitech International S.A.",
+        "name": "Logitech International SA",
         "company_id": "logitech-international-sa",
-        "canonical_name": "Logitech International S.A."
+        "canonical_name": "Logitech International SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -10739,10 +10885,13 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -10848,9 +10997,9 @@
       "security": {
         "isin": "GB00B02J6398",
         "ticker": null,
-        "name": "ADMIRAL GROUP PLC",
+        "name": "Admiral Group plc",
         "company_id": "admiral-group-plc",
-        "canonical_name": null
+        "canonical_name": "Admiral Group plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -10879,20 +11028,23 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ADMIRAL GROUP PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -10900,9 +11052,9 @@
       "security": {
         "isin": "ES0177542018",
         "ticker": null,
-        "name": "INTL CONSOLD AIRLINES GRP SA-GBP",
-        "company_id": "intl-consold-airlines-grp-sa-gbp",
-        "canonical_name": null
+        "name": "International Consolidated Airlines Group SA",
+        "company_id": "international-consolidated-airlines-group-sa",
+        "canonical_name": "International Consolidated Airlines Group SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -10931,20 +11083,23 @@
           "Sector": "Industrials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding INTL CONSOLD AIRLINES GRP SA-GBP; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -11193,8 +11348,8 @@
         "isin": "FR0000053951",
         "ticker": null,
         "name": "AIR LIQUIDE PRIME FIDELITE",
-        "company_id": "air-liquide-prime-fidelite",
-        "canonical_name": null
+        "company_id": "instrument-fr0000053951",
+        "canonical_name": "AIR LIQUIDE PRIME FIDELITE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -11226,17 +11381,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding AIR LIQUIDE PRIME FIDELITE; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0000053951 is not present in the security master"
         }
       }
     },
@@ -11340,9 +11497,9 @@
       "security": {
         "isin": "PLKGHM000017",
         "ticker": null,
-        "name": "KGHM POLSKA MIEDZ S.A.",
+        "name": "KGHM Polska Miedz S.A.",
         "company_id": "kghm-polska-miedz-s-a",
-        "canonical_name": null
+        "canonical_name": "KGHM Polska Miedz S.A."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -11371,20 +11528,23 @@
           "Sector": "Materials",
           "Country": "Poland"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding KGHM POLSKA MIEDZ S.A.; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -11519,13 +11679,14 @@
           "Sector": "Industrials",
           "Country": "Switzerland"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -11536,9 +11697,9 @@
       "security": {
         "isin": "GB0009223206",
         "ticker": null,
-        "name": "SMITH & NEPHEW PLC",
+        "name": "Smith & Nephew plc",
         "company_id": "smith-nephew-plc",
-        "canonical_name": null
+        "canonical_name": "Smith & Nephew plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -11567,20 +11728,23 @@
           "Sector": "Health Care",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SMITH & NEPHEW PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -12357,8 +12521,8 @@
         "isin": "FR0011149590",
         "ticker": null,
         "name": "L OREAL PRIME FIDELITE",
-        "company_id": "l-oreal-prime-fidelite",
-        "canonical_name": null
+        "company_id": "instrument-fr0011149590",
+        "canonical_name": "L OREAL PRIME FIDELITE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -12390,17 +12554,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding L OREAL PRIME FIDELITE; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0011149590 is not present in the security master"
         }
       }
     },
@@ -12456,9 +12622,9 @@
       "security": {
         "isin": "FR0000120172",
         "ticker": null,
-        "name": "CARREFOUR SA",
+        "name": "Carrefour SA",
         "company_id": "carrefour-sa",
-        "canonical_name": null
+        "canonical_name": "Carrefour SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -12487,20 +12653,23 @@
           "Sector": "Consumer Staples",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding CARREFOUR SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -12641,7 +12810,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -13185,8 +13355,8 @@
         "isin": "GB00BYQ0JC66",
         "ticker": null,
         "name": "BEAZLEY PLC/UK",
-        "company_id": "beazley-plc-uk",
-        "canonical_name": null
+        "company_id": "instrument-gb00byq0jc66",
+        "canonical_name": "BEAZLEY PLC/UK"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -13218,17 +13388,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BEAZLEY PLC/UK; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB00BYQ0JC66 is not present in the security master"
         }
       }
     },
@@ -13236,9 +13408,9 @@
       "security": {
         "isin": "JE00BQKY0816",
         "ticker": null,
-        "name": "WISE GROUP PLC-CL A GBP",
-        "company_id": "wise-group-plc-cl-a-gbp",
-        "canonical_name": null
+        "name": "Wise Group plc Class A",
+        "company_id": "wise-group-plc-class-a",
+        "canonical_name": "Wise Group plc Class A"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -13267,20 +13439,23 @@
           "Sector": "Financials",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding WISE GROUP PLC-CL A GBP; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -13576,9 +13751,9 @@
       "security": {
         "isin": "SE0012673267",
         "ticker": null,
-        "name": "EVOLUTION AB",
+        "name": "Evolution AB",
         "company_id": "evolution-ab",
-        "canonical_name": null
+        "canonical_name": "Evolution AB"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -13607,20 +13782,23 @@
           "Sector": "Consumer Discretionary",
           "Country": "Sweden"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding EVOLUTION AB; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -13676,9 +13854,9 @@
       "security": {
         "isin": "FR0000121964",
         "ticker": null,
-        "name": "KLEPIERRE",
-        "company_id": "klepierre",
-        "canonical_name": null
+        "name": "Klepierre SA",
+        "company_id": "klepierre-sa",
+        "canonical_name": "Klepierre SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -13707,20 +13885,23 @@
           "Sector": "Real Estate",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding KLEPIERRE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -13728,9 +13909,9 @@
       "security": {
         "isin": "FR0010451203",
         "ticker": null,
-        "name": "REXEL SA",
+        "name": "Rexel SA",
         "company_id": "rexel-sa",
-        "canonical_name": null
+        "canonical_name": "Rexel SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -13759,20 +13940,23 @@
           "Sector": "Industrials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding REXEL SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -13924,9 +14108,9 @@
       "security": {
         "isin": "GB00B033F229",
         "ticker": null,
-        "name": "CENTRICA PLC",
+        "name": "Centrica plc",
         "company_id": "centrica-plc",
-        "canonical_name": null
+        "canonical_name": "Centrica plc"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -13955,20 +14139,23 @@
           "Sector": "Utilities",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding CENTRICA PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -14169,8 +14356,8 @@
         "isin": "NO0003053605",
         "ticker": null,
         "name": "STOREBRAND ASA",
-        "company_id": "storebrand-asa",
-        "canonical_name": null
+        "company_id": "instrument-no0003053605",
+        "canonical_name": "STOREBRAND ASA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -14202,17 +14389,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding STOREBRAND ASA; missing=['ticker', 'exchange']"
+          "warning": "source ISIN NO0003053605 is not present in the security master"
         }
       }
     },
@@ -14892,9 +15081,9 @@
       "security": {
         "isin": "NO0010063308",
         "ticker": null,
-        "name": "TELENOR ASA",
+        "name": "Telenor ASA",
         "company_id": "telenor-asa",
-        "canonical_name": null
+        "canonical_name": "Telenor ASA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -14923,20 +15112,23 @@
           "Sector": "Communication Services",
           "Country": "Norway"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding TELENOR ASA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -15669,8 +15861,8 @@
         "isin": "GB0009697037",
         "ticker": null,
         "name": "BABCOCK INTL GRP",
-        "company_id": "babcock-intl-grp",
-        "canonical_name": null
+        "company_id": "instrument-gb0009697037",
+        "canonical_name": "BABCOCK INTL GRP"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -15702,17 +15894,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BABCOCK INTL GRP; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB0009697037 is not present in the security master"
         }
       }
     },
@@ -15816,9 +16010,9 @@
       "security": {
         "isin": "DE000A1DAHH0",
         "ticker": null,
-        "name": "BRENNTAG SE",
+        "name": "Brenntag SE",
         "company_id": "brenntag-se",
-        "canonical_name": null
+        "canonical_name": "Brenntag SE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -15847,20 +16041,23 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BRENNTAG SE; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -16780,9 +16977,9 @@
       "security": {
         "isin": "GB00BYW0PQ60",
         "ticker": null,
-        "name": "LAND SECURITIES GROUP PLC",
+        "name": "Land Securities Group PLC",
         "company_id": "land-securities-group-plc",
-        "canonical_name": null
+        "canonical_name": "Land Securities Group PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -16811,20 +17008,23 @@
           "Sector": "Real Estate",
           "Country": "United Kingdom"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding LAND SECURITIES GROUP PLC; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -16833,8 +17033,8 @@
         "isin": "FR0010908533",
         "ticker": null,
         "name": "EDENRED",
-        "company_id": "edenred",
-        "canonical_name": null
+        "company_id": "instrument-fr0010908533",
+        "canonical_name": "EDENRED"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -16866,17 +17066,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding EDENRED; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0010908533 is not present in the security master"
         }
       }
     },
@@ -16932,9 +17134,9 @@
       "security": {
         "isin": "FR0004125920",
         "ticker": null,
-        "name": "AMUNDI SA",
+        "name": "Amundi SA",
         "company_id": "amundi-sa",
-        "canonical_name": null
+        "canonical_name": "Amundi SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -16963,20 +17165,23 @@
           "Sector": "Financials",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding AMUNDI SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -17177,8 +17382,8 @@
         "isin": "FI0009005870",
         "ticker": null,
         "name": "KONECRANES OYJ",
-        "company_id": "konecranes-oyj",
-        "canonical_name": null
+        "company_id": "instrument-fi0009005870",
+        "canonical_name": "KONECRANES OYJ"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -17210,17 +17415,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding KONECRANES OYJ; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FI0009005870 is not present in the security master"
         }
       }
     },
@@ -18241,8 +18448,8 @@
         "isin": "GB00BD3VFW73",
         "ticker": null,
         "name": "CONVATEC GROUP PLC",
-        "company_id": "convatec-group-plc",
-        "canonical_name": null
+        "company_id": "instrument-gb00bd3vfw73",
+        "canonical_name": "CONVATEC GROUP PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -18274,17 +18481,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding CONVATEC GROUP PLC; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB00BD3VFW73 is not present in the security master"
         }
       }
     },
@@ -18581,8 +18790,8 @@
         "isin": "SE0015192067",
         "ticker": null,
         "name": "NORDNET AB PUBL",
-        "company_id": "nordnet-ab-publ",
-        "canonical_name": null
+        "company_id": "instrument-se0015192067",
+        "canonical_name": "NORDNET AB PUBL"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -18614,17 +18823,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding NORDNET AB PUBL; missing=['ticker', 'exchange']"
+          "warning": "source ISIN SE0015192067 is not present in the security master"
         }
       }
     },
@@ -18777,8 +18988,8 @@
         "isin": "AT0000730007",
         "ticker": null,
         "name": "ANDRITZ AG",
-        "company_id": "andritz-ag",
-        "canonical_name": null
+        "company_id": "instrument-at0000730007",
+        "canonical_name": "ANDRITZ AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -18810,17 +19021,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ANDRITZ AG; missing=['ticker', 'exchange']"
+          "warning": "source ISIN AT0000730007 is not present in the security master"
         }
       }
     },
@@ -18829,8 +19042,8 @@
         "isin": "AT0000937503",
         "ticker": null,
         "name": "VOESTALPINE AG",
-        "company_id": "voestalpine-ag",
-        "canonical_name": null
+        "company_id": "instrument-at0000937503",
+        "canonical_name": "VOESTALPINE AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -18862,17 +19075,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding VOESTALPINE AG; missing=['ticker', 'exchange']"
+          "warning": "source ISIN AT0000937503 is not present in the security master"
         }
       }
     },
@@ -18881,8 +19096,8 @@
         "isin": "GB0001367019",
         "ticker": null,
         "name": "BRITISH LAND CO  ORD 25P",
-        "company_id": "british-land-co-ord-25p",
-        "canonical_name": null
+        "company_id": "instrument-gb0001367019",
+        "canonical_name": "BRITISH LAND CO  ORD 25P"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -18914,17 +19129,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BRITISH LAND CO  ORD 25P; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB0001367019 is not present in the security master"
         }
       }
     },
@@ -19081,8 +19298,8 @@
         "isin": "GB0000961622",
         "ticker": null,
         "name": "BALFOUR BEATTY PLC",
-        "company_id": "balfour-beatty-plc",
-        "canonical_name": null
+        "company_id": "instrument-gb0000961622",
+        "canonical_name": "BALFOUR BEATTY PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -19114,17 +19331,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding BALFOUR BEATTY PLC; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB0000961622 is not present in the security master"
         }
       }
     },
@@ -20044,9 +20263,9 @@
       "security": {
         "isin": "FR0013154002",
         "ticker": null,
-        "name": "SARTORIUS STEDIM BIOTECH",
-        "company_id": "sartorius-stedim-biotech",
-        "canonical_name": null
+        "name": "Sartorius Stedim Biotech SA",
+        "company_id": "sartorius-stedim-biotech-sa",
+        "canonical_name": "Sartorius Stedim Biotech SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -20075,20 +20294,23 @@
           "Sector": "Health Care",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SARTORIUS STEDIM BIOTECH; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -21301,8 +21523,8 @@
         "isin": "NL0000379121",
         "ticker": null,
         "name": "RANDSTAD NV",
-        "company_id": "randstad-nv",
-        "canonical_name": null
+        "company_id": "instrument-nl0000379121",
+        "canonical_name": "RANDSTAD NV"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -21334,17 +21556,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding RANDSTAD NV; missing=['ticker', 'exchange']"
+          "warning": "source ISIN NL0000379121 is not present in the security master"
         }
       }
     },
@@ -21688,9 +21912,9 @@
       "security": {
         "isin": "PLBRE0000012",
         "ticker": null,
-        "name": "MBANK SA",
+        "name": "mBank SA",
         "company_id": "mbank-sa",
-        "canonical_name": null
+        "canonical_name": "mBank SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -21719,20 +21943,23 @@
           "Sector": "Financials",
           "Country": "Poland"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding MBANK SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -21981,8 +22208,8 @@
         "isin": "AT0000969985",
         "ticker": null,
         "name": "AUSTRIA TECHNOLOGY & SYSTEM(AUT)",
-        "company_id": "austria-technology-system-aut",
-        "canonical_name": null
+        "company_id": "instrument-at0000969985",
+        "canonical_name": "AUSTRIA TECHNOLOGY & SYSTEM(AUT)"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -22014,17 +22241,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding AUSTRIA TECHNOLOGY & SYSTEM(AUT); missing=['ticker', 'exchange']"
+          "warning": "source ISIN AT0000969985 is not present in the security master"
         }
       }
     },
@@ -22321,8 +22550,8 @@
         "isin": "FR0012435121",
         "ticker": null,
         "name": "ELIS SA",
-        "company_id": "elis-sa",
-        "canonical_name": null
+        "company_id": "instrument-fr0012435121",
+        "canonical_name": "ELIS SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -22354,17 +22583,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ELIS SA; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0012435121 is not present in the security master"
         }
       }
     },
@@ -22565,8 +22796,8 @@
         "isin": "DE000LEG1110",
         "ticker": null,
         "name": "LEG IMMOBILIEN AG",
-        "company_id": "leg-immobilien-ag",
-        "canonical_name": null
+        "company_id": "instrument-de000leg1110",
+        "canonical_name": "LEG IMMOBILIEN AG"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -22598,17 +22829,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding LEG IMMOBILIEN AG; missing=['ticker', 'exchange']"
+          "warning": "source ISIN DE000LEG1110 is not present in the security master"
         }
       }
     },
@@ -22760,9 +22993,9 @@
       "security": {
         "isin": "AT0000746409",
         "ticker": null,
-        "name": "VERBUND AG",
-        "company_id": "verbund-ag",
-        "canonical_name": null
+        "name": "VERBUND AG Class A",
+        "company_id": "verbund-ag-class-a",
+        "canonical_name": "VERBUND AG Class A"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -22791,20 +23024,23 @@
           "Sector": "Utilities",
           "Country": "Austria"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding VERBUND AG; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -23056,9 +23292,9 @@
       "security": {
         "isin": "NO0010310956",
         "ticker": null,
-        "name": "SALMAR ASA",
+        "name": "SalMar ASA",
         "company_id": "salmar-asa",
-        "canonical_name": null
+        "canonical_name": "SalMar ASA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -23087,20 +23323,23 @@
           "Sector": "Consumer Staples",
           "Country": "Norway"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SALMAR ASA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -23252,9 +23491,9 @@
       "security": {
         "isin": "DE0006452907",
         "ticker": null,
-        "name": "NEMETSCHEK AG",
-        "company_id": "nemetschek-ag",
-        "canonical_name": null
+        "name": "Nemetschek SE",
+        "company_id": "nemetschek-se",
+        "canonical_name": "Nemetschek SE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -23283,20 +23522,23 @@
           "Sector": "Information Technology",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding NEMETSCHEK AG; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -23305,8 +23547,8 @@
         "isin": "FR0013227113",
         "ticker": null,
         "name": "S.O.I.T.E.C.",
-        "company_id": "s-o-i-t-e-c",
-        "canonical_name": null
+        "company_id": "instrument-fr0013227113",
+        "canonical_name": "S.O.I.T.E.C."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -23338,17 +23580,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding S.O.I.T.E.C.; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0013227113 is not present in the security master"
         }
       }
     },
@@ -23645,8 +23889,8 @@
         "isin": "GB00BV9FP302",
         "ticker": null,
         "name": "COMPUTACENTER PLC",
-        "company_id": "computacenter-plc",
-        "canonical_name": null
+        "company_id": "instrument-gb00bv9fp302",
+        "canonical_name": "COMPUTACENTER PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -23678,17 +23922,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding COMPUTACENTER PLC; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB00BV9FP302 is not present in the security master"
         }
       }
     },
@@ -24129,8 +24375,8 @@
         "isin": "GB0008782301",
         "ticker": null,
         "name": "TAYLOR WIMPEY",
-        "company_id": "taylor-wimpey",
-        "canonical_name": null
+        "company_id": "instrument-gb0008782301",
+        "canonical_name": "TAYLOR WIMPEY"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24162,17 +24408,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding TAYLOR WIMPEY; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB0008782301 is not present in the security master"
         }
       }
     },
@@ -24180,9 +24428,9 @@
       "security": {
         "isin": "DE0007010803",
         "ticker": null,
-        "name": "RATIONAL AG",
-        "company_id": "rational-ag",
-        "canonical_name": null
+        "name": "RATIONAL Aktiengesellschaft",
+        "company_id": "rational-aktiengesellschaft",
+        "canonical_name": "RATIONAL Aktiengesellschaft"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24211,20 +24459,23 @@
           "Sector": "Industrials",
           "Country": "Germany"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding RATIONAL AG; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -24328,9 +24579,9 @@
       "security": {
         "isin": "SE0028329433",
         "ticker": null,
-        "name": "OCTAVE INTELLIGENCE PLC-SDR",
-        "company_id": "octave-intelligence-plc-sdr",
-        "canonical_name": null
+        "name": "Octave Intelligence PLC Shs Swedish Depository Receipt Repr 1 Sh",
+        "company_id": "octave-intelligence-plc-shs-swedish-depository-receipt-repr-1-sh",
+        "canonical_name": "Octave Intelligence PLC Shs Swedish Depository Receipt Repr 1 Sh"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24359,20 +24610,23 @@
           "Sector": "Information Technology",
           "Country": "Sweden"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding OCTAVE INTELLIGENCE PLC-SDR; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -24429,8 +24683,8 @@
         "isin": "ES0132105018",
         "ticker": null,
         "name": "ACERINOX SA",
-        "company_id": "acerinox-sa",
-        "canonical_name": null
+        "company_id": "instrument-es0132105018",
+        "canonical_name": "ACERINOX SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24462,17 +24716,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ACERINOX SA; missing=['ticker', 'exchange']"
+          "warning": "source ISIN ES0132105018 is not present in the security master"
         }
       }
     },
@@ -24529,8 +24785,8 @@
         "isin": "PLBSK0000017",
         "ticker": null,
         "name": "ING BANK SLASKI SA",
-        "company_id": "ing-bank-slaski-sa",
-        "canonical_name": null
+        "company_id": "instrument-plbsk0000017",
+        "canonical_name": "ING BANK SLASKI SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24562,17 +24818,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding ING BANK SLASKI SA; missing=['ticker', 'exchange']"
+          "warning": "source ISIN PLBSK0000017 is not present in the security master"
         }
       }
     },
@@ -24581,8 +24839,8 @@
         "isin": "FR0000051807",
         "ticker": null,
         "name": "TELEPERFORMANCE PARIS",
-        "company_id": "teleperformance-paris",
-        "canonical_name": null
+        "company_id": "instrument-fr0000051807",
+        "canonical_name": "TELEPERFORMANCE PARIS"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24614,17 +24872,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding TELEPERFORMANCE PARIS; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0000051807 is not present in the security master"
         }
       }
     },
@@ -24633,8 +24893,8 @@
         "isin": "GB0002318888",
         "ticker": null,
         "name": "CRANSWICK PLC",
-        "company_id": "cranswick-plc",
-        "canonical_name": null
+        "company_id": "instrument-gb0002318888",
+        "canonical_name": "CRANSWICK PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24666,17 +24926,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding CRANSWICK PLC; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB0002318888 is not present in the security master"
         }
       }
     },
@@ -24685,8 +24947,8 @@
         "isin": "DE000FTG1111",
         "ticker": null,
         "name": "FLATEXDEGIRO SE",
-        "company_id": "flatexdegiro-se",
-        "canonical_name": null
+        "company_id": "instrument-de000ftg1111",
+        "canonical_name": "FLATEXDEGIRO SE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24718,17 +24980,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding FLATEXDEGIRO SE; missing=['ticker', 'exchange']"
+          "warning": "source ISIN DE000FTG1111 is not present in the security master"
         }
       }
     },
@@ -24881,8 +25145,8 @@
         "isin": "IL0011284465",
         "ticker": null,
         "name": "PLUS500 LTD",
-        "company_id": "plus500-ltd",
-        "canonical_name": null
+        "company_id": "instrument-il0011284465",
+        "canonical_name": "PLUS500 LTD"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -24914,17 +25178,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding PLUS500 LTD; missing=['ticker', 'exchange']"
+          "warning": "source ISIN IL0011284465 is not present in the security master"
         }
       }
     },
@@ -25077,8 +25343,8 @@
         "isin": "FR0013176526",
         "ticker": null,
         "name": "VALEO",
-        "company_id": "valeo",
-        "canonical_name": null
+        "company_id": "instrument-fr0013176526",
+        "canonical_name": "VALEO"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -25110,17 +25376,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding VALEO; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0013176526 is not present in the security master"
         }
       }
     },
@@ -25214,10 +25482,13 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -25889,10 +26160,13 @@
           "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -26527,8 +26801,8 @@
         "isin": "DK0010234467",
         "ticker": null,
         "name": "FLSMIDTH & CO A/S",
-        "company_id": "flsmidth-co-a-s",
-        "canonical_name": null
+        "company_id": "instrument-dk0010234467",
+        "canonical_name": "FLSMIDTH & CO A/S"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -26560,17 +26834,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding FLSMIDTH & CO A/S; missing=['ticker', 'exchange']"
+          "warning": "source ISIN DK0010234467 is not present in the security master"
         }
       }
     },
@@ -27250,9 +27526,9 @@
       "security": {
         "isin": "FR0000121220",
         "ticker": null,
-        "name": "SODEXO SA",
+        "name": "Sodexo SA",
         "company_id": "sodexo-sa",
-        "canonical_name": null
+        "canonical_name": "Sodexo SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -27281,20 +27557,23 @@
           "Sector": "Consumer Discretionary",
           "Country": "France"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SODEXO SA; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -27783,8 +28062,8 @@
         "isin": "GB00B62G9D36",
         "ticker": null,
         "name": "SHAFTESBURY CAPITAL PLC",
-        "company_id": "shaftesbury-capital-plc",
-        "canonical_name": null
+        "company_id": "instrument-gb00b62g9d36",
+        "canonical_name": "SHAFTESBURY CAPITAL PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -27816,17 +28095,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SHAFTESBURY CAPITAL PLC; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB00B62G9D36 is not present in the security master"
         }
       }
     },
@@ -28171,8 +28452,8 @@
         "isin": "GB0002652740",
         "ticker": null,
         "name": "DERWENT LONDON PLC",
-        "company_id": "derwent-london-plc",
-        "canonical_name": null
+        "company_id": "instrument-gb0002652740",
+        "canonical_name": "DERWENT LONDON PLC"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -28204,17 +28485,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding DERWENT LONDON PLC; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB0002652740 is not present in the security master"
         }
       }
     },
@@ -28951,8 +29234,8 @@
         "isin": "NO0012470089",
         "ticker": null,
         "name": "TOMRA SYSTEMS ASA",
-        "company_id": "tomra-systems-asa",
-        "canonical_name": null
+        "company_id": "instrument-no0012470089",
+        "canonical_name": "TOMRA SYSTEMS ASA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -28984,17 +29267,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding TOMRA SYSTEMS ASA; missing=['ticker', 'exchange']"
+          "warning": "source ISIN NO0012470089 is not present in the security master"
         }
       }
     },
@@ -29051,8 +29336,8 @@
         "isin": "ES0105777017",
         "ticker": null,
         "name": "PUIG BRANDS SA-B",
-        "company_id": "puig-brands-sa-b",
-        "canonical_name": null
+        "company_id": "instrument-es0105777017",
+        "canonical_name": "PUIG BRANDS SA-B"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -29084,17 +29369,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding PUIG BRANDS SA-B; missing=['ticker', 'exchange']"
+          "warning": "source ISIN ES0105777017 is not present in the security master"
         }
       }
     },
@@ -29102,9 +29389,9 @@
       "security": {
         "isin": "NO0013697029",
         "ticker": null,
-        "name": "KONGSBERG MARITIME AS",
-        "company_id": "kongsberg-maritime-as",
-        "canonical_name": null
+        "name": "KONGSBERG MARITIME ASA",
+        "company_id": "kongsberg-maritime-asa",
+        "canonical_name": "KONGSBERG MARITIME ASA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -29133,20 +29420,23 @@
           "Sector": "Industrials",
           "Country": "Norway"
         },
-        "enrichment_source": "Amundi",
+        "enrichment_source": "override",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding KONGSBERG MARITIME AS; missing=['ticker', 'exchange']"
+          "warning": null
         }
       }
     },
@@ -29155,8 +29445,8 @@
         "isin": "PLTAURN00011",
         "ticker": null,
         "name": "TAURON POLSKA ENERGIA SA",
-        "company_id": "tauron-polska-energia-sa",
-        "canonical_name": null
+        "company_id": "instrument-pltaurn00011",
+        "canonical_name": "TAURON POLSKA ENERGIA SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -29188,17 +29478,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding TAURON POLSKA ENERGIA SA; missing=['ticker', 'exchange']"
+          "warning": "source ISIN PLTAURN00011 is not present in the security master"
         }
       }
     },
@@ -29399,8 +29691,8 @@
         "isin": "ES0184262212",
         "ticker": null,
         "name": "VISCOFAN SA",
-        "company_id": "viscofan-sa",
-        "canonical_name": null
+        "company_id": "instrument-es0184262212",
+        "canonical_name": "VISCOFAN SA"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -29432,17 +29724,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding VISCOFAN SA; missing=['ticker', 'exchange']"
+          "warning": "source ISIN ES0184262212 is not present in the security master"
         }
       }
     },
@@ -29643,8 +29937,8 @@
         "isin": "FR001400S2Z6",
         "ticker": null,
         "name": "SODEXO PRIME FIDELITE 2029",
-        "company_id": "sodexo-prime-fidelite-2029",
-        "canonical_name": null
+        "company_id": "instrument-fr001400s2z6",
+        "canonical_name": "SODEXO PRIME FIDELITE 2029"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -29676,17 +29970,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SODEXO PRIME FIDELITE 2029; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR001400S2Z6 is not present in the security master"
         }
       }
     },
@@ -29695,8 +29991,8 @@
         "isin": "FR0011532431",
         "ticker": null,
         "name": "SODEXO-ACT PROV PRIME DE FIDELITE",
-        "company_id": "sodexo-act-prov-prime-de-fidelite",
-        "canonical_name": null
+        "company_id": "instrument-fr0011532431",
+        "canonical_name": "SODEXO-ACT PROV PRIME DE FIDELITE"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -29728,17 +30024,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding SODEXO-ACT PROV PRIME DE FIDELITE; missing=['ticker', 'exchange']"
+          "warning": "source ISIN FR0011532431 is not present in the security master"
         }
       }
     },
@@ -29747,8 +30045,8 @@
         "isin": "DE000C758A97",
         "ticker": null,
         "name": "STOXX EUROPE 600 09/26 EUREX",
-        "company_id": "stoxx-europe-600-09-26-eurex",
-        "canonical_name": null
+        "company_id": "instrument-de000c758a97",
+        "canonical_name": "STOXX EUROPE 600 09/26 EUREX"
       },
       "classification": {
         "asset_class": "FUTURE",
@@ -29780,17 +30078,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding STOXX EUROPE 600 09/26 EUREX; missing=['ticker', 'exchange']"
+          "warning": "source ISIN DE000C758A97 is not present in the security master"
         }
       }
     },
@@ -29895,8 +30195,8 @@
         "isin": "GB00B7FC0762",
         "ticker": null,
         "name": "NMC HEALTH PLC DLST",
-        "company_id": "nmc-health-plc-dlst",
-        "canonical_name": null
+        "company_id": "instrument-gb00b7fc0762",
+        "canonical_name": "NMC HEALTH PLC DLST"
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -29928,17 +30228,19 @@
         "enrichment_source": "Amundi",
         "exchange_code": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "isin_only",
+          "matched_by": "source_isin",
           "attempted": [
             "isin",
-            "alias"
+            "alias",
+            "source_isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
-          "warning": "could not fully match holding NMC HEALTH PLC DLST; missing=['ticker', 'exchange']"
+          "warning": "source ISIN GB00B7FC0762 is not present in the security master"
         }
       }
     }
@@ -30061,7 +30363,7 @@
       },
       {
         "ticker": null,
-        "name": "SHELL PLC EUR",
+        "name": "Shell Plc",
         "weight_pct": 1.5888
       },
       {
@@ -30081,12 +30383,12 @@
       },
       {
         "ticker": null,
-        "name": "BANCO SANTANDER SA MADRID",
+        "name": "Banco Santander S.A.",
         "weight_pct": 1.3788
       },
       {
         "ticker": null,
-        "name": "SCHNEIDER ELECT SE",
+        "name": "Schneider Electric SE",
         "weight_pct": 1.3048
       }
     ],

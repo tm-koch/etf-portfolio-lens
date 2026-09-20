@@ -83,4 +83,7 @@ class OverrideRegistry:
             candidates.append(override)
         if not candidates:
             return None
-        return max(candidates, key=lambda item: len(item.match))
+        return max(
+            candidates,
+            key=lambda item: ("isin" in item.match, len(item.match)),
+        )

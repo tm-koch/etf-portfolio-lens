@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T09:20:57.998363+00:00",
+    "generated_at": "2026-09-20T10:30:42.820138+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/261154/ishares-smi-ch-fund/1495092304805.ajax?fileType=csv&fileName=CSSMI_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\CH0008899764.csv",
     "source_format": "csv",
@@ -116,7 +116,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -298,7 +299,7 @@
         "sector": "Consumer Discretionary",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -333,7 +334,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -623,7 +625,7 @@
         "sector": "Health Care",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -658,7 +660,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1106,7 +1109,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1141,7 +1144,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null

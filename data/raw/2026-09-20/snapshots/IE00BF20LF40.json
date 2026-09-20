@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T09:20:47.186529+00:00",
+    "generated_at": "2026-09-20T10:30:31.361842+00:00",
     "source_url": "https://www.ishares.com/ch/professionals/en/products/287746/fund/1495092304805.ajax?fileType=csv&fileName=EUMD_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\IE00BF20LF40.csv",
     "source_format": "csv",
@@ -1356,7 +1356,7 @@
         "sector": "Financials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1391,7 +1391,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -1511,16 +1512,16 @@
       "security": {
         "isin": "CH0102484968",
         "ticker": "BAER",
-        "name": "Julius Baer Gruppe AG",
-        "company_id": "julius-baer-gruppe-ag",
-        "canonical_name": "Julius Baer Gruppe AG"
+        "name": "Julius Baer Group AG",
+        "company_id": "julius-baer-group-ag",
+        "canonical_name": "Julius Baer Group AG"
       },
       "classification": {
         "asset_class": "Equity",
         "sector": "Financials",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -1555,7 +1556,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -2628,7 +2630,7 @@
         "sector": "Information Technology",
         "region": "Europe",
         "country": "Switzerland",
-        "exchange": "SIX Swiss Exchange",
+        "exchange": "SIX",
         "market_currency": "CHF"
       },
       "exposure": {
@@ -2663,7 +2665,8 @@
             "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null

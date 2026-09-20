@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T09:21:01.795994+00:00",
+    "generated_at": "2026-09-20T10:30:46.850978+00:00",
     "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch1447931341-ubs-smi-etf-pd001.html",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\CH1447931341.xls",
     "source_format": "xls",
@@ -56,11 +56,14 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
             "ticker",
-            "exchange"
+            "exchange",
+            "security_master"
           ],
           "warning": null
         }
@@ -289,10 +292,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -567,10 +573,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -856,9 +865,9 @@
       "security": {
         "isin": "CH0025751329",
         "ticker": null,
-        "name": "Logitech International S.A.",
+        "name": "Logitech International SA",
         "company_id": "logitech-international-sa",
-        "canonical_name": "Logitech International S.A."
+        "canonical_name": "Logitech International SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -891,10 +900,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }

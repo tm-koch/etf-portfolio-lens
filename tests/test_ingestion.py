@@ -434,7 +434,7 @@ class IngestionTests(unittest.TestCase):
                 smg["provenance"]["source_fields"]["Securities"],
                 smg["security"]["name"],
             )
-            self.assertEqual("unmatched", smg["provenance"]["match"]["status"])
+            self.assertEqual("isin_only", smg["provenance"]["match"]["status"])
             forbidden_labels = {
                 "This overview shows the portfolio positions. The actual positions of the ETF may deviate from this.",
                 "Source: UBS AG, 07.07.2026",
@@ -1029,6 +1029,52 @@ class IngestionTests(unittest.TestCase):
         self.assertNotEqual("chocoladefabriken-lindt-spruengli-ag", holding.company_id)
         self.assertNotEqual("Chocoladefabriken Lindt & Spruengli AG", holding.name)
         self.assertNotEqual("override", holding.match.matched_by)
+
+    def test_acwd_exact_isin_override_resolves_missing_master_record(self) -> None:
+        holding = normalize_row(
+            {
+                "Ticker": "ADIB",
+                "Name": "ABU DHABI ISLAMIC BANK",
+                "ISIN": "AEA000801018",
+                "Exchange": "ADX",
+            },
+            SecurityMaster(records=[], version="test", warnings=[]),
+            "test",
+            "ishares_csv_v1",
+            overrides=OverrideRegistry.from_json(
+                ROOT / "data" / "security_overrides.json"
+            ),
+        )
+
+        self.assertEqual("AEA000801018", holding.isin)
+        self.assertEqual("Abu Dhabi Islamic Bank", holding.name)
+        self.assertEqual("abu-dhabi-islamic-bank", holding.company_id)
+        self.assertEqual("ABU DHABI ISLAMIC BANK", holding.source_fields["Name"])
+        self.assertEqual("overridden", holding.match.status)
+        self.assertEqual("override", holding.match.matched_by)
+
+    def test_missing_master_isin_is_partial_without_unverified_listing_data(
+        self,
+    ) -> None:
+        holding = normalize_row(
+            {
+                "Ticker": "UNKNOWN",
+                "Name": "Unknown Security",
+                "ISIN": "XX0000000000",
+                "Exchange": "Unknown Exchange",
+            },
+            SecurityMaster(records=[], version="test", warnings=[]),
+            "test",
+            "ishares_csv_v1",
+        )
+
+        self.assertEqual("XX0000000000", holding.isin)
+        self.assertEqual("Unknown Security", holding.name)
+        self.assertEqual("instrument-xx0000000000", holding.company_id)
+        self.assertIsNone(holding.ticker)
+        self.assertIsNone(holding.exchange)
+        self.assertEqual("isin_only", holding.match.status)
+        self.assertEqual("UNKNOWN", holding.source_fields["Ticker"])
 
     def test_lindt_override_applies_after_security_master_adds_isin(self) -> None:
         master = SecurityMaster(

@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T09:21:01.529772+00:00",
+    "generated_at": "2026-09-20T10:30:46.525381+00:00",
     "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch0111762537-ubs-smim-etf-pd001.html",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\CH0111762537.xls",
     "source_format": "xls",
@@ -194,10 +194,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -288,10 +291,13 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "ticker"
+            "ticker",
+            "security_master"
           ],
           "warning": null
         }
@@ -428,7 +434,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -468,13 +475,14 @@
           "Price": "260.6",
           "Weight %": "3.80212"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -612,7 +620,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
@@ -658,7 +667,8 @@
           "status": "overridden",
           "matched_by": "override",
           "attempted": [
-            "isin"
+            "isin",
+            "override:isin"
           ],
           "missing_elements": [],
           "warning": null
