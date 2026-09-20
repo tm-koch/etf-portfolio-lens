@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T10:30:31.361842+00:00",
+    "generated_at": "2026-09-20T11:33:31.928937+00:00",
     "source_url": "https://www.ishares.com/ch/professionals/en/products/287746/fund/1495092304805.ajax?fileType=csv&fileName=EUMD_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\IE00BF20LF40.csv",
     "source_format": "csv",
@@ -58,6 +58,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -114,6 +115,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -168,6 +170,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -224,6 +227,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -278,6 +282,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -294,11 +299,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "GB00BPQY8M80",
         "ticker": "AV.",
-        "name": "AVIVA PLC",
+        "name": "Aviva PLC",
         "company_id": "aviva-plc",
-        "canonical_name": null
+        "canonical_name": "Aviva PLC"
       },
       "classification": {
         "asset_class": "Equity",
@@ -331,30 +336,28 @@
           "Exchange": "London Stock Exchange",
           "Market Currency": "GBP"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
-          "status": "ambiguous",
-          "matched_by": "name",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "name"
+            "isin",
+            "override:holding_name"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "ambiguous name match for AVIVA PLC: 2 candidates"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
     {
       "security": {
-        "isin": null,
+        "isin": "IT0003856405",
         "ticker": "LDO",
-        "name": "LEONARDO FINMECCANICA SPA",
-        "company_id": "leonardo-finmeccanica-spa",
-        "canonical_name": null
+        "name": "Leonardo S.p.A.",
+        "company_id": "leonardo-spa",
+        "canonical_name": "Leonardo S.p.A."
       },
       "classification": {
         "asset_class": "Equity",
@@ -387,20 +390,18 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding LDO; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -445,6 +446,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -501,6 +503,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -556,6 +559,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -611,6 +615,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "IRISH STOCK EXCHANGE - ALL MARKET",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -666,6 +671,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -722,6 +728,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NEW YORK STOCK EXCHANGE INC.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -778,6 +785,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -834,6 +842,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -890,6 +899,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -944,6 +954,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -999,6 +1010,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -1055,6 +1067,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1071,11 +1084,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0021921269",
         "ticker": "SAAB B",
-        "name": "SAAB CLASS B",
-        "company_id": "saab-class-b",
-        "canonical_name": null
+        "name": "Saab AB, Class B",
+        "company_id": "saab-ab",
+        "canonical_name": "Saab AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -1108,20 +1121,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding SAAB B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -1166,6 +1177,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -1220,6 +1232,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1275,6 +1288,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -1329,6 +1343,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "IRISH STOCK EXCHANGE - ALL MARKET",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1384,6 +1399,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -1440,6 +1456,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -1494,6 +1511,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1549,6 +1567,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -1605,6 +1624,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1660,6 +1680,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1715,6 +1736,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1770,6 +1792,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1825,6 +1848,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -1841,11 +1865,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "CH1216478797",
         "ticker": "DSFIR",
-        "name": "DSM FIRMENICH AG",
+        "name": "DSM-Firmenich AG",
         "company_id": "dsm-firmenich-ag",
-        "canonical_name": null
+        "canonical_name": "DSM-Firmenich AG"
       },
       "classification": {
         "asset_class": "Equity",
@@ -1878,20 +1902,18 @@
           "Exchange": "Euronext Amsterdam",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding DSFIR; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -1936,6 +1958,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -1992,6 +2015,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -2048,6 +2072,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "IRISH STOCK EXCHANGE - ALL MARKET",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2064,11 +2089,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0009922164",
         "ticker": "ESSITY B",
-        "name": "ESSITY CLASS B",
-        "company_id": "essity-class-b",
-        "canonical_name": null
+        "name": "Essity AB, Class B",
+        "company_id": "essity-ab",
+        "canonical_name": "Essity AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -2101,20 +2126,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding ESSITY B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -2159,6 +2182,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2214,6 +2238,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -2270,6 +2295,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -2326,6 +2352,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2381,6 +2408,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2436,6 +2464,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2491,6 +2520,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -2547,6 +2577,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "IRISH STOCK EXCHANGE - ALL MARKET",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2602,6 +2633,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -2658,6 +2690,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -2714,6 +2747,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2730,11 +2764,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "IT0005712671",
         "ticker": "TIT",
-        "name": "TELECOM ITALIA",
-        "company_id": "telecom-italia",
-        "canonical_name": null
+        "name": "Telecom Italia S.p.A.",
+        "company_id": "telecom-italia-spa",
+        "canonical_name": "Telecom Italia S.p.A."
       },
       "classification": {
         "asset_class": "Equity",
@@ -2767,20 +2801,18 @@
           "Exchange": "Borsa Italiana",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
-          "status": "ambiguous",
-          "matched_by": "name",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "name"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "ambiguous name match for TELECOM ITALIA: 2 candidates"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -2825,6 +2857,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "WIENER BOERSE AG",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -2881,6 +2914,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -2935,6 +2969,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -2990,6 +3025,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -3005,11 +3041,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "NL0006294274",
         "ticker": "ENX",
-        "name": "EURONEXT NV",
+        "name": "Euronext N.V.",
         "company_id": "euronext-nv",
-        "canonical_name": null
+        "canonical_name": "Euronext N.V."
       },
       "classification": {
         "asset_class": "Equity",
@@ -3042,20 +3078,18 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding ENX; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -3100,6 +3134,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -3155,6 +3190,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -3211,6 +3247,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -3267,6 +3304,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -3322,6 +3360,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -3376,6 +3415,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -3393,11 +3433,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "DK0010181759",
         "ticker": "CARL B",
-        "name": "CARLSBERG AS CL B",
-        "company_id": "carlsberg-as-cl-b",
-        "canonical_name": null
+        "name": "Carlsberg A/S, Class B",
+        "company_id": "carlsberg-as",
+        "canonical_name": "Carlsberg A/S, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -3430,20 +3470,18 @@
           "Exchange": "Omx Nordic Exchange Copenhagen A/S",
           "Market Currency": "DKK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding CARL B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -3488,6 +3526,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -3544,6 +3583,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -3599,6 +3639,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -3655,6 +3696,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -3710,6 +3752,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -3765,6 +3808,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -3780,11 +3824,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "BE0974264930",
         "ticker": "AGS",
-        "name": "AGEAS",
-        "company_id": "ageas",
-        "canonical_name": null
+        "name": "Ageas SA",
+        "company_id": "ageas-sa",
+        "canonical_name": "Ageas SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -3817,20 +3861,18 @@
           "Exchange": "Nyse Euronext - Euronext Brussels",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding AGS; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -3875,6 +3917,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -3931,6 +3974,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -3986,6 +4030,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4041,6 +4086,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4096,6 +4142,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4151,6 +4198,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4206,6 +4254,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4261,6 +4310,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -4317,6 +4367,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4372,6 +4423,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -4428,6 +4480,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -4484,6 +4537,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4500,11 +4554,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "GB0009223206",
         "ticker": "SN.",
-        "name": "SMITH AND NEPHEW PLC",
-        "company_id": "smith-and-nephew-plc",
-        "canonical_name": null
+        "name": "Smith & Nephew plc",
+        "company_id": "smith-nephew-plc",
+        "canonical_name": "Smith & Nephew plc"
       },
       "classification": {
         "asset_class": "Equity",
@@ -4537,20 +4591,24 @@
           "Exchange": "London Stock Exchange",
           "Market Currency": "GBP"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
+            "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "isin"
+            "security_master"
           ],
-          "warning": "could not fully match holding SN.; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -4595,6 +4653,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4611,11 +4670,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "AT0000743059",
         "ticker": "OMV",
-        "name": "OMV",
-        "company_id": "omv",
-        "canonical_name": null
+        "name": "OMV AG",
+        "company_id": "omv-ag",
+        "canonical_name": "OMV AG"
       },
       "classification": {
         "asset_class": "Equity",
@@ -4648,20 +4707,18 @@
           "Exchange": "Wiener Boerse Ag",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "WIENER BOERSE AG",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding OMV; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -4706,6 +4763,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4761,6 +4819,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4816,6 +4875,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -4870,6 +4930,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -4926,6 +4987,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -4981,6 +5043,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5036,6 +5099,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -5092,6 +5156,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -5146,6 +5211,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5201,6 +5267,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -5257,6 +5324,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5312,6 +5380,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5367,6 +5436,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5422,6 +5492,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5477,6 +5548,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5532,6 +5604,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -5549,11 +5622,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "PTGAL0AM0009",
         "ticker": "GALP",
-        "name": "GALP ENERGIA SGPS SA CLASS B",
-        "company_id": "galp-energia-sgps-sa-class-b",
-        "canonical_name": null
+        "name": "Galp Energia, SGPS, S.A.",
+        "company_id": "galp-energia-sgps-sa",
+        "canonical_name": "Galp Energia, SGPS, S.A."
       },
       "classification": {
         "asset_class": "Equity",
@@ -5586,20 +5659,18 @@
           "Exchange": "Nyse Euronext - Euronext Lisbon",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding GALP; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -5644,6 +5715,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -5700,6 +5772,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5755,6 +5828,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -5772,11 +5846,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0014781795",
         "ticker": "ADDT B",
-        "name": "ADDTECH CLASS B",
-        "company_id": "addtech-class-b",
-        "canonical_name": null
+        "name": "Addtech AB (publ), Class B",
+        "company_id": "addtech-ab",
+        "canonical_name": "Addtech AB (publ), Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -5809,20 +5883,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding ADDT B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -5867,6 +5939,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -5922,6 +5995,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -5939,11 +6013,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000108227",
         "ticker": "SKF B",
-        "name": "SKF B",
-        "company_id": "skf-b",
-        "canonical_name": null
+        "name": "AB SKF, Class B",
+        "company_id": "ab-skf",
+        "canonical_name": "AB SKF, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -5976,20 +6050,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding SKF B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -6034,6 +6106,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "WIENER BOERSE AG",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -6089,6 +6162,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -6105,11 +6179,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000190126",
         "ticker": "INDU C",
-        "name": "INDUSTRIVARDEN SERIES",
-        "company_id": "industrivarden-series",
-        "canonical_name": null
+        "name": "Industrivärden, Class C",
+        "company_id": "industrivarden-ab",
+        "canonical_name": "Industrivärden, Class C"
       },
       "classification": {
         "asset_class": "Equity",
@@ -6142,30 +6216,28 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding INDU C; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0005190238",
         "ticker": "TEL2 B",
-        "name": "TELE2 B",
-        "company_id": "tele2-b",
-        "canonical_name": null
+        "name": "Tele2 AB, Class B",
+        "company_id": "tele2-ab",
+        "canonical_name": "Tele2 AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -6198,30 +6270,28 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding TEL2 B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000113250",
         "ticker": "SKA B",
-        "name": "SKANSKA B",
-        "company_id": "skanska-b",
-        "canonical_name": null
+        "name": "Skanska AB, Class B",
+        "company_id": "skanska-ab",
+        "canonical_name": "Skanska AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -6254,20 +6324,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding SKA B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -6312,6 +6380,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -6367,6 +6436,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -6423,6 +6493,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -6477,6 +6548,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -6493,11 +6565,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000114837",
         "ticker": "TREL B",
-        "name": "TRELLEBORG B",
-        "company_id": "trelleborg-b",
-        "canonical_name": null
+        "name": "Trelleborg AB, Class B",
+        "company_id": "trelleborg-ab",
+        "canonical_name": "Trelleborg AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -6530,20 +6602,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding TREL B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -6588,6 +6658,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -6603,11 +6674,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "NL0015002SN0",
         "ticker": "QIA",
-        "name": "QIAGEN",
-        "company_id": "qiagen",
-        "canonical_name": null
+        "name": "Qiagen NV",
+        "company_id": "qiagen-nv",
+        "canonical_name": "Qiagen NV"
       },
       "classification": {
         "asset_class": "Equity",
@@ -6640,20 +6711,18 @@
           "Exchange": "Deutsche Boerse Xetra",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "DEUTSCHE BOERSE XETRA",
+        "venue_discrepancy": "security-master venue label: LSE; provider venue: Deutsche Boerse Xetra / Germany",
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding QIA; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -6698,6 +6767,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -6754,6 +6824,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -6810,6 +6881,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -6827,11 +6899,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "DK0060448595",
         "ticker": "COLO B",
-        "name": "COLOPLAST B",
-        "company_id": "coloplast-b",
-        "canonical_name": null
+        "name": "Coloplast A/S, Class B",
+        "company_id": "coloplast-as",
+        "canonical_name": "Coloplast A/S, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -6864,20 +6936,18 @@
           "Exchange": "Omx Nordic Exchange Copenhagen A/S",
           "Market Currency": "DKK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding COLO B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -6922,6 +6992,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -6977,6 +7048,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7032,6 +7104,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -7088,6 +7161,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7143,6 +7217,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7198,6 +7273,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -7252,6 +7328,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7307,6 +7384,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7362,6 +7440,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7417,6 +7496,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -7471,6 +7551,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7526,6 +7607,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -7541,11 +7623,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000163594",
         "ticker": "SECU B",
-        "name": "SECURITAS B",
-        "company_id": "securitas-b",
-        "canonical_name": null
+        "name": "Securitas AB, Class B",
+        "company_id": "securitas-ab",
+        "canonical_name": "Securitas AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -7578,20 +7660,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding SECU B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -7636,6 +7716,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7691,6 +7772,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7746,6 +7828,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7801,6 +7884,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7817,11 +7901,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0015949201",
         "ticker": "LIFCO B",
-        "name": "LIFCO CLASS B",
-        "company_id": "lifco-class-b",
-        "canonical_name": null
+        "name": "Lifco AB, Class B",
+        "company_id": "lifco-ab",
+        "canonical_name": "Lifco AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -7854,20 +7938,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding LIFCO B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -7912,6 +7994,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -7967,6 +8050,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -8021,6 +8105,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -8076,6 +8161,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -8132,6 +8218,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -8188,6 +8275,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -8242,6 +8330,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -8296,6 +8385,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -8312,11 +8402,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000112724",
         "ticker": "SCA B",
-        "name": "SVENSKA CELLULOSA B",
-        "company_id": "svenska-cellulosa-b",
-        "canonical_name": null
+        "name": "Svenska Cellulosa AB SCA, Class B",
+        "company_id": "svenska-cellulosa-ab-sca",
+        "canonical_name": "Svenska Cellulosa AB SCA, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -8349,20 +8439,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding SCA B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -8407,6 +8495,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -8463,6 +8552,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -8517,6 +8607,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -8533,11 +8624,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "BE0003845626",
         "ticker": "ELI",
-        "name": "ELIA GROUP SA",
-        "company_id": "elia-group-sa",
-        "canonical_name": null
+        "name": "Elia Group SA/NV",
+        "company_id": "elia-group-sa-nv",
+        "canonical_name": "Elia Group SA/NV"
       },
       "classification": {
         "asset_class": "Equity",
@@ -8570,30 +8661,34 @@
           "Exchange": "Nyse Euronext - Euronext Brussels",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
+            "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:holding_name+ticker"
           ],
           "missing_elements": [
-            "isin"
+            "security_master"
           ],
-          "warning": "could not fully match holding ELI; missing=['isin']"
+          "warning": null
         }
       }
     },
     {
       "security": {
-        "isin": null,
+        "isin": "BE0974464977",
         "ticker": "SYENS",
-        "name": "SYENSQO NV",
-        "company_id": "syensqo-nv",
-        "canonical_name": null
+        "name": "Syensqo SA",
+        "company_id": "syensqo-sa",
+        "canonical_name": "Syensqo SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -8626,20 +8721,18 @@
           "Exchange": "Nyse Euronext - Euronext Brussels",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding SYENS; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -8684,6 +8777,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -8700,11 +8794,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "BE0003797140",
         "ticker": "GBLB",
-        "name": "GROUPE BRUXELLES LAMBERT NV",
-        "company_id": "groupe-bruxelles-lambert-nv",
-        "canonical_name": null
+        "name": "Groupe Bruxelles Lambert SA",
+        "company_id": "groupe-bruxelles-lambert-sa",
+        "canonical_name": "Groupe Bruxelles Lambert SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -8737,20 +8831,18 @@
           "Exchange": "Nyse Euronext - Euronext Brussels",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding GBLB; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -8795,6 +8887,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -8849,6 +8942,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -8905,6 +8999,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -8959,6 +9054,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -9014,6 +9110,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -9031,11 +9128,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0015949748",
         "ticker": "BEIJ B",
-        "name": "BEIJER REF CLASS B",
-        "company_id": "beijer-ref-class-b",
-        "canonical_name": null
+        "name": "Beijer Ref AB, Class B",
+        "company_id": "beijer-ref-ab",
+        "canonical_name": "Beijer Ref AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -9068,20 +9165,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding BEIJ B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -9126,6 +9221,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -9182,6 +9278,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -9237,6 +9334,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -9292,6 +9390,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -9347,6 +9446,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -9363,11 +9463,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000107203",
         "ticker": "INDU A",
-        "name": "INDUSTRIVARDEN A",
-        "company_id": "industrivarden-a",
-        "canonical_name": null
+        "name": "Industrivärden, Class A",
+        "company_id": "industrivarden-ab",
+        "canonical_name": "Industrivärden, Class A"
       },
       "classification": {
         "asset_class": "Equity",
@@ -9400,20 +9500,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding INDU A; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -9458,6 +9556,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -9473,11 +9572,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0015988019",
         "ticker": "NIBE B",
-        "name": "NIBE INDUSTRIER CLASS B",
-        "company_id": "nibe-industrier-class-b",
-        "canonical_name": null
+        "name": "NIBE Industrier AB, Class B",
+        "company_id": "nibe-industrier-ab",
+        "canonical_name": "NIBE Industrier AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -9510,20 +9609,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding NIBE B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -9568,6 +9665,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -9623,6 +9721,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -9679,6 +9778,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -9735,6 +9835,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX HELSINKI LTD.",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -9790,6 +9891,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -9846,6 +9948,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -9900,6 +10003,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -9954,6 +10058,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -10010,6 +10115,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -10064,6 +10170,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -10119,6 +10226,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -10174,6 +10282,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -10230,6 +10339,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -10245,11 +10355,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "ES0127797019",
         "ticker": "EDPR",
-        "name": "EDP RENEWABLES SA",
-        "company_id": "edp-renewables-sa",
-        "canonical_name": null
+        "name": "EDP Renováveis, S.A.",
+        "company_id": "edp-renovaveis-sa",
+        "canonical_name": "EDP Renováveis, S.A."
       },
       "classification": {
         "asset_class": "Equity",
@@ -10282,20 +10392,18 @@
           "Exchange": "Nyse Euronext - Euronext Lisbon",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT LISBON",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding EDPR; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -10340,6 +10448,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -10394,6 +10503,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -10449,6 +10559,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -10499,6 +10610,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -10554,6 +10666,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BOLSA DE MADRID",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -10609,6 +10722,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -10663,6 +10777,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -10680,11 +10795,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "LU2290522684",
         "ticker": "INPST",
-        "name": "INPOST SA",
+        "name": "InPost S.A.",
         "company_id": "inpost-sa",
-        "canonical_name": null
+        "canonical_name": "InPost S.A."
       },
       "classification": {
         "asset_class": "Equity",
@@ -10717,20 +10832,18 @@
           "Exchange": "Euronext Amsterdam",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding INPST; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -10775,6 +10888,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -10831,6 +10945,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "NYSE EURONEXT - EURONEXT BRUSSELS",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -10848,11 +10963,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0000108847",
         "ticker": "LUND B",
-        "name": "LUNDBERGFORETAGEN CLASS B",
-        "company_id": "lundbergforetagen-class-b",
-        "canonical_name": null
+        "name": "Lundbergföretagen, Class B",
+        "company_id": "lundbergforetagen-ab",
+        "canonical_name": "Lundbergföretagen, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -10885,30 +11000,28 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding LUND B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
     {
       "security": {
-        "isin": null,
+        "isin": "FR0010340141",
         "ticker": "ADP",
-        "name": "AEROPORTS DE PARIS SA",
+        "name": "Aéroports de Paris SA",
         "company_id": "aeroports-de-paris-sa",
-        "canonical_name": null
+        "canonical_name": "Aéroports de Paris SA"
       },
       "classification": {
         "asset_class": "Equity",
@@ -10941,20 +11054,18 @@
           "Exchange": "Nyse Euronext - Euronext Paris",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
-          "status": "ambiguous",
-          "matched_by": "name",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "name"
+            "isin",
+            "override:holding_name"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "ambiguous name match for AEROPORTS DE PARIS SA: 2 candidates"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -10999,6 +11110,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -11016,11 +11128,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0028329433",
         "ticker": "OCTV SDB",
-        "name": "OCTAVE INTELLIGENCE SDR PLC",
-        "company_id": "octave-intelligence-sdr-plc",
-        "canonical_name": null
+        "name": "Octave Intelligence PLC Shs Swedish Depository Receipt Repr 1 Sh",
+        "company_id": "octave-intelligence-plc-shs-swedish-depository-receipt-repr-1-sh",
+        "canonical_name": "Octave Intelligence PLC Shs Swedish Depository Receipt Repr 1 Sh"
       },
       "classification": {
         "asset_class": "Equity",
@@ -11053,30 +11165,34 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
+            "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:isin"
           ],
           "missing_elements": [
-            "isin"
+            "security_master"
           ],
-          "warning": "could not fully match holding OCTV SDB; missing=['isin']"
+          "warning": null
         }
       }
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0017832488",
         "ticker": "BALD B",
-        "name": "FASTIGHETS BALDER CLASS B",
-        "company_id": "fastighets-balder-class-b",
-        "canonical_name": null
+        "name": "Fastighets AB Balder, Class B",
+        "company_id": "fastighets-ab-balder",
+        "canonical_name": "Fastighets AB Balder, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -11109,20 +11225,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding BALD B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -11167,6 +11281,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -11223,6 +11338,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -11278,6 +11394,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -11332,6 +11449,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "XETRA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -11349,11 +11467,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0015193875",
         "ticker": "SAGA B",
-        "name": "SAGAX CLASS B",
-        "company_id": "sagax-class-b",
-        "canonical_name": null
+        "name": "Sagax AB, Class B",
+        "company_id": "sagax-ab",
+        "canonical_name": "Sagax AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -11386,20 +11504,24 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
+            "isin",
             "ticker+exchange",
             "ticker",
-            "alias"
+            "alias",
+            "source_isin",
+            "override:holding_name+ticker"
           ],
           "missing_elements": [
-            "isin"
+            "security_master"
           ],
-          "warning": "could not fully match holding SAGA B; missing=['isin']"
+          "warning": null
         }
       }
     },
@@ -11444,6 +11566,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "OSLO BORS ASA",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -11500,6 +11623,7 @@
         },
         "enrichment_source": "iShares",
         "exchange_code": "EURONEXT AMSTERDAM",
+        "venue_discrepancy": null,
         "match": {
           "status": "ambiguous",
           "matched_by": "ticker",
@@ -11556,6 +11680,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -11611,6 +11736,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "BORSA ITALIANA",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "alias",
@@ -11667,6 +11793,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -11722,6 +11849,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LONDON STOCK EXCHANGE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -11777,6 +11905,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker+exchange",
@@ -11792,11 +11921,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "DK0010219153",
         "ticker": "ROCK B",
-        "name": "ROCKWOOL CLASS B",
-        "company_id": "rockwool-class-b",
-        "canonical_name": null
+        "name": "Rockwool A/S, Class B",
+        "company_id": "rockwool-as",
+        "canonical_name": "Rockwool A/S, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -11829,20 +11958,18 @@
           "Exchange": "Omx Nordic Exchange Copenhagen A/S",
           "Market Currency": "DKK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "OMX NORDIC EXCHANGE COPENHAGEN A/S",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding ROCK B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -11887,6 +12014,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -11903,11 +12031,11 @@
     },
     {
       "security": {
-        "isin": null,
+        "isin": "SE0010100958",
         "ticker": "LATO B",
-        "name": "LATOUR INVESTMENT CLASS B",
-        "company_id": "latour-investment-class-b",
-        "canonical_name": null
+        "name": "Latour AB, Class B",
+        "company_id": "latour-ab",
+        "canonical_name": "Latour AB, Class B"
       },
       "classification": {
         "asset_class": "Equity",
@@ -11940,20 +12068,18 @@
           "Exchange": "Nasdaq Omx Nordic",
           "Market Currency": "SEK"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "override+security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
-          "matched_by": null,
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "isin",
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding LATO B; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -11998,6 +12124,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NYSE EURONEXT - EURONEXT PARIS",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "ticker",
@@ -12053,6 +12180,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "NASDAQ OMX NORDIC",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "name",
@@ -12073,12 +12201,12 @@
         "isin": null,
         "ticker": "ICSEAGD",
         "name": "BLK ICS EUR LIQ FUND AGEN ACC T0",
-        "company_id": "blk-ics-eur-liq-fund-agen-acc-t0",
+        "company_id": null,
         "canonical_name": null
       },
       "classification": {
         "asset_class": "Money Market",
-        "sector": "Unknown",
+        "sector": "Cash and/or Derivatives",
         "region": "Europe",
         "country": "Ireland",
         "exchange": "-",
@@ -12107,20 +12235,17 @@
           "Exchange": "-",
           "Market Currency": "EUR"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
+          "status": "excluded",
           "matched_by": null,
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding ICSEAGD; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -12165,6 +12290,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12215,6 +12341,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12265,6 +12392,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12279,12 +12407,12 @@
         "isin": null,
         "ticker": "ICSSAGD",
         "name": "BLK ICS GBP LIQ AGENCY DIS",
-        "company_id": "blk-ics-gbp-liq-agency-dis",
+        "company_id": null,
         "canonical_name": null
       },
       "classification": {
         "asset_class": "Money Market",
-        "sector": "Unknown",
+        "sector": "Cash and/or Derivatives",
         "region": "Europe",
         "country": "Ireland",
         "exchange": "-",
@@ -12313,20 +12441,17 @@
           "Exchange": "-",
           "Market Currency": "GBP"
         },
-        "enrichment_source": "iShares",
+        "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
-          "status": "unmatched",
+          "status": "excluded",
           "matched_by": null,
           "attempted": [
-            "ticker+exchange",
-            "ticker",
-            "alias"
+            "override:holding_name+ticker"
           ],
-          "missing_elements": [
-            "isin"
-          ],
-          "warning": "could not fully match holding ICSSAGD; missing=['isin']"
+          "missing_elements": [],
+          "warning": null
         }
       }
     },
@@ -12371,6 +12496,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12421,6 +12547,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12471,6 +12598,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12521,6 +12649,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "-",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12571,6 +12700,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "EUREX DEUTSCHLAND",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12621,6 +12751,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "EUREX DEUTSCHLAND",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12671,6 +12802,7 @@
         },
         "enrichment_source": "provider_classification",
         "exchange_code": "EUREX DEUTSCHLAND",
+        "venue_discrepancy": null,
         "match": {
           "status": "excluded",
           "matched_by": null,
@@ -12729,7 +12861,11 @@
       },
       {
         "name": "Unknown",
-        "weight_pct": 0.36
+        "weight_pct": 0.27
+      },
+      {
+        "name": "Cash and/or Derivatives",
+        "weight_pct": 0.09
       }
     ],
     "region_weights": [
@@ -12804,12 +12940,12 @@
       },
       {
         "ticker": "AV.",
-        "name": "AVIVA PLC",
+        "name": "Aviva PLC",
         "weight_pct": 1.17
       },
       {
         "ticker": "LDO",
-        "name": "LEONARDO FINMECCANICA SPA",
+        "name": "Leonardo S.p.A.",
         "weight_pct": 1.13
       },
       {

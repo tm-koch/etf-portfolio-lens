@@ -62,6 +62,7 @@ class NormalizedHolding:
     price: float | None = None
     source_fields: dict[str, Any] = field(default_factory=dict)
     enrichment_source: str | None = None
+    venue_discrepancy: str | None = None
     match: MatchDiagnostics | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -93,6 +94,7 @@ class NormalizedHolding:
                 "source_fields": self.source_fields,
                 "enrichment_source": self.enrichment_source,
                 "exchange_code": self.exchange_code,
+                "venue_discrepancy": self.venue_discrepancy,
                 "match": self.match.to_dict() if self.match else None,
             },
         }

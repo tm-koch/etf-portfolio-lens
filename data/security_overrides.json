@@ -2652,6 +2652,182 @@
         "company_id": "kongsberg-maritime-asa",
         "canonical_name": "KONGSBERG MARITIME ASA"
       }
+    },
+    {
+      "match": { "ticker": "ACS.D", "holding_name": "ACS ACTIVIDADES DE CONSTRUCCION Y" },
+      "set": { "isin": "ES0167050915", "company_id": "acs-actividades-de-construccion-y-servicios-sa", "canonical_name": "ACS, Actividades de Construcción y Servicios, S.A." }
+    },
+    {
+      "match": { "ticker": "ADDT B", "holding_name": "ADDTECH CLASS B" },
+      "set": { "isin": "SE0014781795", "company_id": "addtech-ab", "canonical_name": "Addtech AB (publ), Class B" }
+    },
+    {
+      "match": { "ticker": "BALD B", "holding_name": "FASTIGHETS BALDER CLASS B" },
+      "set": { "isin": "SE0017832488", "company_id": "fastighets-ab-balder", "canonical_name": "Fastighets AB Balder, Class B" }
+    },
+    {
+      "match": { "ticker": "BEIJ B", "holding_name": "BEIJER REF CLASS B" },
+      "set": { "isin": "SE0015949748", "company_id": "beijer-ref-ab", "canonical_name": "Beijer Ref AB, Class B" }
+    },
+    {
+      "match": { "ticker": "CARL B", "holding_name": "CARLSBERG AS CL B" },
+      "set": { "isin": "DK0010181759", "company_id": "carlsberg-as", "canonical_name": "Carlsberg A/S, Class B" }
+    },
+    {
+      "match": { "ticker": "COLO B", "holding_name": "COLOPLAST B" },
+      "set": { "isin": "DK0060448595", "company_id": "coloplast-as", "canonical_name": "Coloplast A/S, Class B" }
+    },
+    {
+      "match": { "ticker": "EDPR", "holding_name": "EDP RENEWABLES SA" },
+      "set": { "isin": "ES0127797019", "company_id": "edp-renovaveis-sa", "canonical_name": "EDP Renováveis, S.A." }
+    },
+    {
+      "match": { "ticker": "ELI", "holding_name": "ELIA GROUP SA" },
+      "set": { "isin": "BE0003845626", "company_id": "elia-group-sa-nv", "canonical_name": "Elia Group SA/NV" }
+    },
+    {
+      "match": { "ticker": "ENX", "holding_name": "EURONEXT NV" },
+      "set": { "isin": "NL0006294274", "company_id": "euronext-nv", "canonical_name": "Euronext N.V." }
+    },
+    {
+      "match": { "ticker": "ESSITY B", "holding_name": "ESSITY CLASS B" },
+      "set": { "isin": "SE0009922164", "company_id": "essity-ab", "canonical_name": "Essity AB, Class B" }
+    },
+    {
+      "match": { "ticker": "GALP", "holding_name": "GALP ENERGIA SGPS SA CLASS B" },
+      "set": { "isin": "PTGAL0AM0009", "company_id": "galp-energia-sgps-sa", "canonical_name": "Galp Energia, SGPS, S.A." }
+    },
+    {
+      "match": { "ticker": "GBLB", "holding_name": "GROUPE BRUXELLES LAMBERT NV" },
+      "set": { "isin": "BE0003797140", "company_id": "groupe-bruxelles-lambert-sa", "canonical_name": "Groupe Bruxelles Lambert SA" }
+    },
+    {
+      "match": { "ticker": "INDU A", "holding_name": "INDUSTRIVARDEN A" },
+      "set": { "isin": "SE0000107203", "company_id": "industrivarden-ab", "canonical_name": "Industrivärden, Class A" }
+    },
+    {
+      "match": { "ticker": "INDU C", "holding_name": "INDUSTRIVARDEN SERIES" },
+      "set": { "isin": "SE0000190126", "company_id": "industrivarden-ab", "canonical_name": "Industrivärden, Class C" }
+    },
+    {
+      "match": { "ticker": "LDO", "holding_name": "LEONARDO FINMECCANICA SPA" },
+      "set": { "isin": "IT0003856405", "company_id": "leonardo-spa", "canonical_name": "Leonardo S.p.A." }
+    },
+    {
+      "match": { "ticker": "LATO B", "holding_name": "LATOUR INVESTMENT CLASS B" },
+      "set": { "isin": "SE0010100958", "company_id": "latour-ab", "canonical_name": "Latour AB, Class B" }
+    },
+    {
+      "match": { "ticker": "LIFCO B", "holding_name": "LIFCO CLASS B" },
+      "set": { "isin": "SE0015949201", "company_id": "lifco-ab", "canonical_name": "Lifco AB, Class B" }
+    },
+    {
+      "match": { "ticker": "LUND B", "holding_name": "LUNDBERGFORETAGEN CLASS B" },
+      "set": { "isin": "SE0000108847", "company_id": "lundbergforetagen-ab", "canonical_name": "Lundbergföretagen, Class B" }
+    },
+    {
+      "match": { "ticker": "NIBE B", "holding_name": "NIBE INDUSTRIER CLASS B" },
+      "set": { "isin": "SE0015988019", "company_id": "nibe-industrier-ab", "canonical_name": "NIBE Industrier AB, Class B" }
+    },
+    {
+      "match": { "ticker": "OMV", "holding_name": "OMV AG" },
+      "set": { "isin": "AT0000743059", "company_id": "omv-ag", "canonical_name": "OMV AG" }
+    },
+    {
+      "match": { "ticker": "ROCK B", "holding_name": "ROCKWOOL CLASS B" },
+      "set": { "isin": "DK0010219153", "company_id": "rockwool-as", "canonical_name": "Rockwool A/S, Class B" }
+    },
+    {
+      "match": { "ticker": "SAAB B", "holding_name": "SAAB CLASS B" },
+      "set": { "isin": "SE0021921269", "company_id": "saab-ab", "canonical_name": "Saab AB, Class B" }
+    },
+    {
+      "match": { "ticker": "SAGA B", "holding_name": "SAGAX CLASS B" },
+      "set": { "isin": "SE0015193875", "company_id": "sagax-ab", "canonical_name": "Sagax AB, Class B" }
+    },
+    {
+      "match": { "ticker": "SCA B", "holding_name": "SVENSKA CELLULOSA B" },
+      "set": { "isin": "SE0000112724", "company_id": "svenska-cellulosa-ab-sca", "canonical_name": "Svenska Cellulosa AB SCA, Class B" }
+    },
+    {
+      "match": { "ticker": "SECU B", "holding_name": "SECURITAS B" },
+      "set": { "isin": "SE0000163594", "company_id": "securitas-ab", "canonical_name": "Securitas AB, Class B" }
+    },
+    {
+      "match": { "ticker": "SKA B", "holding_name": "SKANSKA B" },
+      "set": { "isin": "SE0000113250", "company_id": "skanska-ab", "canonical_name": "Skanska AB, Class B" }
+    },
+    {
+      "match": { "ticker": "SKF B", "holding_name": "SKF B" },
+      "set": { "isin": "SE0000108227", "company_id": "ab-skf", "canonical_name": "AB SKF, Class B" }
+    },
+    {
+      "match": { "ticker": "SYENS", "holding_name": "SYENSQO NV" },
+      "set": { "isin": "BE0974464977", "company_id": "syensqo-sa", "canonical_name": "Syensqo SA" }
+    },
+    {
+      "match": { "ticker": "TEL2 B", "holding_name": "TELE2 B" },
+      "set": { "isin": "SE0005190238", "company_id": "tele2-ab", "canonical_name": "Tele2 AB, Class B" }
+    },
+    {
+      "match": { "ticker": "TREL B", "holding_name": "TRELLEBORG B" },
+      "set": { "isin": "SE0000114837", "company_id": "trelleborg-ab", "canonical_name": "Trelleborg AB, Class B" }
+    },
+    {
+      "match": { "ticker": "AGS", "holding_name": "AGEAS SA" },
+      "set": { "isin": "BE0974264930", "company_id": "ageas-sa", "canonical_name": "Ageas SA" }
+    },
+    {
+      "match": { "ticker": "DSFIR", "holding_name": "DSM FIRMENICH AG" },
+      "set": { "isin": "CH1216478797", "company_id": "dsm-firmenich-ag", "canonical_name": "DSM-Firmenich AG" }
+    },
+    {
+      "match": { "ticker": "INPST", "holding_name": "INPOST SA" },
+      "set": { "isin": "LU2290522684", "company_id": "inpost-sa", "canonical_name": "InPost S.A." }
+    },
+    {
+      "match": { "ticker": "OCTV SDB", "holding_name": "OCTAVE INTELLIGENCE SDR PLC" },
+      "set": { "isin": "SE0028329433", "company_id": "octave-intelligence-plc-shs-swedish-depository-receipt-repr-1-sh", "canonical_name": "Octave Intelligence PLC Shs Swedish Depository Receipt Repr 1 Sh" }
+    },
+    {
+      "match": { "ticker": "QIA", "holding_name": "QIAGEN NV" },
+      "set": { "isin": "NL0015002SN0", "company_id": "qiagen-nv", "canonical_name": "Qiagen NV", "venue_discrepancy": "security-master venue label: LSE; provider venue: Deutsche Boerse Xetra / Germany" }
+    },
+    {
+      "match": { "ticker": "SN.", "holding_name": "SMITH AND NEPHEW PLC" },
+      "set": { "isin": "GB0009223206", "company_id": "smith-nephew-plc", "canonical_name": "Smith & Nephew plc" }
+    },
+    {
+      "match": { "ticker": "AGS", "holding_name": "AGEAS" },
+      "set": { "isin": "BE0974264930", "company_id": "ageas-sa", "canonical_name": "Ageas SA" }
+    },
+    {
+      "match": { "ticker": "OMV", "holding_name": "OMV" },
+      "set": { "isin": "AT0000743059", "company_id": "omv-ag", "canonical_name": "OMV AG" }
+    },
+    {
+      "match": { "ticker": "QIA", "holding_name": "QIAGEN" },
+      "set": { "isin": "NL0015002SN0", "company_id": "qiagen-nv", "canonical_name": "Qiagen NV", "venue_discrepancy": "security-master venue label: LSE; provider venue: Deutsche Boerse Xetra / Germany" }
+    },
+    {
+      "match": { "ticker": "ICSEAGD", "holding_name": "BLK ICS EUR LIQ FUND AGEN ACC T0" },
+      "set": { "asset_class": "Money Market", "sector": "Cash and/or Derivatives" }
+    },
+    {
+      "match": { "ticker": "ICSSAGD", "holding_name": "BLK ICS GBP LIQ AGENCY DIS" },
+      "set": { "asset_class": "Money Market", "sector": "Cash and/or Derivatives" }
+    },
+    {
+      "match": { "holding_name": "AVIVA PLC" },
+      "set": { "isin": "GB00BPQY8M80", "company_id": "aviva-plc", "canonical_name": "Aviva PLC" }
+    },
+    {
+      "match": { "ticker": "TIT", "holding_name": "TELECOM ITALIA" },
+      "set": { "isin": "IT0005712671", "company_id": "telecom-italia-spa", "canonical_name": "Telecom Italia S.p.A." }
+    },
+    {
+      "match": { "holding_name": "AEROPORTS DE PARIS SA" },
+      "set": { "isin": "FR0010340141", "company_id": "aeroports-de-paris-sa", "canonical_name": "Aéroports de Paris SA" }
     }
   ]
 }

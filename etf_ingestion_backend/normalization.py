@@ -297,10 +297,13 @@ def normalize_row(
         holding.enrichment_source = (
             "override+security_master" if match and match.record else "override"
         )
-        holding.match.status = "overridden"
-        holding.match.matched_by = "override"
+        if non_company_holding:
+            holding.enrichment_source = "provider_classification"
+        else:
+            holding.match.status = "overridden"
+            holding.match.matched_by = "override"
         holding.match.attempted.append("override:" + "+".join(sorted(override.match)))
-        if complete_override:
+        if complete_override and not non_company_holding:
             holding.match.warning = None
     if holding.canonical_name:
         holding.name = holding.canonical_name

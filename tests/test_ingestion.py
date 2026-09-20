@@ -1784,6 +1784,89 @@ class IngestionTests(unittest.TestCase):
 
             aggregate_holdings([holding])
 
+    def test_reviewed_missing_isin_overrides_resolve_provider_variants(self) -> None:
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+        rows = [
+            ("AGS", "AGEAS", "BE0974264930", "Ageas SA"),
+            ("INPST", "INPOST SA", "LU2290522684", "InPost S.A."),
+            ("QIA", "QIAGEN", "NL0015002SN0", "Qiagen NV"),
+            ("SN.", "SMITH AND NEPHEW PLC", "GB0009223206", "Smith & Nephew plc"),
+        ]
+
+        holdings = [
+            normalize_row(
+                {
+                    "Ticker": ticker,
+                    "Name": name,
+                    "Exchange": "Test",
+                    "Location": "Test",
+                },
+                SecurityMaster(records=[], version="test", warnings=[]),
+                "test",
+                "ishares_csv_v1",
+                overrides=overrides,
+            )
+            for ticker, name, _, _ in rows
+        ]
+
+        self.assertEqual(
+            [row[2] for row in rows], [holding.isin for holding in holdings]
+        )
+        self.assertEqual(
+            [row[3] for row in rows], [holding.name for holding in holdings]
+        )
+        self.assertTrue(all(holding.source_fields for holding in holdings))
+
+    def test_qia_retains_provider_venue_and_master_discrepancy(self) -> None:
+        holding = normalize_row(
+            {
+                "Ticker": "QIA",
+                "Name": "QIAGEN NV",
+                "Exchange": "Deutsche Boerse Xetra",
+                "Location": "Germany",
+                "Sector": "Health Care",
+                "Asset Class": "Equity",
+            },
+            SecurityMaster(records=[], version="test", warnings=[]),
+            "test",
+            "ishares_csv_v1",
+            overrides=OverrideRegistry.from_json(
+                ROOT / "data" / "security_overrides.json"
+            ),
+        )
+
+        self.assertEqual("NL0015002SN0", holding.isin)
+        self.assertEqual("Deutsche Boerse Xetra", holding.exchange)
+        self.assertEqual("Germany", holding.country)
+        self.assertIn("LSE", holding.venue_discrepancy)
+
+    def test_reviewed_liquidity_funds_are_excluded_without_company_identity(
+        self,
+    ) -> None:
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+        for ticker, name in (
+            ("ICSEAGD", "BLK ICS EUR LIQ FUND AGEN ACC T0"),
+            ("ICSSAGD", "BLK ICS GBP LIQ AGENCY DIS"),
+        ):
+            holding = normalize_row(
+                {
+                    "Ticker": ticker,
+                    "Name": name,
+                    "Sector": "Cash and/or Derivatives",
+                    "Asset Class": "Money Market",
+                },
+                SecurityMaster(records=[], version="test", warnings=[]),
+                "test",
+                "ishares_csv_v1",
+                overrides=overrides,
+            )
+            self.assertEqual("excluded", holding.match.status)
+            self.assertIsNone(holding.company_id)
+
 
 if __name__ == "__main__":
     unittest.main()

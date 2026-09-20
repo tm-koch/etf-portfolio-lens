@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T10:30:46.104491+00:00",
+    "generated_at": "2026-09-20T11:33:43.719240+00:00",
     "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ch1553162921-ubs-spi-extra-etf-pd001.html",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\CH1553162921.xls",
     "source_format": "xls",
@@ -52,6 +52,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -98,6 +99,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -144,6 +146,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -190,6 +193,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -236,6 +240,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -287,6 +292,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -333,6 +339,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -384,6 +391,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -430,6 +438,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -476,6 +485,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -523,6 +533,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -570,6 +581,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -616,6 +628,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -663,6 +676,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -709,6 +723,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -755,6 +770,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -801,6 +817,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -848,6 +865,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -894,6 +912,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -940,6 +959,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -986,6 +1006,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1032,6 +1053,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1078,6 +1100,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1124,6 +1147,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1170,6 +1194,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1216,6 +1241,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1262,6 +1288,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1308,6 +1335,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1354,6 +1382,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1400,6 +1429,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1446,6 +1476,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1492,6 +1523,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1538,6 +1570,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1584,6 +1617,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1630,6 +1664,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -1681,6 +1716,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1727,6 +1763,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -1778,6 +1815,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1824,6 +1862,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1870,6 +1909,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1916,6 +1956,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -1962,6 +2003,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2008,6 +2050,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2054,6 +2097,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2100,6 +2144,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2146,6 +2191,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2192,6 +2238,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2238,6 +2285,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2284,6 +2332,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2330,6 +2379,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2376,6 +2426,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2422,6 +2473,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2468,6 +2520,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "VSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -2515,6 +2568,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2561,6 +2615,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2607,6 +2662,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2653,6 +2709,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2699,6 +2756,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2745,6 +2803,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2791,6 +2850,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -2842,6 +2902,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2888,6 +2949,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2934,6 +2996,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -2980,6 +3043,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3026,6 +3090,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3072,6 +3137,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -3123,6 +3189,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3169,6 +3236,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3215,6 +3283,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3261,6 +3330,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -3312,6 +3382,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3358,6 +3429,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3404,6 +3476,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3450,6 +3523,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3496,6 +3570,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3542,6 +3617,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3588,6 +3664,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3634,6 +3711,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3680,6 +3758,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3726,6 +3805,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -3778,6 +3858,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -3829,6 +3910,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3875,6 +3957,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -3926,6 +4009,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -3972,6 +4056,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4018,6 +4103,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4064,6 +4150,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4110,6 +4197,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4156,6 +4244,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4202,6 +4291,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4248,6 +4338,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4294,6 +4385,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -4345,6 +4437,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4391,6 +4484,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4437,6 +4531,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -4484,6 +4579,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4530,6 +4626,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4576,6 +4673,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -4628,6 +4726,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -4680,6 +4779,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4726,6 +4826,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -4778,6 +4879,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4824,6 +4926,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4870,6 +4973,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -4922,6 +5026,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -4968,6 +5073,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -5020,6 +5126,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5066,6 +5173,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5112,6 +5220,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -5164,6 +5273,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5210,6 +5320,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5256,6 +5367,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5302,6 +5414,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5348,6 +5461,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5394,6 +5508,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5440,6 +5555,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5486,6 +5602,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5532,6 +5649,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5578,6 +5696,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5624,6 +5743,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5670,6 +5790,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "VSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5716,6 +5837,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5762,6 +5884,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5808,6 +5931,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5854,6 +5978,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5900,6 +6025,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5946,6 +6072,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -5992,6 +6119,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6038,6 +6166,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -6090,6 +6219,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6136,6 +6266,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6182,6 +6313,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -6229,6 +6361,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6275,6 +6408,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6321,6 +6455,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -6373,6 +6508,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6419,6 +6555,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6465,6 +6602,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6511,6 +6649,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6557,6 +6696,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -6609,6 +6749,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6655,6 +6796,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6701,6 +6843,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6747,6 +6890,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6793,6 +6937,7 @@
         },
         "enrichment_source": "UBS",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "isin_only",
           "matched_by": "source_isin",
@@ -6844,6 +6989,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6890,6 +7036,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6936,6 +7083,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -6982,6 +7130,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7028,6 +7177,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7074,6 +7224,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7120,6 +7271,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7166,6 +7318,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7212,6 +7365,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7258,6 +7412,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7304,6 +7459,7 @@
         },
         "enrichment_source": "override+security_master",
         "exchange_code": "LSE",
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -7351,6 +7507,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7397,6 +7554,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7443,6 +7601,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7489,6 +7648,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7535,6 +7695,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7581,6 +7742,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7627,6 +7789,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7673,6 +7836,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -7725,6 +7889,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7771,6 +7936,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7817,6 +7983,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -7869,6 +8036,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7915,6 +8083,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -7961,6 +8130,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -8007,6 +8177,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -8059,6 +8230,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -8105,6 +8277,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -8151,6 +8324,7 @@
         },
         "enrichment_source": "override",
         "exchange_code": null,
+        "venue_discrepancy": null,
         "match": {
           "status": "overridden",
           "matched_by": "override",
@@ -8203,6 +8377,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -8249,6 +8424,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -8295,6 +8471,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -8341,6 +8518,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
@@ -8387,6 +8565,7 @@
         },
         "enrichment_source": "security_master",
         "exchange_code": "SIX",
+        "venue_discrepancy": null,
         "match": {
           "status": "matched",
           "matched_by": "isin",
