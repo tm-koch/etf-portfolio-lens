@@ -1082,6 +1082,14 @@ body {
   cursor: pointer;
 }
 
+.catalog-item button[data-state='added'] {
+  border: 2px solid var(--accent) !important;
+  color: var(--accent) !important;
+  background: #ffffff !important;
+  cursor: default;
+  opacity: 1;
+}
+
 .remove-button {
   display: inline-flex;
   align-items: center;

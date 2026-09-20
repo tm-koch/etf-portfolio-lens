@@ -1149,7 +1149,7 @@ function renderCatalog() {
               <strong>${entry.name}</strong>
               <span>${entry.ticker} · ${entry.isin} · ${entry.provider}</span>
             </div>
-            <button type="button" data-add-etf="${entry.isin}" ${selected ? 'disabled' : ''}>
+            <button type="button" data-add-etf="${entry.isin}"${selected ? ' data-state="added" disabled' : ''}>
               ${selected ? 'Added' : 'Add'}
             </button>
           </div>

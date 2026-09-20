@@ -667,6 +667,27 @@ class WebContractTests(unittest.TestCase):
         )
         self.assertIn(".company-search-clear[hidden]", styles)
 
+    def test_added_catalog_button_uses_outlined_status_presentation(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "const selected = state.portfolio.some((position) => position.isin === entry.isin);",
+            app,
+        )
+        self.assertIn('data-state="added" disabled', app)
+        self.assertIn("${selected ? 'Added' : 'Add'}", app)
+        self.assertIn("function addPosition(isin)", app)
+        self.assertIn(
+            "if (state.portfolio.some((position) => position.isin === isin)) {",
+            app,
+        )
+        self.assertIn(".catalog-item button[data-state='added']", styles)
+        self.assertIn("border: 2px solid var(--accent) !important;", styles)
+        self.assertIn("color: var(--accent) !important;", styles)
+        self.assertIn("background: #ffffff !important;", styles)
+        self.assertIn("opacity: 1;", styles)
+
     def test_saxo_pdf_import_contract_covers_review_and_value_weighting(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
