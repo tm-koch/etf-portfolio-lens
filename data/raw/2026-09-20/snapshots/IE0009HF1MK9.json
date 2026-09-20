@@ -14,7 +14,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T08:28:41.305409+00:00",
+    "generated_at": "2026-09-20T08:50:28.547881+00:00",
     "source_url": "https://www.amundietf.ch/en/professional/products/equity/amundi-prime-all-country-world-ucits-etf-dist/ie0009hf1mk9",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\IE0009HF1MK9.xlsx",
     "source_format": "xlsx",
@@ -265,9 +265,9 @@
       "security": {
         "isin": "TW0002330008",
         "ticker": "2330",
-        "name": "台灣積體電路製造股份有限公司",
-        "company_id": "instrument-tw0002330008",
-        "canonical_name": "台灣積體電路製造股份有限公司"
+        "name": "Taiwan Semiconductor Manufacturing Co.",
+        "company_id": "taiwan-semiconductor-manufacturing-co",
+        "canonical_name": "Taiwan Semiconductor Manufacturing Co."
       },
       "classification": {
         "asset_class": "EQUITY",
@@ -296,11 +296,11 @@
           "Sector": "Information Technology",
           "Country": "Taiwan"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "TWSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
@@ -164691,7 +164691,7 @@
       },
       {
         "ticker": "2330",
-        "name": "台灣積體電路製造股份有限公司",
+        "name": "Taiwan Semiconductor Manufacturing Co.",
         "weight_pct": 1.7355
       },
       {

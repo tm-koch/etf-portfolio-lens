@@ -1373,6 +1373,94 @@ class IngestionTests(unittest.TestCase):
         self.assertEqual("overridden", holding.match.status)
         self.assertEqual(source_row, holding.source_fields)
 
+    def test_tsmc_override_uses_english_alias_and_preserves_source_fields(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    "2330",
+                    "台灣積體電路製造股份有限公司",
+                    "TWSE",
+                    "Information Technology",
+                    "Stock",
+                    "Taiwan",
+                    "TW",
+                    "TW0002330008",
+                    [],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+        source_row = {
+            "Ticker": "2330",
+            "Name": "台灣積體電路製造股份有限公司",
+            "ISIN": "TW0002330008",
+            "Sector": "Information Technology",
+            "Location": "Taiwan",
+        }
+
+        holding = normalize_row(
+            source_row,
+            master,
+            "test",
+            "amundi_landing_xlsx_v1",
+            overrides=overrides,
+        )
+
+        self.assertEqual("TW0002330008", holding.isin)
+        self.assertEqual(
+            "taiwan-semiconductor-manufacturing-co", holding.company_id
+        )
+        self.assertEqual("Taiwan Semiconductor Manufacturing Co.", holding.name)
+        self.assertEqual("Information Technology", holding.sector)
+        self.assertEqual("overridden", holding.match.status)
+        self.assertEqual(source_row, holding.source_fields)
+
+    def test_tsmc_override_does_not_match_unrelated_isin(self) -> None:
+        master = SecurityMaster(
+            records=[
+                SecurityRecord(
+                    "2330",
+                    "Other Semiconductor Co.",
+                    "TWSE",
+                    "Information Technology",
+                    "Stock",
+                    "Taiwan",
+                    "TW",
+                    "TW0002330009",
+                    [],
+                )
+            ],
+            version="test",
+            warnings=[],
+        )
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+
+        holding = normalize_row(
+            {
+                "Ticker": "2330",
+                "Name": "Other Semiconductor Co.",
+                "ISIN": "TW0002330009",
+                "Location": "Taiwan",
+            },
+            master,
+            "test",
+            "amundi_landing_xlsx_v1",
+            overrides=overrides,
+        )
+
+        self.assertEqual("TW0002330009", holding.isin)
+        self.assertEqual("Other Semiconductor Co.", holding.name)
+        self.assertNotEqual(
+            "taiwan-semiconductor-manufacturing-co", holding.company_id
+        )
+        self.assertEqual("matched", holding.match.status)
+
     def test_strict_context_conflict_writes_no_partial_snapshot(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             override_path = Path(temp_dir) / "empty-overrides.json"

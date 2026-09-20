@@ -366,6 +366,15 @@
     {
       "match": {"ticker": "THAG", "exchange": "SIX", "holding_name": "TALENTHOUSE AG"},
       "set": {"isin": "CH0010819867", "company_id": "talenthouse-ag", "canonical_name": "Talenthouse AG"}
+    },
+    {
+      "match": {
+        "isin": "TW0002330008"
+      },
+      "set": {
+        "company_id": "taiwan-semiconductor-manufacturing-co",
+        "canonical_name": "Taiwan Semiconductor Manufacturing Co."
+      }
     }
   ]
 }

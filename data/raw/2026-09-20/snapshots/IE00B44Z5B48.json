@@ -10,7 +10,7 @@
   },
   "snapshot": {
     "as_of": "2026-09-20",
-    "generated_at": "2026-09-20T08:27:28.591703+00:00",
+    "generated_at": "2026-09-20T08:49:47.735654+00:00",
     "source_url": "https://www.ssga.com/ch/en_gb/intermediary/library-content/products/fund-data/etfs/emea/holdings-daily-emea-en-spyy-gy.xlsx",
     "resolved_download_url": "data\\raw\\2026-09-20\\downloads\\IE00B44Z5B48.xlsx",
     "source_format": "xlsx",
@@ -276,9 +276,9 @@
       "security": {
         "isin": "TW0002330008",
         "ticker": "2330",
-        "name": "台灣積體電路製造股份有限公司",
-        "company_id": "instrument-tw0002330008",
-        "canonical_name": "台灣積體電路製造股份有限公司"
+        "name": "Taiwan Semiconductor Manufacturing Co.",
+        "company_id": "taiwan-semiconductor-manufacturing-co",
+        "canonical_name": "Taiwan Semiconductor Manufacturing Co."
       },
       "classification": {
         "asset_class": "Stock",
@@ -310,11 +310,11 @@
           "Industry Classification": "Semiconductors & Semiconductor Equipment",
           "Base Market Value": "3.3757917E8"
         },
-        "enrichment_source": "security_master",
+        "enrichment_source": "override+security_master",
         "exchange_code": "TWSE",
         "match": {
-          "status": "matched",
-          "matched_by": "isin",
+          "status": "overridden",
+          "matched_by": "override",
           "attempted": [
             "isin"
           ],
@@ -120159,7 +120159,7 @@
       },
       {
         "ticker": "2330",
-        "name": "台灣積體電路製造股份有限公司",
+        "name": "Taiwan Semiconductor Manufacturing Co.",
         "weight_pct": 1.8299
       },
       {
