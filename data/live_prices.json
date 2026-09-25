@@ -1,105 +1,105 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-20T08:20:02Z",
+  "generated_at": "2026-09-25T23:48:00Z",
   "status": "complete",
   "quotes": {
     "CH0008899764": {
       "isin": "CH0008899764",
-      "price": 143.16,
+      "price": 144.8,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T17:35:14Z",
+      "quoted_at": "2026-09-25T17:35:32Z",
       "status": "available"
     },
     "CH0019852802": {
       "isin": "CH0019852802",
-      "price": 322.3,
+      "price": 327.75,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T17:35:14Z",
+      "quoted_at": "2026-09-25T17:35:32Z",
       "status": "available"
     },
     "CH0237935652": {
       "isin": "CH0237935652",
-      "price": 165.68,
+      "price": 167.74,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T17:35:14Z",
+      "quoted_at": "2026-09-25T17:35:32Z",
       "status": "available"
     },
     "CH0130595124": {
       "isin": "CH0130595124",
-      "price": 129.7,
+      "price": 132.12,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T16:58:47.860000Z",
+      "quoted_at": "2026-09-25T17:35:32Z",
       "status": "available"
     },
     "CH1553162921": {
       "isin": "CH1553162921",
-      "price": 12.882,
+      "price": 13.132,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T17:05:03.410000Z",
+      "quoted_at": "2026-09-25T16:30:58.390000Z",
       "status": "available"
     },
     "CH0111762537": {
       "isin": "CH0111762537",
-      "price": 310.7,
+      "price": 316.15,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T17:35:14Z",
+      "quoted_at": "2026-09-25T17:35:32Z",
       "status": "available"
     },
     "CH1447931341": {
       "isin": "CH1447931341",
-      "price": 3.9485,
+      "price": 3.988,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T17:24:57.020000Z",
+      "quoted_at": "2026-09-25T17:35:32Z",
       "status": "available"
     },
     "IE00B44Z5B48": {
       "isin": "IE00B44Z5B48",
-      "price": 268.6,
+      "price": 272.95,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T17:35:14Z",
+      "quoted_at": "2026-09-25T17:35:32Z",
       "status": "available"
     },
     "IE0009HF1MK9": {
       "isin": "IE0009HF1MK9",
-      "price": 12.728,
+      "price": 12.888,
       "currency": "CHF",
-      "quoted_at": "2026-09-18T15:47:10.290000Z",
+      "quoted_at": "2026-09-25T17:12:18.960000Z",
       "status": "available"
     },
     "IE00BF20LF40": {
       "isin": "IE00BF20LF40",
-      "price": 10.36,
+      "price": 10.406,
       "currency": "EUR",
-      "quoted_at": "2026-09-18T15:35:01Z",
+      "quoted_at": "2026-09-25T15:35:17Z",
       "status": "available",
       "ticker": "EUMD.L"
     },
     "LU0908500753": {
       "isin": "LU0908500753",
-      "price": 313.35,
+      "price": 315.05,
       "currency": "EUR",
-      "quoted_at": "2026-09-18T15:36:14Z",
+      "quoted_at": "2026-09-25T15:36:08Z",
       "status": "available",
       "ticker": "LYP6.DE"
     },
     "IE00BCLWRD08": {
       "isin": "IE00BCLWRD08",
-      "price": 80.81,
+      "price": 81.16,
       "currency": "EUR",
-      "quoted_at": "2026-09-18T15:36:04Z",
+      "quoted_at": "2026-09-25T15:36:11Z",
       "status": "available",
       "ticker": "IS3H.DE"
     }
   },
   "fx": {
     "EUR/CHF": {
-      "rate": 0.9462,
-      "quoted_at": "2026-09-18T00:00:00Z",
+      "rate": 0.9445,
+      "quoted_at": "2026-09-25T00:00:00Z",
       "status": "available"
     },
     "USD/CHF": {
-      "rate": 0.82565,
-      "quoted_at": "2026-09-18T00:00:00Z",
+      "rate": 0.82829,
+      "quoted_at": "2026-09-25T00:00:00Z",
       "status": "available"
     }
   }
