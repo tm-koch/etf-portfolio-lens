@@ -7,6 +7,45 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
+    def test_allocation_mode_converts_weights_and_zeros_shares_without_prompt(
+        self,
+    ) -> None:
+        app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+        index = (REPOSITORY_ROOT / "web" / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn('id="portfolio-mode-control"', index)
+        self.assertIn('value="percentage" data-portfolio-mode', index)
+        self.assertIn("data-position-input-heading>Shares</th>", index)
+
+        mode_start = app.index("function updatePortfolioMode(mode)")
+        mode_end = app.index("function getTotalShareUnits", mode_start)
+        update_mode = app[mode_start:mode_end]
+        self.assertIn(
+            "const totalShareUnits = getTotalShareUnits(positions);", update_mode
+        )
+        self.assertIn(
+            "shares: getPositionWeight(position, totalShareUnits)", update_mode
+        )
+        self.assertIn("state.portfolioMode = 'percentage';", update_mode)
+        self.assertIn(
+            "state.portfolio = state.portfolio.map((position) => ({ ...position, shares: 0 }));",
+            update_mode,
+        )
+        self.assertNotIn("window.confirm(", update_mode)
+        self.assertNotIn("state.portfolio = [];", update_mode)
+        self.assertIn("state.portfolioMode = 'full';", update_mode)
+        self.assertIn("savePortfolioState();", update_mode)
+
+        self.assertIn(
+            "elements.positionInputHeading.textContent = isPercentagePortfolio ? 'Allocation (%)' : 'Shares';",
+            app,
+        )
+        self.assertIn(
+            "Allocation values are relative weights; displayed weights are normalized for analysis.",
+            app,
+        )
+        self.assertIn("Number.isFinite(shares) ? Math.max(shares, 0) : 0", app)
+
     def test_percentage_position_rendering_skips_valuation_resolution(self) -> None:
         app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
 

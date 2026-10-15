@@ -28,11 +28,11 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260911-7" />
+    <link rel="stylesheet" href="./styles.css?v=20261015-1" />
     <script src="./vendor/chart.umd.min.js" defer></script>
     <script src="./vendor/pdf.min.js" defer></script>
     <script src="./vendor/lucide.js" defer></script>
-    <script type="module" src="./app.js?v=20260911-4" defer></script>
+    <script type="module" src="./app.js?v=20261015-1" defer></script>
   </head>
   <body>
     <header class="app-utility-bar" aria-label="Application utilities">
@@ -154,7 +154,7 @@
           <div class="panel-heading">
             <div>
               <p class="section-label">Portfolio entry</p>
-              <h2>Add supported ETFs and set the number of shares.</h2>
+              <h2>Add supported ETFs and set shares or relative allocations.</h2>
             </div>
             <div class="inline-note">
               <span class="dot"></span>
@@ -235,17 +235,24 @@
                 <div class="subcard-heading">
                   <h3>Selected positions</h3>
                   <p id="portfolio-hint">Add an ETF to start building the portfolio.</p>
-                  <div class="portfolio-valuation-row">
-                    <label class="import-valuation-control portfolio-valuation-control" id="portfolio-valuation-control" for="portfolio-valuation" hidden>
-                      <span>Valuation basis</span>
-                      <select id="portfolio-valuation">
-                        <option value="latest">Latest published valuation</option>
-                        <option value="imported">Imported broker valuation</option>
-                      </select>
-                    </label>
-                    <div class="inline-note portfolio-valuation-status" id="portfolio-valuation-status" hidden aria-live="polite">
-                      <span class="dot" aria-hidden="true"></span>
-                      <span data-valuation-status-label></span>
+                    <div class="portfolio-valuation-row">
+                      <fieldset class="portfolio-mode-control" id="portfolio-mode-control">
+                        <legend>Entry mode</legend>
+                        <label><input type="radio" name="portfolio-mode" value="full" data-portfolio-mode checked /> <span>Shares</span></label>
+                        <label><input type="radio" name="portfolio-mode" value="percentage" data-portfolio-mode /> <span>Allocation (%)</span></label>
+                      </fieldset>
+                    <div class="portfolio-valuation-details">
+                      <label class="import-valuation-control portfolio-valuation-control" id="portfolio-valuation-control" for="portfolio-valuation" hidden>
+                        <span>Valuation basis</span>
+                        <select id="portfolio-valuation">
+                          <option value="latest">Latest published valuation</option>
+                          <option value="imported">Imported broker valuation</option>
+                        </select>
+                      </label>
+                      <div class="inline-note portfolio-valuation-status" id="portfolio-valuation-status" hidden aria-live="polite">
+                        <span class="dot" aria-hidden="true"></span>
+                        <span data-valuation-status-label></span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -254,7 +261,7 @@
                     <thead>
                       <tr>
                         <th>ETF</th>
-                        <th>Shares</th>
+                        <th data-position-input-heading>Shares</th>
                         <th class="position-price" data-private-hidden>Price</th>
                         <th class="position-value" data-private-hidden>Value CHF</th>
                         <th class="position-weight">Weight</th>

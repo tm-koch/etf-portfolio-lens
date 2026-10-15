@@ -637,6 +637,35 @@ function renderValuationModeControl() {
   elements.portfolioValuationStatus.querySelector('.dot').hidden = state.valuationMode !== 'latest';
 }
 
+function renderPortfolioModeControl() {
+  elements.portfolioModeControl?.querySelectorAll('[data-portfolio-mode]').forEach((input) => {
+    input.checked = input.value === state.portfolioMode;
+  });
+}
+
+function updatePortfolioMode(mode) {
+  if (mode === state.portfolioMode) {
+    return;
+  }
+
+  if (mode === 'percentage') {
+    const positions = state.portfolio.map((position) => ({ ...position }));
+    const totalShareUnits = getTotalShareUnits(positions);
+    state.portfolio = positions.map((position) => ({
+      isin: position.isin,
+      shares: getPositionWeight(position, totalShareUnits),
+    }));
+    state.portfolioMode = 'percentage';
+  } else {
+    state.portfolio = state.portfolio.map((position) => ({ ...position, shares: 0 }));
+    state.portfolioMode = 'full';
+  }
+
+  clearShareFeedback();
+  savePortfolioState();
+  renderAll();
+}
+
 function getTotalShareUnits(positions) {
   return positions.reduce((sum, position) => sum + getPositionWeightBase(position), 0);
 }
@@ -1180,6 +1209,7 @@ function renderCatalog() {
 function renderPositions() {
   const positions = getSelectedPositions();
   const isPercentagePortfolio = state.portfolioMode === 'percentage';
+  elements.positionInputHeading.textContent = isPercentagePortfolio ? 'Allocation (%)' : 'Shares';
   document.querySelectorAll('.positions-table thead [data-private-hidden]').forEach((header) => {
     header.hidden = isPercentagePortfolio;
   });
@@ -1191,7 +1221,7 @@ function renderPositions() {
 
   const totalShareUnits = getTotalShareUnits(positions);
   elements.portfolioHint.textContent = isPercentagePortfolio
-    ? 'Shares represent relative allocation units in this private portfolio; weights are normalized for analysis.'
+    ? 'Allocation values are relative weights; displayed weights are normalized for analysis.'
     : positions.some((position) => Number.isFinite(getPositionValuation(position).valueChf))
     ? state.valuationMode === 'imported'
       ? 'Weights use imported broker values.'
@@ -1204,6 +1234,7 @@ function renderPositions() {
       const valuation = isPercentagePortfolio ? null : getPositionValuation(position);
       const shareInputStep = isPercentagePortfolio ? '0.1' : '1';
       const shareInputValue = isPercentagePortfolio ? Number(position.shares).toFixed(1) : position.shares;
+      const shareInputLabel = isPercentagePortfolio ? 'Allocation' : 'Shares';
       const valuationCells = isPercentagePortfolio
         ? ''
         : `
@@ -1224,8 +1255,8 @@ function renderPositions() {
               <span>· ${position.entry.name}</span>
             </div>
           </td>
-          <td class="position-shares" data-label="Shares">
-            <input class="position-input" aria-label="Shares for ${position.entry.ticker}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
+          <td class="position-shares" data-label="${shareInputLabel}">
+            <input class="position-input" aria-label="${shareInputLabel} for ${position.entry.ticker}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
           </td>
           ${valuationCells}
           ${allocationCells}
@@ -1588,6 +1619,7 @@ function confirmImport() {
 }
 
 function renderAll() {
+  renderPortfolioModeControl();
   renderValuationModeControl();
   renderCatalog();
   renderPositions();
@@ -1642,7 +1674,7 @@ function addPosition(isin) {
 
 function updatePositionShares(isin, shares) {
   state.portfolio = state.portfolio.map((position) =>
-    position.isin === isin ? { ...position, shares } : position
+    position.isin === isin ? { ...position, shares: Number.isFinite(shares) ? Math.max(shares, 0) : 0 } : position
   );
   clearShareFeedback();
   savePortfolioState();
@@ -1667,6 +1699,8 @@ async function bootstrap() {
   elements.catalogSearchClear = document.getElementById('catalog-search-clear');
   elements.catalogList = document.getElementById('catalog-list');
   elements.positionsBody = document.getElementById('positions-tbody');
+  elements.portfolioModeControl = document.getElementById('portfolio-mode-control');
+  elements.positionInputHeading = document.querySelector('[data-position-input-heading]');
   elements.portfolioValuationControl = document.getElementById('portfolio-valuation-control');
   elements.portfolioValuation = document.getElementById('portfolio-valuation');
   elements.portfolioValuationStatus = document.getElementById('portfolio-valuation-status');
@@ -1878,6 +1912,12 @@ async function bootstrap() {
     state.valuationMode = elements.portfolioValuation.value === 'imported' ? 'imported' : 'latest';
     savePortfolioState();
     renderAll();
+  });
+  elements.portfolioModeControl.addEventListener('change', (event) => {
+    const modeInput = event.target.closest('[data-portfolio-mode]');
+    if (modeInput) {
+      updatePortfolioMode(modeInput.value);
+    }
   });
   elements.importDialog.addEventListener('cancel', (event) => {
     event.preventDefault();

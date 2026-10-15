@@ -229,8 +229,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("width: 100%;", styles)
         self.assertIn("width: min(100%, 224px);", styles)
         self.assertNotIn("width: min(100%, 320px);", styles)
-        self.assertIn("margin: 34px 0 0 auto;", styles)
-        self.assertIn("align-self: flex-start;", styles)
+        self.assertIn(".portfolio-valuation-details {", styles)
+        self.assertIn("margin: 0 0 0 auto;", styles)
+        self.assertIn("align-self: flex-end;", styles)
         self.assertIn("align-self: start;", styles)
         self.assertIn("flex-direction: column;", styles)
         self.assertIn("return formatCurrencyValue(value, currency);", app)
@@ -391,7 +392,11 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('id="data-dialog-warning-list"', index)
         self.assertIn('id="data-dialog-warnings-title"', index)
         self.assertIn('data-label="ETF"', app)
-        self.assertIn('data-label="Shares"', app)
+        self.assertIn(
+            "const shareInputLabel = isPercentagePortfolio ? 'Allocation' : 'Shares';",
+            app,
+        )
+        self.assertIn('data-label="${shareInputLabel}"', app)
         self.assertIn('data-label="Weight"', app)
         self.assertIn(
             "return (getPositionWeightBase(position) / totalShareUnits) * 100;", app

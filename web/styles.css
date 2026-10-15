@@ -829,6 +829,35 @@ body {
   display: none;
 }
 
+.portfolio-mode-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.portfolio-mode-control legend {
+  float: left;
+  margin-right: 10px;
+}
+
+.portfolio-mode-control label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--text);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.portfolio-mode-control input {
+  accent-color: var(--accent);
+}
+
 .portfolio-valuation-row {
   display: flex;
   align-items: flex-start;
@@ -839,6 +868,14 @@ body {
 
 .portfolio-valuation-row .portfolio-valuation-control {
   margin-top: 12px;
+}
+
+.portfolio-valuation-details {
+  display: flex;
+  align-items: flex-end;
+  flex: 1 1 360px;
+  gap: 12px;
+  min-width: 0;
 }
 
 .import-dialog .portfolio-valuation-control {
@@ -1652,10 +1689,10 @@ body {
 
 .portfolio-valuation-status {
   display: inline-flex;
-  align-self: flex-start;
+  align-self: flex-end;
   align-items: center;
   gap: 8px;
-  margin: 34px 0 0 auto;
+  margin: 0 0 0 auto;
 }
 
 .portfolio-valuation-status .dot {
@@ -1688,7 +1725,11 @@ body {
 
   .portfolio-valuation-status {
     align-self: start;
-    margin: 12px 0 0;
+    margin: 0 0 0 auto;
+  }
+
+  .portfolio-valuation-details {
+    flex-wrap: wrap;
   }
 }
 
