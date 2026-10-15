@@ -42,6 +42,21 @@ class PwaCacheGenerationTests(unittest.TestCase):
 
             self.assertNotEqual(first_generation, self.run_generation(second_root))
 
+    def test_generation_changes_when_locale_resources_change(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            first_root = Path(temporary_directory) / "first"
+            second_root = Path(temporary_directory) / "second"
+            shutil.copytree(WEB_ROOT, first_root)
+            shutil.copytree(WEB_ROOT, second_root)
+
+            first_generation = self.run_generation(first_root)
+            locale_path = second_root / "locales" / "de-CH.json"
+            locale = json.loads(locale_path.read_text(encoding="utf-8"))
+            locale["translation"]["nav.home"] = "Startseite"
+            locale_path.write_text(json.dumps(locale), encoding="utf-8")
+
+            self.assertNotEqual(first_generation, self.run_generation(second_root))
+
     def test_published_worker_replacement_does_not_modify_source_worker(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             published_worker = Path(temporary_directory) / "sw.js"

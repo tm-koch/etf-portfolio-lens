@@ -14,6 +14,18 @@ const CHART_COLORS = [
 ];
 
 const FALLBACK_COMPARISON_MOBILE_SPACING = 16;
+const CHART_TEXT_FALLBACKS = {
+  'chart.portfolioReference': 'Portfolio reference (share-weighted)',
+  'chart.series': 'Series',
+  'chart.etfSeries': 'ETF: {{series}}',
+  'chart.tooltipTitle': '{{title}}: {{label}}',
+  'chart.tooltipShare': 'Share: {{value}}',
+};
+
+function translate(options, key, values = {}) {
+  if (options.translate) return options.translate(key, values);
+  return (CHART_TEXT_FALLBACKS[key] || key).replace(/\{\{(\w+)\}\}/g, (_, name) => values[name] ?? '');
+}
 
 function getComparisonMobileSpacing() {
   if (typeof document === 'undefined') {
@@ -150,15 +162,17 @@ function createOptions(title, options = {}) {
             if (!first) {
               return [];
             }
-            const seriesLabel = first.dataset.label || 'Series';
-            const heading = seriesLabel === 'Portfolio reference (share-weighted)'
+            const referenceLabel = translate(options, 'chart.portfolioReference');
+            const seriesLabel = first.dataset.label || translate(options, 'chart.series');
+            const heading = seriesLabel === referenceLabel
               ? seriesLabel
-              : `ETF: ${seriesLabel}`;
-            return [heading, `${title}: ${first.label}`];
+              : translate(options, 'chart.etfSeries', { series: seriesLabel });
+            return [heading, translate(options, 'chart.tooltipTitle', { title, label: first.label })];
           },
           label(context) {
             const value = Number(context.raw || 0);
-            return `Share: ${value.toFixed(1)}%`;
+            const formatPercent = options.formatPercent || ((number) => `${number.toFixed(1)}%`);
+            return translate(options, 'chart.tooltipShare', { value: formatPercent(value) });
           },
         },
       },
@@ -183,10 +197,15 @@ export function renderComparisonChart(chartRef, canvas, title, metricData, label
     }
     return null;
   }
+  const displayLabels = labels.map((label) => options.labelDisplayOverrides?.get(label) || label);
+  const legendLabelOverrides = new Map(displayLabels.map((displayLabel, index) => {
+    const canonicalLabel = labels[index];
+    return [displayLabel, options.legendLabelOverrides?.get(canonicalLabel) || displayLabel];
+  }));
   chartRef.current = new Chart(canvas, {
     type: 'doughnut',
     data: {
-      labels,
+      labels: displayLabels,
       datasets: buildDatasets(metricData, labels, options.labelColorOverrides),
     },
     options: createOptions(title, options),
@@ -196,7 +215,7 @@ export function renderComparisonChart(chartRef, canvas, title, metricData, label
     options.legendContainer,
     chartRef.current,
     options.legendMode || 'datasets',
-    options.legendLabelOverrides || new Map()
+    legendLabelOverrides
   );
 
   return chartRef.current;

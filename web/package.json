@@ -4,5 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "python server.py"
+  },
+  "dependencies": {
+    "i18next": "26.4.6"
   }
 }

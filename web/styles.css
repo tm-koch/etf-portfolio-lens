@@ -120,6 +120,11 @@ body {
   font-weight: 700;
 }
 
+.language-button,
+.language-option {
+  font-weight: 400;
+}
+
 .content-column {
   width: 100%;
   max-width: 1440px;
@@ -1768,6 +1773,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .language-option,
   .color-mode-button,
   .color-mode-option,
   .switch-control input,
@@ -1799,6 +1805,10 @@ body {
 
   .color-mode-button > span {
     display: none;
+  }
+
+  .language-button > span {
+    display: inline;
   }
 
   .install-app-button > span {

@@ -7,6 +7,216 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
+    def test_localization_resolves_locale_and_persists_runtime_switch(self) -> None:
+        script = """
+import { LOCALE_STORAGE_KEY, resolveLocale, selectLocale } from './web/localization.js';
+
+const saved = new Map();
+globalThis.document = { documentElement: { lang: 'en' } };
+const i18n = {
+  language: 'en-CH',
+  async changeLanguage(locale) { this.language = locale; },
+};
+const results = {
+  savedGerman: resolveLocale('de-CH', ['en-US']),
+  browserGerman: resolveLocale(null, ['fr-FR', 'de-DE']),
+  browserEnglish: resolveLocale(null, ['en-US']),
+  unsupported: resolveLocale(null, ['fr-FR']),
+};
+await selectLocale('de-CH', {
+  i18n,
+  storage: { setItem: (key, value) => saved.set(key, value) },
+});
+console.log(JSON.stringify({ ...results, language: document.documentElement.lang, saved: saved.get(LOCALE_STORAGE_KEY) }));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["savedGerman"], "de-CH")
+        self.assertEqual(values["browserGerman"], "de-CH")
+        self.assertEqual(values["browserEnglish"], "en-CH")
+        self.assertEqual(values["unsupported"], "en-CH")
+        self.assertEqual(values["language"], "de-CH")
+        self.assertEqual(values["saved"], "de-CH")
+
+    def test_language_selector_uses_supported_swiss_locales_and_local_runtime(
+        self,
+    ) -> None:
+        index = (REPOSITORY_ROOT / "web" / "index.html").read_text(encoding="utf-8")
+        app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('id="language-control"', index)
+        self.assertIn('id="language-button"', index)
+        self.assertIn('id="language-menu"', index)
+        self.assertIn('aria-haspopup="menu"', index)
+        self.assertIn('role="menuitemradio"', app)
+        self.assertNotIn('data-lucide="chevron-down"', app)
+        self.assertIn('data-locale="${language.locale}"', app)
+        self.assertIn("locale: 'en-CH'", app)
+        self.assertIn("locale: 'de-CH'", app)
+        self.assertNotIn('<select id="language-select"', index)
+        self.assertIn("./vendor/i18next.min.js", index)
+        self.assertIn("initializeLocalization().then(bootstrap)", app)
+        self.assertIn("await selectLocale(languageOption.dataset.locale)", app)
+        self.assertIn("renderLanguageControl();", app)
+
+    def test_local_resources_initialize_and_switch_without_network_access(self) -> None:
+        script = """
+import fs from 'node:fs';
+import './web/vendor/i18next.min.js';
+import { initializeLocalization, selectLocale } from './web/localization.js';
+const i18next = globalThis.i18next;
+
+globalThis.document = { documentElement: { lang: 'en' } };
+globalThis.fetch = async (url) => {
+  const locale = new URL(url).pathname.split('/').at(-1).replace('.json', '');
+  const body = fs.readFileSync(`web/locales/${locale}.json`, 'utf8');
+  return { ok: true, json: async () => JSON.parse(body) };
+};
+const stored = new Map();
+await initializeLocalization({
+  i18n: i18next,
+  storage: { getItem: () => null },
+  browserLanguages: ['de-DE'],
+});
+const german = i18next.t('nav.home');
+await selectLocale('en-CH', {
+  i18n: i18next,
+  storage: { setItem: (key, value) => stored.set(key, value) },
+});
+console.log(JSON.stringify({
+  german,
+  english: i18next.t('nav.home'),
+  lang: document.documentElement.lang,
+  selected: stored.get('etf-lens.locale.v1'),
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["german"], "Start")
+        self.assertEqual(values["english"], "Home")
+        self.assertEqual(values["lang"], "en-CH")
+        self.assertEqual(values["selected"], "en-CH")
+
+    def test_chart_taxonomy_translation_is_display_only_and_has_fallbacks(self) -> None:
+        script = r"""
+import fs from 'node:fs';
+import { translateTaxonomyLabel } from './web/taxonomy.js';
+import { renderComparisonChart } from './web/charts.js';
+
+const english = JSON.parse(fs.readFileSync('web/locales/en-CH.json', 'utf8')).translation;
+const german = JSON.parse(fs.readFileSync('web/locales/de-CH.json', 'utf8')).translation;
+const translate = (resources) => (key, values = {}) => String(resources[key] || key)
+    .replace(/\{\{(\w+)\}\}/g, (_, name) => values[name] ?? '');
+globalThis.Chart = class {
+  static defaults = { plugins: { legend: { labels: { generateLabels: () => [] } } } };
+    constructor(canvas, config) { this.data = config.data; this.config = config; }
+  destroy() {}
+};
+const chartRef = { current: null };
+const legendContainer = { innerHTML: '' };
+const canonicalValues = new Map([['Health Care', 12.5]]);
+renderComparisonChart(chartRef, {}, german['chart.titleSectors'], [{ label: 'CHSPI', values: canonicalValues }], ['Health Care'], {
+  labelDisplayOverrides: new Map([['Health Care', translateTaxonomyLabel('Health Care', translate(german))]]),
+  legendMode: 'labels',
+    legendContainer,
+    translate: translate(german),
+    formatPercent: (value) => `${value.toFixed(1)}%`,
+});
+const tooltipCallbacks = chartRef.current.config.options.plugins.tooltip.callbacks;
+console.log(JSON.stringify({
+  germanSector: translateTaxonomyLabel('Health Care', translate(german)),
+  germanRegion: translateTaxonomyLabel('North America', translate(german)),
+  englishSector: translateTaxonomyLabel('Health Care', translate(english)),
+  unknown: translateTaxonomyLabel('  New Category  ', translate(german)),
+  displayedChartLabels: chartRef.current.data.labels,
+    legend: legendContainer.innerHTML,
+    tooltipTitle: tooltipCallbacks.title([{ dataset: { label: 'CHSPI' }, label: 'Gesundheitswesen' }]),
+    tooltipShare: tooltipCallbacks.label({ raw: 12.5 }),
+  chartValues: chartRef.current.data.datasets[0].data,
+  canonicalLabels: [...canonicalValues.keys()],
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["germanSector"], "Gesundheitswesen")
+        self.assertEqual(values["germanRegion"], "Nordamerika")
+        self.assertEqual(values["englishSector"], "Health Care")
+        self.assertEqual(values["unknown"], "  New Category  ")
+        self.assertEqual(values["displayedChartLabels"], ["Gesundheitswesen"])
+        self.assertIn("Gesundheitswesen", values["legend"])
+        self.assertEqual(
+            values["tooltipTitle"], ["ETF: CHSPI", "Sektoren: Gesundheitswesen"]
+        )
+        self.assertEqual(values["tooltipShare"], "Anteil: 12.5%")
+        self.assertEqual(values["chartValues"], [12.5])
+        self.assertEqual(values["canonicalLabels"], ["Health Care"])
+
+    def test_locale_formatters_cover_counts_percentages_dates_and_currency_codes(
+        self,
+    ) -> None:
+        script = """
+import { formatBuildTimestamp, formatCount, formatCurrencyValue, formatPercent } from './web/formatting.js';
+const values = {};
+for (const locale of ['en-CH', 'de-CH']) {
+  values[locale] = {
+    count: formatCount(1234567, locale),
+    percent: formatPercent(12.5, locale),
+    currencies: Object.fromEntries(['CHF', 'EUR', 'USD'].map((currency) => [
+      currency,
+      formatCurrencyValue(1234.5, currency, locale),
+    ])),
+    timestamp: formatBuildTimestamp('2026-09-20T14:05:06Z', locale),
+    date: formatBuildTimestamp('2026-09-20', locale),
+  };
+}
+console.log(JSON.stringify(values));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["en-CH"]["count"], "1’234’567")
+        self.assertEqual(values["de-CH"]["count"], "1’234’567")
+        self.assertEqual(values["en-CH"]["percent"], "12.5%")
+        self.assertEqual(values["de-CH"]["percent"], "12.5%")
+        for locale in ("en-CH", "de-CH"):
+            for currency in ("CHF", "EUR", "USD"):
+                self.assertEqual(
+                    values[locale]["currencies"][currency],
+                    f"{currency}\u00a01’234.50",
+                )
+        self.assertEqual(values["en-CH"]["date"], "20 Sept 2026")
+        self.assertEqual(values["de-CH"]["date"], "20.09.2026")
+        self.assertIn("14:05:06 UTC", values["en-CH"]["timestamp"])
+        self.assertIn("14:05:06 UTC", values["de-CH"]["timestamp"])
+
     def test_share_input_handler_rejects_fractional_shares_only_in_shares_mode(
         self,
     ) -> None:
@@ -47,7 +257,9 @@ class WebRuntimeTests(unittest.TestCase):
 
         self.assertIn('id="portfolio-mode-control"', index)
         self.assertIn('value="percentage" data-portfolio-mode', index)
-        self.assertIn("data-position-input-heading>Shares</th>", index)
+        self.assertIn(
+            'data-position-input-heading data-i18n="ui.shares">Shares</th>', index
+        )
 
         mode_start = app.index("function updatePortfolioMode(mode)")
         mode_end = app.index("function getTotalShareUnits", mode_start)
@@ -69,11 +281,11 @@ class WebRuntimeTests(unittest.TestCase):
         self.assertIn("savePortfolioState();", update_mode)
 
         self.assertIn(
-            "elements.positionInputHeading.textContent = isPercentagePortfolio ? 'Allocation (%)' : 'Shares';",
+            "elements.positionInputHeading.textContent = isPercentagePortfolio ? t('ui.allocationPercent') : t('ui.shares');",
             app,
         )
         self.assertIn(
-            "Allocation values are relative weights; displayed weights are normalized for analysis.",
+            "? t('portfolio.percentageHint')",
             app,
         )
         self.assertIn("Number.isFinite(shares) ? Math.max(shares, 0) : 0", app)
@@ -132,7 +344,10 @@ class WebRuntimeTests(unittest.TestCase):
         app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
         styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
 
-        self.assertIn("state.valuationMode === 'imported' ? 'Imported' : 'Live'", app)
+        self.assertIn(
+            "state.valuationMode === 'imported' ? t('valuation.imported') : t('valuation.live')",
+            app,
+        )
         self.assertIn(
             "elements.portfolioValuationStatus.querySelector('.dot').hidden = state.valuationMode !== 'latest';",
             app,

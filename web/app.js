@@ -1,8 +1,16 @@
 import { buildCatalogMaps, loadBuildInfo, loadLivePrices, loadPublishedCatalog, loadSnapshot } from './data.js?v=20260910-1';
-import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20260812-3';
+import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20261015-1';
+import { translateTaxonomyLabel } from './taxonomy.js';
+import {
+  formatBuildTimestamp as formatLocaleTimestamp,
+  formatCount as formatLocaleCount,
+  formatCurrencyValue as formatLocaleCurrency,
+  formatPercent as formatLocalePercent,
+} from './formatting.js';
 import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js?v=20260910-2';
 import { getEffectiveValuation } from './valuation.js?v=20260911-1';
 import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
+import { initializeLocalization, selectLocale } from './localization.js';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
@@ -35,7 +43,6 @@ const chartRefs = {
   currency: { current: null },
 };
 
-const PORTFOLIO_REFERENCE_LABEL = 'Portfolio reference (share-weighted)';
 const COMPANY_BATCH_SIZE = 20;
 const CHART_FRAME_HEIGHT_DESKTOP = '680px';
 const CHART_FRAME_HEIGHT_MOBILE_TABLET = '420px';
@@ -71,14 +78,57 @@ const elements = {};
 let deferredInstallPrompt = null;
 
 const NAVIGATION_DESTINATIONS = [
-  { key: 'home', label: 'Home', icon: 'house' },
-  { key: 'portfolio', label: 'Portfolio', icon: 'briefcase-business' },
-  { key: 'comparison', label: 'Compare', icon: 'scale' },
-  { key: 'aggregated', label: 'Explore', icon: 'layers-3' },
+  { key: 'home', labelKey: 'nav.home', icon: 'house' },
+  { key: 'portfolio', labelKey: 'nav.portfolio', icon: 'briefcase-business' },
+  { key: 'comparison', labelKey: 'nav.compare', icon: 'scale' },
+  { key: 'aggregated', labelKey: 'nav.explore', icon: 'layers-3' },
 ];
+
+function t(key, options) {
+  return window.i18next.t(key, options);
+}
 
 function getNavigationDestination(key) {
   return NAVIGATION_DESTINATIONS.find((destination) => destination.key === key) || null;
+}
+
+function applyStaticTranslations() {
+  for (const element of document.querySelectorAll('[data-i18n]')) {
+    element.textContent = window.i18next.t(element.dataset.i18n);
+  }
+  for (const element of document.querySelectorAll('*')) {
+    for (const attribute of element.getAttributeNames()) {
+      if (!attribute.startsWith('data-i18n-attr-')) continue;
+      const name = attribute.slice('data-i18n-attr-'.length);
+      element.setAttribute(name, window.i18next.t(element.getAttribute(attribute)));
+    }
+  }
+}
+
+function renderLanguageControl() {
+  const currentLocale = window.i18next.resolvedLanguage || window.i18next.language;
+  const languages = [
+    { locale: 'en-CH', code: 'EN', labelKey: 'language.english' },
+    { locale: 'de-CH', code: 'DE', labelKey: 'language.german' },
+  ];
+  const selectedLanguage = languages.find((language) => language.locale === currentLocale) || languages[0];
+  if (!elements.languageButton || !elements.languageMenu) return;
+
+  elements.languageButton.innerHTML = `
+    <span>${selectedLanguage.code}</span>
+  `;
+  elements.languageButton.setAttribute(
+    'aria-label',
+    t('language.current', { language: t(selectedLanguage.labelKey) })
+  );
+  elements.languageMenu.innerHTML = languages
+    .map((language) => `
+      <button class="color-mode-option language-option" type="button" role="menuitemradio" aria-checked="${language.locale === currentLocale}" data-locale="${language.locale}" aria-label="${t(language.labelKey)}">
+        <span>${language.code}</span>
+      </button>
+    `)
+    .join('');
+  window.lucide?.createIcons();
 }
 
 function isStandaloneDisplayMode() {
@@ -184,22 +234,23 @@ function renderColorModeControl() {
   }
 
   const modes = [
-    { key: 'bright', label: 'Bright', icon: 'sun' },
-    { key: 'automatic', label: 'Automatic', icon: 'monitor' },
-    { key: 'dark', label: 'Dark', icon: 'moon' },
+    { key: 'bright', labelKey: 'colorMode.bright', icon: 'sun' },
+    { key: 'automatic', labelKey: 'colorMode.automatic', icon: 'monitor' },
+    { key: 'dark', labelKey: 'colorMode.dark', icon: 'moon' },
   ];
   const selectedMode = modes.find((mode) => mode.key === state.colorMode) || modes[1];
+  const selectedLabel = t(selectedMode.labelKey);
   elements.colorModeButton.innerHTML = `
     <i data-lucide="${selectedMode.icon}" aria-hidden="true"></i>
-    <span>${selectedMode.label}</span>
+    <span>${selectedLabel}</span>
   `;
-  elements.colorModeButton.setAttribute('aria-label', `Color mode: ${selectedMode.label}`);
+  elements.colorModeButton.setAttribute('aria-label', t('colorMode.current', { mode: selectedLabel }));
   elements.colorModeMenu.innerHTML = modes
     .map(
       (mode) => `
         <button class="color-mode-option" type="button" role="menuitemradio" aria-checked="${mode.key === state.colorMode}" data-color-mode-option="${mode.key}">
           <i data-lucide="${mode.icon}" aria-hidden="true"></i>
-          <span>${mode.label}</span>
+          <span>${t(mode.labelKey)}</span>
         </button>
       `
     )
@@ -234,6 +285,16 @@ function toggleColorModeMenu(forceOpen) {
   elements.colorModeButton.setAttribute('aria-expanded', String(shouldOpen));
   if (shouldOpen) {
     elements.colorModeMenu.querySelector('[aria-checked="true"]')?.focus();
+  }
+}
+
+function toggleLanguageMenu(forceOpen) {
+  const isOpen = !elements.languageMenu.hidden;
+  const shouldOpen = forceOpen ?? !isOpen;
+  elements.languageMenu.hidden = !shouldOpen;
+  elements.languageButton.setAttribute('aria-expanded', String(shouldOpen));
+  if (shouldOpen) {
+    elements.languageMenu.querySelector('[aria-checked="true"]')?.focus();
   }
 }
 
@@ -291,7 +352,7 @@ function renderNavigation() {
       (destination) => `
         <button class="tab-button" data-tab="${destination.key}" type="button">
           <i class="navigation-icon" data-lucide="${destination.icon}" aria-hidden="true"></i>
-          <span>${destination.label}</span>
+          <span>${t(destination.labelKey)}</span>
         </button>
       `
     )
@@ -366,7 +427,7 @@ function renderShareFeedback() {
     return;
   }
   const hasFallbackUrl = Boolean(state.shareFallbackUrl);
-  elements.shareStatus.textContent = state.shareFeedback;
+  elements.shareStatus.textContent = state.shareFeedback ? t(state.shareFeedback) : '';
   elements.shareFallbackUrl.value = state.shareFallbackUrl;
   elements.shareFallbackLabel.hidden = !hasFallbackUrl;
   elements.shareFallbackUrl.hidden = !hasFallbackUrl;
@@ -384,7 +445,7 @@ async function sharePortfolio(mode = 'full') {
   }
   const url = buildPortfolioShareUrl(getSelectedPositions(), mode);
   if (!url) {
-    state.shareFeedback = 'Add at least one position before creating a share link.';
+    state.shareFeedback = 'share.addPositionFirst';
     state.shareFallbackUrl = '';
     renderShareFeedback();
     return;
@@ -397,24 +458,24 @@ async function sharePortfolio(mode = 'full') {
     }
     await navigator.clipboard.writeText(url);
     state.shareFeedback = mode === 'percentage'
-      ? 'Private share link copied. It contains allocation weights only.'
-      : 'Share link copied. It uses the latest published ETF data when opened.';
+      ? 'share.privateCopied'
+      : 'share.copied';
   } catch {
-    state.shareFeedback = 'Automatic copying is unavailable. Copy the link from the field below.';
+    state.shareFeedback = 'share.copyUnavailable';
   }
   renderShareFeedback();
 }
 
 function formatPercent(value) {
-  return `${value.toFixed(1)}%`;
+  return formatLocalePercent(value, window.i18next.language);
 }
 
 function formatCount(value) {
-  return new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
+  return formatLocaleCount(value, window.i18next.language);
 }
 
 function formatCurrencyValue(value, currency = 'CHF') {
-  return `${currency} ${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).replace(/,/g, "'")}`;
+  return formatLocaleCurrency(value, currency, window.i18next.language);
 }
 
 function formatChfValue(value) {
@@ -423,20 +484,9 @@ function formatChfValue(value) {
 
 function formatBuildTimestamp(value) {
   if (!value) {
-    return 'Unavailable (local development)';
+    return t('common.unavailableLocalDev');
   }
-  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
-    return value;
-  }
-  const parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) {
-    return value;
-  }
-  return `${new Intl.DateTimeFormat('en', {
-    dateStyle: 'medium',
-    timeStyle: 'medium',
-    timeZone: 'UTC',
-  }).format(parsed)} UTC`;
+  return formatLocaleTimestamp(value, window.i18next.language);
 }
 
 function getCommitUrl(repositoryUrl, commit) {
@@ -469,13 +519,13 @@ function renderBuildData() {
   elements.dataDialogMetadata.replaceChildren();
   appendBuildMetadataRow(
     elements.dataDialogMetadata,
-    'ETF data timestamp',
+    t('build.etfDataTimestamp'),
     document.createTextNode(formatBuildTimestamp(state.buildInfo?.data?.timestamp))
   );
   appendBuildMetadataRow(
     elements.dataDialogMetadata,
-    'Live data',
-    document.createTextNode(state.livePrices ? `${formatBuildTimestamp(state.livePrices.generated_at)} (${state.livePrices.status})` : 'Unavailable')
+    t('build.liveData'),
+    document.createTextNode(state.livePrices ? `${formatBuildTimestamp(state.livePrices.generated_at)} (${state.livePrices.status})` : t('common.unavailable'))
   );
   const positions = state.portfolio
     .map((position) => state.catalogMaps?.byIsin.get(position.isin))
@@ -483,7 +533,7 @@ function renderBuildData() {
   if (!positions.length) {
     const status = document.createElement('p');
     status.className = 'build-metadata-status';
-    status.textContent = 'No ETFs selected.';
+    status.textContent = t('portfolio.noEtfsSelected');
     elements.dataDialogMetadata.append(status);
     return;
   }
@@ -491,7 +541,7 @@ function renderBuildData() {
     appendBuildMetadataRow(
       elements.dataDialogMetadata,
       `${entry.ticker} snapshot`,
-      document.createTextNode(entry.snapshotPath || 'Unavailable')
+      document.createTextNode(entry.snapshotPath || t('common.unavailable'))
     );
   }
 }
@@ -510,7 +560,7 @@ function renderBuildInfo() {
   if (!state.buildInfo) {
     const status = document.createElement('p');
     status.className = 'build-metadata-status';
-    status.textContent = 'Build metadata is unavailable in local development or could not be loaded.';
+    status.textContent = t('build.metadataUnavailable');
     elements.buildMetadata.append(status);
     return;
   }
@@ -526,24 +576,24 @@ function renderBuildInfo() {
     commitLink.textContent = source.commit;
     sourceValue.append(commitLink);
   } else {
-    sourceValue.textContent = source.commit || 'Unavailable (local development)';
+    sourceValue.textContent = source.commit || t('common.unavailableLocalDev');
   }
 
-  appendBuildMetadataRow(elements.buildMetadata, 'Source commit', sourceValue);
+  appendBuildMetadataRow(elements.buildMetadata, t('build.sourceCommit'), sourceValue);
   appendBuildMetadataRow(
     elements.buildMetadata,
-    'Commit timestamp',
+    t('build.commitTimestamp'),
     document.createTextNode(formatBuildTimestamp(source.commitTimestamp))
   );
   appendBuildMetadataRow(
     elements.buildMetadata,
-    'Publish timestamp',
+    t('build.publishTimestamp'),
     document.createTextNode(formatBuildTimestamp(state.buildInfo.publishedAt))
   );
   const details = state.buildInfo.details;
   if (details && typeof details === 'object' && !Array.isArray(details) && Object.keys(details).length > 0) {
     const heading = document.createElement('h3');
-    heading.textContent = 'Additional details';
+    heading.textContent = t('build.additionalDetails');
     const detailsList = document.createElement('dl');
     detailsList.className = 'build-metadata';
     for (const [key, value] of Object.entries(details)) {
@@ -590,7 +640,7 @@ function closeDataDialog() {
 }
 
 function getHoldingName(holding) {
-  return holding?.security?.canonical_name || holding?.security?.name || holding?.security?.ticker || 'Unknown holding';
+  return holding?.security?.canonical_name || holding?.security?.name || holding?.security?.ticker || t('explore.unknownHolding');
 }
 
 function getHoldingKey(holding) {
@@ -633,7 +683,7 @@ function renderValuationModeControl() {
   elements.portfolioValuation.disabled = isPercentagePortfolio;
   elements.portfolioValuation.value = state.valuationMode;
   elements.portfolioValuationStatus.hidden = isPercentagePortfolio;
-  elements.portfolioValuationStatus.querySelector('[data-valuation-status-label]').textContent = state.valuationMode === 'imported' ? 'Imported' : 'Live';
+  elements.portfolioValuationStatus.querySelector('[data-valuation-status-label]').textContent = state.valuationMode === 'imported' ? t('valuation.imported') : t('valuation.live');
   elements.portfolioValuationStatus.querySelector('.dot').hidden = state.valuationMode !== 'latest';
 }
 
@@ -773,7 +823,7 @@ function getCurrencyMetricData(positions) {
   return {
     labels: [...labels],
     series,
-    legendLabelOverrides: otherGrouped ? new Map([['Other', 'Other (<1% / Unknown)']]) : new Map(),
+    legendLabelOverrides: otherGrouped ? new Map([['Other', t('chart.otherGrouped')]]) : new Map(),
   };
 }
 
@@ -826,7 +876,7 @@ function aggregateCompanyExposure(positions) {
       INCOMPLETE_MATCH_STATUSES.has(holding?.provenance?.match?.status)
     ).length;
     if (unmatchedCount) {
-      warnings.push(`${position.entry.ticker}: ${unmatchedCount} holdings are unmatched or ambiguous`);
+      warnings.push(t('warnings.unmatchedHoldings', { ticker: position.entry.ticker, count: unmatchedCount }));
     }
   }
 
@@ -867,11 +917,11 @@ function getCurrentSelectionWarnings(positions = getSelectedPositions()) {
   for (const position of positions) {
     const snapshot = position.snapshot;
     if (!snapshot) {
-      snapshotWarnings.push(`${position.entry.ticker}: snapshot unavailable`);
+      snapshotWarnings.push(t('warnings.snapshotUnavailable', { ticker: position.entry.ticker }));
       continue;
     }
     if (!snapshot.holdings?.length) {
-      snapshotWarnings.push(`${position.entry.ticker}: snapshot has no holdings`);
+      snapshotWarnings.push(t('warnings.snapshotNoHoldings', { ticker: position.entry.ticker }));
     }
   }
 
@@ -896,12 +946,17 @@ function renderBuildWarnings() {
     return;
   }
   const items = state.catalogMaps ? getCurrentSelectionWarnings() : [];
-  renderWarningItems(elements.dataDialogWarningList, items, 'No warnings detected in the current selection.');
+  renderWarningItems(elements.dataDialogWarningList, items, t('warnings.noneDetected'));
 }
 
 function buildCompanyRow(company, index) {
   const barSegments = company.contributors.map((contributor) => {
-    const tooltip = `${contributor.ticker}: ${formatPercent(contributor.shareOfCompany)} of ${company.name} (${formatPercent(contributor.weight)} of portfolio)`;
+    const tooltip = t('explore.contributorTooltip', {
+      ticker: contributor.ticker,
+      share: formatPercent(contributor.shareOfCompany),
+      company: company.name,
+      portfolio: formatPercent(contributor.weight),
+    });
     const showInlineLabel = contributor.shareOfCompany >= 16;
     return `
       <div
@@ -916,11 +971,15 @@ function buildCompanyRow(company, index) {
   }).join('');
 
   const detailChips = company.contributors.map((contributor) => `
-    <div class="company-chip" title="${contributor.ticker}: ${formatPercent(contributor.shareOfCompany)} of company exposure, ${formatPercent(contributor.weight)} of portfolio">
+    <div class="company-chip" title="${t('explore.companyChipTooltip', {
+      ticker: contributor.ticker,
+      share: formatPercent(contributor.shareOfCompany),
+      portfolio: formatPercent(contributor.weight),
+    })}">
       <span class="chip-swatch" style="background: ${contributor.color};"></span>
       <span class="chip-ticker">${contributor.ticker}</span>
       <strong>${formatPercent(contributor.shareOfCompany)}</strong>
-      <span class="chip-meta">${formatPercent(contributor.weight)} portfolio</span>
+      <span class="chip-meta">${t('explore.portfolioShare', { value: formatPercent(contributor.weight) })}</span>
     </div>
   `).join('');
 
@@ -929,11 +988,14 @@ function buildCompanyRow(company, index) {
       <div class="company-row-head">
         <div class="company-row-title">
           <div class="company-name">${index + 1}. ${company.name}</div>
-          <div class="company-meta">${company.etfs.size} ETF(s) contributing · ${formatPercent(company.weight)} of portfolio</div>
+          <div class="company-meta">${t('explore.etfContributionCount', { count: formatCount(company.etfs.size), value: formatPercent(company.weight) })}</div>
         </div>
         <div class="company-total">${formatPercent(company.weight)}</div>
       </div>
-      <div class="company-bar-track" style="width: ${Math.max(company.shareOfMax, 0.01)}%;" role="img" aria-label="${company.name} exposure split across ETFs: ${company.contributors.map((contributor) => `${contributor.ticker} ${formatPercent(contributor.shareOfCompany)}`).join(', ')}">
+      <div class="company-bar-track" style="width: ${Math.max(company.shareOfMax, 0.01)}%;" role="img" aria-label="${t('explore.companyExposureLabel', {
+    company: company.name,
+    contributors: company.contributors.map((contributor) => `${contributor.ticker} ${formatPercent(contributor.shareOfCompany)}`).join(', '),
+  })}">
         <div class="company-bar-fill">
           ${barSegments}
         </div>
@@ -958,7 +1020,7 @@ function buildCompactExploreRow(positions, company, rank) {
     <tr>
       <th scope="row" class="compact-explore-holding" title="${company.name}">
         <span class="compact-explore-holding-content">
-          <span class="compact-explore-rank" aria-label="Rank ${rank}">${rank}</span>
+          <span class="compact-explore-rank" aria-label="${t('explore.rank', { rank })}">${rank}</span>
           <span class="compact-explore-holding-name">${company.name}</span>
         </span>
       </th>
@@ -980,8 +1042,8 @@ function buildCompactExploreTable(positions) {
       <table class="compact-explore-table">
         <thead>
           <tr>
-            <th scope="col" class="compact-explore-holding">Holding</th>
-            <th scope="col" class="compact-explore-number compact-explore-total">Portfolio</th>
+            <th scope="col" class="compact-explore-holding">${t('explore.holding')}</th>
+            <th scope="col" class="compact-explore-number compact-explore-total">${t('explore.portfolio')}</th>
             ${etfHeaders}
           </tr>
         </thead>
@@ -1115,7 +1177,7 @@ function mergeLabels(...labelGroups) {
   return labels;
 }
 
-function buildReferenceSeries(labels, values, label = PORTFOLIO_REFERENCE_LABEL) {
+function buildReferenceSeries(labels, values, label = t('chart.portfolioReference')) {
   return {
     label,
     values: new Map(labels.map((entry) => [entry, values.get(entry) || 0])),
@@ -1146,7 +1208,7 @@ function updateSummary() {
     .map((position) => Number(getPositionValuation(position).valueChf))
     .filter((value) => Number.isFinite(value) && value >= 0);
   const totalValueChf = state.portfolioMode === 'percentage'
-    ? 'Not available'
+    ? t('common.notAvailable')
     : effectiveValues.length
     ? formatChfValue(effectiveValues.reduce((sum, value) => sum + value, 0))
     : formatChfValue(0);
@@ -1155,14 +1217,14 @@ function updateSummary() {
   const overlapCount = aggregateCompanyExposure(positions).ranked.filter((item) => item.etfs.size > 1).length;
 
   const cards = [
-    { label: 'Positions', value: formatCount(uniqueEtfs) },
-    { label: 'Share units', value: formatCount(shareCountTotal) },
-    { label: 'Total value', value: totalValueChf },
-    { label: 'Underlying holdings', value: formatCount(totalHoldings) },
-    { label: 'Shared companies', value: formatCount(overlapCount) },
+    { label: t('summary.positions'), value: formatCount(uniqueEtfs) },
+    { label: t('summary.shareUnits'), value: formatCount(shareCountTotal) },
+    { label: t('summary.totalValue'), value: totalValueChf },
+    { label: t('summary.underlyingHoldings'), value: formatCount(totalHoldings) },
+    { label: t('summary.sharedCompanies'), value: formatCount(overlapCount) },
   ];
   if (state.portfolioMode === 'percentage') {
-    cards[1].value = 'Not available';
+    cards[1].value = t('common.notAvailable');
   }
 
   elements.summaryGrid.innerHTML = cards
@@ -1182,7 +1244,7 @@ function renderCatalog() {
   const entries = state.catalog.etfs.filter((entry) => !term || entry.searchText.includes(term));
 
   if (!entries.length) {
-    elements.catalogList.innerHTML = '<div class="empty-state">No ETFs match the current search.</div>';
+    elements.catalogList.innerHTML = `<div class="empty-state">${t('catalog.noMatches')}</div>`;
     return;
   }
 
@@ -1197,7 +1259,7 @@ function renderCatalog() {
               <span>${entry.ticker} · ${entry.isin} · ${entry.provider}</span>
             </div>
             <button type="button" data-add-etf="${entry.isin}"${selected ? ' data-state="added" disabled' : ''}>
-              ${selected ? 'Added' : 'Add'}
+              ${selected ? t('catalog.added') : t('catalog.add')}
             </button>
           </div>
         </article>
@@ -1209,24 +1271,24 @@ function renderCatalog() {
 function renderPositions() {
   const positions = getSelectedPositions();
   const isPercentagePortfolio = state.portfolioMode === 'percentage';
-  elements.positionInputHeading.textContent = isPercentagePortfolio ? 'Allocation (%)' : 'Shares';
+  elements.positionInputHeading.textContent = isPercentagePortfolio ? t('ui.allocationPercent') : t('ui.shares');
   document.querySelectorAll('.positions-table thead [data-private-hidden]').forEach((header) => {
     header.hidden = isPercentagePortfolio;
   });
   if (!positions.length) {
-    elements.positionsBody.innerHTML = `<tr><td colspan="${isPercentagePortfolio ? 4 : 6}"><div class="empty-state">No positions yet. Search the catalog and add an ETF.</div></td></tr>`;
-    elements.portfolioHint.textContent = 'The portfolio is empty.';
+    elements.positionsBody.innerHTML = `<tr><td colspan="${isPercentagePortfolio ? 4 : 6}"><div class="empty-state">${t('portfolio.noPositions')}</div></td></tr>`;
+    elements.portfolioHint.textContent = t('portfolio.empty');
     return;
   }
 
   const totalShareUnits = getTotalShareUnits(positions);
   elements.portfolioHint.textContent = isPercentagePortfolio
-    ? 'Allocation values are relative weights; displayed weights are normalized for analysis.'
+    ? t('portfolio.percentageHint')
     : positions.some((position) => Number.isFinite(getPositionValuation(position).valueChf))
     ? state.valuationMode === 'imported'
-      ? 'Weights use imported broker values.'
-      : 'Weights use live values where available and imported CHF values as fallback.'
-    : 'Share counts act as the portfolio weighting proxy until ETF unit prices are imported.';
+      ? t('portfolio.importedWeightsHint')
+      : t('portfolio.liveWeightsHint')
+    : t('portfolio.shareCountWeightsHint');
 
   elements.positionsBody.innerHTML = positions
     .map((position) => {
@@ -1234,29 +1296,29 @@ function renderPositions() {
       const valuation = isPercentagePortfolio ? null : getPositionValuation(position);
       const shareInputStep = isPercentagePortfolio ? '0.1' : '1';
       const shareInputValue = isPercentagePortfolio ? Number(position.shares).toFixed(1) : position.shares;
-      const shareInputLabel = isPercentagePortfolio ? 'Allocation' : 'Shares';
+      const shareInputLabel = isPercentagePortfolio ? t('ui.allocationPercent') : t('ui.shares');
       const valuationCells = isPercentagePortfolio
         ? ''
         : `
-          <td class="position-price" data-label="Price"><span class="position-metric-value">${valuation.price !== null ? formatCurrencyValue(valuation.price, valuation.currency) : 'Unavailable'}</span></td>
-          <td class="position-value" data-label="Value CHF"><span class="position-metric-value">${valuation.valueChf !== null ? formatCurrencyValue(valuation.valueChf) : 'Unavailable'}</span></td>`;
+          <td class="position-price" data-label="${t('ui.price')}"><span class="position-metric-value">${valuation.price !== null ? formatCurrencyValue(valuation.price, valuation.currency) : t('common.unavailable')}</span></td>
+          <td class="position-value" data-label="${t('ui.valueChf')}"><span class="position-metric-value">${valuation.valueChf !== null ? formatCurrencyValue(valuation.valueChf) : t('common.unavailable')}</span></td>`;
       const allocationCells = isPercentagePortfolio
         ? `
-          <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}"><span class="position-metric-value">${formatPercent(weight)}</span></td>
-          <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>`
+          <td class="position-weight" data-label="${t('ui.weight')}" aria-label="${t('portfolio.weightLabel', { value: formatPercent(weight) })}"><span class="position-metric-value">${formatPercent(weight)}</span></td>
+          <td class="position-remove" data-label="${t('ui.remove')}"><button type="button" class="remove-button" aria-label="${t('portfolio.removeTicker', { ticker: position.entry.ticker })}" title="${t('portfolio.removeTicker', { ticker: position.entry.ticker })}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">${t('ui.remove')}</span></button></td>`
         : `
-          <td class="position-weight" data-label="Weight" aria-label="Weight ${formatPercent(weight)}"><span class="position-metric-value">${formatPercent(weight)}</span></td>
-          <td class="position-remove" data-label="Remove"><button type="button" class="remove-button" aria-label="Remove ${position.entry.ticker}" title="Remove ${position.entry.ticker}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">Remove</span></button></td>`;
+          <td class="position-weight" data-label="${t('ui.weight')}" aria-label="${t('portfolio.weightLabel', { value: formatPercent(weight) })}"><span class="position-metric-value">${formatPercent(weight)}</span></td>
+          <td class="position-remove" data-label="${t('ui.remove')}"><button type="button" class="remove-button" aria-label="${t('portfolio.removeTicker', { ticker: position.entry.ticker })}" title="${t('portfolio.removeTicker', { ticker: position.entry.ticker })}" data-remove-position="${position.isin}"><i data-lucide="trash-2" aria-hidden="true"></i><span class="remove-button-label">${t('ui.remove')}</span></button></td>`;
       return `
         <tr class="position-row${isPercentagePortfolio ? ' position-row--percentage' : ''}">
-          <td class="position-identity" data-label="ETF">
+          <td class="position-identity" data-label="${t('ui.etf')}">
             <div class="position-name">
               <strong>${position.entry.ticker}</strong>
               <span>· ${position.entry.name}</span>
             </div>
           </td>
           <td class="position-shares" data-label="${shareInputLabel}">
-            <input class="position-input" aria-label="${shareInputLabel} for ${position.entry.ticker}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
+            <input class="position-input" aria-label="${t('portfolio.inputForTicker', { field: shareInputLabel, ticker: position.entry.ticker })}" type="number" min="0" step="${shareInputStep}" value="${shareInputValue}" data-shares-input="${position.isin}" />
           </td>
           ${valuationCells}
           ${allocationCells}
@@ -1269,7 +1331,7 @@ function renderPositions() {
 
 function renderComparisonToolbar(positions) {
   if (!positions.length) {
-    elements.comparisonToolbar.innerHTML = '<div class="empty-state">Add positions to compare ETFs.</div>';
+    elements.comparisonToolbar.innerHTML = `<div class="empty-state">${t('comparison.addPositions')}</div>`;
     return;
   }
 
@@ -1324,22 +1386,28 @@ function renderComparisonCharts() {
     ? [buildReferenceSeries(currencyLabels, rollups.currency), ...currencyData.series]
     : currencyData.series;
 
-  renderComparisonChart(chartRefs.sector, elements.sectorCanvas, 'Sectors', sectorSeries, sectorLabels, {
+  const chartOptions = (labels) => ({
     legendMode: 'labels',
+    labelDisplayOverrides: new Map(labels.map((label) => [label, translateTaxonomyLabel(label, t)])),
+    translate: t,
+    formatPercent,
+  });
+  renderComparisonChart(chartRefs.sector, elements.sectorCanvas, t('chart.titleSectors'), sectorSeries, sectorLabels, {
+    ...chartOptions(sectorLabels),
     legendContainer: elements.sectorLegend,
   });
-  renderComparisonChart(chartRefs.region, elements.regionCanvas, 'Regions', regionSeries, regionLabels, {
-    legendMode: 'labels',
+  renderComparisonChart(chartRefs.region, elements.regionCanvas, t('chart.titleRegions'), regionSeries, regionLabels, {
+    ...chartOptions(regionLabels),
     legendContainer: elements.regionLegend,
   });
   renderComparisonChart(
     chartRefs.currency,
     elements.currencyCanvas,
-    'Currencies',
+    t('chart.titleCurrencies'),
     currencySeries,
     currencyLabels,
     {
-      legendMode: 'labels',
+      ...chartOptions(currencyLabels),
       legendLabelOverrides: currencyData.legendLabelOverrides,
       labelColorOverrides: new Map([['Other', '#4b5563']]),
       legendContainer: elements.currencyLegend,
@@ -1351,9 +1419,9 @@ function renderRollups() {
   const positions = getSelectedPositions();
   const rollups = aggregatePortfolioRollups(positions);
   const cards = [
-    { label: 'Sector exposure', values: rollups.sector },
-    { label: 'Region exposure', values: rollups.region },
-    { label: 'Currency exposure', values: rollups.currency },
+    { label: t('rollup.sectorExposure'), values: rollups.sector },
+    { label: t('rollup.regionExposure'), values: rollups.region },
+    { label: t('rollup.currencyExposure'), values: rollups.currency },
   ];
 
   elements.rollupGrid.innerHTML = cards
@@ -1363,8 +1431,8 @@ function renderRollups() {
       return `
         <article class="rollup-card">
           <strong>${card.label}</strong>
-          <div class="value">${top ? formatPercent(top[1]) : '0.0%'}</div>
-          <div class="subtext">${top ? top[0] : 'No data yet'}</div>
+          <div class="value">${top ? formatPercent(top[1]) : formatPercent(0)}</div>
+          <div class="subtext">${top ? translateTaxonomyLabel(top[0], t) : t('common.noDataYet')}</div>
         </article>
       `;
     })
@@ -1382,8 +1450,8 @@ function renderCompanyList() {
 
   if (state.compactExplorePreview) {
     if (!ranked.length) {
-      elements.companyList.innerHTML = '<div class="empty-state">Add positions to calculate company exposure.</div>';
-      elements.companyHint.textContent = 'No look-through exposure is available yet.';
+      elements.companyList.innerHTML = `<div class="empty-state">${t('explore.addPositions')}</div>`;
+      elements.companyHint.textContent = t('explore.noExposureYet');
       return;
     }
 
@@ -1394,8 +1462,8 @@ function renderCompanyList() {
         .map((company, index) => ({ company, rank: index + 1 }))
         .filter(({ company }) => company.name.toLowerCase().includes(searchTerm));
       elements.companyHint.textContent = matches.length
-        ? `${matches.length} matching compan${matches.length === 1 ? 'y' : 'ies'}.`
-        : 'No companies match the current search.';
+        ? t('explore.matchCount', { count: formatCount(matches.length) })
+        : t('explore.noCompanyMatches');
       elements.companyList.querySelector('.compact-explore-table tbody').innerHTML = matches
         .map(({ company, rank }) => buildCompactExploreRow(positions, company, rank))
         .join('');
@@ -1403,7 +1471,7 @@ function renderCompanyList() {
       return;
     }
 
-    elements.companyHint.textContent = 'Holdings ranked by total portfolio exposure.';
+    elements.companyHint.textContent = t('explore.holdingsRanked');
     appendCompanyBatch();
     if (state.companyVisibleCount < ranked.length) {
       const sentinel = document.createElement('div');
@@ -1416,8 +1484,8 @@ function renderCompanyList() {
   }
 
   if (!ranked.length) {
-    elements.companyList.innerHTML = '<div class="empty-state">Add positions to calculate company exposure.</div>';
-    elements.companyHint.textContent = 'No look-through exposure is available yet.';
+    elements.companyList.innerHTML = `<div class="empty-state">${t('explore.addPositions')}</div>`;
+    elements.companyHint.textContent = t('explore.noExposureYet');
     return;
   }
 
@@ -1426,8 +1494,8 @@ function renderCompanyList() {
       .map((company, index) => ({ company, rank: index + 1 }))
       .filter(({ company }) => company.name.toLowerCase().includes(searchTerm));
     elements.companyHint.textContent = matches.length
-      ? `${matches.length} matching compan${matches.length === 1 ? 'y' : 'ies'}.`
-      : 'No companies match the current search.';
+      ? t('explore.matchCount', { count: formatCount(matches.length) })
+      : t('explore.noCompanyMatches');
     elements.companyList.innerHTML = matches
       .map(({ company, rank }) => buildCompanyRow(company, rank - 1))
       .join('');
@@ -1435,7 +1503,7 @@ function renderCompanyList() {
     return;
   }
 
-  elements.companyHint.textContent = 'Showing the top 20 holdings. Scroll down to load more.';
+  elements.companyHint.textContent = t('explore.showingTopHoldings');
   elements.companyList.innerHTML = '';
   appendCompanyBatch();
 
@@ -1462,7 +1530,7 @@ function updateCompanySearchClearButton() {
 
 function formatImportedMoney(value, currency = 'CHF') {
   if (!Number.isFinite(Number(value))) {
-    return 'Invalid';
+    return t('common.invalid');
   }
   return formatCurrencyValue(value, currency);
 }
@@ -1473,11 +1541,31 @@ function getImportReviewValuation(row) {
 
 function formatImportReviewValuation(row) {
   const valuation = getImportReviewValuation(row);
-  const source = valuation.status === 'fallback' ? 'imported fallback' : valuation.status;
+  const source = t(valuation.status === 'fallback' ? 'import.sourceImportedFallback' : `import.source.${valuation.status}`);
   const value = valuation.status === 'unavailable'
     ? formatImportedMoney(row.valueChf)
     : formatImportedMoney(valuation.valueChf);
-  return `${value} (${source})`;
+  return t('import.valueWithSource', { value, source });
+}
+
+function translateImportWarning(warning) {
+  const keys = {
+    'Invalid ISIN': 'import.warningInvalidIsin',
+    'Shares are missing or invalid': 'import.warningInvalidShares',
+    'Price is missing or invalid': 'import.warningInvalidPrice',
+    'Currency is missing or unsupported': 'import.warningInvalidCurrency',
+  };
+  return keys[warning] ? t(keys[warning]) : t('import.warningUnsupported', { warning });
+}
+
+function translateImportError(error) {
+  const keys = {
+    'This PDF is not a supported Saxo Bank report.': 'import.errorUnsupportedPdf',
+    'No Saxo holdings pages were found in this PDF.': 'import.errorNoHoldingsPages',
+    'PDF.js is unavailable. Reload the page and try again.': 'import.errorPdfJsUnavailable',
+    'No ETF holdings were found in the supported Saxo sections.': 'import.errorNoEtfHoldings',
+  };
+  return keys[error.message] ? t(keys[error.message]) : error.message;
 }
 
 function getImportReviewPrice(row) {
@@ -1490,16 +1578,21 @@ function getImportReviewPrice(row) {
 
 function renderImportReview() {
   const validRows = state.importReviewRows.filter((row) => row.included && !row.warnings.length && row.matchStatus === 'matched');
-  elements.importSummary.textContent = `${state.importReviewRows.length} rows found. ${validRows.length} will replace the existing portfolio.`;
+  elements.importSummary.textContent = t('import.reviewSummary', {
+    count: formatCount(state.importReviewRows.length),
+    valid: formatCount(validRows.length),
+  });
   elements.importTbody.innerHTML = state.importReviewRows
     .map((row, index) => {
-      const warning = row.warnings.length ? ` ${row.warnings.join('; ')}` : row.matchStatus === 'unmatched' ? ' ISIN is not in the catalog.' : '';
+      const warning = row.warnings.length
+        ? ` ${row.warnings.map(translateImportWarning).join('; ')}`
+        : row.matchStatus === 'unmatched' ? ` ${t('import.warningIsinNotInCatalog')}` : '';
       const label = row.entry ? `${row.entry.ticker} · ${row.entry.name}` : row.isin;
       const price = getImportReviewPrice(row);
       return `
         <tr class="import-row ${warning ? 'import-row-warning' : ''}">
-          <td><input type="checkbox" aria-label="Include ${label}" data-import-include="${index}" ${row.included ? 'checked' : ''} ${row.matchStatus !== 'matched' ? 'disabled' : ''} /></td>
-          <td><strong>${label}</strong><span class="import-row-meta">${row.isin} · Page ${row.pageNumber}${warning ? ` · ${warning}` : ''}</span></td>
+          <td><input type="checkbox" aria-label="${t('import.includeLabel', { label })}" data-import-include="${index}" ${row.included ? 'checked' : ''} ${row.matchStatus !== 'matched' ? 'disabled' : ''} /></td>
+          <td><strong>${label}</strong><span class="import-row-meta">${row.isin} · ${t('import.page', { page: row.pageNumber })}${warning ? ` · ${warning}` : ''}</span></td>
           <td><input class="import-input" type="number" min="0" step="1" value="${row.shares ?? ''}" data-import-shares="${index}" /></td>
           <td><input class="import-input" type="number" min="0" step="0.0001" value="${price.value}" data-import-price="${index}" ${price.editable ? '' : 'readonly'} /></td>
           <td><select class="import-currency" data-import-currency="${index}"><option value="CHF" ${row.currency === 'CHF' ? 'selected' : ''}>CHF</option><option value="EUR" ${row.currency === 'EUR' ? 'selected' : ''}>EUR</option><option value="USD" ${row.currency === 'USD' ? 'selected' : ''}>USD</option></select></td>
@@ -1529,7 +1622,10 @@ function updateImportRow(index, field, value) {
 
 function refreshImportReviewTotals() {
   const validRows = state.importReviewRows.filter((row) => row.included && !row.warnings.length && row.matchStatus === 'matched');
-  elements.importSummary.textContent = `${state.importReviewRows.length} rows found. ${validRows.length} will replace the existing portfolio.`;
+  elements.importSummary.textContent = t('import.reviewSummary', {
+    count: formatCount(state.importReviewRows.length),
+    valid: formatCount(validRows.length),
+  });
   for (const [index, row] of state.importReviewRows.entries()) {
     const value = elements.importTbody.querySelector(`[data-import-value="${index}"]`);
     const price = elements.importTbody.querySelector(`[data-import-price="${index}"]`);
@@ -1572,10 +1668,10 @@ function downloadExtractedPdfText() {
 async function importPortfolioFile(file) {
   if (!file) return;
   if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
-    elements.importStatus.textContent = 'Select a PDF holdings report.';
+    elements.importStatus.textContent = t('import.selectPdf');
     return;
   }
-  elements.importStatus.textContent = `Reading ${file.name} locally...`;
+  elements.importStatus.textContent = t('import.readingLocally', { name: file.name });
   window.__etfLensPdfImportPages = null;
   updateImportDebugVisibility();
   try {
@@ -1585,9 +1681,9 @@ async function importPortfolioFile(file) {
     const rows = matchImportedRows(parseSaxoPages(pages, state.livePrices?.fx), state.catalogMaps);
     if (!rows.length) throw new Error('No ETF holdings were found in the supported Saxo sections.');
     showImportDialog(rows);
-    elements.importStatus.textContent = 'Review the proposed positions before replacing the portfolio.';
+    elements.importStatus.textContent = t('import.reviewBeforeReplace');
   } catch (error) {
-    elements.importStatus.textContent = error.message;
+    elements.importStatus.textContent = translateImportError(error);
     updateImportDebugVisibility();
   }
 }
@@ -1605,7 +1701,7 @@ function confirmImport() {
       valuationMode: state.importValuationMode,
     }));
   if (!positions.length) {
-    elements.importStatus.textContent = 'No valid catalog positions are selected for import.';
+    elements.importStatus.textContent = t('import.noValidSelection');
     return;
   }
   state.portfolio = positions;
@@ -1614,7 +1710,7 @@ function confirmImport() {
   clearShareFeedback();
   savePortfolioState();
   closeImportDialog();
-  elements.importStatus.textContent = `Imported ${positions.length} ETF position${positions.length === 1 ? '' : 's'} and replaced the portfolio.`;
+  elements.importStatus.textContent = t('import.importedPositions', { count: formatCount(positions.length) });
   renderAll();
 }
 
@@ -1691,6 +1787,10 @@ function removePosition(isin) {
 async function bootstrap() {
   elements.summaryGrid = document.getElementById('summary-grid');
   elements.navigationItems = document.getElementById('primary-navigation-items');
+  elements.languageButton = document.getElementById('language-button');
+  elements.languageMenu = document.getElementById('language-menu');
+  applyStaticTranslations();
+  renderLanguageControl();
   renderNavigation();
   window.lucide?.createIcons();
   elements.tabButtons = [...document.querySelectorAll('.tab-button')];
@@ -1807,8 +1907,8 @@ async function bootstrap() {
     state.valuationMode = sharedPortfolio.valuationMode;
     state.activeTab = 'portfolio';
     state.shareFeedback = sharedPortfolio.mode === 'percentage'
-      ? 'Private portfolio loaded. Shares represent relative allocation units only.'
-      : 'Shared portfolio loaded using the latest published ETF data.';
+      ? 'share.privateLoaded'
+      : 'share.loaded';
     savePortfolioState();
   } else {
     const savedPortfolio = loadPortfolioState();
@@ -1817,7 +1917,7 @@ async function bootstrap() {
     state.valuationMode = savedPortfolio.valuationMode;
     state.activeTab = loadActiveTab();
     if (sharedPortfolio.status === 'invalid') {
-      state.shareFeedback = 'This share link could not be loaded. Your local portfolio was kept.';
+      state.shareFeedback = 'share.invalidKeptLocal';
     }
   }
   renderValuationModeControl();
@@ -1940,7 +2040,32 @@ async function bootstrap() {
     if (currency) updateImportRow(Number(currency.dataset.importCurrency), 'currency', currency.value);
   });
 
-  document.addEventListener('click', (event) => {
+  document.addEventListener('click', async (event) => {
+    const languageOption = event.target.closest('[data-locale]');
+    if (languageOption) {
+      toggleLanguageMenu(false);
+      toggleColorModeMenu(false);
+      if (languageOption.getAttribute('aria-checked') !== 'true') {
+        await selectLocale(languageOption.dataset.locale);
+        applyStaticTranslations();
+        renderLanguageControl();
+        renderNavigation();
+        renderColorModeControl();
+        renderAll();
+        if (elements.importDialog.open) renderImportReview();
+        setTab(state.activeTab);
+      }
+      return;
+    }
+
+    if (event.target.closest('[data-language-control]')) {
+      if (event.target.closest('#language-button')) {
+        toggleLanguageMenu();
+        toggleColorModeMenu(false);
+      }
+      return;
+    }
+
     const colorModeOption = event.target.closest('[data-color-mode-option]');
     if (colorModeOption) {
       setColorMode(colorModeOption.dataset.colorModeOption);
@@ -1951,6 +2076,7 @@ async function bootstrap() {
     if (event.target.closest('[data-color-mode-control]')) {
       if (event.target.closest('#color-mode-button')) {
         toggleColorModeMenu();
+        toggleLanguageMenu(false);
       }
       return;
     }
@@ -1959,6 +2085,7 @@ async function bootstrap() {
       return;
     }
     toggleColorModeMenu(false);
+    toggleLanguageMenu(false);
 
     const addButton = event.target.closest('[data-add-etf]');
     if (addButton) {
@@ -2038,7 +2165,7 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  bootstrap().catch((error) => {
+  initializeLocalization().then(bootstrap).catch((error) => {
     document.body.innerHTML = `<pre style="white-space: pre-wrap; padding: 24px; color: #fff;">Failed to start ETF Portfolio Lens: ${error.message}</pre>`;
     console.error(error);
   });
