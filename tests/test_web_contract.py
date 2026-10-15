@@ -230,9 +230,25 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("width: min(100%, 224px);", styles)
         self.assertNotIn("width: min(100%, 320px);", styles)
         self.assertIn(".portfolio-valuation-details {", styles)
+        self.assertIn(
+            ".portfolio-valuation-status {\n    align-self: flex-end;\n    flex: 0 0 auto;\n    margin: 0 0 0 auto;\n  }",
+            styles,
+        )
+        self.assertIn(
+            ".portfolio-valuation-control {\n    flex: 1 1 224px;\n    min-width: 0;\n    width: auto;\n  }",
+            styles,
+        )
+        self.assertIn(
+            ".portfolio-valuation-control select {\n    min-width: 0;\n    width: 100%;\n  }",
+            styles,
+        )
+        self.assertIn(
+            ".portfolio-valuation-details {\n    flex: 0 1 auto;\n    flex-wrap: nowrap;\n    width: 100%;\n  }",
+            styles,
+        )
         self.assertIn("margin: 0 0 0 auto;", styles)
         self.assertIn("align-self: flex-end;", styles)
-        self.assertIn("align-self: start;", styles)
+        self.assertIn("align-self: flex-end;", styles)
         self.assertIn("flex-direction: column;", styles)
         self.assertIn("return formatCurrencyValue(value, currency);", app)
         self.assertIn("formatImportedMoney(row.value, row.currency)", app)
