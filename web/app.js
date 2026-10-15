@@ -110,6 +110,7 @@ function renderLanguageControl() {
   const languages = [
     { locale: 'en-CH', code: 'EN', labelKey: 'language.english' },
     { locale: 'de-CH', code: 'DE', labelKey: 'language.german' },
+    { locale: 'pl-PL', code: 'PL', labelKey: 'language.polish' },
   ];
   const selectedLanguage = languages.find((language) => language.locale === currentLocale) || languages[0];
   if (!elements.languageButton || !elements.languageMenu) return;
@@ -876,7 +877,11 @@ function aggregateCompanyExposure(positions) {
       INCOMPLETE_MATCH_STATUSES.has(holding?.provenance?.match?.status)
     ).length;
     if (unmatchedCount) {
-      warnings.push(t('warnings.unmatchedHoldings', { ticker: position.entry.ticker, count: unmatchedCount }));
+      warnings.push(t('warnings.unmatchedHoldings', {
+        ticker: position.entry.ticker,
+        count: unmatchedCount,
+        countDisplay: formatCount(unmatchedCount),
+      }));
     }
   }
 
@@ -988,7 +993,11 @@ function buildCompanyRow(company, index) {
       <div class="company-row-head">
         <div class="company-row-title">
           <div class="company-name">${index + 1}. ${company.name}</div>
-          <div class="company-meta">${t('explore.etfContributionCount', { count: formatCount(company.etfs.size), value: formatPercent(company.weight) })}</div>
+          <div class="company-meta">${t('explore.etfContributionCount', {
+      count: company.etfs.size,
+      countDisplay: formatCount(company.etfs.size),
+      value: formatPercent(company.weight),
+    })}</div>
         </div>
         <div class="company-total">${formatPercent(company.weight)}</div>
       </div>
@@ -1462,7 +1471,7 @@ function renderCompanyList() {
         .map((company, index) => ({ company, rank: index + 1 }))
         .filter(({ company }) => company.name.toLowerCase().includes(searchTerm));
       elements.companyHint.textContent = matches.length
-        ? t('explore.matchCount', { count: formatCount(matches.length) })
+        ? t('explore.matchCount', { count: matches.length, countDisplay: formatCount(matches.length) })
         : t('explore.noCompanyMatches');
       elements.companyList.querySelector('.compact-explore-table tbody').innerHTML = matches
         .map(({ company, rank }) => buildCompactExploreRow(positions, company, rank))
@@ -1494,7 +1503,7 @@ function renderCompanyList() {
       .map((company, index) => ({ company, rank: index + 1 }))
       .filter(({ company }) => company.name.toLowerCase().includes(searchTerm));
     elements.companyHint.textContent = matches.length
-      ? t('explore.matchCount', { count: formatCount(matches.length) })
+      ? t('explore.matchCount', { count: matches.length, countDisplay: formatCount(matches.length) })
       : t('explore.noCompanyMatches');
     elements.companyList.innerHTML = matches
       .map(({ company, rank }) => buildCompanyRow(company, rank - 1))
@@ -1579,8 +1588,9 @@ function getImportReviewPrice(row) {
 function renderImportReview() {
   const validRows = state.importReviewRows.filter((row) => row.included && !row.warnings.length && row.matchStatus === 'matched');
   elements.importSummary.textContent = t('import.reviewSummary', {
-    count: formatCount(state.importReviewRows.length),
-    valid: formatCount(validRows.length),
+    count: state.importReviewRows.length,
+    countDisplay: formatCount(state.importReviewRows.length),
+    validDisplay: formatCount(validRows.length),
   });
   elements.importTbody.innerHTML = state.importReviewRows
     .map((row, index) => {
@@ -1623,8 +1633,9 @@ function updateImportRow(index, field, value) {
 function refreshImportReviewTotals() {
   const validRows = state.importReviewRows.filter((row) => row.included && !row.warnings.length && row.matchStatus === 'matched');
   elements.importSummary.textContent = t('import.reviewSummary', {
-    count: formatCount(state.importReviewRows.length),
-    valid: formatCount(validRows.length),
+    count: state.importReviewRows.length,
+    countDisplay: formatCount(state.importReviewRows.length),
+    validDisplay: formatCount(validRows.length),
   });
   for (const [index, row] of state.importReviewRows.entries()) {
     const value = elements.importTbody.querySelector(`[data-import-value="${index}"]`);
@@ -1710,7 +1721,10 @@ function confirmImport() {
   clearShareFeedback();
   savePortfolioState();
   closeImportDialog();
-  elements.importStatus.textContent = t('import.importedPositions', { count: formatCount(positions.length) });
+  elements.importStatus.textContent = t('import.importedPositions', {
+    count: positions.length,
+    countDisplay: formatCount(positions.length),
+  });
   renderAll();
 }
 

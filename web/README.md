@@ -10,9 +10,9 @@ Then open `http://127.0.0.1:8000/web/` in a desktop browser or use the same URL 
 
 ## Interface language
 
-Choose English (`en-CH`) or German (`de-CH`) from the language selector in the utility bar. The choice is saved separately from portfolio and color-mode settings and is applied on the next visit. When no language has been saved, the app maps an English or German browser preference to its Swiss locale; unsupported browser languages default to `en-CH`.
+Choose English (`en-CH`), German (`de-CH`), or Polish (`pl-PL`) from the language selector in the utility bar. The choice is saved separately from portfolio and color-mode settings and is applied on the next visit. When no language has been saved, the app maps English and German browser preferences to their Swiss locales and Polish preferences to `pl-PL`; unsupported browser languages default to `en-CH`.
 
-The app ships both translation resources and its i18next runtime locally. After the application shell has been cached during an online visit, both languages remain available for switching while offline.
+Counts, percentages, dates, and CHF, EUR, and USD values use the selected locale for display while preserving their numeric values and currency codes. The app ships all three translation resources and its i18next runtime locally. After the application shell has been cached during an online visit, all three languages remain available for switching while offline.
 
 The About this build dialog includes a color-mode control with Bright, Automatic, and Dark options. Automatic follows the browser or operating-system preference. The selected mode is persisted locally in the browser with `localStorage`.
 

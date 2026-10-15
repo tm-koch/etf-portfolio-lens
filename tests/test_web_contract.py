@@ -20,27 +20,29 @@ class LocalizationKeyParser(HTMLParser):
 
 
 class WebContractTests(unittest.TestCase):
-    def test_web_readme_documents_shipped_locales_and_offline_language_switching(self) -> None:
+    def test_web_readme_documents_shipped_locales_and_offline_language_switching(
+        self,
+    ) -> None:
         readme = (WEB_ROOT / "README.md").read_text(encoding="utf-8")
         locales = {path.stem for path in (WEB_ROOT / "locales").glob("*.json")}
 
-        self.assertEqual(locales, {"en-CH", "de-CH"})
+        self.assertEqual(locales, {"en-CH", "de-CH", "pl-PL"})
         for locale in locales:
             self.assertIn(locale, readme)
         self.assertIn("unsupported browser languages default to `en-CH`", readme)
         self.assertIn("available for switching while offline", readme)
 
-    def test_static_translation_keys_exist_in_both_locales(self) -> None:
+    def test_static_translation_keys_exist_in_all_locales(self) -> None:
         parser = LocalizationKeyParser()
         parser.feed((WEB_ROOT / "index.html").read_text(encoding="utf-8"))
 
-        for locale in ("en-CH", "de-CH"):
+        for locale in ("en-CH", "de-CH", "pl-PL"):
             resources = json.loads(
                 (WEB_ROOT / "locales" / f"{locale}.json").read_text(encoding="utf-8")
             )["translation"]
             self.assertEqual(parser.keys - resources.keys(), set(), locale)
 
-    def test_app_translation_keys_exist_in_both_locales(self) -> None:
+    def test_app_translation_keys_exist_in_all_locales(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         charts = (WEB_ROOT / "charts.js").read_text(encoding="utf-8")
         taxonomy = (WEB_ROOT / "taxonomy.js").read_text(encoding="utf-8")
@@ -48,9 +50,11 @@ class WebContractTests(unittest.TestCase):
         keys.update(re.findall(r"labelKey: ['\"]([^'\"]+)['\"]", app))
         keys.update(re.findall(r"translate\(options, ['\"]([^'\"]+)['\"]", charts))
         keys.update(re.findall(r"\['[^']+',\s*'([^']+)'\]", taxonomy))
-        keys.update(f"import.source.{status}" for status in ("live", "imported", "unavailable"))
+        keys.update(
+            f"import.source.{status}" for status in ("live", "imported", "unavailable")
+        )
 
-        for locale in ("en-CH", "de-CH"):
+        for locale in ("en-CH", "de-CH", "pl-PL"):
             resources = json.loads(
                 (WEB_ROOT / "locales" / f"{locale}.json").read_text(encoding="utf-8")
             )["translation"]
@@ -81,7 +85,9 @@ class WebContractTests(unittest.TestCase):
             [icon["sizes"] for icon in manifest["icons"]], ["192x192", "512x512"]
         )
         self.assertIn('rel="manifest" href="./manifest.json"', index)
-        self.assertIn('<title data-i18n="ui.documentTitle">ETF Portfolio Lens</title>', index)
+        self.assertIn(
+            '<title data-i18n="ui.documentTitle">ETF Portfolio Lens</title>', index
+        )
         self.assertIn('id="install-app-button"', index)
         self.assertIn('title="Install app"', index)
         self.assertIn('<meta name="theme-color" content="#152033" />', index)
@@ -117,6 +123,7 @@ class WebContractTests(unittest.TestCase):
             "formatting.js",
             "locales/en-CH.json",
             "locales/de-CH.json",
+            "locales/pl-PL.json",
             "vendor/i18next.min.js",
         ):
             self.assertTrue((WEB_ROOT / path).is_file())
@@ -235,7 +242,8 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("savePortfolioImportDebug();", app)
         self.assertIn("const shareCountTotal = positions.reduce", app)
         self.assertIn(
-            "{ label: t('summary.shareUnits'), value: formatCount(shareCountTotal) }", app
+            "{ label: t('summary.shareUnits'), value: formatCount(shareCountTotal) }",
+            app,
         )
         self.assertIn("function formatChfValue(value)", app)
         self.assertIn("{ label: t('summary.totalValue'), value: totalValueChf }", app)
@@ -254,8 +262,12 @@ class WebContractTests(unittest.TestCase):
         formatting = (WEB_ROOT / "formatting.js").read_text(encoding="utf-8")
 
         self.assertIn("function formatCurrencyValue(value, currency = 'CHF')", app)
-        self.assertIn("formatLocaleCurrency(value, currency, window.i18next.language)", app)
-        self.assertIn("new Intl.NumberFormat(resolvedLocale, numberOptions)", formatting)
+        self.assertIn(
+            "formatLocaleCurrency(value, currency, window.i18next.language)", app
+        )
+        self.assertIn(
+            "new Intl.NumberFormat(resolvedLocale, numberOptions)", formatting
+        )
         self.assertIn("currencyDisplay: 'code'", formatting)
         self.assertIn("return formatCurrencyValue(value, 'CHF');", app)
         self.assertIn(
@@ -285,7 +297,9 @@ class WebContractTests(unittest.TestCase):
             app,
         )
         self.assertIn("state.valuationMode !== 'latest'", app)
-        self.assertIn("formatCurrencyValue(valuation.valueChf) : t('common.unavailable')", app)
+        self.assertIn(
+            "formatCurrencyValue(valuation.valueChf) : t('common.unavailable')", app
+        )
         self.assertNotIn(
             "formatCurrencyValue(valuation.valueChf)} (${valuation.status})", app
         )
@@ -334,8 +348,12 @@ class WebContractTests(unittest.TestCase):
         self.assertIn(
             'id="portfolio-valuation-control" for="portfolio-valuation" hidden', index
         )
-        self.assertIn('class="position-weight" data-i18n="ui.weight">Weight</th>', index)
-        self.assertIn('class="position-remove" data-i18n="ui.remove">Remove</th>', index)
+        self.assertIn(
+            'class="position-weight" data-i18n="ui.weight">Weight</th>', index
+        )
+        self.assertIn(
+            'class="position-remove" data-i18n="ui.remove">Remove</th>', index
+        )
         self.assertIn(
             "const isPercentagePortfolio = state.portfolioMode === 'percentage';",
             app,
@@ -434,7 +452,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("'share.copied'", app)
         self.assertIn(
             "latest published ETF data",
-            json.loads((WEB_ROOT / "locales" / "en-CH.json").read_text(encoding="utf-8"))["translation"]["share.copied"],
+            json.loads(
+                (WEB_ROOT / "locales" / "en-CH.json").read_text(encoding="utf-8")
+            )["translation"]["share.copied"],
         )
         self.assertIn(".share-portfolio-url-label[hidden]", styles)
         self.assertIn(".share-portfolio-button", styles)
@@ -479,20 +499,20 @@ class WebContractTests(unittest.TestCase):
         self.assertNotIn('id="warning-list"', index)
         self.assertIn('id="data-dialog-warning-list"', index)
         self.assertIn('id="data-dialog-warnings-title"', index)
-        self.assertIn('data-label="${t(\'ui.etf\')}"', app)
+        self.assertIn("data-label=\"${t('ui.etf')}\"", app)
         self.assertIn(
             "const shareInputLabel = isPercentagePortfolio ? t('ui.allocationPercent') : t('ui.shares');",
             app,
         )
         self.assertIn('data-label="${shareInputLabel}"', app)
-        self.assertIn('data-label="${t(\'ui.weight\')}"', app)
+        self.assertIn("data-label=\"${t('ui.weight')}\"", app)
         self.assertIn(
             "return (getPositionWeightBase(position) / totalShareUnits) * 100;", app
         )
-        self.assertIn('data-label="${t(\'ui.remove\')}"', app)
-        self.assertIn('aria-label="${t(\'portfolio.weightLabel\'', app)
-        self.assertIn('aria-label="${t(\'portfolio.removeTicker\'', app)
-        self.assertIn('title="${t(\'portfolio.removeTicker\'', app)
+        self.assertIn("data-label=\"${t('ui.remove')}\"", app)
+        self.assertIn("aria-label=\"${t('portfolio.weightLabel'", app)
+        self.assertIn("aria-label=\"${t('portfolio.removeTicker'", app)
+        self.assertIn("title=\"${t('portfolio.removeTicker'", app)
         self.assertIn('data-lucide="trash-2"', app)
         self.assertIn("grid-template-areas:", styles)
         self.assertIn('"shares weight remove"', styles)
@@ -635,7 +655,10 @@ class WebContractTests(unittest.TestCase):
             '<header class="app-utility-bar" aria-label="Application utilities" data-i18n-attr-aria-label="ui.applicationUtilities">',
             index,
         )
-        self.assertIn('<span class="app-utility-label" data-i18n="ui.colorMode">Color mode</span>', index)
+        self.assertIn(
+            '<span class="app-utility-label" data-i18n="ui.colorMode">Color mode</span>',
+            index,
+        )
         self.assertEqual(index.count('id="color-mode-button"'), 1)
         self.assertEqual(index.count('id="color-mode-menu"'), 1)
         self.assertNotIn('class="color-mode-setting"', index)
@@ -694,7 +717,10 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('data-lucide="x"', index)
         self.assertIn("companySearchTerm: '',", app)
         self.assertIn("function buildCompactExploreRow(positions, company, rank)", app)
-        self.assertIn('class="compact-explore-rank" aria-label="${t(\'explore.rank\', { rank })}"', app)
+        self.assertIn(
+            'class="compact-explore-rank" aria-label="${t(\'explore.rank\', { rank })}"',
+            app,
+        )
         self.assertIn(
             "const searchTerm = state.companySearchTerm.trim().toLowerCase();", app
         )
@@ -733,7 +759,9 @@ class WebContractTests(unittest.TestCase):
             app,
         )
         self.assertIn("state.companyVisibleCount = matches.length;", app)
-        self.assertIn("elements.companyHint.textContent = t('explore.showingTopHoldings');", app)
+        self.assertIn(
+            "elements.companyHint.textContent = t('explore.showingTopHoldings');", app
+        )
         self.assertIn("if (state.companyVisibleCount < ranked.length) {", app)
         self.assertIn("ensureCompanyObserver();", app)
 
@@ -829,8 +857,13 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("function handleSystemColorModeChange()", app)
         self.assertIn("renderComparisonCharts();", app)
         self.assertIn("const modes = [", app)
-        self.assertIn("{ key: 'bright', labelKey: 'colorMode.bright', icon: 'sun' }", app)
-        self.assertIn("{ key: 'automatic', labelKey: 'colorMode.automatic', icon: 'monitor' }", app)
+        self.assertIn(
+            "{ key: 'bright', labelKey: 'colorMode.bright', icon: 'sun' }", app
+        )
+        self.assertIn(
+            "{ key: 'automatic', labelKey: 'colorMode.automatic', icon: 'monitor' }",
+            app,
+        )
         self.assertIn("{ key: 'dark', labelKey: 'colorMode.dark', icon: 'moon' }", app)
         self.assertIn('role="menu" aria-label="Color mode"', index)
         self.assertIn('role="menuitemradio"', app)

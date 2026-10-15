@@ -7,6 +7,7 @@ $PwaCacheSensitivePaths = @(
   'formatting.js',
   'locales/en-CH.json',
   'locales/de-CH.json',
+  'locales/pl-PL.json',
   'portfolio-import.js',
   'charts.js',
   'data.js',

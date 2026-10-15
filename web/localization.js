@@ -1,10 +1,11 @@
 export const LOCALE_STORAGE_KEY = 'etf-lens.locale.v1';
-export const SUPPORTED_LOCALES = ['en-CH', 'de-CH'];
+export const SUPPORTED_LOCALES = ['en-CH', 'de-CH', 'pl-PL'];
 
 function mapBrowserLanguage(language) {
   const baseLanguage = String(language || '').trim().toLowerCase().split('-')[0];
   if (baseLanguage === 'de') return 'de-CH';
   if (baseLanguage === 'en') return 'en-CH';
+  if (baseLanguage === 'pl') return 'pl-PL';
   return null;
 }
 

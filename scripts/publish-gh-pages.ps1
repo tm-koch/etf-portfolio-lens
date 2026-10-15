@@ -64,6 +64,7 @@ try {
     'formatting.js',
     'locales/en-CH.json',
     'locales/de-CH.json',
+    'locales/pl-PL.json',
     'share.js',
     'portfolio-import.js',
     'charts.js',

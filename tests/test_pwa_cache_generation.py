@@ -50,7 +50,7 @@ class PwaCacheGenerationTests(unittest.TestCase):
             shutil.copytree(WEB_ROOT, second_root)
 
             first_generation = self.run_generation(first_root)
-            locale_path = second_root / "locales" / "de-CH.json"
+            locale_path = second_root / "locales" / "pl-PL.json"
             locale = json.loads(locale_path.read_text(encoding="utf-8"))
             locale["translation"]["nav.home"] = "Startseite"
             locale_path.write_text(json.dumps(locale), encoding="utf-8")

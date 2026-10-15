@@ -1,4 +1,4 @@
-const SUPPORTED_LOCALES = new Set(['en-CH', 'de-CH']);
+const SUPPORTED_LOCALES = new Set(['en-CH', 'de-CH', 'pl-PL']);
 
 function normalizeLocale(locale) {
   return SUPPORTED_LOCALES.has(locale) ? locale : 'en-CH';

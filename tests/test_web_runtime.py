@@ -19,13 +19,20 @@ const i18n = {
 };
 const results = {
   savedGerman: resolveLocale('de-CH', ['en-US']),
+    savedPolish: resolveLocale('pl-PL', ['en-US']),
   browserGerman: resolveLocale(null, ['fr-FR', 'de-DE']),
   browserEnglish: resolveLocale(null, ['en-US']),
+    browserPolish: resolveLocale(null, ['pl-PL']),
+    browserPolishAfterUnsupported: resolveLocale(null, ['fr-FR', 'pl-PL']),
   unsupported: resolveLocale(null, ['fr-FR']),
 };
 await selectLocale('de-CH', {
   i18n,
   storage: { setItem: (key, value) => saved.set(key, value) },
+});
+await selectLocale('pl-PL', {
+    i18n,
+    storage: { setItem: (key, value) => saved.set(key, value) },
 });
 console.log(JSON.stringify({ ...results, language: document.documentElement.lang, saved: saved.get(LOCALE_STORAGE_KEY) }));
 """
@@ -35,17 +42,21 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
             check=True,
             capture_output=True,
             text=True,
+            encoding="utf-8",
         )
         values = json.loads(result.stdout)
 
         self.assertEqual(values["savedGerman"], "de-CH")
+        self.assertEqual(values["savedPolish"], "pl-PL")
         self.assertEqual(values["browserGerman"], "de-CH")
         self.assertEqual(values["browserEnglish"], "en-CH")
+        self.assertEqual(values["browserPolish"], "pl-PL")
+        self.assertEqual(values["browserPolishAfterUnsupported"], "pl-PL")
         self.assertEqual(values["unsupported"], "en-CH")
-        self.assertEqual(values["language"], "de-CH")
-        self.assertEqual(values["saved"], "de-CH")
+        self.assertEqual(values["language"], "pl-PL")
+        self.assertEqual(values["saved"], "pl-PL")
 
-    def test_language_selector_uses_supported_swiss_locales_and_local_runtime(
+    def test_language_selector_uses_supported_locales_and_local_runtime(
         self,
     ) -> None:
         index = (REPOSITORY_ROOT / "web" / "index.html").read_text(encoding="utf-8")
@@ -60,6 +71,7 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertIn('data-locale="${language.locale}"', app)
         self.assertIn("locale: 'en-CH'", app)
         self.assertIn("locale: 'de-CH'", app)
+        self.assertIn("locale: 'pl-PL', code: 'PL', labelKey: 'language.polish'", app)
         self.assertNotIn('<select id="language-select"', index)
         self.assertIn("./vendor/i18next.min.js", index)
         self.assertIn("initializeLocalization().then(bootstrap)", app)
@@ -110,6 +122,52 @@ console.log(JSON.stringify({
         self.assertEqual(values["english"], "Home")
         self.assertEqual(values["lang"], "en-CH")
         self.assertEqual(values["selected"], "en-CH")
+
+    def test_polish_plural_categories_use_raw_counts_and_formatted_display(
+        self,
+    ) -> None:
+        script = """
+import fs from 'node:fs';
+import './web/vendor/i18next.min.js';
+import { initializeLocalization } from './web/localization.js';
+
+globalThis.document = { documentElement: { lang: 'en' } };
+globalThis.fetch = async (url) => {
+  const locale = new URL(url).pathname.split('/').at(-1).replace('.json', '');
+  return { ok: true, json: async () => JSON.parse(fs.readFileSync(`web/locales/${locale}.json`, 'utf8')) };
+};
+const i18next = globalThis.i18next;
+await initializeLocalization({ i18n: i18next, storage: { getItem: () => null }, browserLanguages: ['pl-PL'] });
+const values = [1, 2, 5, 12, 22, 1.5].map((count) => ({
+  count,
+  message: i18next.t('explore.matchCount', {
+    count,
+    countDisplay: new Intl.NumberFormat('pl-PL').format(count),
+  }),
+}));
+console.log(JSON.stringify(values));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(
+            [item["message"] for item in values],
+            [
+                "1 pasująca spółka.",
+                "2 pasujące spółki.",
+                "5 pasujących spółek.",
+                "12 pasujących spółek.",
+                "22 pasujące spółki.",
+                "1,5 pasującej spółki.",
+            ],
+        )
 
     def test_chart_taxonomy_translation_is_display_only_and_has_fallbacks(self) -> None:
         script = r"""
@@ -178,7 +236,7 @@ console.log(JSON.stringify({
         script = """
 import { formatBuildTimestamp, formatCount, formatCurrencyValue, formatPercent } from './web/formatting.js';
 const values = {};
-for (const locale of ['en-CH', 'de-CH']) {
+for (const locale of ['en-CH', 'de-CH', 'pl-PL']) {
   values[locale] = {
     count: formatCount(1234567, locale),
     percent: formatPercent(12.5, locale),
@@ -204,18 +262,27 @@ console.log(JSON.stringify(values));
 
         self.assertEqual(values["en-CH"]["count"], "1’234’567")
         self.assertEqual(values["de-CH"]["count"], "1’234’567")
+        self.assertEqual(values["pl-PL"]["count"], "1\u00a0234\u00a0567")
         self.assertEqual(values["en-CH"]["percent"], "12.5%")
         self.assertEqual(values["de-CH"]["percent"], "12.5%")
+        self.assertEqual(values["pl-PL"]["percent"], "12,5%")
         for locale in ("en-CH", "de-CH"):
             for currency in ("CHF", "EUR", "USD"):
                 self.assertEqual(
                     values[locale]["currencies"][currency],
                     f"{currency}\u00a01’234.50",
                 )
+        for currency in ("CHF", "EUR", "USD"):
+            self.assertEqual(
+                values["pl-PL"]["currencies"][currency],
+                f"1234,50\u00a0{currency}",
+            )
         self.assertEqual(values["en-CH"]["date"], "20 Sept 2026")
         self.assertEqual(values["de-CH"]["date"], "20.09.2026")
+        self.assertEqual(values["pl-PL"]["date"], "20 wrz 2026")
         self.assertIn("14:05:06 UTC", values["en-CH"]["timestamp"])
         self.assertIn("14:05:06 UTC", values["de-CH"]["timestamp"])
+        self.assertIn("14:05:06 UTC", values["pl-PL"]["timestamp"])
 
     def test_share_input_handler_rejects_fractional_shares_only_in_shares_mode(
         self,
