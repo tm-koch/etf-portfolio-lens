@@ -61,6 +61,8 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
     ) -> None:
         index = (REPOSITORY_ROOT / "web" / "index.html").read_text(encoding="utf-8")
         app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+        styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
+        mobile_styles = styles[styles.rfind("@media (max-width: 760px)") :]
 
         self.assertIn('id="language-control"', index)
         self.assertIn('id="language-button"', index)
@@ -69,9 +71,23 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertIn('role="menuitemradio"', app)
         self.assertNotIn('data-lucide="chevron-down"', app)
         self.assertIn('data-locale="${language.locale}"', app)
-        self.assertIn("locale: 'en-CH'", app)
-        self.assertIn("locale: 'de-CH'", app)
+        self.assertIn("locale: 'en-CH', code: 'EN', labelKey: 'language.english'", app)
+        self.assertIn("locale: 'de-CH', code: 'DE', labelKey: 'language.german'", app)
         self.assertIn("locale: 'pl-PL', code: 'PL', labelKey: 'language.polish'", app)
+        self.assertIn(
+            '<span class="language-name">${t(selectedLanguage.labelKey)}</span>', app
+        )
+        self.assertIn(
+            '<span class="language-code">${selectedLanguage.code}</span>', app
+        )
+        self.assertIn("<span>${t(language.labelKey)}</span>", app)
+        self.assertIn("language: t(selectedLanguage.labelKey)", app)
+        self.assertIn(
+            ".language-button > .language-code {\n  display: none;\n}", styles
+        )
+        self.assertIn(".language-button > .language-name {", mobile_styles)
+        self.assertIn(".language-button > .language-code {", mobile_styles)
+        self.assertIn("display: inline;", mobile_styles)
         self.assertNotIn('<select id="language-select"', index)
         self.assertIn("./vendor/i18next.min.js", index)
         self.assertIn("initializeLocalization().then(bootstrap)", app)

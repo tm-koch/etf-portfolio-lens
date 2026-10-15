@@ -125,6 +125,10 @@ body {
   font-weight: 400;
 }
 
+.language-button > .language-code {
+  display: none;
+}
+
 .content-column {
   width: 100%;
   max-width: 1440px;
@@ -1807,7 +1811,11 @@ body {
     display: none;
   }
 
-  .language-button > span {
+  .language-button > .language-name {
+    display: none;
+  }
+
+  .language-button > .language-code {
     display: inline;
   }
 

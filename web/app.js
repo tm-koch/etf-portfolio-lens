@@ -116,7 +116,8 @@ function renderLanguageControl() {
   if (!elements.languageButton || !elements.languageMenu) return;
 
   elements.languageButton.innerHTML = `
-    <span>${selectedLanguage.code}</span>
+    <span class="language-name">${t(selectedLanguage.labelKey)}</span>
+    <span class="language-code">${selectedLanguage.code}</span>
   `;
   elements.languageButton.setAttribute(
     'aria-label',
@@ -125,7 +126,7 @@ function renderLanguageControl() {
   elements.languageMenu.innerHTML = languages
     .map((language) => `
       <button class="color-mode-option language-option" type="button" role="menuitemradio" aria-checked="${language.locale === currentLocale}" data-locale="${language.locale}" aria-label="${t(language.labelKey)}">
-        <span>${language.code}</span>
+        <span>${t(language.labelKey)}</span>
       </button>
     `)
     .join('');
