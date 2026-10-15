@@ -458,7 +458,11 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
         self.assertIn(
-            "  .position-input {\n    width: 84px;\n    min-width: 0;\n  }",
+            ".position-input {\n  width: 97px;",
+            styles,
+        )
+        self.assertIn(
+            "  .position-input {\n    width: 97px;\n    min-width: 0;\n  }",
             styles[styles.index("@media (max-width: 760px)") :],
         )
         self.assertIn(

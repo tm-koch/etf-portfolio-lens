@@ -1988,7 +1988,15 @@ async function bootstrap() {
   document.addEventListener('change', (event) => {
     const sharesInput = event.target.closest('[data-shares-input]');
     if (sharesInput) {
-      updatePositionShares(sharesInput.dataset.sharesInput, Number(sharesInput.value || 0));
+      const shares = Number(sharesInput.value || 0);
+      if (
+        state.portfolioMode !== 'percentage'
+        && (!Number.isFinite(shares) || shares < 0 || !Number.isInteger(shares))
+      ) {
+        renderPositions();
+        return;
+      }
+      updatePositionShares(sharesInput.dataset.sharesInput, shares);
       return;
     }
 

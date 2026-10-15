@@ -7,6 +7,38 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
+    def test_share_input_handler_rejects_fractional_shares_only_in_shares_mode(
+        self,
+    ) -> None:
+        app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+
+        change_start = app.index("document.addEventListener('change', (event) => {")
+        compare_start = app.index(
+            "const compareToggle = event.target.closest('[data-compare-toggle]');",
+            change_start,
+        )
+        handler = app[change_start:compare_start]
+
+        self.assertIn("const shares = Number(sharesInput.value || 0);", handler)
+        self.assertIn("state.portfolioMode !== 'percentage'", handler)
+        self.assertIn("!Number.isInteger(shares)", handler)
+        self.assertIn("renderPositions();\n        return;", handler)
+        self.assertLess(
+            handler.index("renderPositions();"), handler.index("updatePositionShares(")
+        )
+        self.assertIn(
+            "updatePositionShares(sharesInput.dataset.sharesInput, shares);",
+            handler,
+        )
+
+        render_start = app.index("function renderPositions()")
+        render_end = app.index("function renderComparisonToolbar", render_start)
+        render_positions = app[render_start:render_end]
+        self.assertIn(
+            "const shareInputValue = isPercentagePortfolio ? Number(position.shares).toFixed(1) : position.shares;",
+            render_positions,
+        )
+
     def test_allocation_mode_converts_weights_and_zeros_shares_without_prompt(
         self,
     ) -> None:
