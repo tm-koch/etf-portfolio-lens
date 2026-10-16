@@ -435,7 +435,63 @@ console.log(JSON.stringify(values));
             "elements.portfolioValuationStatus.querySelector('.dot').hidden = state.valuationMode !== 'latest';",
             app,
         )
+        self.assertIn("importedOption.hidden = !hasImportedValuations;", app)
+        self.assertIn("importedOption.disabled = !hasImportedValuations;", app)
+        self.assertIn("state.valuationMode = 'latest';\n    savePortfolioState();", app)
         self.assertIn("animation: live-status-pulse 2.8s ease-in-out infinite;", styles)
+
+    def test_imported_valuation_requires_complete_position_coverage(self) -> None:
+        script = """
+import { hasCompleteImportedValuations } from './web/valuation.js';
+
+const livePrices = {
+  fx: { 'EUR/CHF': { rate: 0.96, status: 'available' } },
+};
+const cases = [
+  hasCompleteImportedValuations([], livePrices),
+  hasCompleteImportedValuations([{ isin: 'CHF_ETF', shares: 1, valueChf: 0 }], livePrices),
+  hasCompleteImportedValuations([
+    { isin: 'CHF_ETF', shares: 1, valueChf: 100 },
+    { isin: 'MISSING', shares: 1 },
+  ], livePrices),
+  hasCompleteImportedValuations([{ isin: 'CHF_ETF', shares: 1, value: null, valueChf: null }], livePrices),
+  hasCompleteImportedValuations([
+    { isin: 'EUR_ETF', shares: 1, currency: 'EUR', value: 100 },
+    { isin: 'CHF_ETF', shares: 1, valueChf: 0 },
+  ], livePrices),
+  hasCompleteImportedValuations([{ isin: 'EUR_ETF', shares: 1, currency: 'EUR', value: 100 }], { fx: {} }),
+];
+console.log(JSON.stringify(cases));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(
+            json.loads(result.stdout), [False, True, False, False, True, False]
+        )
+
+    def test_restored_portfolio_reconciles_valuation_before_render(self) -> None:
+        app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+        bootstrap_start = app.index("async function bootstrap()")
+        restore_start = app.index(
+            "const sharedPortfolio = readPortfolioShareFromUrl();", bootstrap_start
+        )
+        control_render = app.index("renderValuationModeControl();", restore_start)
+        portfolio_render = app.index("renderAll();", control_render)
+
+        self.assertIn(
+            "state.valuationMode = sharedPortfolio.valuationMode;",
+            app[restore_start:control_render],
+        )
+        self.assertIn(
+            "state.valuationMode = savedPortfolio.valuationMode;",
+            app[restore_start:control_render],
+        )
+        self.assertLess(control_render, portfolio_render)
 
     def test_share_links_preserve_compatibility_and_private_payload_boundaries(
         self,
@@ -457,13 +513,18 @@ const current = decodePortfolioShare(encodePortfolioShare([{
   value: 265.35,
   valueChf: 265.35,
 }]));
+const nullValues = decodePortfolioShare(encodePayload({
+    version: 2,
+    valuationMode: 'imported',
+    portfolio: [{ isin: 'IE00B44Z5B48', shares: 1, price: null, currency: 'CHF', value: null, valueChf: null }],
+}));
 const privateToken = encodePrivatePortfolioShare(
   [{ isin: 'CH0237935652', shares: 2 }, { isin: 'IE00B44Z5B48', shares: 1 }],
   (positions) => positions.reduce((sum, position) => sum + position.shares, 0),
   (position, total) => (position.shares / total) * 100,
 );
 const privatePayload = JSON.parse(Buffer.from(privateToken, 'base64url').toString('utf8'));
-console.log(JSON.stringify({ legacy, current, privatePayload, decodedPrivate: decodePortfolioShare(privateToken) }));
+console.log(JSON.stringify({ legacy, current, nullValues, privatePayload, decodedPrivate: decodePortfolioShare(privateToken) }));
 """
         result = subprocess.run(
             ["node", "--input-type=module", "-e", script],
@@ -484,6 +545,10 @@ console.log(JSON.stringify({ legacy, current, privatePayload, decodedPrivate: de
         )
         self.assertEqual(values["current"]["status"], "valid")
         self.assertEqual(values["current"]["portfolio"][0]["valuationMode"], "latest")
+        self.assertEqual(
+            set(values["nullValues"]["portfolio"][0]),
+            {"isin", "shares", "currency"},
+        )
         self.assertEqual(values["privatePayload"]["version"], 2)
         self.assertEqual(values["privatePayload"]["mode"], "percentage")
         self.assertEqual(

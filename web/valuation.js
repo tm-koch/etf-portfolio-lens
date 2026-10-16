@@ -16,10 +16,11 @@ function getConversion(artifact, currency) {
 
 export function getEffectiveValuation(position, livePrices, valuationMode = position?.valuationMode) {
   const hasExplicitMode = arguments.length >= 3;
-  const importedValueChf = Number(position?.valueChf);
+  const importedValueChf = position?.valueChf == null ? Number.NaN : Number(position.valueChf);
   const quote = livePrices?.quotes?.[position?.isin];
   const currency = String(quote?.currency || position?.currency || 'CHF').toUpperCase();
-  const importedValue = Number(position?.value);
+  const importedValue = position?.value == null ? Number.NaN : Number(position.value);
+  const importedPrice = position?.price == null ? Number.NaN : Number(position.price);
   const importedConversion = getConversion(livePrices, String(position?.currency || 'CHF').toUpperCase());
   const derivedImportedValueChf = Number.isFinite(importedValue) && importedValue >= 0 && importedConversion
     ? importedValue * importedConversion.rate
@@ -43,7 +44,7 @@ export function getEffectiveValuation(position, livePrices, valuationMode = posi
   if (Number.isFinite(resolvedImportedValueChf) && resolvedImportedValueChf >= 0) {
     return {
       status: hasExplicitMode && valuationMode === 'imported' ? 'imported' : 'fallback',
-      price: Number.isFinite(Number(position?.price)) ? Number(position.price) : null,
+      price: Number.isFinite(importedPrice) ? importedPrice : null,
       currency: String(position?.currency || 'CHF').toUpperCase(),
       valueChf: resolvedImportedValueChf,
       quoteAt: null,
@@ -51,4 +52,10 @@ export function getEffectiveValuation(position, livePrices, valuationMode = posi
     };
   }
   return { status: 'unavailable', price: null, currency, valueChf: null, quoteAt: null, fxAt: null };
+}
+
+export function hasCompleteImportedValuations(positions, livePrices) {
+  return Array.isArray(positions)
+    && positions.length > 0
+    && positions.every((position) => getEffectiveValuation(position, livePrices, 'imported').status === 'imported');
 }

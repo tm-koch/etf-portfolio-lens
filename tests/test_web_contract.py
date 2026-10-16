@@ -819,6 +819,7 @@ class WebContractTests(unittest.TestCase):
     def test_saxo_pdf_import_contract_covers_review_and_value_weighting(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        share = (WEB_ROOT / "share.js").read_text(encoding="utf-8")
         importer = (WEB_ROOT / "portfolio-import.js").read_text(encoding="utf-8")
 
         self.assertIn('src="./vendor/pdf.min.js"', index)
@@ -831,6 +832,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("state.portfolio = positions;", app)
         self.assertIn("valueChf", app)
         self.assertIn("function normalizePortfolioPositions", app)
+        self.assertIn("position.value != null && Number.isFinite(Number(position.value))", app)
+        self.assertIn("position.valueChf != null && Number.isFinite(Number(position.valueChf))", app)
+        self.assertIn("position.valueChf != null && Number.isFinite(Number(position.valueChf))", share)
         self.assertIn("function parseSaxoPages", importer)
         self.assertIn("bestande", importer)
         self.assertNotIn("EUR_TO_CHF_RATE = 1", importer)

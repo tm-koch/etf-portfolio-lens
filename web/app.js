@@ -8,7 +8,7 @@ import {
   formatPercent as formatLocalePercent,
 } from './formatting.js';
 import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js?v=20260910-2';
-import { getEffectiveValuation } from './valuation.js?v=20260911-1';
+import { getEffectiveValuation, hasCompleteImportedValuations } from './valuation.js?v=20261016-1';
 import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
 import { initializeLocalization, selectLocale } from './localization.js';
 
@@ -399,10 +399,10 @@ function normalizePortfolioPositions(portfolio) {
     seenIsins.add(isin);
     const normalized = { isin, shares };
     if (position.valuationMode === 'imported' || position.valuationMode === 'latest') normalized.valuationMode = position.valuationMode;
-    if (Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalized.price = Number(position.price);
+    if (position.price != null && Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalized.price = Number(position.price);
     if (typeof position.currency === 'string' && ['CHF', 'EUR', 'USD'].includes(position.currency.toUpperCase())) normalized.currency = position.currency.toUpperCase();
-    if (Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalized.value = Number(position.value);
-    if (Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalized.valueChf = Number(position.valueChf);
+    if (position.value != null && Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalized.value = Number(position.value);
+    if (position.valueChf != null && Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalized.valueChf = Number(position.valueChf);
     return [normalized];
   });
 }
@@ -681,6 +681,16 @@ function renderValuationModeControl() {
     return;
   }
   const isPercentagePortfolio = state.portfolioMode === 'percentage';
+  const hasImportedValuations = !isPercentagePortfolio && hasCompleteImportedValuations(state.portfolio, state.livePrices);
+  const importedOption = elements.portfolioValuation.querySelector('option[value="imported"]');
+  if (importedOption) {
+    importedOption.hidden = !hasImportedValuations;
+    importedOption.disabled = !hasImportedValuations;
+  }
+  if (!isPercentagePortfolio && !hasImportedValuations && state.valuationMode === 'imported') {
+    state.valuationMode = 'latest';
+    savePortfolioState();
+  }
   elements.portfolioValuationControl.hidden = isPercentagePortfolio;
   elements.portfolioValuation.disabled = isPercentagePortfolio;
   elements.portfolioValuation.value = state.valuationMode;
@@ -2024,7 +2034,10 @@ async function bootstrap() {
     refreshImportReviewTotals();
   });
   elements.portfolioValuation.addEventListener('change', () => {
-    state.valuationMode = elements.portfolioValuation.value === 'imported' ? 'imported' : 'latest';
+    state.valuationMode = elements.portfolioValuation.value === 'imported'
+      && hasCompleteImportedValuations(state.portfolio, state.livePrices)
+      ? 'imported'
+      : 'latest';
     savePortfolioState();
     renderAll();
   });

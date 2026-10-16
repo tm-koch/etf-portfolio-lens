@@ -44,10 +44,10 @@ function normalizeSharedPortfolio(portfolio) {
     seenIsins.add(isin);
     const normalizedPosition = { isin, shares: position.shares };
     if (position.valuationMode === 'imported' || position.valuationMode === 'latest') normalizedPosition.valuationMode = position.valuationMode;
-    if (Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalizedPosition.price = Number(position.price);
+    if (position.price != null && Number.isFinite(Number(position.price)) && Number(position.price) >= 0) normalizedPosition.price = Number(position.price);
     if (typeof position.currency === 'string' && ['CHF', 'EUR', 'USD'].includes(position.currency.toUpperCase())) normalizedPosition.currency = position.currency.toUpperCase();
-    if (Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalizedPosition.value = Number(position.value);
-    if (Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalizedPosition.valueChf = Number(position.valueChf);
+    if (position.value != null && Number.isFinite(Number(position.value)) && Number(position.value) >= 0) normalizedPosition.value = Number(position.value);
+    if (position.valueChf != null && Number.isFinite(Number(position.valueChf)) && Number(position.valueChf) >= 0) normalizedPosition.valueChf = Number(position.valueChf);
     normalized.push(normalizedPosition);
   }
   return normalized;
