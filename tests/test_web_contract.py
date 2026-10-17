@@ -105,7 +105,10 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("max-height: min(62vh, 520px)", styles)
         self.assertIn("position: sticky;", styles)
         self.assertIn(".pairwise-overlap-table .pairwise-corner", styles)
-        self.assertIn(".pairwise-overlap-table tbody th,\n.pairwise-overlap-table tbody td", styles)
+        self.assertIn(
+            ".pairwise-overlap-table tbody th,\n.pairwise-overlap-table tbody td",
+            styles,
+        )
         self.assertIn("height: 56px", styles)
         self.assertIn("height: 42px", styles)
         self.assertIn(
@@ -123,7 +126,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("background: var(--pairwise-empty-background)", styles)
         self.assertIn(".pairwise-overlap-legend", styles)
         self.assertIn("scrollbar-width: none", styles)
-        self.assertIn(".pairwise-row-label small,\n  .pairwise-overlap-coverage", styles)
+        self.assertIn(
+            ".pairwise-row-label small,\n  .pairwise-overlap-coverage", styles
+        )
         self.assertIn("pairwiseLegendDescription", app)
         self.assertIn("'redundancy.js'", service_worker)
         self.assertIn("'redundancy.js'", cache_generation_helper)
@@ -266,10 +271,37 @@ class WebContractTests(unittest.TestCase):
             REPOSITORY_ROOT / "scripts" / "publish-gh-pages.ps1"
         ).read_text(encoding="utf-8")
 
-        imported_modules = re.findall(r"from ['\"]\./([^'\"]+\.js)['\"]", app)
+        imported_modules = re.findall(
+            r"from ['\"]\./([^'\"?]+\.js)(?:\?[^'\"]*)?['\"]", app
+        )
         for module in imported_modules:
             self.assertTrue((WEB_ROOT / module).is_file())
             self.assertIn(f"'{module}'", publish_script)
+
+    def test_publish_script_stages_all_cache_sensitive_assets(self) -> None:
+        publish_script = (
+            REPOSITORY_ROOT / "scripts" / "publish-gh-pages.ps1"
+        ).read_text(encoding="utf-8")
+        cache_helper = (
+            REPOSITORY_ROOT / "scripts" / "pwa-cache-generation.ps1"
+        ).read_text(encoding="utf-8")
+
+        def array_entries(source: str, variable: str) -> set[str]:
+            match = re.search(
+                rf"^[ \t]*\${re.escape(variable)}[ \t]*=[ \t]*@\((.*?)^[ \t]*\)",
+                source,
+                re.MULTILINE | re.DOTALL,
+            )
+            self.assertIsNotNone(match, f"PowerShell array ${variable} is missing")
+            return set(re.findall(r"'([^']+)'", match.group(1)))
+
+        cache_sensitive_assets = array_entries(cache_helper, "PwaCacheSensitivePaths")
+        staged_assets = array_entries(publish_script, "requiredWebFiles")
+        self.assertTrue(cache_sensitive_assets)
+        self.assertFalse(
+            cache_sensitive_assets - staged_assets,
+            f"Cache-sensitive assets are not staged: {sorted(cache_sensitive_assets - staged_assets)}",
+        )
 
     def test_portfolio_ui_polish_contract_covers_provenance_and_presentation(
         self,
