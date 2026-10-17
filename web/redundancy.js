@@ -3,6 +3,42 @@ export const DEFAULT_REDUNDANCY_THRESHOLDS = Object.freeze({
   moderateHigh: 25,
 });
 export const REDUNDANCY_THRESHOLDS_STORAGE_KEY = 'etf-lens.redundancy-thresholds.v1';
+export const DEFAULT_NEAR_IDENTICAL_THRESHOLD = 90;
+export const NEAR_IDENTICAL_THRESHOLD_STORAGE_KEY = 'etf-lens.near-identical-threshold.v1';
+
+export function validateNearIdenticalThreshold(value) {
+  const threshold = typeof value === 'number'
+    ? value
+    : typeof value === 'string' && value.trim()
+      ? Number(value)
+      : Number.NaN;
+  return Number.isFinite(threshold) && threshold >= 0 && threshold <= 100
+    ? threshold
+    : null;
+}
+
+export function loadNearIdenticalThreshold(storage) {
+  try {
+    const stored = storage.getItem(NEAR_IDENTICAL_THRESHOLD_STORAGE_KEY);
+    if (stored === null) return DEFAULT_NEAR_IDENTICAL_THRESHOLD;
+    return validateNearIdenticalThreshold(JSON.parse(stored))
+      ?? DEFAULT_NEAR_IDENTICAL_THRESHOLD;
+  } catch {
+    return DEFAULT_NEAR_IDENTICAL_THRESHOLD;
+  }
+}
+
+export function saveNearIdenticalThreshold(threshold, storage) {
+  const validated = validateNearIdenticalThreshold(threshold);
+  if (validated === null) return false;
+
+  try {
+    storage.setItem(NEAR_IDENTICAL_THRESHOLD_STORAGE_KEY, JSON.stringify(validated));
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export function validateRedundancyThresholds(lowModerate, moderateHigh) {
   const lowValue = typeof lowModerate === 'string' && !lowModerate.trim()

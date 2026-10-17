@@ -3,11 +3,16 @@ from __future__ import annotations
 import json
 import tempfile
 import unittest
+from types import SimpleNamespace
 from pathlib import Path
 
 from etf_ingestion_backend.catalog import build_catalog, write_catalog
 from etf_ingestion_backend.cli import build_parser
-from etf_ingestion_backend.models import ETFSourceEntry, IngestionResult
+from etf_ingestion_backend.models import (
+    ETFSourceEntry,
+    IngestionResult,
+    NormalizedHolding,
+)
 
 
 def make_entry(isin: str, ticker: str) -> ETFSourceEntry:
@@ -22,13 +27,17 @@ def make_entry(isin: str, ticker: str) -> ETFSourceEntry:
     )
 
 
-def make_result(entry: ETFSourceEntry, output_dir: Path) -> IngestionResult:
+def make_result(
+    entry: ETFSourceEntry,
+    output_dir: Path,
+    holdings: list[NormalizedHolding] | None = None,
+) -> IngestionResult:
     return IngestionResult(
         etf=entry,
         output_dir=output_dir,
         snapshot_path=output_dir / "snapshots" / f"{entry.isin}.json",
         raw_download_path=None,
-        snapshot=None,
+        snapshot=SimpleNamespace(holdings=holdings) if holdings is not None else None,
     )
 
 
@@ -52,6 +61,15 @@ class CatalogTests(unittest.TestCase):
             "/data/raw/2026-08-16/snapshots/SECOND.json",
             catalog["etfs"][1]["snapshotPath"],
         )
+        self.assertEqual(1, catalog["pairwiseOverlap"]["version"])
+        self.assertEqual(
+            [("FIRST", "SECOND")],
+            [
+                (pair["isinA"], pair["isinB"])
+                for pair in catalog["pairwiseOverlap"]["pairs"]
+            ],
+        )
+        self.assertFalse(catalog["pairwiseOverlap"]["pairs"][0]["available"])
 
     def test_build_catalog_includes_only_successful_selected_results(self) -> None:
         first = make_entry("FIRST", "ONE")
@@ -63,6 +81,42 @@ class CatalogTests(unittest.TestCase):
         )
 
         self.assertEqual(["SECOND"], [item["isin"] for item in catalog["etfs"]])
+        self.assertEqual([], catalog["pairwiseOverlap"]["pairs"])
+
+    def test_build_catalog_calculates_ordered_pairs_from_snapshot_holdings(
+        self,
+    ) -> None:
+        first = make_entry("FIRST", "ONE")
+        second = make_entry("SECOND", "TWO")
+        third = make_entry("THIRD", "THREE")
+        run_date = Path("data/raw/2026-08-16")
+        results = [
+            make_result(
+                first,
+                run_date,
+                [NormalizedHolding(None, None, isin="SHARED", weight_pct=6)],
+            ),
+            make_result(
+                second,
+                run_date,
+                [NormalizedHolding(None, None, isin="SHARED", weight_pct=4)],
+            ),
+            make_result(
+                third,
+                run_date,
+                [NormalizedHolding(None, None, isin="OTHER", weight_pct=8)],
+            ),
+        ]
+
+        catalog = build_catalog([first, second, third], results)
+
+        pairs = catalog["pairwiseOverlap"]["pairs"]
+        self.assertEqual(
+            [("FIRST", "SECOND"), ("FIRST", "THIRD"), ("SECOND", "THIRD")],
+            [(pair["isinA"], pair["isinB"]) for pair in pairs],
+        )
+        self.assertEqual(4, pairs[0]["overlapPct"])
+        self.assertTrue(all(pair["available"] for pair in pairs))
 
     def test_write_catalog_replaces_atomically_and_preserves_previous_on_serialization_error(
         self,

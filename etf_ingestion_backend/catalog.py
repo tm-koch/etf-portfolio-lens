@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+from itertools import combinations
 from pathlib import Path
 from typing import Iterable
 
 from .models import ETFSourceEntry, IngestionResult
+from .pairwise_overlap import calculate_pairwise_overlap
 
 
 def build_catalog(
@@ -24,10 +26,34 @@ def build_catalog(
         raise ValueError("Catalog results must belong to one run date")
     run_date = next(iter(run_dates))
 
+    pair_records = []
+    for entry_a, entry_b in combinations(selected_entries, 2):
+        result_a = result_by_isin[entry_a.isin]
+        result_b = result_by_isin[entry_b.isin]
+        comparison = calculate_pairwise_overlap(
+            result_a.snapshot.holdings if result_a.snapshot else [],
+            result_b.snapshot.holdings if result_b.snapshot else [],
+        )
+        pair_records.append(
+            {
+                "isinA": entry_a.isin,
+                "isinB": entry_b.isin,
+                "overlapPct": comparison["overlap_pct"],
+                "coveragePctA": comparison["coverage_pct_a"],
+                "coveragePctB": comparison["coverage_pct_b"],
+                "available": comparison["available"],
+            }
+        )
+
     return {
         "generatedAt": run_date,
         "basis": "share_weighted",
         "etfs": [_catalog_entry(entry, run_date) for entry in selected_entries],
+        "pairwiseOverlap": {
+            "version": 1,
+            "metric": "shared_min_weight_pct",
+            "pairs": pair_records,
+        },
     }
 
 

@@ -3,12 +3,14 @@ const BUILD_INFO_URL = './build-info.json';
 const LIVE_PRICES_URL = './data/live_prices.json';
 
 /** @typedef {{ isin: string, ticker: string, name: string, provider: string, snapshotPath: string }} CatalogEntry */
-/** @typedef {{ generatedAt: string, basis: string, etfs: CatalogEntry[] }} PublishedCatalog */
+/** @typedef {{ isinA: string, isinB: string, overlapPct: number | null, coveragePctA: number, coveragePctB: number, available: boolean }} PairwiseOverlapRecord */
+/** @typedef {{ version: number, metric: string, pairs: PairwiseOverlapRecord[] }} PairwiseOverlapData */
+/** @typedef {{ generatedAt: string, basis: string, etfs: CatalogEntry[], pairwiseOverlap?: PairwiseOverlapData }} PublishedCatalog */
 /** @typedef {{ schemaVersion: number, repositoryUrl?: string, source?: { commit?: string, commitTimestamp?: string }, publishedAt?: string, data?: { timestamp?: string, live?: { generatedAt?: string, status?: string } }, details?: Record<string, unknown> }} BuildInfo */
 /** @typedef {{ schema_version: number, generated_at: string, status: string, quotes: Record<string, { price?: number, currency?: string, quoted_at?: string, status?: string }>, fx: Record<string, { rate?: number, quoted_at?: string, status?: string }> }} LivePrices */
 
 async function fetchJson(url) {
-  const response = await fetch(url);
+  const response = await fetch(url, url === CATALOG_URL ? { cache: 'no-cache' } : undefined);
   if (!response.ok) {
     throw new Error(`Failed to load ${url}: ${response.status}`);
   }

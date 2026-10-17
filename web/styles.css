@@ -480,6 +480,11 @@ body {
   border-top: 1px solid var(--border);
 }
 
+.near-identical-threshold-settings {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 360px;
+}
+
 .developer-threshold-settings h4,
 .developer-threshold-error {
   grid-column: 1 / -1;
@@ -1221,6 +1226,187 @@ body {
   background: var(--card-strong);
 }
 
+.pairwise-overlap-box {
+  min-width: 0;
+}
+
+#pairwise-overlap-content {
+  min-width: 0;
+}
+
+.pairwise-overlap-viewport {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  max-height: min(62vh, 520px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  border-radius: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pairwise-overlap-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+.pairwise-overlap-table {
+  --pairwise-label-background: color-mix(in srgb, var(--table-header-background) 44%, var(--card-strong));
+  --pairwise-empty-background: color-mix(in srgb, var(--pairwise-label-background) 72%, var(--card-strong));
+  width: max-content;
+  min-width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pairwise-overlap-table th,
+.pairwise-overlap-table td {
+  padding: 8px;
+  text-align: center;
+}
+
+.pairwise-overlap-table thead th {
+  background: var(--pairwise-label-background);
+}
+
+.pairwise-overlap-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  width: 112px;
+  min-width: 112px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pairwise-overlap-table .pairwise-corner {
+  left: 0;
+  z-index: 3;
+  width: 176px;
+  min-width: 176px;
+}
+
+.pairwise-row-label {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 150px;
+  text-align: left !important;
+  background: var(--pairwise-label-background);
+}
+
+.pairwise-overlap-table tbody th,
+.pairwise-overlap-table tbody td {
+  box-sizing: border-box;
+  height: 56px;
+  vertical-align: middle;
+}
+
+.pairwise-row-label small {
+  display: block;
+  max-width: 180px;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pairwise-overlap-cell {
+  min-width: 112px;
+  border-radius: 8px;
+  background: color-mix(in srgb, #2d6da7 calc(var(--pairwise-overlap) * 1%), var(--table-row-alt-background));
+}
+
+.pairwise-overlap-cell.is-high {
+  color: #fff;
+}
+
+.pairwise-overlap-cell.is-near-identical {
+  outline: 2px solid #e9932d;
+  outline-offset: -2px;
+}
+
+.pairwise-overlap-value,
+.pairwise-overlap-coverage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.pairwise-overlap-value {
+  font-weight: 700;
+}
+
+.pairwise-overlap-coverage {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 0.67rem;
+}
+
+.pairwise-overlap-cell.is-unavailable {
+  background: var(--table-row-alt-background);
+}
+
+.pairwise-diagonal,
+.pairwise-empty {
+  background: var(--pairwise-empty-background);
+}
+
+.pairwise-overlap-status {
+  margin: 0 0 10px;
+  color: var(--muted);
+}
+
+.pairwise-overlap-legend {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.pairwise-overlap-legend-scale {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pairwise-overlap-legend-swatches {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.pairwise-overlap-legend-swatches i,
+.pairwise-near-identical-swatch {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 14px;
+  border-radius: 3px;
+}
+
+.pairwise-overlap-legend-swatches i {
+  background: color-mix(in srgb, #2d6da7 calc(var(--pairwise-overlap) * 1%), var(--table-row-alt-background));
+}
+
+.pairwise-near-identical-swatch {
+  margin-left: 4px;
+  border: 2px solid #e9932d;
+}
+
+.pairwise-overlap-legend p {
+  margin: 0;
+}
+
 .redundancy-score-heading {
   display: flex;
   align-items: flex-end;
@@ -1245,6 +1431,31 @@ body {
 .redundancy-description {
   max-width: 520px;
   color: var(--muted);
+}
+
+.near-identical-pair-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--danger) 8%, var(--card-strong));
+}
+
+.near-identical-pair-warning[hidden] {
+  display: none;
+}
+
+.near-identical-pair-warning > [data-lucide] {
+  flex: 0 0 auto;
+  color: var(--danger);
+}
+
+.near-identical-pair-warning ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
 }
 
 .redundancy-score-summary {
@@ -1827,6 +2038,60 @@ body {
 }
 
 @media (max-width: 760px) {
+  .pairwise-overlap-table {
+    border-spacing: 3px;
+    font-size: 0.74rem;
+  }
+
+  .pairwise-overlap-table th,
+  .pairwise-overlap-table td {
+    padding: 6px 4px;
+  }
+
+  .pairwise-overlap-table thead th {
+    width: 62px;
+    min-width: 62px;
+  }
+
+  .pairwise-overlap-table .pairwise-corner,
+  .pairwise-row-label {
+    width: 76px;
+    min-width: 76px;
+    max-width: 76px;
+    white-space: nowrap;
+  }
+
+  .pairwise-overlap-table tbody th,
+  .pairwise-overlap-table tbody td {
+    height: 42px;
+  }
+
+  .pairwise-row-label small,
+  .pairwise-overlap-coverage {
+    display: none;
+  }
+
+  .pairwise-overlap-cell {
+    width: 62px;
+    min-width: 62px;
+    border-radius: 6px;
+  }
+
+  .pairwise-overlap-value {
+    font-size: 0.8rem;
+  }
+
+  .pairwise-overlap-legend {
+    font-size: 0.7rem;
+  }
+
+  .pairwise-overlap-legend-swatches i,
+  .pairwise-near-identical-swatch {
+    width: 12px;
+    height: 12px;
+    flex-basis: 12px;
+  }
+
   .compact-explore-table .compact-explore-holding {
     width: 36vw;
     min-width: 36vw;
@@ -1840,6 +2105,15 @@ body {
   .redundancy-score-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .aggregation-layout > .subcard {
+    padding: 20px;
+  }
+
+  .aggregation-layout > .subcard > .subcard-heading h3 {
+    margin: 0;
+    font-size: 1.08rem;
   }
 
   .developer-threshold-settings {

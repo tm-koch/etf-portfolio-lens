@@ -86,6 +86,15 @@ python -m etf_ingestion_backend --all --fixtures --update-catalog
 Without `--update-catalog`, ingestion updates snapshots only and leaves
 `web/data/catalog.json` unchanged.
 
+The generated catalog includes `pairwiseOverlap` version 1, with one unordered
+pair record per published ETF pair. Each record contains `isinA`, `isinB`,
+`overlapPct`, `coveragePctA`, `coveragePctB`, and `available`. Exact ISIN matches
+are counted first; remaining weights for the same canonical company are then
+matched across share-class ISINs, with each company's contribution capped at
+the smaller total disclosed weight. Incomplete holdings are not renormalized.
+A selected-ISIN refresh publishes pair records only for the ETFs included in
+that catalog run.
+
 Outputs are written under `data/raw/<run-date>/`:
 
 - `data/raw/<run-date>/downloads/` retains the downloaded or copied source files

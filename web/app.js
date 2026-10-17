@@ -1,4 +1,4 @@
-import { buildCatalogMaps, loadBuildInfo, loadLivePrices, loadPublishedCatalog, loadSnapshot } from './data.js?v=20260910-1';
+import { buildCatalogMaps, loadBuildInfo, loadLivePrices, loadPublishedCatalog, loadSnapshot } from './data.js?v=20261017-1';
 import { destroyComparisonCharts, renderComparisonChart } from './charts.js?v=20261015-1';
 import { translateTaxonomyLabel } from './taxonomy.js';
 import {
@@ -10,13 +10,22 @@ import {
 import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js?v=20260910-2';
 import { getEffectiveValuation, hasCompleteImportedValuations } from './valuation.js?v=20261016-1';
 import {
+  buildPairwiseMatrix,
+  buildPairwiseOverlapIndex,
+  findNearIdenticalPairs,
+} from './pairwise-overlap.js';
+import {
   calculateRedundancyScore,
   classifyRedundancyScore,
   DEFAULT_REDUNDANCY_THRESHOLDS,
+  DEFAULT_NEAR_IDENTICAL_THRESHOLD,
+  loadNearIdenticalThreshold,
   loadRedundancyThresholds,
+  saveNearIdenticalThreshold,
   saveRedundancyThresholds,
+  validateNearIdenticalThreshold,
   validateRedundancyThresholds,
-} from './redundancy.js?v=20261017-1';
+} from './redundancy.js?v=20261017-2';
 import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
 import { initializeLocalization, selectLocale } from './localization.js';
 
@@ -38,6 +47,7 @@ const defaultState = {
   importReviewRows: [],
   compactExplorePreview: false,
   redundancyThresholds: { ...DEFAULT_REDUNDANCY_THRESHOLDS },
+  nearIdenticalThreshold: DEFAULT_NEAR_IDENTICAL_THRESHOLD,
   colorMode: 'automatic',
   effectiveColorMode: 'bright',
   shareFeedback: '',
@@ -73,6 +83,7 @@ const state = {
   catalog: null,
   catalogMaps: null,
   snapshots: new Map(),
+  pairwiseOverlapIndex: new Map(),
   buildInfo: null,
   livePrices: null,
   buildDialogReturnFocus: null,
@@ -345,6 +356,22 @@ function loadRedundancyThresholdPreferences() {
 function saveRedundancyThresholdPreferences(thresholds) {
   try {
     return saveRedundancyThresholds(thresholds, localStorage);
+  } catch {
+    return false;
+  }
+}
+
+function loadNearIdenticalThresholdPreference() {
+  try {
+    return loadNearIdenticalThreshold(localStorage);
+  } catch {
+    return DEFAULT_NEAR_IDENTICAL_THRESHOLD;
+  }
+}
+
+function saveNearIdenticalThresholdPreference(threshold) {
+  try {
+    return saveNearIdenticalThreshold(threshold, localStorage);
   } catch {
     return false;
   }
@@ -1562,6 +1589,7 @@ function renderCompanyList() {
 }
 
 function renderRedundancyScore() {
+  renderNearIdenticalPairWarning();
   const positions = getSelectedPositions();
   const totalShareUnits = getTotalShareUnits(positions);
   const positionWeights = positions.map((position) => ({
@@ -1617,6 +1645,162 @@ function renderRedundancyScore() {
   elements.redundancySegments[2].style.width = `${result.maximum > 0 ? Math.max(100 - moderateBoundary, 0) : 0}%`;
   elements.redundancyMarker.style.left = `${scorePosition}%`;
   elements.redundancyMarker.hidden = false;
+}
+
+function escapeMarkup(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[character]);
+}
+
+function renderNearIdenticalPairWarning() {
+  const pairs = findNearIdenticalPairs(
+    getSelectedPositions(),
+    state.pairwiseOverlapIndex,
+    state.nearIdenticalThreshold,
+  );
+  if (!pairs.length) {
+    elements.nearIdenticalPairWarning.hidden = true;
+    elements.nearIdenticalPairWarning.innerHTML = '';
+    return;
+  }
+
+  const items = pairs.map((pair) => `
+    <li>${escapeMarkup(t('explore.nearIdenticalPair', {
+      a: pair.productA.name,
+      b: pair.productB.name,
+      overlap: formatPercent(pair.overlapPct),
+    }))}</li>
+  `).join('');
+  elements.nearIdenticalPairWarning.innerHTML = `
+    <i data-lucide="triangle-alert" aria-hidden="true"></i>
+    <div>
+      <strong>${escapeMarkup(t('explore.nearIdenticalWarning', {
+        threshold: formatPercent(state.nearIdenticalThreshold),
+      }))}</strong>
+      <ul>${items}</ul>
+    </div>
+  `;
+  elements.nearIdenticalPairWarning.hidden = false;
+  window.lucide?.createIcons();
+}
+
+function renderPairwiseOverlap() {
+  const positions = getSelectedPositions();
+  if (!positions.length) {
+    elements.pairwiseOverlapContent.innerHTML = `<p class="empty-state">${escapeMarkup(t('explore.pairwiseNoSelection'))}</p>`;
+    return;
+  }
+
+  const headers = positions.map((position) => `
+    <th scope="col" title="${escapeMarkup(position.entry.name)}">
+      <span>${escapeMarkup(position.entry.ticker)}</span>
+    </th>
+  `).join('');
+  const matrix = buildPairwiseMatrix(
+    positions,
+    state.pairwiseOverlapIndex,
+    state.nearIdenticalThreshold,
+  );
+  const coverageValues = matrix.flatMap((row) => row.cells.flatMap((cell) => {
+    if (cell.type === 'overlap') return [cell.coveragePctA, cell.coveragePctB];
+    if (cell.type === 'unavailable' && cell.pair) {
+      return [cell.pair.coveragePctA, cell.pair.coveragePctB];
+    }
+    return [];
+  })).filter(Number.isFinite);
+  const coverageRange = coverageValues.length
+    ? `${formatPercent(Math.min(...coverageValues))}–${formatPercent(Math.max(...coverageValues))}`
+    : t('explore.pairwiseCoverageUnavailable');
+  const rows = matrix.map((row) => {
+    const cells = row.cells.map((cell, columnIndex) => {
+      if (cell.type === 'diagonal') {
+        return `<td class="pairwise-diagonal" aria-label="${escapeMarkup(t('explore.pairwiseDiagonal'))}">&mdash;</td>`;
+      }
+      if (cell.type === 'empty') {
+        return '<td class="pairwise-empty" aria-hidden="true"></td>';
+      }
+
+      if (cell.type === 'unavailable') {
+        const coverage = cell.pair
+          ? t('explore.pairwiseCoverage', {
+            a: formatPercent(cell.pair.coveragePctA),
+            b: formatPercent(cell.pair.coveragePctB),
+          })
+          : t('explore.pairwiseCoverageUnavailable');
+        const label = t('explore.pairwiseCellLabel', {
+          a: row.product.name,
+          b: positions[columnIndex].entry.name,
+          overlap: t('explore.pairwiseUnavailable'),
+          coverage,
+        });
+        return `
+          <td class="pairwise-overlap-cell is-unavailable" aria-label="${escapeMarkup(label)}">
+            <span class="pairwise-overlap-value">${escapeMarkup(t('explore.pairwiseUnavailable'))}</span>
+            <span class="pairwise-overlap-coverage">${escapeMarkup(coverage)}</span>
+          </td>
+        `;
+      }
+
+      const overlap = cell.overlapPct;
+      const level = overlap >= 75 ? 'high' : overlap >= 35 ? 'moderate' : 'low';
+      const nearIdentical = cell.nearIdentical;
+      const coverage = t('explore.pairwiseCoverage', {
+        a: formatPercent(cell.coveragePctA),
+        b: formatPercent(cell.coveragePctB),
+      });
+      const label = t('explore.pairwiseCellLabel', {
+        a: row.product.name,
+        b: positions[columnIndex].entry.name,
+        overlap: formatPercent(overlap),
+        coverage,
+      });
+      const overlapLabel = new Intl.NumberFormat(window.i18next.language, {
+        maximumFractionDigits: 1,
+      }).format(overlap);
+      return `
+        <td class="pairwise-overlap-cell is-${level}${nearIdentical ? ' is-near-identical' : ''}" style="--pairwise-overlap: ${Math.min(Math.max(overlap, 0), 100)}" aria-label="${escapeMarkup(label)}">
+          <span class="pairwise-overlap-value">${nearIdentical ? '≈' : ''}${escapeMarkup(overlapLabel)}</span>
+          <span class="pairwise-overlap-coverage">${escapeMarkup(coverage)}</span>
+        </td>
+      `;
+    }).join('');
+    return `
+      <tr>
+        <th scope="row" class="pairwise-row-label" title="${escapeMarkup(row.product.name)}">
+          <span>${escapeMarkup(row.product.ticker)}</span>
+          <small>${escapeMarkup(row.product.name)}</small>
+        </th>
+        ${cells}
+      </tr>
+    `;
+  }).join('');
+
+  const missingCatalogData = !state.catalog?.pairwiseOverlap?.pairs;
+  elements.pairwiseOverlapContent.innerHTML = `
+    ${missingCatalogData ? `<p class="pairwise-overlap-status">${escapeMarkup(t('explore.pairwiseCatalogUnavailable'))}</p>` : ''}
+    <div class="pairwise-overlap-viewport" role="region" tabindex="0" aria-label="${escapeMarkup(t('explore.pairwiseTitle'))}">
+      <table class="pairwise-overlap-table">
+        <thead><tr><th class="pairwise-corner" scope="col">${escapeMarkup(t('explore.pairwiseProduct'))}</th>${headers}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="pairwise-overlap-legend" role="group" aria-label="${escapeMarkup(t('explore.pairwiseLegendLabel'))}">
+      <div class="pairwise-overlap-legend-scale">
+        <span>${escapeMarkup(formatPercent(0))}</span>
+        <span class="pairwise-overlap-legend-swatches" aria-hidden="true">${[0, 25, 50, 75, 100].map((value) => `<i style="--pairwise-overlap: ${value}"></i>`).join('')}</span>
+        <span>${escapeMarkup(formatPercent(100))}</span>
+        <span class="pairwise-near-identical-swatch" aria-hidden="true"></span>
+        <span>${escapeMarkup(t('explore.pairwiseLegendNearIdentical', { threshold: formatPercent(state.nearIdenticalThreshold) }))}</span>
+      </div>
+      <p>${escapeMarkup(t('explore.pairwiseLegendDescription', { coverage: coverageRange }))}</p>
+    </div>
+  `;
+  window.lucide?.createIcons();
 }
 
 function renderWarnings() {
@@ -1835,6 +2019,7 @@ function renderAll() {
   }
   renderRollups();
   renderRedundancyScore();
+  renderPairwiseOverlap();
   renderCompanyList();
   renderWarnings();
   updateSummary();
@@ -1939,6 +2124,10 @@ async function bootstrap() {
   elements.redundancyLowThreshold = document.getElementById('redundancy-low-threshold');
   elements.redundancyHighThreshold = document.getElementById('redundancy-high-threshold');
   elements.redundancyThresholdError = document.getElementById('redundancy-threshold-error');
+  elements.nearIdenticalPairWarning = document.getElementById('near-identical-pair-warning');
+  elements.pairwiseOverlapContent = document.getElementById('pairwise-overlap-content');
+  elements.nearIdenticalThreshold = document.getElementById('near-identical-threshold');
+  elements.nearIdenticalThresholdError = document.getElementById('near-identical-threshold-error');
   elements.buildDialogButton = document.getElementById('build-dialog-button');
   elements.dataDialogButton = document.getElementById('data-dialog-button');
   elements.buildDialog = document.getElementById('build-dialog');
@@ -2018,6 +2207,7 @@ async function bootstrap() {
 
   state.catalog = await loadPublishedCatalog();
   state.catalogMaps = buildCatalogMaps(state.catalog);
+  state.pairwiseOverlapIndex = buildPairwiseOverlapIndex(state.catalog.pairwiseOverlap);
   state.livePrices = await loadLivePrices();
   renderBuildData();
   const sharedPortfolio = readPortfolioShareFromUrl();
@@ -2048,6 +2238,8 @@ async function bootstrap() {
   state.redundancyThresholds = loadRedundancyThresholdPreferences();
   elements.redundancyLowThreshold.value = state.redundancyThresholds.lowModerate;
   elements.redundancyHighThreshold.value = state.redundancyThresholds.moderateHigh;
+  state.nearIdenticalThreshold = loadNearIdenticalThresholdPreference();
+  elements.nearIdenticalThreshold.value = state.nearIdenticalThreshold;
 
   const snapshotResults = await Promise.allSettled(
     state.catalog.etfs.map(async (entry) => [entry.isin, await loadSnapshot(entry)])
@@ -2257,6 +2449,23 @@ async function bootstrap() {
       saveRedundancyThresholdPreferences(thresholds);
       elements.redundancyThresholdError.hidden = true;
       renderRedundancyScore();
+      return;
+    }
+
+    const nearIdenticalThreshold = event.target.closest('[data-near-identical-threshold]');
+    if (nearIdenticalThreshold) {
+      const threshold = validateNearIdenticalThreshold(elements.nearIdenticalThreshold.value);
+      if (threshold === null) {
+        elements.nearIdenticalThreshold.value = state.nearIdenticalThreshold;
+        elements.nearIdenticalThresholdError.hidden = false;
+        elements.nearIdenticalThresholdError.textContent = t('developer.invalidNearIdenticalThreshold');
+        return;
+      }
+
+      state.nearIdenticalThreshold = threshold;
+      saveNearIdenticalThresholdPreference(threshold);
+      elements.nearIdenticalThresholdError.hidden = true;
+      renderAll();
       return;
     }
 

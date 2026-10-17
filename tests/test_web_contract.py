@@ -71,23 +71,62 @@ class WebContractTests(unittest.TestCase):
 
         rollups_position = index.index('<h3 data-i18n="ui.rollups">Rollups</h3>')
         score_position = index.index('id="redundancy-score-box"')
+        warning_position = index.index('id="near-identical-pair-warning"')
+        heatmap_position = index.index('id="pairwise-overlap-title"')
         companies_position = index.index(
             '<h3 data-i18n="ui.topCompanies">Top companies</h3>'
         )
         self.assertLess(rollups_position, score_position)
-        self.assertLess(score_position, companies_position)
+        self.assertLess(score_position, warning_position)
+        self.assertLess(warning_position, index.index("</article>", score_position))
+        self.assertLess(score_position, heatmap_position)
+        self.assertLess(heatmap_position, companies_position)
         self.assertNotIn('data-i18n="explore.redundancyEyebrow"', index)
         self.assertIn('id="redundancy-band-labels"', index)
         self.assertIn("redundancyBandLabels.style.gridTemplateColumns", app)
         self.assertIn('data-redundancy-threshold="lowModerate"', index)
         self.assertIn('data-redundancy-threshold="moderateHigh"', index)
         self.assertIn("renderRedundancyScore();", app)
+        self.assertIn("renderNearIdenticalPairWarning();", app)
         self.assertIn('font-family: "Space Grotesk"', styles)
         self.assertIn(".redundancy-score-box", styles)
         self.assertIn(".redundancy-score-heading", styles)
+        self.assertIn(
+            ".aggregation-layout > .subcard {\n"
+            "    padding: 20px;\n"
+            "  }\n\n"
+            "  .aggregation-layout > .subcard > .subcard-heading h3 {\n"
+            "    margin: 0;\n"
+            "    font-size: 1.08rem;\n"
+            "  }",
+            styles,
+        )
+        self.assertIn(".pairwise-overlap-viewport", styles)
+        self.assertIn("max-height: min(62vh, 520px)", styles)
+        self.assertIn("position: sticky;", styles)
+        self.assertIn(".pairwise-overlap-table .pairwise-corner", styles)
+        self.assertIn(".pairwise-overlap-table tbody th,\n.pairwise-overlap-table tbody td", styles)
+        self.assertIn("height: 56px", styles)
+        self.assertIn("height: 42px", styles)
+        self.assertIn(
+            "--pairwise-label-background: color-mix(in srgb, "
+            "var(--table-header-background) 44%, var(--card-strong))",
+            styles,
+        )
+        self.assertIn(
+            "--pairwise-empty-background: color-mix(in srgb, "
+            "var(--pairwise-label-background) 72%, var(--card-strong))",
+            styles,
+        )
+        self.assertIn("background: var(--pairwise-label-background)", styles)
+        self.assertIn(".pairwise-diagonal,\n.pairwise-empty", styles)
+        self.assertIn("background: var(--pairwise-empty-background)", styles)
+        self.assertIn(".pairwise-overlap-legend", styles)
+        self.assertIn("scrollbar-width: none", styles)
+        self.assertIn(".pairwise-row-label small,\n  .pairwise-overlap-coverage", styles)
+        self.assertIn("pairwiseLegendDescription", app)
         self.assertIn("'redundancy.js'", service_worker)
         self.assertIn("'redundancy.js'", cache_generation_helper)
-        self.assertNotIn("near-identical", index.lower())
 
     def test_pwa_assets_and_local_runtime_contract(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")

@@ -29,12 +29,12 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20261017-2" />
+    <link rel="stylesheet" href="./styles.css?v=20261017-7" />
     <script src="./vendor/i18next.min.js" defer></script>
     <script src="./vendor/chart.umd.min.js" defer></script>
     <script src="./vendor/pdf.min.js" defer></script>
     <script src="./vendor/lucide.js" defer></script>
-    <script type="module" src="./app.js?v=20261017-2" defer></script>
+    <script type="module" src="./app.js?v=20261017-4" defer></script>
   </head>
   <body>
     <header class="app-utility-bar" aria-label="Application utilities" data-i18n-attr-aria-label="ui.applicationUtilities">
@@ -141,6 +141,14 @@
                   <input id="redundancy-high-threshold" data-redundancy-threshold="moderateHigh" type="number" min="0" max="100" step="0.1" />
                 </label>
                 <p id="redundancy-threshold-error" class="developer-threshold-error" role="alert" hidden data-i18n="developer.invalidRedundancyThresholds">Enter thresholds between 0 and 100, with Low / Moderate below Moderate / High.</p>
+              </div>
+              <div class="developer-threshold-settings near-identical-threshold-settings">
+                <h4 data-i18n="developer.nearIdenticalThreshold">Near-identical overlap threshold</h4>
+                <label for="near-identical-threshold">
+                  <span data-i18n="developer.nearIdenticalThreshold">Near-identical overlap threshold</span>
+                  <input id="near-identical-threshold" data-near-identical-threshold type="number" min="0" max="100" step="0.1" />
+                </label>
+                <p id="near-identical-threshold-error" class="developer-threshold-error" role="alert" hidden data-i18n="developer.invalidNearIdenticalThreshold">Enter a threshold from 0 to 100.</p>
               </div>
             </div>
           </div>
@@ -398,6 +406,14 @@
                 <span data-i18n="explore.redundancy.moderate">Moderate</span>
                 <span data-i18n="explore.redundancy.high">High</span>
               </div>
+              <div class="near-identical-pair-warning" id="near-identical-pair-warning" role="status" aria-live="polite" hidden></div>
+            </article>
+            <article class="subcard stack pairwise-overlap-box" aria-labelledby="pairwise-overlap-title">
+              <div class="subcard-heading">
+                <h3 id="pairwise-overlap-title" data-i18n="explore.pairwiseTitle">Pairwise product overlap heatmap</h3>
+                <p data-i18n="explore.pairwiseDescription">Shared holdings between selected ETFs.</p>
+              </div>
+              <div id="pairwise-overlap-content"></div>
             </article>
             <div class="subcard stack">
               <div class="subcard-heading">

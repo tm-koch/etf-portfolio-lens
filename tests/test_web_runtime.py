@@ -632,6 +632,123 @@ console.log(JSON.stringify({ defaults, saved, restored, rejected, corrupt, unava
         self.assertEqual(values["corrupt"], {"lowModerate": 10, "moderateHigh": 25})
         self.assertEqual(values["unavailable"], {"lowModerate": 10, "moderateHigh": 25})
 
+    def test_near_identical_threshold_defaults_validates_and_persists(self) -> None:
+        script = """
+import {
+    DEFAULT_NEAR_IDENTICAL_THRESHOLD,
+    NEAR_IDENTICAL_THRESHOLD_STORAGE_KEY,
+    loadNearIdenticalThreshold,
+    saveNearIdenticalThreshold,
+    validateNearIdenticalThreshold,
+} from './web/redundancy.js';
+
+const values = new Map();
+const storage = {
+    getItem: (key) => values.get(key) ?? null,
+    setItem: (key, value) => values.set(key, value),
+};
+const initial = loadNearIdenticalThreshold(storage);
+const saved = saveNearIdenticalThreshold('92.5', storage);
+const restored = loadNearIdenticalThreshold(storage);
+const rejected = saveNearIdenticalThreshold(101, storage);
+values.set(NEAR_IDENTICAL_THRESHOLD_STORAGE_KEY, 'null');
+const corrupt = loadNearIdenticalThreshold(storage);
+const invalid = [validateNearIdenticalThreshold(''), validateNearIdenticalThreshold(-1), validateNearIdenticalThreshold(Infinity)];
+console.log(JSON.stringify({ default: DEFAULT_NEAR_IDENTICAL_THRESHOLD, initial, saved, restored, rejected, corrupt, invalid }));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["default"], 90)
+        self.assertEqual(values["initial"], 90)
+        self.assertTrue(values["saved"])
+        self.assertEqual(values["restored"], 92.5)
+        self.assertFalse(values["rejected"])
+        self.assertEqual(values["corrupt"], 90)
+        self.assertEqual(values["invalid"], [None, None, None])
+
+    def test_pairwise_overlap_index_supports_unordered_pairs_and_legacy_catalogs(
+        self,
+    ) -> None:
+        script = """
+import { buildPairwiseOverlapIndex, getPairwiseOverlap } from './web/pairwise-overlap.js';
+
+const index = buildPairwiseOverlapIndex({
+    version: 1,
+    pairs: [
+        { isinA: 'AAA', isinB: 'BBB', overlapPct: 91, available: true },
+        { isinA: 'CCC', isinB: 'DDD', overlapPct: null, available: false },
+        { isinA: 'BAD', isinB: 'PAIR', overlapPct: 101, available: true },
+    ],
+});
+console.log(JSON.stringify({
+    reversed: getPairwiseOverlap(index, 'BBB', 'AAA'),
+    unavailable: getPairwiseOverlap(index, 'DDD', 'CCC'),
+    bad: getPairwiseOverlap(index, 'BAD', 'PAIR'),
+    same: getPairwiseOverlap(index, 'AAA', 'AAA'),
+    legacySize: buildPairwiseOverlapIndex(undefined).size,
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["reversed"]["overlapPct"], 91)
+        self.assertFalse(values["unavailable"]["available"])
+        self.assertIsNone(values["bad"])
+        self.assertIsNone(values["same"])
+        self.assertEqual(values["legacySize"], 0)
+
+    def test_pairwise_matrix_uses_selection_order_and_inclusive_threshold(self) -> None:
+        script = """
+import { buildPairwiseMatrix, buildPairwiseOverlapIndex } from './web/pairwise-overlap.js';
+
+const index = buildPairwiseOverlapIndex({
+    version: 1,
+    pairs: [{ isinA: 'A', isinB: 'B', overlapPct: 90, coveragePctA: 95, coveragePctB: 92, available: true }],
+});
+const positions = ['B', 'A', 'C'].map((isin) => ({
+    isin,
+    entry: { ticker: isin, name: `Fund ${isin}` },
+}));
+const atThreshold = buildPairwiseMatrix(positions, index, 90);
+const aboveThreshold = buildPairwiseMatrix(positions, index, 90.1);
+console.log(JSON.stringify({
+    order: atThreshold.map((row) => row.product.isin),
+    diagonal: atThreshold[0].cells[0].type,
+    upper: atThreshold[0].cells[2].type,
+    near: atThreshold[1].cells[0].nearIdentical,
+    below: aboveThreshold[1].cells[0].nearIdentical,
+    missing: atThreshold[2].cells[0].type,
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["order"], ["B", "A", "C"])
+        self.assertEqual(values["diagonal"], "diagonal")
+        self.assertEqual(values["upper"], "empty")
+        self.assertTrue(values["near"])
+        self.assertFalse(values["below"])
+        self.assertEqual(values["missing"], "unavailable")
+
     def test_restored_portfolio_reconciles_valuation_before_render(self) -> None:
         app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
         bootstrap_start = app.index("async function bootstrap()")

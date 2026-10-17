@@ -10,6 +10,7 @@ const SHELL_PATHS = [
   'taxonomy.js',
   'formatting.js',
   'redundancy.js',
+  'pairwise-overlap.js',
   'locales/en-CH.json',
   'locales/de-CH.json',
   'locales/pl-PL.json',
