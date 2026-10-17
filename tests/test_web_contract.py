@@ -60,6 +60,35 @@ class WebContractTests(unittest.TestCase):
             )["translation"]
             self.assertEqual(keys - resources.keys(), set(), locale)
 
+    def test_redundancy_score_is_standalone_and_available_offline(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        service_worker = (WEB_ROOT / "sw.js").read_text(encoding="utf-8")
+        cache_generation_helper = (
+            REPOSITORY_ROOT / "scripts" / "pwa-cache-generation.ps1"
+        ).read_text(encoding="utf-8")
+
+        rollups_position = index.index('<h3 data-i18n="ui.rollups">Rollups</h3>')
+        score_position = index.index('id="redundancy-score-box"')
+        companies_position = index.index(
+            '<h3 data-i18n="ui.topCompanies">Top companies</h3>'
+        )
+        self.assertLess(rollups_position, score_position)
+        self.assertLess(score_position, companies_position)
+        self.assertNotIn('data-i18n="explore.redundancyEyebrow"', index)
+        self.assertIn('id="redundancy-band-labels"', index)
+        self.assertIn("redundancyBandLabels.style.gridTemplateColumns", app)
+        self.assertIn('data-redundancy-threshold="lowModerate"', index)
+        self.assertIn('data-redundancy-threshold="moderateHigh"', index)
+        self.assertIn("renderRedundancyScore();", app)
+        self.assertIn('font-family: "Space Grotesk"', styles)
+        self.assertIn(".redundancy-score-box", styles)
+        self.assertIn(".redundancy-score-heading", styles)
+        self.assertIn("'redundancy.js'", service_worker)
+        self.assertIn("'redundancy.js'", cache_generation_helper)
+        self.assertNotIn("near-identical", index.lower())
+
     def test_pwa_assets_and_local_runtime_contract(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
@@ -832,9 +861,17 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("state.portfolio = positions;", app)
         self.assertIn("valueChf", app)
         self.assertIn("function normalizePortfolioPositions", app)
-        self.assertIn("position.value != null && Number.isFinite(Number(position.value))", app)
-        self.assertIn("position.valueChf != null && Number.isFinite(Number(position.valueChf))", app)
-        self.assertIn("position.valueChf != null && Number.isFinite(Number(position.valueChf))", share)
+        self.assertIn(
+            "position.value != null && Number.isFinite(Number(position.value))", app
+        )
+        self.assertIn(
+            "position.valueChf != null && Number.isFinite(Number(position.valueChf))",
+            app,
+        )
+        self.assertIn(
+            "position.valueChf != null && Number.isFinite(Number(position.valueChf))",
+            share,
+        )
         self.assertIn("function parseSaxoPages", importer)
         self.assertIn("bestande", importer)
         self.assertNotIn("EUR_TO_CHF_RATE = 1", importer)

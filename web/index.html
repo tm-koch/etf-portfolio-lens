@@ -29,12 +29,12 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20261015-6" />
+    <link rel="stylesheet" href="./styles.css?v=20261017-2" />
     <script src="./vendor/i18next.min.js" defer></script>
     <script src="./vendor/chart.umd.min.js" defer></script>
     <script src="./vendor/pdf.min.js" defer></script>
     <script src="./vendor/lucide.js" defer></script>
-    <script type="module" src="./app.js?v=20261016-1" defer></script>
+    <script type="module" src="./app.js?v=20261017-2" defer></script>
   </head>
   <body>
     <header class="app-utility-bar" aria-label="Application utilities" data-i18n-attr-aria-label="ui.applicationUtilities">
@@ -130,6 +130,18 @@
                 <span data-i18n="ui.portfolioImportDebug">Portfolio import debug</span>
                 <input id="portfolio-import-debug-enabled" type="checkbox" role="switch" />
               </label>
+              <div class="developer-threshold-settings">
+                <h4 data-i18n="developer.redundancyThresholds">Redundancy score thresholds</h4>
+                <label for="redundancy-low-threshold">
+                  <span data-i18n="developer.lowModerateThreshold">Low / Moderate</span>
+                  <input id="redundancy-low-threshold" data-redundancy-threshold="lowModerate" type="number" min="0" max="100" step="0.1" />
+                </label>
+                <label for="redundancy-high-threshold">
+                  <span data-i18n="developer.moderateHighThreshold">Moderate / High</span>
+                  <input id="redundancy-high-threshold" data-redundancy-threshold="moderateHigh" type="number" min="0" max="100" step="0.1" />
+                </label>
+                <p id="redundancy-threshold-error" class="developer-threshold-error" role="alert" hidden data-i18n="developer.invalidRedundancyThresholds">Enter thresholds between 0 and 100, with Low / Moderate below Moderate / High.</p>
+              </div>
             </div>
           </div>
         </dialog>
@@ -360,6 +372,33 @@
               </div>
               <div class="rollup-grid" id="rollup-grid"></div>
             </div>
+            <article class="subcard stack redundancy-score-box" id="redundancy-score-box" aria-labelledby="redundancy-score-title">
+              <div class="redundancy-score-heading">
+                <h3 id="redundancy-score-title" data-i18n="explore.redundancyTitle">Redundancy score</h3>
+                <p class="redundancy-description" id="redundancy-description" data-i18n="explore.redundancyUnavailable">Add supported ETFs with available holdings to calculate redundancy.</p>
+              </div>
+              <div class="redundancy-score-summary">
+                <strong id="redundancy-score-value">Not available</strong>
+                <span class="redundancy-score-level" id="redundancy-score-level" hidden></span>
+              </div>
+              <div class="redundancy-scale" id="redundancy-meter" role="img" aria-label="Redundancy score scale">
+                <div class="redundancy-meter-track" aria-hidden="true">
+                  <span class="redundancy-meter-segment is-low" data-redundancy-segment></span>
+                  <span class="redundancy-meter-segment is-moderate" data-redundancy-segment></span>
+                  <span class="redundancy-meter-segment is-high" data-redundancy-segment></span>
+                  <span class="redundancy-meter-marker" id="redundancy-meter-marker" hidden></span>
+                </div>
+                <div class="redundancy-scale-endpoints" aria-hidden="true">
+                  <span>0%</span>
+                  <span id="redundancy-maximum">Not available</span>
+                </div>
+              </div>
+              <div class="redundancy-band-labels" id="redundancy-band-labels" aria-hidden="true">
+                <span data-i18n="explore.redundancy.low">Low</span>
+                <span data-i18n="explore.redundancy.moderate">Moderate</span>
+                <span data-i18n="explore.redundancy.high">High</span>
+              </div>
+            </article>
             <div class="subcard stack">
               <div class="subcard-heading">
                 <h3 data-i18n="ui.topCompanies">Top companies</h3>

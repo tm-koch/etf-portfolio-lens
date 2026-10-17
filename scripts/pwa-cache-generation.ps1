@@ -5,6 +5,7 @@ $PwaCacheSensitivePaths = @(
   'localization.js',
   'taxonomy.js',
   'formatting.js',
+  'redundancy.js',
   'locales/en-CH.json',
   'locales/de-CH.json',
   'locales/pl-PL.json',

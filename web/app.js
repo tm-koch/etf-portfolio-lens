@@ -9,6 +9,14 @@ import {
 } from './formatting.js';
 import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js?v=20260910-2';
 import { getEffectiveValuation, hasCompleteImportedValuations } from './valuation.js?v=20261016-1';
+import {
+  calculateRedundancyScore,
+  classifyRedundancyScore,
+  DEFAULT_REDUNDANCY_THRESHOLDS,
+  loadRedundancyThresholds,
+  saveRedundancyThresholds,
+  validateRedundancyThresholds,
+} from './redundancy.js?v=20261017-1';
 import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
 import { initializeLocalization, selectLocale } from './localization.js';
 
@@ -29,6 +37,7 @@ const defaultState = {
   portfolioMode: 'full',
   importReviewRows: [],
   compactExplorePreview: false,
+  redundancyThresholds: { ...DEFAULT_REDUNDANCY_THRESHOLDS },
   colorMode: 'automatic',
   effectiveColorMode: 'bright',
   shareFeedback: '',
@@ -322,6 +331,22 @@ function saveCompactExplorePreview() {
     localStorage.setItem(COMPACT_EXPLORE_STORAGE_KEY, String(state.compactExplorePreview));
   } catch {
     // Browser storage may be unavailable in private or restricted contexts.
+  }
+}
+
+function loadRedundancyThresholdPreferences() {
+  try {
+    return loadRedundancyThresholds(localStorage);
+  } catch {
+    return { ...DEFAULT_REDUNDANCY_THRESHOLDS };
+  }
+}
+
+function saveRedundancyThresholdPreferences(thresholds) {
+  try {
+    return saveRedundancyThresholds(thresholds, localStorage);
+  } catch {
+    return false;
   }
 }
 
@@ -1536,6 +1561,64 @@ function renderCompanyList() {
   }
 }
 
+function renderRedundancyScore() {
+  const positions = getSelectedPositions();
+  const totalShareUnits = getTotalShareUnits(positions);
+  const positionWeights = positions.map((position) => ({
+    weight: getPositionWeight(position, totalShareUnits),
+    hasUsableHoldings: Boolean(position.snapshot?.holdings?.length),
+  }));
+  const { ranked } = aggregateCompanyExposure(positions);
+  const result = calculateRedundancyScore(ranked, positionWeights);
+  elements.redundancyMaximum.textContent = result.available
+    ? formatPercent(result.maximum)
+    : t('common.notAvailable');
+
+  if (!result.available) {
+    elements.redundancyScoreValue.textContent = t('common.notAvailable');
+    elements.redundancyScoreLevel.hidden = true;
+    elements.redundancyDescription.textContent = t('explore.redundancyUnavailable');
+    elements.redundancyMeter.setAttribute('aria-label', t('explore.redundancyUnavailable'));
+    elements.redundancyMarker.hidden = true;
+    elements.redundancyBandLabels.style.gridTemplateColumns = 'repeat(3, minmax(0, 1fr))';
+    for (const segment of elements.redundancySegments) segment.style.width = '0%';
+    return;
+  }
+
+  const scoreText = formatPercent(result.score);
+  const level = classifyRedundancyScore(
+    result.score,
+    state.redundancyThresholds.lowModerate,
+    state.redundancyThresholds.moderateHigh,
+  );
+  const scalePosition = (value) => result.maximum > 0
+    ? Math.min(Math.max((value / result.maximum) * 100, 0), 100)
+    : 0;
+  const lowBoundary = scalePosition(state.redundancyThresholds.lowModerate);
+  const moderateBoundary = scalePosition(state.redundancyThresholds.moderateHigh);
+  const scorePosition = scalePosition(result.score);
+  elements.redundancyBandLabels.style.gridTemplateColumns = result.maximum > 0
+    ? `minmax(12%, ${lowBoundary}fr) minmax(12%, ${moderateBoundary - lowBoundary}fr) minmax(12%, ${100 - moderateBoundary}fr)`
+    : 'repeat(3, minmax(0, 1fr))';
+
+  elements.redundancyScoreValue.textContent = scoreText;
+  elements.redundancyScoreLevel.hidden = false;
+  elements.redundancyScoreLevel.className = `redundancy-score-level is-${level}`;
+  elements.redundancyScoreLevel.textContent = t(`explore.redundancy.${level}`);
+  elements.redundancyDescription.textContent = t('explore.redundancyDescription', { value: scoreText });
+  elements.redundancyMeter.setAttribute('aria-label', t('explore.redundancyBarLabel', {
+    score: scoreText,
+    level: t(`explore.redundancy.${level}`),
+    maximum: formatPercent(result.maximum),
+  }));
+  elements.redundancySegments[0].style.width = `${result.maximum > 0 ? lowBoundary : 0}%`;
+  elements.redundancySegments[1].style.left = `${lowBoundary}%`;
+  elements.redundancySegments[1].style.width = `${result.maximum > 0 ? Math.max(moderateBoundary - lowBoundary, 0) : 0}%`;
+  elements.redundancySegments[2].style.width = `${result.maximum > 0 ? Math.max(100 - moderateBoundary, 0) : 0}%`;
+  elements.redundancyMarker.style.left = `${scorePosition}%`;
+  elements.redundancyMarker.hidden = false;
+}
+
 function renderWarnings() {
   renderBuildWarnings();
 }
@@ -1751,6 +1834,7 @@ function renderAll() {
     applyChartFrameSizing();
   }
   renderRollups();
+  renderRedundancyScore();
   renderCompanyList();
   renderWarnings();
   updateSummary();
@@ -1844,6 +1928,17 @@ async function bootstrap() {
   elements.rollupGrid = document.getElementById('rollup-grid');
   elements.companyList = document.getElementById('company-list');
   elements.companyHint = document.getElementById('company-hint');
+  elements.redundancyScoreValue = document.getElementById('redundancy-score-value');
+  elements.redundancyScoreLevel = document.getElementById('redundancy-score-level');
+  elements.redundancyDescription = document.getElementById('redundancy-description');
+  elements.redundancyMeter = document.getElementById('redundancy-meter');
+  elements.redundancyMaximum = document.getElementById('redundancy-maximum');
+  elements.redundancyBandLabels = document.getElementById('redundancy-band-labels');
+  elements.redundancySegments = [...document.querySelectorAll('[data-redundancy-segment]')];
+  elements.redundancyMarker = document.getElementById('redundancy-meter-marker');
+  elements.redundancyLowThreshold = document.getElementById('redundancy-low-threshold');
+  elements.redundancyHighThreshold = document.getElementById('redundancy-high-threshold');
+  elements.redundancyThresholdError = document.getElementById('redundancy-threshold-error');
   elements.buildDialogButton = document.getElementById('build-dialog-button');
   elements.dataDialogButton = document.getElementById('data-dialog-button');
   elements.buildDialog = document.getElementById('build-dialog');
@@ -1950,6 +2045,9 @@ async function bootstrap() {
   updateInstallAction();
   state.compactExplorePreview = loadCompactExplorePreview();
   elements.compactExplorePreview.checked = state.compactExplorePreview;
+  state.redundancyThresholds = loadRedundancyThresholdPreferences();
+  elements.redundancyLowThreshold.value = state.redundancyThresholds.lowModerate;
+  elements.redundancyHighThreshold.value = state.redundancyThresholds.moderateHigh;
 
   const snapshotResults = await Promise.allSettled(
     state.catalog.etfs.map(async (entry) => [entry.isin, await loadSnapshot(entry)])
@@ -2141,6 +2239,27 @@ async function bootstrap() {
   });
 
   document.addEventListener('change', (event) => {
+    const redundancyThreshold = event.target.closest('[data-redundancy-threshold]');
+    if (redundancyThreshold) {
+      const thresholds = validateRedundancyThresholds(
+        elements.redundancyLowThreshold.value,
+        elements.redundancyHighThreshold.value,
+      );
+      if (!thresholds) {
+        elements.redundancyLowThreshold.value = state.redundancyThresholds.lowModerate;
+        elements.redundancyHighThreshold.value = state.redundancyThresholds.moderateHigh;
+        elements.redundancyThresholdError.hidden = false;
+        elements.redundancyThresholdError.textContent = t('developer.invalidRedundancyThresholds');
+        return;
+      }
+
+      state.redundancyThresholds = thresholds;
+      saveRedundancyThresholdPreferences(thresholds);
+      elements.redundancyThresholdError.hidden = true;
+      renderRedundancyScore();
+      return;
+    }
+
     const sharesInput = event.target.closest('[data-shares-input]');
     if (sharesInput) {
       const shares = Number(sharesInput.value || 0);

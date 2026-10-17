@@ -10,6 +10,10 @@
   --accent: #3467f2;
   --accent-2: #0f9bd7;
   --danger: #d94b4b;
+  --redundancy-low: #c9e8c8;
+  --redundancy-moderate: #f8dda2;
+  --redundancy-high: #f5d0d1;
+  --redundancy-marker: #171717;
   --shadow: 0 16px 38px rgba(22, 34, 58, 0.08);
   --radius: 22px;
   --radius-sm: 16px;
@@ -37,6 +41,10 @@
   --text: #edf3fb;
   --muted: #aab7c8;
   --shadow: 0 16px 38px rgba(0, 0, 0, 0.28);
+  --redundancy-low: #3e7049;
+  --redundancy-moderate: #8b6421;
+  --redundancy-high: #8f4447;
+  --redundancy-marker: #ffffff;
   --page-background: radial-gradient(circle at top left, rgba(52, 103, 242, 0.16), transparent 28%), radial-gradient(circle at 85% 15%, rgba(15, 155, 215, 0.12), transparent 24%), linear-gradient(180deg, #141b25 0%, #10151d 55%, #0c1118 100%);
   --input-background: rgba(255, 255, 255, 0.06);
   --table-header-background: #273242;
@@ -462,6 +470,46 @@ body {
 .developer-settings h3,
 .developer-settings p {
   margin: 0;
+}
+
+.developer-threshold-settings {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.developer-threshold-settings h4,
+.developer-threshold-error {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.developer-threshold-settings h4 {
+  font-size: 0.92rem;
+}
+
+.developer-threshold-settings label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.developer-threshold-settings input {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  color: var(--text);
+  background: var(--input-background);
+  font: inherit;
+}
+
+.developer-threshold-error {
+  color: var(--danger);
 }
 
 .color-mode-setting {
@@ -1166,6 +1214,140 @@ body {
   gap: 16px;
 }
 
+.redundancy-score-box {
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  background: var(--card-strong);
+}
+
+.redundancy-score-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px 24px;
+}
+
+.redundancy-score-heading .section-label,
+.redundancy-score-heading h3,
+.redundancy-description {
+  margin: 0;
+}
+
+.redundancy-score-heading h3 {
+  font-size: 1.08rem;
+}
+
+.redundancy-score-heading .section-label {
+  margin-bottom: 4px;
+}
+
+.redundancy-description {
+  max-width: 520px;
+  color: var(--muted);
+}
+
+.redundancy-score-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+}
+
+.redundancy-score-summary strong {
+  color: var(--text);
+  font-size: 2rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.redundancy-score-level {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.redundancy-score-level.is-low {
+  background: var(--redundancy-low);
+  color: var(--text);
+}
+
+.redundancy-score-level.is-moderate {
+  background: var(--redundancy-moderate);
+  color: var(--text);
+}
+
+.redundancy-score-level.is-high {
+  background: var(--redundancy-high);
+  color: var(--text);
+}
+
+.redundancy-scale {
+  display: grid;
+  gap: 6px;
+}
+
+.redundancy-meter-track {
+  position: relative;
+  height: 18px;
+  border-radius: 5px;
+  background: var(--table-header-background);
+}
+
+.redundancy-meter-segment {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.redundancy-meter-segment.is-low {
+  left: 0;
+  border-radius: 5px 0 0 5px;
+  background: var(--redundancy-low);
+}
+
+.redundancy-meter-segment.is-moderate {
+  background: var(--redundancy-moderate);
+}
+
+.redundancy-meter-segment.is-high {
+  right: 0;
+  border-radius: 0 5px 5px 0;
+  background: var(--redundancy-high);
+}
+
+.redundancy-meter-marker {
+  position: absolute;
+  top: -7px;
+  z-index: 1;
+  width: 5px;
+  height: 32px;
+  border-radius: 3px;
+  background: var(--redundancy-marker);
+  box-shadow: 0 0 0 1px var(--text);
+  transform: translateX(-50%);
+}
+
+.redundancy-scale-endpoints {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.redundancy-band-labels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  font-size: 0.88rem;
+}
+
+.redundancy-band-labels span {
+  min-width: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+
 .positions-table-wrap {
   overflow-x: auto;
 }
@@ -1653,6 +1835,15 @@ body {
 
   .compact-explore-table .compact-explore-holding-name {
     max-width: 36vw;
+  }
+
+  .redundancy-score-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .developer-threshold-settings {
+    grid-template-columns: 1fr;
   }
 }
 

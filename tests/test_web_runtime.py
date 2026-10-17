@@ -474,6 +474,164 @@ console.log(JSON.stringify(cases));
             json.loads(result.stdout), [False, True, False, False, True, False]
         )
 
+    def test_redundancy_score_uses_lookthrough_contributions_and_etf_scale(
+        self,
+    ) -> None:
+        script = """
+import { calculateRedundancyScore } from './web/redundancy.js';
+
+const calculate = (weights, hasUsableHoldings = weights.map(() => true)) =>
+  calculateRedundancyScore(
+    [{
+      weight: 100,
+      contributors: weights.map((weight, index) => ({ ticker: `ETF${index + 1}`, weight })),
+    }],
+    weights.map((weight, index) => ({ weight, hasUsableHoldings: hasUsableHoldings[index] })),
+  );
+const values = {
+  one: calculate([100]),
+  two: calculate([50, 50]),
+  three: calculate([100 / 3, 100 / 3, 100 / 3]),
+  four: calculate([25, 25, 25, 25]),
+  unequal: calculate([70, 30]),
+  missing: calculate([50, 50], [true, false]),
+  zeroWeightMissing: calculate([100, 0], [true, false]),
+  unique: calculateRedundancyScore(
+    [{ weight: 100, contributors: [{ ticker: 'ETF1', weight: 100 }] }],
+    [{ weight: 100, hasUsableHoldings: true }, { weight: 0, hasUsableHoldings: true }],
+  ),
+};
+console.log(JSON.stringify(values));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual((values["one"]["score"], values["one"]["maximum"]), (0, 0))
+        self.assertEqual((values["two"]["score"], values["two"]["maximum"]), (50, 50))
+        self.assertAlmostEqual(values["three"]["score"], 200 / 3)
+        self.assertAlmostEqual(values["three"]["maximum"], 200 / 3)
+        self.assertEqual((values["four"]["score"], values["four"]["maximum"]), (75, 75))
+        self.assertEqual(values["unequal"]["score"], 30)
+        self.assertFalse(values["missing"]["available"])
+        self.assertEqual(values["zeroWeightMissing"]["score"], 0)
+        self.assertEqual(values["unique"]["score"], 0)
+
+    def test_redundancy_threshold_boundaries_and_localized_percent_formatting(
+        self,
+    ) -> None:
+        script = """
+import { classifyRedundancyScore } from './web/redundancy.js';
+import { formatPercent } from './web/formatting.js';
+
+const locales = ['en-CH', 'de-CH', 'pl-PL'];
+const formatted = Object.fromEntries(locales.map((locale) => [
+  locale,
+  {
+    actual: formatPercent(12.5, locale),
+    expected: new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: 1 }).format(0.125),
+  },
+]));
+console.log(JSON.stringify({
+  bands: [
+    classifyRedundancyScore(9.9, 10, 25),
+    classifyRedundancyScore(10, 10, 25),
+    classifyRedundancyScore(24.9, 10, 25),
+    classifyRedundancyScore(25, 10, 25),
+  ],
+  formatted,
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["bands"], ["low", "moderate", "moderate", "high"])
+        for localized in values["formatted"].values():
+            self.assertEqual(localized["actual"], localized["expected"])
+            self.assertTrue(localized["actual"])
+
+    def test_redundancy_threshold_validation(self) -> None:
+        script = """
+import { DEFAULT_REDUNDANCY_THRESHOLDS, validateRedundancyThresholds } from './web/redundancy.js';
+
+console.log(JSON.stringify({
+  defaults: DEFAULT_REDUNDANCY_THRESHOLDS,
+  valid: validateRedundancyThresholds('10.5', '25'),
+  minimum: validateRedundancyThresholds(0, 100),
+  equal: validateRedundancyThresholds(10, 10),
+  reversed: validateRedundancyThresholds(26, 25),
+  empty: validateRedundancyThresholds('', 25),
+  outOfRange: validateRedundancyThresholds(10, 100.1),
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["defaults"], {"lowModerate": 10, "moderateHigh": 25})
+        self.assertEqual(values["valid"], {"lowModerate": 10.5, "moderateHigh": 25})
+        self.assertEqual(values["minimum"], {"lowModerate": 0, "moderateHigh": 100})
+        self.assertIsNone(values["equal"])
+        self.assertIsNone(values["reversed"])
+        self.assertIsNone(values["empty"])
+        self.assertIsNone(values["outOfRange"])
+
+    def test_redundancy_threshold_preferences_persist_and_fall_back_safely(
+        self,
+    ) -> None:
+        script = """
+import {
+  REDUNDANCY_THRESHOLDS_STORAGE_KEY,
+  loadRedundancyThresholds,
+  saveRedundancyThresholds,
+} from './web/redundancy.js';
+
+const values = new Map();
+const storage = {
+  getItem: (key) => values.get(key) ?? null,
+  setItem: (key, value) => values.set(key, value),
+};
+const defaults = loadRedundancyThresholds(storage);
+const saved = saveRedundancyThresholds({ lowModerate: 12, moderateHigh: 30 }, storage);
+const restored = loadRedundancyThresholds(storage);
+const rejected = saveRedundancyThresholds({ lowModerate: 30, moderateHigh: 12 }, storage);
+values.set(REDUNDANCY_THRESHOLDS_STORAGE_KEY, '{');
+const corrupt = loadRedundancyThresholds(storage);
+const unavailable = loadRedundancyThresholds({ getItem() { throw new Error('blocked'); } });
+console.log(JSON.stringify({ defaults, saved, restored, rejected, corrupt, unavailable }));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["defaults"], {"lowModerate": 10, "moderateHigh": 25})
+        self.assertTrue(values["saved"])
+        self.assertEqual(values["restored"], {"lowModerate": 12, "moderateHigh": 30})
+        self.assertFalse(values["rejected"])
+        self.assertEqual(values["corrupt"], {"lowModerate": 10, "moderateHigh": 25})
+        self.assertEqual(values["unavailable"], {"lowModerate": 10, "moderateHigh": 25})
+
     def test_restored_portfolio_reconciles_valuation_before_render(self) -> None:
         app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
         bootstrap_start = app.index("async function bootstrap()")
