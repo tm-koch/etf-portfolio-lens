@@ -64,6 +64,7 @@ try {
     'formatting.js',
     'redundancy.js',
     'pairwise-overlap.js',
+    'diversification.js',
     'locales/en-CH.json',
     'locales/de-CH.json',
     'locales/pl-PL.json',

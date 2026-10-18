@@ -14,6 +14,7 @@ import {
   buildPairwiseOverlapIndex,
   findNearIdenticalPairs,
 } from './pairwise-overlap.js';
+import { calculateDiversificationScore } from './diversification.js';
 import {
   calculateRedundancyScore,
   classifyRedundancyScore,
@@ -1608,7 +1609,7 @@ function renderRedundancyScore() {
     elements.redundancyDescription.textContent = t('explore.redundancyUnavailable');
     elements.redundancyMeter.setAttribute('aria-label', t('explore.redundancyUnavailable'));
     elements.redundancyMarker.hidden = true;
-    elements.redundancyBandLabels.style.gridTemplateColumns = 'repeat(3, minmax(0, 1fr))';
+    elements.redundancyMarker.removeAttribute('title');
     for (const segment of elements.redundancySegments) segment.style.width = '0%';
     return;
   }
@@ -1625,9 +1626,6 @@ function renderRedundancyScore() {
   const lowBoundary = scalePosition(state.redundancyThresholds.lowModerate);
   const moderateBoundary = scalePosition(state.redundancyThresholds.moderateHigh);
   const scorePosition = scalePosition(result.score);
-  elements.redundancyBandLabels.style.gridTemplateColumns = result.maximum > 0
-    ? `minmax(12%, ${lowBoundary}fr) minmax(12%, ${moderateBoundary - lowBoundary}fr) minmax(12%, ${100 - moderateBoundary}fr)`
-    : 'repeat(3, minmax(0, 1fr))';
 
   elements.redundancyScoreValue.textContent = scoreText;
   elements.redundancyScoreLevel.hidden = false;
@@ -1639,12 +1637,90 @@ function renderRedundancyScore() {
     level: t(`explore.redundancy.${level}`),
     maximum: formatPercent(result.maximum),
   }));
+  elements.redundancyMarker.title = t(`explore.redundancy.${level}`);
   elements.redundancySegments[0].style.width = `${result.maximum > 0 ? lowBoundary : 0}%`;
   elements.redundancySegments[1].style.left = `${lowBoundary}%`;
   elements.redundancySegments[1].style.width = `${result.maximum > 0 ? Math.max(moderateBoundary - lowBoundary, 0) : 0}%`;
   elements.redundancySegments[2].style.width = `${result.maximum > 0 ? Math.max(100 - moderateBoundary, 0) : 0}%`;
   elements.redundancyMarker.style.left = `${scorePosition}%`;
   elements.redundancyMarker.hidden = false;
+}
+
+function formatDiversificationNumber(value) {
+  return new Intl.NumberFormat(window.i18next.language, {
+    maximumFractionDigits: 1,
+  }).format(value);
+}
+
+function formatDiversificationCoverage(value) {
+  return new Intl.NumberFormat(window.i18next.language, {
+    style: 'percent',
+    maximumFractionDigits: 2,
+  }).format(value / 100);
+}
+
+function renderDiversificationScore() {
+  const positions = getSelectedPositions();
+  const totalShareUnits = getTotalShareUnits(positions);
+  const { ranked } = aggregateCompanyExposure(positions);
+  const coveragePositions = positions.map((position) => {
+    const disclosedWeight = (position.snapshot?.holdings || []).reduce((total, holding) => {
+      const weight = Number(holding?.exposure?.weight_pct);
+      return total + (Number.isFinite(weight) && weight > 0 ? weight : 0);
+    }, 0);
+    return {
+      weight: getPositionWeight(position, totalShareUnits),
+      coveragePct: disclosedWeight,
+    };
+  });
+  const result = calculateDiversificationScore(
+    ranked.map((company) => company.weight),
+    coveragePositions,
+  );
+  const boundaries = [0, 5, 10, 20, 40, result.maximum];
+  const segmentWidths = boundaries.slice(1).map((boundary, index) =>
+    Math.max(boundary - boundaries[index], 0) / result.maximum * 100
+  );
+
+  elements.diversificationScoreValue.textContent = result.available
+    ? formatDiversificationNumber(result.score)
+    : t('common.notAvailable');
+  elements.diversificationDescription.textContent = result.available
+    ? t('explore.diversificationDescription')
+    : t('explore.diversificationUnavailable');
+  elements.diversificationScoreLevel.hidden = !result.available;
+  elements.diversificationMaximum.textContent = result.available
+    ? formatDiversificationNumber(result.maximum)
+    : t('common.notAvailable');
+  elements.diversificationCoverageWarning.hidden = !result.available || !result.coverageIncomplete;
+  if (result.available) {
+    const level = t(`explore.diversification.${result.rating}`);
+    const ratingClass = result.rating.replace(/[A-Z]/g, (character) => `-${character.toLowerCase()}`);
+    elements.diversificationScoreLevel.className = `redundancy-score-level is-${ratingClass}`;
+    elements.diversificationScoreLevel.textContent = level;
+    elements.diversificationCoverageWarning.textContent = t('explore.diversificationCoverageWarning', {
+      coverage: formatDiversificationCoverage(result.coveragePct),
+    });
+    elements.diversificationMeter.setAttribute('aria-label', t('explore.diversificationBarLabel', {
+      score: formatDiversificationNumber(result.score),
+      level,
+      maximum: formatDiversificationNumber(result.maximum),
+    }));
+  } else {
+    elements.diversificationScoreLevel.className = 'redundancy-score-level';
+    elements.diversificationMeter.setAttribute('aria-label', t('explore.diversificationUnavailable'));
+    elements.diversificationMarker.removeAttribute('title');
+  }
+
+  for (const [index, segment] of elements.diversificationSegments.entries()) {
+    segment.style.left = `${boundaries[index] / result.maximum * 100}%`;
+    segment.style.width = `${result.available ? segmentWidths[index] : 0}%`;
+  }
+  elements.diversificationMarker.style.left = result.available
+    ? `${Math.min((result.score / result.maximum) * 100, 100)}%`
+    : '0%';
+  if (result.available) elements.diversificationMarker.title = t(`explore.diversification.${result.rating}`);
+  elements.diversificationMarker.hidden = !result.available;
 }
 
 function escapeMarkup(value) {
@@ -2020,6 +2096,7 @@ function renderAll() {
   renderRollups();
   renderRedundancyScore();
   renderPairwiseOverlap();
+  renderDiversificationScore();
   renderCompanyList();
   renderWarnings();
   updateSummary();
@@ -2118,7 +2195,6 @@ async function bootstrap() {
   elements.redundancyDescription = document.getElementById('redundancy-description');
   elements.redundancyMeter = document.getElementById('redundancy-meter');
   elements.redundancyMaximum = document.getElementById('redundancy-maximum');
-  elements.redundancyBandLabels = document.getElementById('redundancy-band-labels');
   elements.redundancySegments = [...document.querySelectorAll('[data-redundancy-segment]')];
   elements.redundancyMarker = document.getElementById('redundancy-meter-marker');
   elements.redundancyLowThreshold = document.getElementById('redundancy-low-threshold');
@@ -2126,6 +2202,14 @@ async function bootstrap() {
   elements.redundancyThresholdError = document.getElementById('redundancy-threshold-error');
   elements.nearIdenticalPairWarning = document.getElementById('near-identical-pair-warning');
   elements.pairwiseOverlapContent = document.getElementById('pairwise-overlap-content');
+  elements.diversificationScoreValue = document.getElementById('diversification-score-value');
+  elements.diversificationScoreLevel = document.getElementById('diversification-score-level');
+  elements.diversificationDescription = document.getElementById('diversification-description');
+  elements.diversificationMeter = document.getElementById('diversification-meter');
+  elements.diversificationMaximum = document.getElementById('diversification-maximum');
+  elements.diversificationSegments = [...document.querySelectorAll('[data-diversification-segment]')];
+  elements.diversificationMarker = document.getElementById('diversification-meter-marker');
+  elements.diversificationCoverageWarning = document.getElementById('diversification-coverage-warning');
   elements.nearIdenticalThreshold = document.getElementById('near-identical-threshold');
   elements.nearIdenticalThresholdError = document.getElementById('near-identical-threshold-error');
   elements.buildDialogButton = document.getElementById('build-dialog-button');

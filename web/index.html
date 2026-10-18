@@ -391,20 +391,15 @@
               </div>
               <div class="redundancy-scale" id="redundancy-meter" role="img" aria-label="Redundancy score scale">
                 <div class="redundancy-meter-track" aria-hidden="true">
-                  <span class="redundancy-meter-segment is-low" data-redundancy-segment></span>
-                  <span class="redundancy-meter-segment is-moderate" data-redundancy-segment></span>
-                  <span class="redundancy-meter-segment is-high" data-redundancy-segment></span>
+                  <span class="redundancy-meter-segment is-low" data-redundancy-segment data-i18n-attr-title="explore.redundancy.low"></span>
+                  <span class="redundancy-meter-segment is-moderate" data-redundancy-segment data-i18n-attr-title="explore.redundancy.moderate"></span>
+                  <span class="redundancy-meter-segment is-high" data-redundancy-segment data-i18n-attr-title="explore.redundancy.high"></span>
                   <span class="redundancy-meter-marker" id="redundancy-meter-marker" hidden></span>
                 </div>
                 <div class="redundancy-scale-endpoints" aria-hidden="true">
                   <span>0%</span>
                   <span id="redundancy-maximum">Not available</span>
                 </div>
-              </div>
-              <div class="redundancy-band-labels" id="redundancy-band-labels" aria-hidden="true">
-                <span data-i18n="explore.redundancy.low">Low</span>
-                <span data-i18n="explore.redundancy.moderate">Moderate</span>
-                <span data-i18n="explore.redundancy.high">High</span>
               </div>
               <div class="near-identical-pair-warning" id="near-identical-pair-warning" role="status" aria-live="polite" hidden></div>
             </article>
@@ -414,6 +409,31 @@
                 <p data-i18n="explore.pairwiseDescription">Shared holdings between selected ETFs.</p>
               </div>
               <div id="pairwise-overlap-content"></div>
+            </article>
+            <article class="subcard stack redundancy-score-box diversification-score-box" id="diversification-score-box" aria-labelledby="diversification-score-title">
+              <div class="redundancy-score-heading">
+                <h3 id="diversification-score-title" data-i18n="explore.diversificationTitle">Diversification score (1/HHI)</h3>
+                <p class="redundancy-description" id="diversification-description" data-i18n="explore.diversificationUnavailable">Add supported ETFs with disclosed holdings to calculate diversification.</p>
+              </div>
+              <div class="redundancy-score-summary">
+                <strong id="diversification-score-value">Not available</strong>
+                <span class="redundancy-score-level" id="diversification-score-level" hidden></span>
+              </div>
+              <div class="diversification-scale" id="diversification-meter" role="img" aria-label="Diversification score scale">
+                <div class="redundancy-meter-track" aria-hidden="true">
+                  <span class="diversification-meter-segment is-highly-concentrated" data-diversification-segment data-i18n-attr-title="explore.diversification.highlyConcentrated"></span>
+                  <span class="diversification-meter-segment is-concentrated" data-diversification-segment data-i18n-attr-title="explore.diversification.concentrated"></span>
+                  <span class="diversification-meter-segment is-moderately-diversified" data-diversification-segment data-i18n-attr-title="explore.diversification.moderatelyDiversified"></span>
+                  <span class="diversification-meter-segment is-well-diversified" data-diversification-segment data-i18n-attr-title="explore.diversification.wellDiversified"></span>
+                  <span class="diversification-meter-segment is-highly-diversified" data-diversification-segment data-i18n-attr-title="explore.diversification.highlyDiversified"></span>
+                  <span class="redundancy-meter-marker" id="diversification-meter-marker" hidden></span>
+                </div>
+                <div class="redundancy-scale-endpoints" aria-hidden="true">
+                  <span>0</span>
+                  <span id="diversification-maximum">Not available</span>
+                </div>
+              </div>
+              <div class="diversification-coverage-warning" id="diversification-coverage-warning" role="status" aria-live="polite" hidden></div>
             </article>
             <div class="subcard stack">
               <div class="subcard-heading">

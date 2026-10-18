@@ -60,6 +60,45 @@ class WebContractTests(unittest.TestCase):
             )["translation"]
             self.assertEqual(keys - resources.keys(), set(), locale)
 
+    def test_diversification_score_follows_pairwise_overlap(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        overlap_position = index.index('id="pairwise-overlap-title"')
+        score_position = index.index('id="diversification-score-box"')
+        companies_position = index.index(
+            '<h3 data-i18n="ui.topCompanies">Top companies</h3>'
+        )
+        self.assertLess(overlap_position, score_position)
+        self.assertLess(score_position, companies_position)
+        self.assertIn('data-i18n="explore.diversificationTitle"', index)
+        self.assertIn('id="diversification-meter" role="img"', index)
+        self.assertIn('id="diversification-coverage-warning" role="status"', index)
+        self.assertIn("renderDiversificationScore();", app)
+        self.assertIn("calculateDiversificationScore(", app)
+        self.assertNotIn("diversification-band-labels", index)
+        self.assertIn("elements.diversificationMarker.title = t(`explore.diversification.${result.rating}`);", app)
+        for key in (
+            "explore.diversification.highlyConcentrated",
+            "explore.diversification.concentrated",
+            "explore.diversification.moderatelyDiversified",
+            "explore.diversification.wellDiversified",
+            "explore.diversification.highlyDiversified",
+        ):
+            self.assertIn(f'data-i18n-attr-title="{key}"', index)
+        for rating in (
+            "highly-concentrated",
+            "concentrated",
+            "moderately-diversified",
+            "well-diversified",
+            "highly-diversified",
+        ):
+            self.assertIn(f".redundancy-score-level.is-{rating}", styles)
+        mobile_styles = styles[styles.index("@media (max-width: 760px)") :]
+        self.assertIn(".diversification-coverage-warning {", mobile_styles)
+        self.assertIn("clip-path: inset(50%);", mobile_styles)
+
     def test_redundancy_score_is_standalone_and_available_offline(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
@@ -82,12 +121,32 @@ class WebContractTests(unittest.TestCase):
         self.assertLess(score_position, heatmap_position)
         self.assertLess(heatmap_position, companies_position)
         self.assertNotIn('data-i18n="explore.redundancyEyebrow"', index)
-        self.assertIn('id="redundancy-band-labels"', index)
-        self.assertIn("redundancyBandLabels.style.gridTemplateColumns", app)
+        self.assertNotIn('id="redundancy-band-labels"', index)
+        self.assertNotIn("redundancyBandLabels", app)
+        self.assertNotIn(".redundancy-band-labels", styles)
         self.assertIn('data-redundancy-threshold="lowModerate"', index)
         self.assertIn('data-redundancy-threshold="moderateHigh"', index)
         self.assertIn("renderRedundancyScore();", app)
         self.assertIn("renderNearIdenticalPairWarning();", app)
+        self.assertIn("elements.redundancyMarker.title = t(`explore.redundancy.${level}`);", app)
+        self.assertNotIn(".redundancy-scale-endpoints span:last-child", styles)
+        self.assertNotIn("margin-right: 20px;", styles)
+        self.assertIn(".redundancy-scale,\n.diversification-scale", styles)
+        self.assertIn("gap: 14px;", styles)
+        self.assertIn(
+            ".redundancy-scale-endpoints {\n"
+            "  display: flex;\n"
+            "  justify-content: space-between;",
+            styles,
+        )
+        for key in (
+            "explore.redundancy.low",
+            "explore.redundancy.moderate",
+            "explore.redundancy.high",
+        ):
+            self.assertIn(f'data-i18n-attr-title="{key}"', index)
+        self.assertIn("'diversification.js'", service_worker)
+        self.assertIn("'diversification.js'", cache_generation_helper)
         self.assertIn('font-family: "Space Grotesk"', styles)
         self.assertIn(".redundancy-score-box", styles)
         self.assertIn(".redundancy-score-heading", styles)

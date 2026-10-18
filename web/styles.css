@@ -1493,9 +1493,10 @@ body {
   color: var(--text);
 }
 
-.redundancy-scale {
+.redundancy-scale,
+.diversification-scale {
   display: grid;
-  gap: 6px;
+  gap: 14px;
 }
 
 .redundancy-meter-track {
@@ -1547,16 +1548,57 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-.redundancy-band-labels {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  font-size: 0.88rem;
+.redundancy-score-level.is-highly-concentrated,
+.diversification-meter-segment.is-highly-concentrated {
+  background: var(--redundancy-high);
+  color: var(--text);
 }
 
-.redundancy-band-labels span {
-  min-width: 0;
-  text-align: left;
-  overflow-wrap: anywhere;
+.redundancy-score-level.is-concentrated,
+.diversification-meter-segment.is-concentrated {
+  background: color-mix(in srgb, var(--redundancy-high) 55%, var(--redundancy-moderate));
+  color: var(--text);
+}
+
+.redundancy-score-level.is-moderately-diversified,
+.diversification-meter-segment.is-moderately-diversified {
+  background: var(--redundancy-moderate);
+  color: var(--text);
+}
+
+.redundancy-score-level.is-well-diversified,
+.diversification-meter-segment.is-well-diversified {
+  background: color-mix(in srgb, var(--redundancy-low) 60%, var(--redundancy-moderate));
+  color: var(--text);
+}
+
+.redundancy-score-level.is-highly-diversified,
+.diversification-meter-segment.is-highly-diversified {
+  background: var(--redundancy-low);
+  color: var(--text);
+}
+
+.diversification-meter-segment {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+
+.diversification-meter-segment:first-child {
+  border-radius: 5px 0 0 5px;
+}
+
+.diversification-meter-segment:nth-last-child(2) {
+  border-radius: 0 5px 5px 0;
+}
+
+.diversification-coverage-warning {
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--redundancy-moderate) 65%, var(--border));
+  border-radius: 8px;
+  color: var(--text);
+  background: color-mix(in srgb, var(--redundancy-moderate) 12%, var(--card-strong));
+  font-size: 0.9rem;
 }
 
 .positions-table-wrap {
@@ -2105,6 +2147,19 @@ body {
   .redundancy-score-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .diversification-coverage-warning {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 
   .aggregation-layout > .subcard {
