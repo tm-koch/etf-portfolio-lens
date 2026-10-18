@@ -1409,18 +1409,33 @@ body {
 
 .redundancy-score-heading {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 12px 24px;
+  gap: 12px;
+}
+
+.score-info-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.score-info-heading-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
 }
 
 .redundancy-score-heading .section-label,
 .redundancy-score-heading h3,
+.score-info-heading-copy h3,
+.score-info-heading-copy > p,
 .redundancy-description {
   margin: 0;
 }
 
-.redundancy-score-heading h3 {
+.score-info-heading-copy h3 {
   font-size: 1.08rem;
 }
 
@@ -1431,6 +1446,48 @@ body {
 .redundancy-description {
   max-width: 520px;
   color: var(--muted);
+}
+
+.score-info-button {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.score-info-button:hover {
+  color: var(--accent);
+  background: transparent;
+}
+
+.score-info-button:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.score-info-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.score-info-dialog .score-info-panel {
+  display: grid;
+  gap: 12px;
+  line-height: 1.55;
+}
+
+.score-info-dialog .score-info-panel[hidden] {
+  display: none;
+}
+
+.score-info-panel p {
+  margin: 0;
 }
 
 .near-identical-pair-warning {
@@ -2146,7 +2203,8 @@ body {
 
   .redundancy-score-heading {
     align-items: flex-start;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 12px;
   }
 
   .diversification-coverage-warning {

@@ -60,6 +60,28 @@ class WebContractTests(unittest.TestCase):
             )["translation"]
             self.assertEqual(keys - resources.keys(), set(), locale)
 
+    def test_score_information_buttons_open_matching_dialog_panels(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertEqual(index.count('class="score-info-button"'), 3)
+        self.assertIn('aria-labelledby="score-info-dialog-title"', index)
+        for topic in ("redundancy", "pairwise", "diversification"):
+            self.assertIn(f'data-score-info="{topic}"', index)
+            self.assertIn(f'data-score-info-panel="{topic}"', index)
+        self.assertIn("candidate.hidden = candidate !== panel;", app)
+        self.assertIn("elements.scoreInfoDialog.showModal()", app)
+        self.assertIn("state.scoreInfoReturnFocus?.focus();", app)
+
+        english = json.loads(
+            (WEB_ROOT / "locales" / "en-CH.json").read_text(encoding="utf-8")
+        )["translation"]
+        self.assertIn("70% and 30%", english["explore.scoreInfo.redundancyExample"])
+        self.assertIn(
+            "Herfindahl-Hirschman Index",
+            english["explore.scoreInfo.diversificationCalculation"],
+        )
+
     def test_diversification_score_follows_pairwise_overlap(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
@@ -78,7 +100,10 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("renderDiversificationScore();", app)
         self.assertIn("calculateDiversificationScore(", app)
         self.assertNotIn("diversification-band-labels", index)
-        self.assertIn("elements.diversificationMarker.title = t(`explore.diversification.${result.rating}`);", app)
+        self.assertIn(
+            "elements.diversificationMarker.title = t(`explore.diversification.${result.rating}`);",
+            app,
+        )
         for key in (
             "explore.diversification.highlyConcentrated",
             "explore.diversification.concentrated",
@@ -128,7 +153,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('data-redundancy-threshold="moderateHigh"', index)
         self.assertIn("renderRedundancyScore();", app)
         self.assertIn("renderNearIdenticalPairWarning();", app)
-        self.assertIn("elements.redundancyMarker.title = t(`explore.redundancy.${level}`);", app)
+        self.assertIn(
+            "elements.redundancyMarker.title = t(`explore.redundancy.${level}`);", app
+        )
         self.assertNotIn(".redundancy-scale-endpoints span:last-child", styles)
         self.assertNotIn("margin-right: 20px;", styles)
         self.assertIn(".redundancy-scale,\n.diversification-scale", styles)

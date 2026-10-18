@@ -694,6 +694,32 @@ function closeDataDialog() {
   }
 }
 
+function openScoreInfoDialog(event) {
+  const opener = event.currentTarget;
+  const panelId = opener.dataset.scoreInfo;
+  const panel = elements.scoreInfoPanels.find((candidate) => candidate.dataset.scoreInfoPanel === panelId);
+  if (!panel) return;
+
+  state.scoreInfoReturnFocus = opener;
+  elements.scoreInfoTitle.textContent = t(opener.dataset.scoreInfoTitle);
+  for (const candidate of elements.scoreInfoPanels) {
+    candidate.hidden = candidate !== panel;
+  }
+  if (typeof elements.scoreInfoDialog.showModal === 'function') {
+    elements.scoreInfoDialog.showModal();
+  } else {
+    elements.scoreInfoDialog.setAttribute('open', '');
+  }
+}
+
+function closeScoreInfoDialog() {
+  if (typeof elements.scoreInfoDialog.close === 'function') {
+    elements.scoreInfoDialog.close();
+  } else {
+    elements.scoreInfoDialog.removeAttribute('open');
+  }
+}
+
 function getHoldingName(holding) {
   return holding?.security?.canonical_name || holding?.security?.name || holding?.security?.ticker || t('explore.unknownHolding');
 }
@@ -2222,6 +2248,10 @@ async function bootstrap() {
   elements.dataDialogClose = document.getElementById('data-dialog-close');
   elements.dataDialogMetadata = document.getElementById('data-dialog-metadata');
   elements.dataDialogWarningList = document.getElementById('data-dialog-warning-list');
+  elements.scoreInfoDialog = document.getElementById('score-info-dialog');
+  elements.scoreInfoTitle = document.getElementById('score-info-dialog-title');
+  elements.scoreInfoDialogClose = document.getElementById('score-info-dialog-close');
+  elements.scoreInfoPanels = [...document.querySelectorAll('[data-score-info-panel]')];
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
   elements.portfolioImportDebugEnabled = document.getElementById('portfolio-import-debug-enabled');
   elements.importDialog = document.getElementById('portfolio-import-dialog');
@@ -2252,6 +2282,14 @@ async function bootstrap() {
   elements.dataDialogButton.addEventListener('click', openDataDialog);
   elements.buildDialogClose.addEventListener('click', closeBuildDialog);
   elements.dataDialogClose.addEventListener('click', closeDataDialog);
+  document.querySelectorAll('[data-score-info]').forEach((button) => {
+    button.addEventListener('click', openScoreInfoDialog);
+  });
+  elements.scoreInfoDialogClose.addEventListener('click', closeScoreInfoDialog);
+  elements.scoreInfoDialog.addEventListener('close', () => {
+    state.scoreInfoReturnFocus?.focus();
+    state.scoreInfoReturnFocus = null;
+  });
   elements.buildDialog.addEventListener('close', () => {
     state.buildDialogReturnFocus?.focus();
     state.buildDialogReturnFocus = null;
@@ -2276,6 +2314,10 @@ async function bootstrap() {
     if (event.key === 'Escape' && elements.dataDialog.open) {
       event.preventDefault();
       closeDataDialog();
+    }
+    if (event.key === 'Escape' && elements.scoreInfoDialog.open) {
+      event.preventDefault();
+      closeScoreInfoDialog();
     }
   });
   void loadBuildInfo().then((buildInfo) => {
