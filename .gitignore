@@ -1,4 +1,4 @@
 **/__pycache__/**
-data/raw/**/downloads/tickers.csv
+data/raw/**/downloads/tickers.*
 data/*.pdf
 .env
