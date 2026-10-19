@@ -89,7 +89,7 @@ At narrow viewport widths, the Rollups, Pairwise product overlap heatmap, and To
 - **THEN** the Rollups, Pairwise product overlap heatmap, and Top companies headings SHALL have the same inset, top alignment, and title size as Redundancy score
 
 ### Requirement: Configure near-identical pair threshold
-Developer settings SHALL provide a persisted near-identical overlap threshold, defaulting to 90%, and accept only finite values from 0% through 100%. A pair SHALL be marked near-identical when its overlap is at or above the configured threshold.
+Developer settings SHALL provide a persisted near-identical overlap threshold, defaulting to 90%, and accept only finite values from 0% through 100%. A pair SHALL be marked near-identical when its overlap is at or above the configured threshold. The threshold input SHALL match the width of one redundancy threshold input at every viewport width, and the separator before the near-identical threshold section SHALL span the full settings content width.
 
 #### Scenario: Default threshold marks a high-overlap pair
 - **WHEN** no valid threshold preference has been saved and a pair overlap is at least 90%
@@ -102,6 +102,14 @@ Developer settings SHALL provide a persisted near-identical overlap threshold, d
 #### Scenario: Invalid threshold is entered
 - **WHEN** the configured threshold is non-finite or outside 0% to 100%
 - **THEN** the invalid value SHALL NOT be applied and the last valid value or default SHALL remain active
+
+#### Scenario: Near-identical control matches redundancy field width
+- **WHEN** the developer settings are viewed at any viewport width
+- **THEN** the near-identical threshold input SHALL have the same width as one redundancy threshold input
+
+#### Scenario: Near-identical section divider spans the settings width
+- **WHEN** the developer settings are displayed
+- **THEN** the separator before the near-identical threshold section SHALL span the full available settings content width
 
 ### Requirement: Explain pairwise product overlap
 Explore SHALL provide an accessible information control in the pairwise product overlap section. When activated, its explanation SHALL state that each cell compares two ETFs and adds the smaller disclosed weight for each shared underlying security or company. It SHALL clarify that overlap uses disclosed weights as reported, is not renormalized for incomplete holdings, and that coverage is shown for both ETFs. It SHALL distinguish an unavailable result from zero overlap.

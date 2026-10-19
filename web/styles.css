@@ -480,11 +480,6 @@ body {
   border-top: 1px solid var(--border);
 }
 
-.near-identical-threshold-settings {
-  grid-template-columns: minmax(0, 1fr);
-  max-width: 360px;
-}
-
 .developer-threshold-settings h4,
 .developer-threshold-error {
   grid-column: 1 / -1;
@@ -2227,10 +2222,6 @@ body {
   .aggregation-layout > .subcard > .subcard-heading h3 {
     margin: 0;
     font-size: 1.08rem;
-  }
-
-  .developer-threshold-settings {
-    grid-template-columns: 1fr;
   }
 }
 

@@ -82,6 +82,29 @@ class WebContractTests(unittest.TestCase):
             english["explore.scoreInfo.diversificationCalculation"],
         )
 
+    def test_developer_threshold_fields_share_two_column_grid_at_all_widths(
+        self,
+    ) -> None:
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn(
+            ".developer-threshold-settings {\n"
+            "  display: grid;\n"
+            "  grid-template-columns: repeat(2, minmax(0, 1fr));",
+            styles,
+        )
+        self.assertNotIn(".near-identical-threshold-settings {", styles)
+        self.assertNotIn(
+            "  .developer-threshold-settings {\n"
+            "    grid-template-columns: 1fr;\n"
+            "  }",
+            styles,
+        )
+        self.assertIn(
+            ".developer-threshold-settings input {\n  width: 100%;",
+            styles,
+        )
+
     def test_diversification_score_follows_pairwise_overlap(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

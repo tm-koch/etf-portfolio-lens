@@ -63,7 +63,7 @@ The Explore tab SHALL show the redundancy score in its own responsive box after 
 - **THEN** the score, band labels, and bar SHALL remain readable without horizontal overflow or overlapping content
 
 ### Requirement: Configure redundancy classification thresholds
-The developer settings SHALL provide low/moderate and moderate/high thresholds in percentage points, defaulting to 10% and 25%. The application SHALL classify scores below the first threshold as Low, scores from the first threshold up to but not including the second as Moderate, and scores at or above the second threshold as High.
+The developer settings SHALL provide low/moderate and moderate/high thresholds in percentage points, defaulting to 10% and 25%. The application SHALL classify scores below the first threshold as Low, scores from the first threshold up to but not including the second as Moderate, and scores at or above the second threshold as High. The two threshold fields SHALL remain side by side at smartphone viewport widths.
 
 #### Scenario: Default thresholds classify the score
 - **WHEN** no valid developer threshold preferences have been saved
@@ -80,6 +80,10 @@ The developer settings SHALL provide low/moderate and moderate/high thresholds i
 #### Scenario: Thresholds exceed the current bar maximum
 - **WHEN** a valid configured threshold is greater than the current ETF-count-based bar maximum
 - **THEN** score classification SHALL still use the configured absolute percentage values without extending the bar beyond its maximum
+
+#### Scenario: Threshold fields remain paired on smartphones
+- **WHEN** the developer settings are viewed at a smartphone viewport width
+- **THEN** the low/moderate and moderate/high threshold fields SHALL appear side by side
 
 ### Requirement: Do not show near-identical ETF pairs
 The redundancy score calculation SHALL remain independent of pairwise overlap classification. The redundancy score box SHALL show a localized warning with a warning icon and affected product names at its bottom when any selected pair meets the configured near-identical threshold, and SHALL NOT show that warning when no selected pair meets the threshold.
