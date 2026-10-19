@@ -15,6 +15,12 @@ export function formatPercent(value, locale) {
   }).format(Number(value) / 100);
 }
 
+export function formatPercentNumber(value, locale) {
+  return new Intl.NumberFormat(normalizeLocale(locale), {
+    maximumFractionDigits: 1,
+  }).format(Number(value));
+}
+
 export function formatCurrencyValue(value, currency = 'CHF', locale) {
   const resolvedLocale = normalizeLocale(locale);
   const numberOptions = {

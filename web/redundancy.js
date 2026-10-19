@@ -5,6 +5,42 @@ export const DEFAULT_REDUNDANCY_THRESHOLDS = Object.freeze({
 export const REDUNDANCY_THRESHOLDS_STORAGE_KEY = 'etf-lens.redundancy-thresholds.v1';
 export const DEFAULT_NEAR_IDENTICAL_THRESHOLD = 90;
 export const NEAR_IDENTICAL_THRESHOLD_STORAGE_KEY = 'etf-lens.near-identical-threshold.v1';
+export const DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES = 20;
+export const PAIRWISE_HOLDINGS_MAX_COMPANIES_STORAGE_KEY = 'etf-lens.pairwise-holdings-max-companies.v1';
+
+export function validatePairwiseHoldingsMaxCompanies(value) {
+  const maximum = typeof value === 'number'
+    ? value
+    : typeof value === 'string' && value.trim()
+      ? Number(value)
+      : Number.NaN;
+  return Number.isFinite(maximum) && Number.isInteger(maximum) && maximum > 0
+    ? maximum
+    : null;
+}
+
+export function loadPairwiseHoldingsMaxCompanies(storage) {
+  try {
+    const stored = storage.getItem(PAIRWISE_HOLDINGS_MAX_COMPANIES_STORAGE_KEY);
+    if (stored === null) return DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES;
+    return validatePairwiseHoldingsMaxCompanies(JSON.parse(stored))
+      ?? DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES;
+  } catch {
+    return DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES;
+  }
+}
+
+export function savePairwiseHoldingsMaxCompanies(maximum, storage) {
+  const validated = validatePairwiseHoldingsMaxCompanies(maximum);
+  if (validated === null) return false;
+
+  try {
+    storage.setItem(PAIRWISE_HOLDINGS_MAX_COMPANIES_STORAGE_KEY, JSON.stringify(validated));
+    return true;
+  } catch {
+    return false;
+  }
+}
 
 export function validateNearIdenticalThreshold(value) {
   const threshold = typeof value === 'number'

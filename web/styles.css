@@ -9,6 +9,8 @@
   --muted: #5f6b82;
   --accent: #3467f2;
   --accent-2: #0f9bd7;
+  --pairwise-butterfly-a: var(--accent);
+  --pairwise-butterfly-b: #d47b2a;
   --danger: #d94b4b;
   --redundancy-low: #c9e8c8;
   --redundancy-moderate: #f8dda2;
@@ -45,6 +47,8 @@
   --redundancy-moderate: #8b6421;
   --redundancy-high: #8f4447;
   --redundancy-marker: #ffffff;
+  --pairwise-butterfly-a: #67d3ff;
+  --pairwise-butterfly-b: #ff9b6a;
   --page-background: radial-gradient(circle at top left, rgba(52, 103, 242, 0.16), transparent 28%), radial-gradient(circle at 85% 15%, rgba(15, 155, 215, 0.12), transparent 24%), linear-gradient(180deg, #141b25 0%, #10151d 55%, #0c1118 100%);
   --input-background: rgba(255, 255, 255, 0.06);
   --table-header-background: #273242;
@@ -1225,8 +1229,276 @@ body {
   min-width: 0;
 }
 
+.pairwise-holdings-box {
+  min-width: 0;
+}
+
 #pairwise-overlap-content {
   min-width: 0;
+}
+
+#pairwise-holdings-content {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+
+.pairwise-holdings-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pairwise-selector-control {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+
+.pairwise-selector-label {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.pairwise-selector-button {
+  width: 100%;
+  min-width: 0;
+  justify-content: space-between;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.pairwise-selector-button > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pairwise-selector-menu {
+  left: 0;
+  right: auto;
+  width: max(100%, 220px);
+  max-width: min(320px, calc(100vw - 32px));
+  max-height: min(50vh, 320px);
+  overflow-y: auto;
+}
+
+.pairwise-selector-option {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.pairwise-selector-option > span {
+  display: grid;
+  min-width: 0;
+  gap: 2px;
+}
+
+.pairwise-selector-option small {
+  color: var(--muted);
+  font-size: 0.76rem;
+  overflow-wrap: anywhere;
+}
+
+.pairwise-holdings-detail {
+  display: grid;
+  gap: 8px;
+}
+
+.pairwise-holdings-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pairwise-holdings-heading h4 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.pairwise-holdings-total {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.pairwise-holdings-total span,
+.pairwise-holdings-coverage,
+.pairwise-remaining-contribution {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.pairwise-holdings-total strong {
+  font-size: 1.1rem;
+}
+
+.pairwise-holdings-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.pairwise-weight-unit {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.pairwise-holdings-footer {
+  margin: 0;
+  padding-top: 8px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.35;
+  text-align: left;
+}
+
+.pairwise-holdings-footer .pairwise-remaining-contribution {
+  color: inherit;
+  font-size: inherit;
+}
+
+.pairwise-holdings-coverage,
+.pairwise-remaining-contribution,
+.pairwise-no-shared-holdings {
+  margin: 0;
+}
+
+.pairwise-holdings-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pairwise-butterfly-company {
+  display: grid;
+  min-width: 0;
+  gap: 4px;
+  padding: 4px 0 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.pairwise-butterfly-company:last-child {
+  border-bottom: 0;
+}
+
+.pairwise-butterfly-company > strong {
+  overflow-wrap: anywhere;
+}
+
+.pairwise-butterfly-chart {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) 2px minmax(0, 1fr);
+  align-items: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.pairwise-butterfly-side {
+  display: grid;
+  min-width: 0;
+  width: 100%;
+  height: 14px;
+}
+
+.pairwise-butterfly-side.is-a {
+  grid-column: 1;
+  grid-row: 1;
+  grid-template-columns: minmax(0, var(--pairwise-empty)) max-content 4px minmax(0, var(--pairwise-fill));
+}
+
+.pairwise-butterfly-side.is-b {
+  grid-column: 3;
+  grid-row: 1;
+  grid-template-columns: minmax(0, var(--pairwise-fill)) 4px max-content minmax(0, var(--pairwise-empty));
+}
+
+.pairwise-butterfly-value {
+  width: 100%;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.pairwise-butterfly-side.is-a .pairwise-butterfly-value {
+  text-align: right;
+}
+
+.pairwise-butterfly-side.is-b .pairwise-butterfly-value {
+  text-align: left;
+}
+
+.pairwise-butterfly-side-track {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  width: 100%;
+  height: 14px;
+}
+
+.pairwise-butterfly-side.is-a .pairwise-butterfly-side-track {
+  justify-content: flex-end;
+}
+
+.pairwise-butterfly-side.is-b .pairwise-butterfly-side-track {
+  justify-content: flex-start;
+}
+
+.pairwise-butterfly-side-track i {
+  display: block;
+  width: 100%;
+  height: 12px;
+}
+
+.pairwise-butterfly-side-track i.is-a {
+  border-radius: 3px 0 0 3px;
+  background: var(--pairwise-butterfly-a);
+}
+
+.pairwise-butterfly-side-track i.is-b {
+  border-radius: 0 3px 3px 0;
+  background: var(--pairwise-butterfly-b);
+}
+
+.pairwise-butterfly-track {
+  display: none;
+  align-items: center;
+  min-width: 0;
+  height: 14px;
+}
+
+.pairwise-butterfly-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.82rem;
+}
+
+.pairwise-butterfly-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pairwise-butterfly-legend i {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.pairwise-butterfly-legend i.is-a {
+  background: var(--pairwise-butterfly-a);
+}
+
+.pairwise-butterfly-legend i.is-b {
+  background: var(--pairwise-butterfly-b);
 }
 
 .pairwise-overlap-viewport {
@@ -2404,6 +2676,10 @@ body {
 
   .color-mode-button > span {
     display: none;
+  }
+
+  .pairwise-selector-button > span {
+    display: inline;
   }
 
   .language-button > .language-name {

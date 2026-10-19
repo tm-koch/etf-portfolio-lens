@@ -6,11 +6,15 @@ import {
   formatCount as formatLocaleCount,
   formatCurrencyValue as formatLocaleCurrency,
   formatPercent as formatLocalePercent,
-} from './formatting.js';
+  formatPercentNumber as formatLocalePercentNumber,
+} from './formatting.js?v=20261019-2';
 import { calculateImportedPosition, extractPdfPages, matchImportedRows, parseSaxoPages } from './portfolio-import.js?v=20260910-2';
 import { getEffectiveValuation, hasCompleteImportedValuations } from './valuation.js?v=20261016-1';
 import {
+  buildPairwiseHoldingsBreakdown,
   buildPairwiseMatrix,
+  getPairwiseOverlap,
+  reconcilePairwiseSelection,
   buildPairwiseOverlapIndex,
   findNearIdenticalPairs,
 } from './pairwise-overlap.js';
@@ -20,13 +24,17 @@ import {
   classifyRedundancyScore,
   DEFAULT_REDUNDANCY_THRESHOLDS,
   DEFAULT_NEAR_IDENTICAL_THRESHOLD,
+  DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES,
+  loadPairwiseHoldingsMaxCompanies,
   loadNearIdenticalThreshold,
   loadRedundancyThresholds,
+  savePairwiseHoldingsMaxCompanies,
   saveNearIdenticalThreshold,
   saveRedundancyThresholds,
+  validatePairwiseHoldingsMaxCompanies,
   validateNearIdenticalThreshold,
   validateRedundancyThresholds,
-} from './redundancy.js?v=20261017-2';
+} from './redundancy.js?v=20261019-1';
 import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
 import { initializeLocalization, selectLocale } from './localization.js';
 
@@ -49,6 +57,8 @@ const defaultState = {
   compactExplorePreview: false,
   redundancyThresholds: { ...DEFAULT_REDUNDANCY_THRESHOLDS },
   nearIdenticalThreshold: DEFAULT_NEAR_IDENTICAL_THRESHOLD,
+  pairwiseHoldingsMaxCompanies: DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES,
+  pairwiseSelection: [],
   colorMode: 'automatic',
   effectiveColorMode: 'bright',
   shareFeedback: '',
@@ -386,6 +396,27 @@ function toggleColorModeMenu(forceOpen) {
   }
 }
 
+function closePairwiseSelectorMenus() {
+  document.querySelectorAll('[data-pairwise-selector-button]').forEach((button) => {
+    button.setAttribute('aria-expanded', 'false');
+  });
+  document.querySelectorAll('[data-pairwise-selector-menu]').forEach((menu) => {
+    menu.hidden = true;
+  });
+}
+
+function togglePairwiseSelectorMenu(button) {
+  const menu = document.querySelector(`[data-pairwise-selector-menu="${button.dataset.pairwiseSelectorButton}"]`);
+  if (!menu) return;
+  const shouldOpen = menu.hidden;
+  closePairwiseSelectorMenus();
+  if (!shouldOpen) return;
+
+  menu.hidden = false;
+  button.setAttribute('aria-expanded', 'true');
+  menu.querySelector('[aria-checked="true"]')?.focus();
+}
+
 function toggleLanguageMenu(forceOpen) {
   const isOpen = !elements.languageMenu.hidden;
   const shouldOpen = forceOpen ?? !isOpen;
@@ -448,6 +479,22 @@ function loadNearIdenticalThresholdPreference() {
 function saveNearIdenticalThresholdPreference(threshold) {
   try {
     return saveNearIdenticalThreshold(threshold, localStorage);
+  } catch {
+    return false;
+  }
+}
+
+function loadPairwiseHoldingsMaxCompaniesPreference() {
+  try {
+    return loadPairwiseHoldingsMaxCompanies(localStorage);
+  } catch {
+    return DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES;
+  }
+}
+
+function savePairwiseHoldingsMaxCompaniesPreference(maximum) {
+  try {
+    return savePairwiseHoldingsMaxCompanies(maximum, localStorage);
   } catch {
     return false;
   }
@@ -598,6 +645,10 @@ async function sharePortfolio(mode = 'full') {
 
 function formatPercent(value) {
   return formatLocalePercent(value, window.i18next.language);
+}
+
+function formatPercentNumber(value) {
+  return formatLocalePercentNumber(value, window.i18next.language);
 }
 
 function formatCount(value) {
@@ -793,6 +844,35 @@ function closeScoreInfoDialog() {
   } else {
     elements.scoreInfoDialog.removeAttribute('open');
   }
+}
+
+function openPairwiseInfoDialog(event) {
+  const opener = event.currentTarget;
+  const dialog = opener.dataset.pairwiseInfo === 'heatmap'
+    ? elements.pairwiseHeatmapInfoDialog
+    : elements.pairwiseHoldingsInfoDialog;
+  if (!dialog) return;
+
+  state.pairwiseInfoReturnFocus = opener;
+  if (typeof dialog.showModal === 'function') {
+    dialog.showModal();
+  } else {
+    dialog.setAttribute('open', '');
+  }
+}
+
+function restorePairwiseInfoFocus() {
+  state.pairwiseInfoReturnFocus?.focus();
+  state.pairwiseInfoReturnFocus = null;
+}
+
+function closePairwiseInfoDialog(dialog) {
+  if (typeof dialog.close === 'function') {
+    dialog.close();
+  } else {
+    dialog.removeAttribute('open');
+  }
+  restorePairwiseInfoFocus();
 }
 
 function getHoldingName(holding) {
@@ -1866,12 +1946,133 @@ function renderNearIdenticalPairWarning() {
   window.lucide?.createIcons();
 }
 
+function renderPairwiseSelector(positions, slot, selectedIsin, otherIsin) {
+  const selected = positions.find((position) => position.isin === selectedIsin);
+  const labelKey = slot === 'a' ? 'explore.pairwiseFirstETF' : 'explore.pairwiseSecondETF';
+  const options = positions
+    .filter((position) => position.isin !== otherIsin)
+    .map((position) => `
+      <button class="color-mode-option pairwise-selector-option" type="button" role="menuitemradio" aria-checked="${position.isin === selectedIsin}" data-pairwise-etf-option data-pairwise-selector-slot="${slot}" data-pairwise-etf-isin="${escapeMarkup(position.isin)}">
+        <span><strong>${escapeMarkup(position.entry.ticker)}</strong><small>${escapeMarkup(position.entry.name)}</small></span>
+      </button>
+    `).join('');
+
+  return `
+    <div class="color-mode-control pairwise-selector-control">
+      <span class="pairwise-selector-label" id="pairwise-selector-label-${slot}">${escapeMarkup(t(labelKey))}</span>
+      <button class="color-mode-button pairwise-selector-button" type="button" aria-haspopup="menu" aria-expanded="false" aria-labelledby="pairwise-selector-label-${slot} pairwise-selector-value-${slot}" data-pairwise-selector-button="${slot}">
+        <span id="pairwise-selector-value-${slot}">${escapeMarkup(selected?.entry.ticker || '')}</span>
+        <i data-lucide="chevron-down" aria-hidden="true"></i>
+      </button>
+      <div class="color-mode-menu pairwise-selector-menu" role="menu" aria-labelledby="pairwise-selector-label-${slot}" data-pairwise-selector-menu="${slot}" hidden>
+        ${options}
+      </div>
+    </div>
+  `;
+}
+
+function renderPairwiseHoldingsDetail(positions) {
+  const [isinA, isinB] = state.pairwiseSelection;
+  const positionA = positions.find((position) => position.isin === isinA);
+  const positionB = positions.find((position) => position.isin === isinB);
+  const pair = getPairwiseOverlap(state.pairwiseOverlapIndex, isinA, isinB);
+  if (!positionA || !positionB || !pair?.available || !Number.isFinite(pair.overlapPct)) {
+    return `<p class="pairwise-overlap-status">${escapeMarkup(t('explore.pairwiseHoldingsUnavailable'))}</p>`;
+  }
+
+  const holdingsA = positionA.snapshot?.holdings;
+  const holdingsB = positionB.snapshot?.holdings;
+  if (!Array.isArray(holdingsA) || !Array.isArray(holdingsB)) {
+    return `<p class="pairwise-overlap-status">${escapeMarkup(t('explore.pairwiseHoldingsUnavailable'))}</p>`;
+  }
+
+  const breakdown = buildPairwiseHoldingsBreakdown(
+    holdingsA,
+    holdingsB,
+    state.pairwiseHoldingsMaxCompanies,
+  );
+  const displayedContribution = breakdown.displayed.reduce(
+    (total, company) => total + company.contribution,
+    0,
+  );
+  const hasRemaining = breakdown.companies.length > breakdown.displayed.length;
+  const remainingContribution = hasRemaining
+    ? Math.max(0, pair.overlapPct - displayedContribution)
+    : 0;
+  const scale = Math.max(0, ...breakdown.displayed.flatMap((company) => [company.weightA, company.weightB])) || 1;
+  const barGridStyle = (weight) => {
+    const fillRatio = Math.min(1, Math.max(0, weight / scale));
+    return `--pairwise-fill: ${fillRatio}fr; --pairwise-empty: ${1 - fillRatio}fr`;
+  };
+  const rows = breakdown.displayed.map((company) => `
+    <li class="pairwise-butterfly-company">
+      <strong>${escapeMarkup(company.name)}</strong>
+      <div class="pairwise-butterfly-chart" role="img" aria-label="${escapeMarkup(t('explore.pairwiseCompanyWeights', {
+        company: company.name,
+        tickerA: positionA.entry.ticker,
+        weightA: formatPercent(company.weightA),
+        tickerB: positionB.entry.ticker,
+        weightB: formatPercent(company.weightB),
+      }))}">
+        <span class="pairwise-butterfly-side is-a" style="${barGridStyle(company.weightA)}" aria-hidden="true">
+          <span class="pairwise-butterfly-side-spacer"></span>
+          <span class="pairwise-butterfly-value">${escapeMarkup(formatPercentNumber(company.weightA))}</span>
+          <span class="pairwise-butterfly-side-gap"></span>
+          <span class="pairwise-butterfly-side-track"><i class="is-a"></i></span>
+        </span>
+        <span class="pairwise-butterfly-side is-b" style="${barGridStyle(company.weightB)}" aria-hidden="true">
+          <span class="pairwise-butterfly-side-track"><i class="is-b"></i></span>
+          <span class="pairwise-butterfly-side-gap"></span>
+          <span class="pairwise-butterfly-value">${escapeMarkup(formatPercentNumber(company.weightB))}</span>
+          <span class="pairwise-butterfly-side-spacer"></span>
+        </span>
+      </div>
+    </li>
+  `).join('');
+  return `
+    <section class="pairwise-holdings-detail" aria-labelledby="pairwise-holdings-heading">
+      <div class="pairwise-holdings-heading">
+        <h4 id="pairwise-holdings-heading">${escapeMarkup(positionA.entry.ticker)} <span aria-hidden="true">↔</span> ${escapeMarkup(positionB.entry.ticker)}</h4>
+        <div class="pairwise-holdings-meta">
+          <div class="pairwise-holdings-total" aria-label="${escapeMarkup(t('explore.pairwiseOverlapTotal'))}">
+            <strong>${escapeMarkup(formatPercent(pair.overlapPct))}</strong>
+            <span>${escapeMarkup(t('explore.pairwiseOverlapSuffix'))}</span>
+          </div>
+        </div>
+      </div>
+      <div class="pairwise-butterfly-legend" role="group" aria-label="${escapeMarkup(t('explore.pairwiseLegendLabel'))}">
+        <span><i class="is-a" aria-hidden="true"></i>${escapeMarkup(positionA.entry.ticker)}</span>
+        <span><i class="is-b" aria-hidden="true"></i>${escapeMarkup(positionB.entry.ticker)}</span>
+      </div>
+      ${rows
+    ? `<ol class="pairwise-holdings-list" aria-label="${escapeMarkup(t('explore.pairwiseHoldingsHeading'))}">${rows}</ol>`
+    : `<p class="pairwise-no-shared-holdings">${escapeMarkup(t('explore.pairwiseNoSharedHoldings'))}</p>`}
+      <p class="pairwise-holdings-footer">
+        <span class="pairwise-weight-unit" role="note">${escapeMarkup(t('explore.pairwiseWeightsUnit'))}</span>${hasRemaining ? `<span class="pairwise-remaining-contribution"> ${escapeMarkup(t('explore.pairwiseRemainingContribution', { weight: formatPercent(remainingContribution) }))}</span>` : ''}
+      </p>
+    </section>
+  `;
+}
+
 function renderPairwiseOverlap() {
   const positions = getSelectedPositions();
+  state.pairwiseSelection = reconcilePairwiseSelection(positions, state.pairwiseSelection);
   if (!positions.length) {
     elements.pairwiseOverlapContent.innerHTML = `<p class="empty-state">${escapeMarkup(t('explore.pairwiseNoSelection'))}</p>`;
+    elements.pairwiseHoldingsContent.innerHTML = `<p class="empty-state">${escapeMarkup(t('explore.pairwiseNoSelection'))}</p>`;
     return;
   }
+
+  const pairwiseControls = positions.length < 2
+    ? `<p class="pairwise-overlap-status">${escapeMarkup(t('explore.pairwiseNeedTwo'))}</p>`
+    : `
+      <div class="pairwise-holdings-controls" data-pairwise-selector-group role="group" aria-label="${escapeMarkup(t('explore.pairwiseSelectionLabel'))}">
+        ${renderPairwiseSelector(positions, 'a', state.pairwiseSelection[0], state.pairwiseSelection[1])}
+        ${renderPairwiseSelector(positions, 'b', state.pairwiseSelection[1], state.pairwiseSelection[0])}
+      </div>
+    `;
+  const holdingsDetail = positions.length < 2 ? '' : renderPairwiseHoldingsDetail(positions);
+  elements.pairwiseHoldingsContent.innerHTML = `${pairwiseControls}${holdingsDetail}`;
 
   const headers = positions.map((position) => `
     <th scope="col" title="${escapeMarkup(position.entry.name)}">
@@ -2303,6 +2504,7 @@ async function bootstrap() {
   elements.redundancyThresholdError = document.getElementById('redundancy-threshold-error');
   elements.nearIdenticalPairWarning = document.getElementById('near-identical-pair-warning');
   elements.pairwiseOverlapContent = document.getElementById('pairwise-overlap-content');
+  elements.pairwiseHoldingsContent = document.getElementById('pairwise-holdings-content');
   elements.diversificationScoreValue = document.getElementById('diversification-score-value');
   elements.diversificationScoreLevel = document.getElementById('diversification-score-level');
   elements.diversificationDescription = document.getElementById('diversification-description');
@@ -2313,6 +2515,8 @@ async function bootstrap() {
   elements.diversificationCoverageWarning = document.getElementById('diversification-coverage-warning');
   elements.nearIdenticalThreshold = document.getElementById('near-identical-threshold');
   elements.nearIdenticalThresholdError = document.getElementById('near-identical-threshold-error');
+  elements.pairwiseHoldingsMaxCompanies = document.getElementById('pairwise-holdings-max-companies');
+  elements.pairwiseHoldingsMaxCompaniesError = document.getElementById('pairwise-holdings-max-companies-error');
   elements.buildDialogButton = document.getElementById('build-dialog-button');
   elements.dataDialogButton = document.getElementById('data-dialog-button');
   elements.buildDialog = document.getElementById('build-dialog');
@@ -2327,6 +2531,9 @@ async function bootstrap() {
   elements.scoreInfoTitle = document.getElementById('score-info-dialog-title');
   elements.scoreInfoDialogClose = document.getElementById('score-info-dialog-close');
   elements.scoreInfoPanels = [...document.querySelectorAll('[data-score-info-panel]')];
+  elements.pairwiseHeatmapInfoDialog = document.getElementById('pairwise-heatmap-info-dialog');
+  elements.pairwiseHoldingsInfoDialog = document.getElementById('pairwise-holdings-info-dialog');
+  elements.pairwiseInfoDialogs = [elements.pairwiseHeatmapInfoDialog, elements.pairwiseHoldingsInfoDialog];
   elements.compactExplorePreview = document.getElementById('compact-explore-preview');
   elements.portfolioImportDebugEnabled = document.getElementById('portfolio-import-debug-enabled');
   elements.importDialog = document.getElementById('portfolio-import-dialog');
@@ -2367,6 +2574,21 @@ async function bootstrap() {
   document.querySelectorAll('[data-score-info]').forEach((button) => {
     button.addEventListener('click', openScoreInfoDialog);
   });
+  document.querySelectorAll('[data-pairwise-info]').forEach((button) => {
+    button.addEventListener('click', openPairwiseInfoDialog);
+  });
+  document.querySelectorAll('[data-pairwise-info-close]').forEach((button) => {
+    button.addEventListener('click', (event) => {
+      closePairwiseInfoDialog(event.currentTarget.closest('dialog'));
+    });
+  });
+  elements.pairwiseInfoDialogs.forEach((dialog) => {
+    dialog.addEventListener('close', restorePairwiseInfoFocus);
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      closePairwiseInfoDialog(dialog);
+    });
+  });
   elements.scoreInfoDialogClose.addEventListener('click', closeScoreInfoDialog);
   elements.scoreInfoDialog.addEventListener('close', () => {
     state.scoreInfoReturnFocus?.focus();
@@ -2390,6 +2612,13 @@ async function bootstrap() {
   });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') hideScoreBandTouchTooltips();
+    if (event.key === 'Escape') {
+      const openPairwiseSelector = document.querySelector('[data-pairwise-selector-button][aria-expanded="true"]');
+      if (openPairwiseSelector) {
+        closePairwiseSelectorMenus();
+        openPairwiseSelector.focus();
+      }
+    }
     if (event.key === 'Escape' && elements.buildDialog.open) {
       event.preventDefault();
       closeBuildDialog();
@@ -2449,6 +2678,8 @@ async function bootstrap() {
   elements.redundancyHighThreshold.value = state.redundancyThresholds.moderateHigh;
   state.nearIdenticalThreshold = loadNearIdenticalThresholdPreference();
   elements.nearIdenticalThreshold.value = state.nearIdenticalThreshold;
+  state.pairwiseHoldingsMaxCompanies = loadPairwiseHoldingsMaxCompaniesPreference();
+  elements.pairwiseHoldingsMaxCompanies.value = state.pairwiseHoldingsMaxCompanies;
 
   const snapshotResults = await Promise.allSettled(
     state.catalog.etfs.map(async (entry) => [entry.isin, await loadSnapshot(entry)])
@@ -2568,6 +2799,8 @@ async function bootstrap() {
   });
 
   document.addEventListener('click', async (event) => {
+    if (!event.target.closest('[data-pairwise-selector-group]')) closePairwiseSelectorMenus();
+
     const languageOption = event.target.closest('[data-locale]');
     if (languageOption) {
       toggleLanguageMenu(false);
@@ -2605,6 +2838,23 @@ async function bootstrap() {
         toggleColorModeMenu();
         toggleLanguageMenu(false);
       }
+      return;
+    }
+    const pairwiseEtfOption = event.target.closest('[data-pairwise-etf-option]');
+    if (pairwiseEtfOption) {
+      const slotIndex = pairwiseEtfOption.dataset.pairwiseSelectorSlot === 'a' ? 0 : 1;
+      state.pairwiseSelection[slotIndex] = pairwiseEtfOption.dataset.pairwiseEtfIsin;
+      const slot = pairwiseEtfOption.dataset.pairwiseSelectorSlot;
+      closePairwiseSelectorMenus();
+      renderPairwiseOverlap();
+      document.querySelector(`[data-pairwise-selector-button="${slot}"]`)?.focus();
+      return;
+    }
+    const pairwiseSelectorButton = event.target.closest('[data-pairwise-selector-button]');
+    if (pairwiseSelectorButton) {
+      togglePairwiseSelectorMenu(pairwiseSelectorButton);
+      toggleColorModeMenu(false);
+      toggleLanguageMenu(false);
       return;
     }
     if (event.target.closest('#install-app-button')) {
@@ -2675,6 +2925,23 @@ async function bootstrap() {
       saveNearIdenticalThresholdPreference(threshold);
       elements.nearIdenticalThresholdError.hidden = true;
       renderAll();
+      return;
+    }
+
+    const pairwiseHoldingsMaximum = event.target.closest('[data-pairwise-holdings-max-companies]');
+    if (pairwiseHoldingsMaximum) {
+      const maximum = validatePairwiseHoldingsMaxCompanies(elements.pairwiseHoldingsMaxCompanies.value);
+      if (maximum === null) {
+        elements.pairwiseHoldingsMaxCompanies.value = state.pairwiseHoldingsMaxCompanies;
+        elements.pairwiseHoldingsMaxCompaniesError.hidden = false;
+        elements.pairwiseHoldingsMaxCompaniesError.textContent = t('developer.invalidPairwiseHoldingsMaximum');
+        return;
+      }
+
+      state.pairwiseHoldingsMaxCompanies = maximum;
+      savePairwiseHoldingsMaxCompaniesPreference(maximum);
+      elements.pairwiseHoldingsMaxCompaniesError.hidden = true;
+      renderPairwiseOverlap();
       return;
     }
 

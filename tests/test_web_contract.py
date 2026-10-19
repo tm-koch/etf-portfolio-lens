@@ -64,13 +64,21 @@ class WebContractTests(unittest.TestCase):
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
-        self.assertEqual(index.count('class="score-info-button"'), 3)
+        self.assertEqual(index.count('class="score-info-button"'), 4)
         self.assertIn('aria-labelledby="score-info-dialog-title"', index)
-        for topic in ("redundancy", "pairwise", "diversification"):
+        for topic in ("redundancy", "diversification"):
             self.assertIn(f'data-score-info="{topic}"', index)
             self.assertIn(f'data-score-info-panel="{topic}"', index)
+        for topic in ("heatmap", "drilldown"):
+            self.assertIn(f'data-pairwise-info="{topic}"', index)
+            self.assertIn(f'data-pairwise-info-dialog="{topic}"', index)
+        self.assertNotIn('data-score-info-panel="pairwise"', index)
         self.assertIn("candidate.hidden = candidate !== panel;", app)
         self.assertIn("elements.scoreInfoDialog.showModal()", app)
+        self.assertIn("function openPairwiseInfoDialog(event)", app)
+        self.assertIn("function restorePairwiseInfoFocus()", app)
+        self.assertIn("dialog.addEventListener('cancel'", app)
+        self.assertIn("elements.pairwiseInfoDialogs.forEach((dialog)", app)
         self.assertIn("state.scoreInfoReturnFocus?.focus();", app)
 
         english = json.loads(
@@ -104,6 +112,82 @@ class WebContractTests(unittest.TestCase):
             ".developer-threshold-settings input {\n  width: 100%;",
             styles,
         )
+
+    def test_pairwise_holdings_maximum_is_a_persisted_positive_integer_setting(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('id="pairwise-holdings-max-companies"', index)
+        self.assertIn('type="number" min="1" step="1" inputmode="numeric"', index)
+        self.assertIn("loadPairwiseHoldingsMaxCompaniesPreference()", app)
+        self.assertIn("savePairwiseHoldingsMaxCompaniesPreference(maximum)", app)
+        self.assertIn("validatePairwiseHoldingsMaxCompanies", app)
+        self.assertIn("developer.invalidPairwiseHoldingsMaximum", app)
+
+    def test_pairwise_holdings_selectors_are_portfolio_scoped_and_accessible(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn("reconcilePairwiseSelection(positions, state.pairwiseSelection)", app)
+        self.assertIn('role="menuitemradio"', app)
+        self.assertIn('aria-haspopup="menu" aria-expanded="false"', app)
+        self.assertIn("pairwiseNeedTwo", app)
+
+    def test_pairwise_holdings_detail_uses_pair_total_and_renders_contributors(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        heatmap_start = index.index('class="subcard stack pairwise-overlap-box"')
+        heatmap_end = index.index("</article>", heatmap_start)
+        detail_start = index.index('class="subcard stack pairwise-holdings-box"')
+        self.assertGreater(detail_start, heatmap_end)
+        detail_end = index.index("</article>", detail_start)
+        detail_markup = index[detail_start:detail_end]
+        heatmap_markup = index[heatmap_start:heatmap_end]
+        self.assertIn('id="pairwise-holdings-content"', index)
+        self.assertIn('data-i18n="explore.pairwiseHoldingsTitle"', index)
+        self.assertIn('data-pairwise-info="drilldown"', detail_markup)
+        self.assertIn('data-pairwise-info="heatmap"', heatmap_markup)
+        self.assertIn('id="pairwise-holdings-info-dialog"', index)
+        self.assertIn('id="pairwise-heatmap-info-dialog"', index)
+        self.assertIn("renderPairwiseHoldingsDetail(positions)", app)
+        self.assertIn("pair.overlapPct", app)
+        self.assertIn("buildPairwiseHoldingsBreakdown(", app)
+        self.assertIn("pairwiseRemainingContribution", app)
+        self.assertNotIn("pairwise-remaining-holdings", app)
+        self.assertNotIn("pairwise-remaining-totals", styles)
+        self.assertIn("pairwiseWeightsUnit", app)
+        self.assertIn('class="pairwise-holdings-footer"', app)
+        self.assertIn(".pairwise-holdings-footer", styles)
+        self.assertIn("flex-wrap: wrap;", styles)
+        self.assertNotIn("pairwiseETFRemainingHoldings", app)
+        self.assertIn('class="pairwise-weight-unit" role="note"', app)
+        self.assertNotIn("remainingCompanies.map((company)", app)
+        self.assertIn("pairwise-butterfly-side-track", app)
+        self.assertIn('<i class="is-a"></i>', app)
+        self.assertIn('<i class="is-b"></i>', app)
+        self.assertIn("--pairwise-fill: ${fillRatio}fr", app)
+        self.assertIn("pairwise-butterfly-legend", app)
+        self.assertNotIn("pairwise-butterfly-axis", app)
+        self.assertNotIn(".pairwise-butterfly-axis", styles)
+        self.assertIn(".pairwise-butterfly-side-track", styles)
+        self.assertIn("width: 100%;\n  font-size: 0.8rem;", styles)
+        self.assertIn("grid-template-columns: minmax(0, var(--pairwise-empty)) max-content 4px minmax(0, var(--pairwise-fill));", styles)
+        self.assertIn("grid-template-columns: minmax(0, var(--pairwise-fill)) 4px max-content minmax(0, var(--pairwise-empty));", styles)
+        self.assertIn(".pairwise-butterfly-side.is-a .pairwise-butterfly-side-track", styles)
+        self.assertIn(".pairwise-butterfly-side.is-b .pairwise-butterfly-side-track", styles)
+        self.assertIn("grid-template-columns: minmax(0, 1fr) 2px minmax(0, 1fr);", styles)
+        self.assertIn("grid-column: 3;", styles)
+        self.assertIn("grid-template-columns: repeat(2, minmax(0, 1fr));", styles)
+        self.assertIn("max-content 4px minmax(0, var(--pairwise-fill))", styles)
+        self.assertIn("var(--pairwise-butterfly-a)", styles)
+        self.assertIn("var(--pairwise-butterfly-b)", styles)
+        self.assertNotIn("butterfly bars", index)
+        self.assertIn('data-i18n="explore.scoreInfo.pairwiseHoldings"', index)
+        english = json.loads(
+            (WEB_ROOT / "locales" / "en-CH.json").read_text(encoding="utf-8")
+        )["translation"]
+        self.assertEqual(english["explore.pairwiseWeightsUnit"], "Weights in %.")
 
     def test_score_bands_have_touch_tooltips_for_both_scores(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")

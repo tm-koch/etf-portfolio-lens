@@ -29,12 +29,12 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20261019-3" />
+    <link rel="stylesheet" href="./styles.css?v=20261019-11" />
     <script src="./vendor/i18next.min.js" defer></script>
     <script src="./vendor/chart.umd.min.js" defer></script>
     <script src="./vendor/pdf.min.js" defer></script>
     <script src="./vendor/lucide.js" defer></script>
-    <script type="module" src="./app.js?v=20261019-5" defer></script>
+    <script type="module" src="./app.js?v=20261019-11" defer></script>
   </head>
   <body>
     <header class="app-utility-bar" aria-label="Application utilities" data-i18n-attr-aria-label="ui.applicationUtilities">
@@ -149,6 +149,14 @@
                   <input id="near-identical-threshold" data-near-identical-threshold type="number" min="0" max="100" step="0.1" />
                 </label>
                 <p id="near-identical-threshold-error" class="developer-threshold-error" role="alert" hidden data-i18n="developer.invalidNearIdenticalThreshold">Enter a threshold from 0 to 100.</p>
+              </div>
+              <div class="developer-threshold-settings pairwise-holdings-limit-settings">
+                <h4 data-i18n="developer.pairwiseHoldingsMaximum">Maximum companies shown in pairwise holdings</h4>
+                <label for="pairwise-holdings-max-companies">
+                  <span data-i18n="developer.pairwiseHoldingsMaximum">Maximum companies shown in pairwise holdings</span>
+                  <input id="pairwise-holdings-max-companies" data-pairwise-holdings-max-companies type="number" min="1" step="1" inputmode="numeric" />
+                </label>
+                <p id="pairwise-holdings-max-companies-error" class="developer-threshold-error" role="alert" hidden data-i18n="developer.invalidPairwiseHoldingsMaximum">Enter a positive whole number.</p>
               </div>
             </div>
           </div>
@@ -415,11 +423,20 @@
                   <h3 id="pairwise-overlap-title" data-i18n="explore.pairwiseTitle">Pairwise product overlap heatmap</h3>
                   <p data-i18n="explore.pairwiseDescription">Shared holdings between selected ETFs.</p>
                 </div>
-                <button class="score-info-button" type="button" data-score-info="pairwise" data-score-info-title="explore.pairwiseTitle" aria-label="Explain pairwise product overlap" data-i18n-attr-aria-label="explore.scoreInfo.buttonPairwise">
+                <button class="score-info-button" type="button" data-pairwise-info="heatmap" aria-label="Explain pairwise product overlap" data-i18n-attr-aria-label="explore.scoreInfo.buttonPairwise">
                   <i data-lucide="info" aria-hidden="true"></i>
                 </button>
               </div>
               <div id="pairwise-overlap-content"></div>
+            </article>
+            <article class="subcard stack pairwise-holdings-box" aria-labelledby="pairwise-holdings-title">
+              <div class="subcard-heading score-info-heading-row">
+                <h3 id="pairwise-holdings-title" data-i18n="explore.pairwiseHoldingsTitle">Pair drill-down</h3>
+                <button class="score-info-button" type="button" data-pairwise-info="drilldown" aria-label="Explain pair drill-down" data-i18n-attr-aria-label="explore.scoreInfo.buttonPairwiseHoldings">
+                  <i data-lucide="info" aria-hidden="true"></i>
+                </button>
+              </div>
+              <div id="pairwise-holdings-content"></div>
             </article>
             <article class="subcard stack redundancy-score-box diversification-score-box" id="diversification-score-box" aria-labelledby="diversification-score-title">
               <div class="redundancy-score-heading">
@@ -483,17 +500,38 @@
               <p data-i18n="explore.scoreInfo.redundancyExample">For example, if two ETFs with identical holdings are allocated 70% and 30%, the smaller ETF contributes 30% redundant exposure.</p>
               <p data-i18n="explore.scoreInfo.redundancyUnavailable">The score is unavailable if an ETF with a positive allocation has no usable holdings.</p>
             </section>
-            <section class="score-info-panel" data-score-info-panel="pairwise" hidden>
-              <p data-i18n="explore.scoreInfo.pairwiseCalculation">Each cell compares the two ETFs named by its row and column. For each shared underlying security or company, overlap includes the smaller disclosed weight. A 6% holding in one ETF and 4% in the other adds 4 percentage points.</p>
-              <p data-i18n="explore.scoreInfo.pairwiseCoverage">Disclosed weights are not scaled to 100% when holdings are incomplete. Coverage is shown for each ETF.</p>
-              <p data-i18n="explore.scoreInfo.pairwiseUnavailable">N/A means the pair could not be compared; it does not mean zero overlap.</p>
-            </section>
             <section class="score-info-panel" data-score-info-panel="diversification" hidden>
               <p data-i18n="explore.scoreInfo.diversificationCalculation">HHI stands for Herfindahl-Hirschman Index. We normalize disclosed company weights to 100%, square each company’s share, and add those values to calculate HHI. The score is the inverse of HHI.</p>
               <p data-i18n="explore.scoreInfo.diversificationEffectiveNumber">This is an effective number of equally weighted companies, not the actual number of companies held. A score of 10 means the disclosed exposure has the same concentration as 10 equally weighted companies.</p>
               <p data-i18n="explore.scoreInfo.diversificationRatings">Ratings: below 5, Highly Concentrated; 5 to below 10, Concentrated; 10 to below 20, Moderately Diversified; 20 to below 40, Well Diversified; 40 or more, Highly Diversified.</p>
               <p data-i18n="explore.scoreInfo.diversificationCoverage">When holdings are incomplete, the calculation uses disclosed company exposure. The coverage warning shows how much is included.</p>
             </section>
+          </div>
+        </dialog>
+        <dialog class="build-dialog score-info-dialog pairwise-info-dialog" id="pairwise-heatmap-info-dialog" data-pairwise-info-dialog="heatmap" aria-labelledby="pairwise-heatmap-info-title">
+          <div class="build-dialog-content">
+            <div class="build-dialog-heading">
+              <h2 id="pairwise-heatmap-info-title" data-i18n="explore.scoreInfo.pairwiseHeatmapTitle">Pairwise product overlap</h2>
+              <button class="build-dialog-close" type="button" data-pairwise-info-close aria-label="Close score information" data-i18n-attr-aria-label="explore.scoreInfo.close">
+                <i data-lucide="x" aria-hidden="true"></i>
+              </button>
+            </div>
+            <p data-i18n="explore.scoreInfo.pairwiseCalculation">Each cell compares the two ETFs named by its row and column. For each shared underlying security or company, overlap includes the smaller disclosed weight. A 6% holding in one ETF and 4% in the other adds 4 percentage points.</p>
+            <p data-i18n="explore.scoreInfo.pairwiseCoverage">Disclosed weights are not scaled to 100% when holdings are incomplete. Coverage is shown for each ETF.</p>
+            <p data-i18n="explore.scoreInfo.pairwiseUnavailable">N/A means the pair could not be compared; it does not mean zero overlap.</p>
+          </div>
+        </dialog>
+        <dialog class="build-dialog score-info-dialog pairwise-info-dialog" id="pairwise-holdings-info-dialog" data-pairwise-info-dialog="drilldown" aria-labelledby="pairwise-holdings-info-title">
+          <div class="build-dialog-content">
+            <div class="build-dialog-heading">
+              <h2 id="pairwise-holdings-info-title" data-i18n="explore.scoreInfo.pairwiseHoldingsTitle">Pair drill-down</h2>
+              <button class="build-dialog-close" type="button" data-pairwise-info-close aria-label="Close score information" data-i18n-attr-aria-label="explore.scoreInfo.close">
+                <i data-lucide="x" aria-hidden="true"></i>
+              </button>
+            </div>
+            <p data-i18n="explore.scoreInfo.pairwiseHoldings">The bars show both ETFs' disclosed weights for the shared companies with the largest overlap contributions, up to the developer-set maximum (default 20). A company's smaller weight contributes to overlap. Undisplayed shared holdings are summarized as one weight total per ETF, with their combined overlap contribution shown separately.</p>
+            <p data-i18n="explore.scoreInfo.pairwiseCoverage">Disclosed weights are not scaled to 100% when holdings are incomplete. Coverage is shown for each ETF.</p>
+            <p data-i18n="explore.scoreInfo.pairwiseUnavailable">N/A means the pair could not be compared; it does not mean zero overlap.</p>
           </div>
         </dialog>
     </main>

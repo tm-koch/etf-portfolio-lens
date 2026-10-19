@@ -61,6 +61,11 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
     ) -> None:
         index = (REPOSITORY_ROOT / "web" / "index.html").read_text(encoding="utf-8")
         app = (REPOSITORY_ROOT / "web" / "app.js").read_text(encoding="utf-8")
+        language_control = app[
+            app.index("function renderLanguageControl()") : app.index(
+                "function isStandaloneDisplayMode()"
+            )
+        ]
         styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
         mobile_styles = styles[styles.rfind("@media (max-width: 760px)") :]
 
@@ -69,7 +74,7 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertIn('id="language-menu"', index)
         self.assertIn('aria-haspopup="menu"', index)
         self.assertIn('role="menuitemradio"', app)
-        self.assertNotIn('data-lucide="chevron-down"', app)
+        self.assertNotIn('data-lucide="chevron-down"', language_control)
         self.assertIn('data-locale="${language.locale}"', app)
         self.assertIn("locale: 'en-CH', code: 'EN', labelKey: 'language.english'", app)
         self.assertIn("locale: 'de-CH', code: 'DE', labelKey: 'language.german'", app)
