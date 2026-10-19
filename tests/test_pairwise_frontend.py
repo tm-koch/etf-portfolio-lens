@@ -173,7 +173,9 @@ console.log(JSON.stringify({
         self.assertEqual(values["remainingWeights"], {"weightA": 5, "weightB": 4})
         self.assertEqual(values["defaultCount"], 3)
 
-    def test_pairwise_holdings_maximum_preference_defaults_validates_and_persists(self) -> None:
+    def test_pairwise_holdings_maximum_preference_defaults_validates_and_persists(
+        self,
+    ) -> None:
         values = self.run_module("""
 import {
   DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES,
@@ -204,15 +206,17 @@ console.log(JSON.stringify({
 }));
 """)
 
-        self.assertEqual(values["defaultValue"], 20)
-        self.assertEqual(values["missing"], 20)
+        self.assertEqual(values["defaultValue"], 10)
+        self.assertEqual(values["missing"], 10)
         self.assertTrue(values["saved"])
         self.assertEqual(values["loaded"], 35)
-        self.assertEqual(values["malformed"], 20)
+        self.assertEqual(values["malformed"], 10)
         self.assertEqual(values["acceptsIntegerString"], 3)
         self.assertEqual(values["rejects"], [None, None, None, None, None])
 
-    def test_pairwise_selection_reconciles_to_current_distinct_portfolio_etfs(self) -> None:
+    def test_pairwise_selection_reconciles_to_current_distinct_portfolio_etfs(
+        self,
+    ) -> None:
         values = self.run_module("""
 import { reconcilePairwiseSelection } from './web/pairwise-overlap.js';
 

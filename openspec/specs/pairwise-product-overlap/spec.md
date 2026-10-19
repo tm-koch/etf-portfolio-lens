@@ -146,11 +146,11 @@ The pairwise holdings drill-down SHALL offer only ETFs currently selected in the
 - **THEN** the drill-down SHALL not present an invalid pair comparison
 
 ### Requirement: Configure the pairwise holdings display maximum
-Developer settings SHALL provide a persisted maximum number of companies for the pairwise holdings drill-down, defaulting to 20, and accept only finite positive integers.
+Developer settings SHALL provide a persisted maximum number of companies for the pairwise holdings drill-down, defaulting to 10, and accept only finite positive integers.
 
 #### Scenario: No valid setting has been saved
 - **WHEN** the pairwise holdings drill-down is initialized without a valid saved maximum
-- **THEN** its maximum displayed company count SHALL be 20
+- **THEN** its maximum displayed company count SHALL be 10
 
 #### Scenario: A valid maximum is configured
 - **WHEN** the developer enters a finite positive integer maximum

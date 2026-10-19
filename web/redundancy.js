@@ -5,7 +5,7 @@ export const DEFAULT_REDUNDANCY_THRESHOLDS = Object.freeze({
 export const REDUNDANCY_THRESHOLDS_STORAGE_KEY = 'etf-lens.redundancy-thresholds.v1';
 export const DEFAULT_NEAR_IDENTICAL_THRESHOLD = 90;
 export const NEAR_IDENTICAL_THRESHOLD_STORAGE_KEY = 'etf-lens.near-identical-threshold.v1';
-export const DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES = 20;
+export const DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES = 10;
 export const PAIRWISE_HOLDINGS_MAX_COMPANIES_STORAGE_KEY = 'etf-lens.pairwise-holdings-max-companies.v1';
 
 export function validatePairwiseHoldingsMaxCompanies(value) {
