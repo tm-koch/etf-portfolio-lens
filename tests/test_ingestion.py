@@ -993,6 +993,60 @@ class IngestionTests(unittest.TestCase):
             ["override"] * 2, [holding.match.matched_by for holding in holdings]
         )
 
+    def test_alphabet_classes_and_mediatek_use_canonical_overrides(self) -> None:
+        master = SecurityMaster(records=[], version="test", warnings=[])
+        overrides = OverrideRegistry.from_json(
+            ROOT / "data" / "security_overrides.json"
+        )
+        rows = [
+            {
+                "Ticker": "GOOGL",
+                "Security Name": "Alphabet Inc. Class A",
+                "ISIN": "US02079K3059",
+                "Weight %": "1.25",
+            },
+            {
+                "Ticker": "GOOG",
+                "Security Name": "Alphabet Inc. Class C",
+                "ISIN": "US02079K1079",
+                "Weight %": "2.50",
+            },
+            {
+                "Ticker": "2454",
+                "Security Name": "MediaTek Inc.",
+                "ISIN": "TW0002454006",
+                "Weight %": "0.75",
+            },
+        ]
+
+        holdings = [
+            normalize_row(row, master, "test", "ssga_xlsx_v1", overrides=overrides)
+            for row in rows
+        ]
+
+        self.assertEqual(
+            ["US02079K3059", "US02079K1079", "TW0002454006"],
+            [holding.isin for holding in holdings],
+        )
+        self.assertEqual(
+            ["GOOGL", "GOOG", "2454"], [holding.ticker for holding in holdings]
+        )
+        self.assertEqual(
+            ["alphabet-inc", "alphabet-inc", "mediatek-inc"],
+            [holding.company_id for holding in holdings],
+        )
+        self.assertEqual(
+            ["Alphabet Inc", "Alphabet Inc", "MediaTek Inc."],
+            [holding.canonical_name for holding in holdings],
+        )
+        self.assertEqual(
+            [1.25, 2.50, 0.75], [holding.weight_pct for holding in holdings]
+        )
+        self.assertEqual(
+            [row["Security Name"] for row in rows],
+            [holding.source_fields["Security Name"] for holding in holdings],
+        )
+
     def test_lindt_override_does_not_match_unrelated_isin(self) -> None:
         master = SecurityMaster(
             records=[

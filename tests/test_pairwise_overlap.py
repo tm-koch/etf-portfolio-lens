@@ -26,7 +26,9 @@ def holding(
 
 
 class PairwiseOverlapTests(unittest.TestCase):
-    def test_smi_and_cssmi_snapshots_overlap_by_company_across_roche_isins(self) -> None:
+    def test_smi_and_cssmi_snapshots_overlap_by_company_across_roche_isins(
+        self,
+    ) -> None:
         repository_root = Path(__file__).resolve().parents[1]
 
         def load_holdings(isin: str) -> list[NormalizedHolding]:
@@ -75,7 +77,9 @@ class PairwiseOverlapTests(unittest.TestCase):
 
         self.assertEqual(4, result["overlap_pct"])
 
-    def test_falls_back_to_company_identity_when_only_one_holding_has_isin(self) -> None:
+    def test_falls_back_to_company_identity_when_only_one_holding_has_isin(
+        self,
+    ) -> None:
         result = calculate_pairwise_overlap(
             [holding(6, isin="CH0000000001", company_id="acme-corp")],
             [holding(4, canonical_name="Acme Corp")],
@@ -92,6 +96,42 @@ class PairwiseOverlapTests(unittest.TestCase):
             [
                 holding(3, isin="CH0000000001", company_id="same-company"),
                 holding(7, isin="CH0000000003", company_id="same-company"),
+            ],
+        )
+
+        self.assertEqual(10, result["overlap_pct"])
+
+    def test_alphabet_share_classes_match_by_company_without_double_counting(
+        self,
+    ) -> None:
+        result = calculate_pairwise_overlap(
+            [
+                holding(
+                    6,
+                    isin="US02079K3059",
+                    company_id="alphabet-inc",
+                    canonical_name="Alphabet Inc",
+                ),
+                holding(
+                    4,
+                    isin="US02079K1079",
+                    company_id="alphabet-inc",
+                    canonical_name="Alphabet Inc",
+                ),
+            ],
+            [
+                holding(
+                    3,
+                    isin="US02079K3059",
+                    company_id="alphabet-inc",
+                    canonical_name="Alphabet Inc",
+                ),
+                holding(
+                    7,
+                    isin="US02079K1079",
+                    company_id="alphabet-inc",
+                    canonical_name="Alphabet Inc",
+                ),
             ],
         )
 
@@ -124,7 +164,9 @@ class PairwiseOverlapTests(unittest.TestCase):
         self.assertIsNone(result["overlap_pct"])
         self.assertFalse(result["available"])
 
-    def test_zero_overlap_is_available_when_both_holdings_are_identifiable(self) -> None:
+    def test_zero_overlap_is_available_when_both_holdings_are_identifiable(
+        self,
+    ) -> None:
         result = calculate_pairwise_overlap(
             [holding(20, isin="ONLY-A")],
             [holding(15, isin="ONLY-B")],

@@ -2828,6 +2828,18 @@
     {
       "match": { "holding_name": "AEROPORTS DE PARIS SA" },
       "set": { "isin": "FR0010340141", "company_id": "aeroports-de-paris-sa", "canonical_name": "Aéroports de Paris SA" }
+    },
+    {
+      "match": { "isin": "US02079K3059" },
+      "set": { "company_id": "alphabet-inc", "canonical_name": "Alphabet Inc" }
+    },
+    {
+      "match": { "isin": "US02079K1079" },
+      "set": { "company_id": "alphabet-inc", "canonical_name": "Alphabet Inc" }
+    },
+    {
+      "match": { "isin": "TW0002454006" },
+      "set": { "company_id": "mediatek-inc", "canonical_name": "MediaTek Inc." }
     }
   ]
 }
