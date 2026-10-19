@@ -29,12 +29,12 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20261017-7" />
+    <link rel="stylesheet" href="./styles.css?v=20261019-3" />
     <script src="./vendor/i18next.min.js" defer></script>
     <script src="./vendor/chart.umd.min.js" defer></script>
     <script src="./vendor/pdf.min.js" defer></script>
     <script src="./vendor/lucide.js" defer></script>
-    <script type="module" src="./app.js?v=20261017-4" defer></script>
+    <script type="module" src="./app.js?v=20261019-5" defer></script>
   </head>
   <body>
     <header class="app-utility-bar" aria-label="Application utilities" data-i18n-attr-aria-label="ui.applicationUtilities">
@@ -406,6 +406,7 @@
                   <span id="redundancy-maximum">Not available</span>
                 </div>
               </div>
+              <span class="score-band-touch-tooltip" data-score-band-touch-tooltip role="status" aria-live="polite" hidden></span>
               <div class="near-identical-pair-warning" id="near-identical-pair-warning" role="status" aria-live="polite" hidden></div>
             </article>
             <article class="subcard stack pairwise-overlap-box" aria-labelledby="pairwise-overlap-title">
@@ -448,6 +449,7 @@
                   <span id="diversification-maximum">Not available</span>
                 </div>
               </div>
+              <span class="score-band-touch-tooltip" data-score-band-touch-tooltip role="status" aria-live="polite" hidden></span>
               <div class="diversification-coverage-warning" id="diversification-coverage-warning" role="status" aria-live="polite" hidden></div>
             </article>
             <div class="subcard stack">

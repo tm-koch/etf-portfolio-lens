@@ -1510,6 +1510,32 @@ body {
   padding-left: 18px;
 }
 
+.redundancy-score-box {
+  position: relative;
+}
+
+.score-band-touch-tooltip {
+  position: absolute;
+  z-index: 4;
+  max-width: calc(100% - 16px);
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--card-strong);
+  box-shadow: var(--shadow);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.score-band-touch-tooltip[hidden] {
+  display: none;
+}
+
 .redundancy-score-summary {
   display: flex;
   align-items: center;

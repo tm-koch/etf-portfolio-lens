@@ -109,6 +109,81 @@ function t(key, options) {
   return window.i18next.t(key, options);
 }
 
+function hideScoreBandTouchTooltips(except = null) {
+  document.querySelectorAll('[data-score-band-touch-tooltip]').forEach((tooltip) => {
+    if (tooltip !== except) tooltip.hidden = true;
+  });
+}
+
+function showScoreBandTouchTooltip(meter, segments, event) {
+  const track = meter.querySelector('.redundancy-meter-track');
+  const scoreBox = meter.closest('.redundancy-score-box');
+  const tooltip = scoreBox.querySelector('[data-score-band-touch-tooltip]');
+  const trackRect = track.getBoundingClientRect();
+  if (
+    event.clientX < trackRect.left
+    || event.clientX > trackRect.right
+    || event.clientY < trackRect.top - 12
+    || event.clientY > trackRect.bottom + 12
+  ) {
+    return;
+  }
+
+  const segment = segments.find((candidate) => {
+    const rect = candidate.getBoundingClientRect();
+    return rect.width > 0 && event.clientX >= rect.left && event.clientX <= rect.right;
+  });
+  const translationKey = segment?.getAttribute('data-i18n-attr-title');
+  if (!translationKey) return;
+
+  hideScoreBandTouchTooltips(tooltip);
+  tooltip.textContent = t(translationKey);
+  tooltip.hidden = false;
+
+  const tooltipRect = tooltip.getBoundingClientRect();
+  const scoreBoxRect = scoreBox.getBoundingClientRect();
+  const horizontalInset = 8;
+  const meterRect = meter.getBoundingClientRect();
+  const minCenter = meterRect.left + tooltipRect.width / 2 + horizontalInset;
+  const maxCenter = Math.max(minCenter, meterRect.right - tooltipRect.width / 2 - horizontalInset);
+  const targetCenter = Math.min(Math.max(event.clientX, minCenter), maxCenter);
+
+  tooltip.style.left = `${targetCenter - scoreBoxRect.left}px`;
+  tooltip.style.top = `${Math.max(event.clientY - scoreBoxRect.top + 10, meterRect.bottom - scoreBoxRect.top + 6)}px`;
+}
+
+function bindScoreBandTouchTooltip(meter, segments) {
+  const track = meter.querySelector('.redundancy-meter-track');
+  let touchStart = null;
+
+  meter.addEventListener('pointerdown', (event) => {
+    if (event.pointerType !== 'touch') return;
+    const rect = track.getBoundingClientRect();
+    if (
+      event.clientX < rect.left
+      || event.clientX > rect.right
+      || event.clientY < rect.top - 12
+      || event.clientY > rect.bottom + 12
+    ) {
+      touchStart = null;
+      return;
+    }
+    touchStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+  }, { passive: true });
+
+  meter.addEventListener('pointerup', (event) => {
+    if (!touchStart || event.pointerId !== touchStart.pointerId) return;
+    const start = touchStart;
+    touchStart = null;
+    if (Math.hypot(event.clientX - start.x, event.clientY - start.y) > 10) return;
+    showScoreBandTouchTooltip(meter, segments, event);
+  });
+
+  meter.addEventListener('pointercancel', () => {
+    touchStart = null;
+  });
+}
+
 function getNavigationDestination(key) {
   return NAVIGATION_DESTINATIONS.find((destination) => destination.key === key) || null;
 }
@@ -2269,6 +2344,13 @@ async function bootstrap() {
   elements.colorModeMenu = document.getElementById('color-mode-menu');
   elements.installAppButton = document.getElementById('install-app-button');
   elements.colorModeUtility = document.querySelector('.app-utility-bar');
+  bindScoreBandTouchTooltip(elements.redundancyMeter, elements.redundancySegments);
+  bindScoreBandTouchTooltip(elements.diversificationMeter, elements.diversificationSegments);
+  document.addEventListener('pointerdown', (event) => {
+    if (!event.target.closest?.('.redundancy-meter-track')) hideScoreBandTouchTooltips();
+  }, true);
+  window.addEventListener('scroll', () => hideScoreBandTouchTooltips(), { capture: true, passive: true });
+  window.addEventListener('resize', () => hideScoreBandTouchTooltips());
   window.matchMedia?.('(max-width: 760px)').addEventListener('change', updateInstallAction);
 
   state.colorMode = loadColorMode();
@@ -2307,6 +2389,7 @@ async function bootstrap() {
     closeDataDialog();
   });
   document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') hideScoreBandTouchTooltips();
     if (event.key === 'Escape' && elements.buildDialog.open) {
       event.preventDefault();
       closeBuildDialog();

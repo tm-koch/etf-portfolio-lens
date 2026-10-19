@@ -105,6 +105,30 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
+    def test_score_bands_have_touch_tooltips_for_both_scores(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertEqual(index.count('class="score-band-touch-tooltip"'), 2)
+        self.assertIn(
+            "bindScoreBandTouchTooltip(elements.redundancyMeter, elements.redundancySegments);",
+            app,
+        )
+        self.assertIn(
+            "bindScoreBandTouchTooltip(elements.diversificationMeter, elements.diversificationSegments);",
+            app,
+        )
+        self.assertIn("event.clientX >= rect.left && event.clientX <= rect.right", app)
+        self.assertIn("tooltip.textContent = t(translationKey);", app)
+        self.assertIn(
+            "const targetCenter = Math.min(Math.max(event.clientX, minCenter), maxCenter);",
+            app,
+        )
+        self.assertIn("meterRect.bottom - scoreBoxRect.top + 6", app)
+        self.assertIn(".score-band-touch-tooltip {\n  position: absolute;", styles)
+        self.assertIn(".score-band-touch-tooltip[hidden] {", styles)
+
     def test_diversification_score_follows_pairwise_overlap(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")

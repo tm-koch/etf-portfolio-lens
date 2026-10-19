@@ -78,6 +78,21 @@ Each redundancy and diversification bullet bar section SHALL expose its localize
 - **WHEN** the user hovers over a colored section in either score's bullet bar
 - **THEN** the tooltip SHALL show the localized label for that section's rating
 
+### Requirement: Identify score bar sections on touch
+Each colored section of the redundancy and diversification score bars SHALL show its existing localized rating label in a tooltip when tapped on a touch device. The tooltip SHALL appear directly below the user's finger and identify the tapped band, not the score marker's current rating.
+
+#### Scenario: User taps a redundancy band
+- **WHEN** a user taps a colored section of the redundancy score bar
+- **THEN** the localized label for that section SHALL appear directly below the finger
+
+#### Scenario: User taps a diversification band
+- **WHEN** a user taps a colored section of the diversification score bar
+- **THEN** the localized label for that section SHALL appear directly below the finger
+
+#### Scenario: Tapped band differs from the current score rating
+- **WHEN** the user taps a bar section other than the section containing the score marker
+- **THEN** the tooltip SHALL identify the tapped section rather than the marker's current rating
+
 ### Requirement: Keep score endpoints clear of the markers
 The redundancy score bar SHALL NOT show written rating labels below the bar. Both score bars SHALL keep endpoint numbers aligned below their respective ends, with the maximum value aligned to the track's right edge, and separated vertically from the marker so the marker does not overlap the numbers.
 
