@@ -14,7 +14,7 @@
   },
   "snapshot": {
     "as_of": "2026-10-20",
-    "generated_at": "2026-10-20T06:03:22.284461+00:00",
+    "generated_at": "2026-10-20T06:25:53.645164+00:00",
     "source_url": "https://www.ubs.com/ch/en/assetmanagement/funds/etf/ie00bd4txv59-ubs-core-msci-world-ucits-etf-pd001.html",
     "resolved_download_url": "data\\raw\\2026-10-20\\downloads\\IE00BD4TXV59.xls",
     "source_format": "xls",
@@ -56480,7 +56480,7 @@
   },
   "provenance": {
     "security_master_version": "tickers.txt",
-    "security_master_source_url": "file:///C:/Git/etf-portfolio-lens/data/raw/2026-10-19/downloads/tickers.txt",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
     "security_master_download_path": "data\\raw\\2026-10-20\\downloads\\tickers.txt",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-10-20\\downloads\\IE00BD4TXV59.xls",

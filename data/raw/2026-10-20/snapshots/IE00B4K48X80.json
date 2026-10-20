@@ -14,7 +14,7 @@
   },
   "snapshot": {
     "as_of": "2026-10-20",
-    "generated_at": "2026-10-20T05:59:26.986154+00:00",
+    "generated_at": "2026-10-20T06:22:25.246909+00:00",
     "source_url": "https://www.ishares.com/ch/individual/en/products/251861/ishares-msci-europe-ucits-etf-acc-fund/1495092304805.ajax?fileType=csv&fileName=IMEA_holdings&dataType=fund",
     "resolved_download_url": "data\\raw\\2026-10-20\\downloads\\IE00B4K48X80.csv",
     "source_format": "csv",
@@ -22417,7 +22417,7 @@
   },
   "provenance": {
     "security_master_version": "tickers.txt",
-    "security_master_source_url": "file:///C:/Git/etf-portfolio-lens/data/raw/2026-10-19/downloads/tickers.txt",
+    "security_master_source_url": "https://raw.githubusercontent.com/adanos-software/free-ticker-database/main/data/tickers.csv",
     "security_master_download_path": "data\\raw\\2026-10-20\\downloads\\tickers.txt",
     "warnings": [],
     "raw_download_path": "data\\raw\\2026-10-20\\downloads\\IE00B4K48X80.csv",
