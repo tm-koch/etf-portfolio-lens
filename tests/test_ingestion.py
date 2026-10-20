@@ -75,8 +75,77 @@ class IngestionTests(unittest.TestCase):
     def tearDownClass(cls) -> None:
         cls.security_master_fixture.cleanup()
 
-    def test_registry_has_twelve_supported_sources(self) -> None:
-        self.assertEqual(12, len(self.registry.entries))
+    def test_registry_has_fifteen_supported_sources(self) -> None:
+        self.assertEqual(15, len(self.registry.entries))
+
+    def test_registry_contains_requested_global_etfs(self) -> None:
+        expected = {
+            "IE00B4K48X80": (
+                "IMEA",
+                "iShares Core MSCI Europe UCITS ETF EUR (Acc)",
+                "data/example/IMEA_holdings.csv",
+                "EUR",
+                "CHF",
+                False,
+            ),
+            "IE00BKM4GZ66": (
+                "EIMI",
+                "iShares Core MSCI EM IMI UCITS ETF",
+                "data/example/EIMI_holdings.csv",
+                "USD",
+                "USD",
+                False,
+            ),
+            "IE00BD4TXV59": (
+                "WRDUSW",
+                "UBS Core MSCI World UCITS ETF USD acc",
+                "data/example/UBSFunds_Constituents_1792442657270.xls",
+                "USD",
+                "CHF",
+                True,
+            ),
+        }
+
+        for isin, values in expected.items():
+            entry = self.registry.select_by_isins([isin])[0]
+            (
+                ticker,
+                name,
+                fixture_path,
+                share_currency,
+                listing_currency,
+                fixture_only,
+            ) = values
+            self.assertEqual(ticker, entry.ticker)
+            self.assertEqual(name, entry.name)
+            self.assertEqual(fixture_path, entry.fixture_path)
+            self.assertEqual(share_currency, entry.share_class_currency)
+            self.assertEqual(listing_currency, entry.listing_currency)
+            self.assertEqual(fixture_only, entry.fixture_only)
+            self.assertTrue((ROOT / fixture_path).exists())
+
+    def test_fixture_only_ubs_uses_fixture_without_fetching_product_source(
+        self,
+    ) -> None:
+        entry = self.registry.select_by_isins(["IE00BD4TXV59"])[0]
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pipeline = IngestionPipeline(
+                self.registry,
+                Path(temp_dir),
+                self.security_master_source_url,
+            )
+            with patch(
+                "etf_ingestion_backend.pipeline.fetch_url", wraps=fetch_url
+            ) as fetch_mock:
+                results = pipeline.run([entry])
+
+        self.assertEqual(1, len(results))
+        self.assertEqual(1181, len(results[0].snapshot.holdings))
+        self.assertEqual(
+            [self.security_master_source_url],
+            [call.args[0] for call in fetch_mock.call_args_list],
+        )
 
     def test_registry_contains_amundi_prime_metadata(self) -> None:
         entry = self.registry.select_by_isins(["IE0009HF1MK9"])[0]
@@ -345,11 +414,45 @@ class IngestionTests(unittest.TestCase):
             )
             results = pipeline.run(self.registry.entries, use_fixtures=True)
 
-            self.assertEqual(12, len(results))
+            self.assertEqual(15, len(results))
+            expected_counts = {
+                "IE00B4K48X80": 398,
+                "IE00BKM4GZ66": 3094,
+                "IE00BD4TXV59": 1181,
+            }
+            expected_non_equity_classes = {
+                "IE00B4K48X80": {
+                    "Cash",
+                    "Money Market",
+                    "Cash Collateral and Margins",
+                    "Futures",
+                },
+                "IE00BKM4GZ66": {
+                    "Cash",
+                    "Cash Collateral and Margins",
+                    "FX",
+                    "Futures",
+                },
+            }
             for result in results:
                 self.assertTrue(result.snapshot_path.exists())
                 snapshot = json.loads(result.snapshot_path.read_text(encoding="utf-8"))
                 self.assertEqual(result.etf.isin, snapshot["etf"]["isin"])
+                if result.etf.isin in expected_counts:
+                    self.assertEqual(
+                        expected_counts[result.etf.isin],
+                        snapshot["aggregates"]["counts"]["holdings"],
+                    )
+                if result.etf.isin in expected_non_equity_classes:
+                    actual_classes = {
+                        holding["classification"]["asset_class"]
+                        for holding in snapshot["holdings"]
+                    }
+                    self.assertTrue(
+                        expected_non_equity_classes[result.etf.isin].issubset(
+                            actual_classes
+                        )
+                    )
                 self.assertEqual(
                     str(result.raw_download_path),
                     snapshot["snapshot"]["resolved_download_url"],

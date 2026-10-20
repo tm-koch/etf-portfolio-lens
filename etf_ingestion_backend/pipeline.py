@@ -119,7 +119,15 @@ class IngestionPipeline:
         failures: list[str] = []
         for entry in entries:
             parsed_rows = None
-            if use_fixtures and entry.fixture_path:
+            if entry.fixture_only:
+                if not entry.fixture_path:
+                    raise ValueError(
+                        f"Fixture-only ETF {entry.isin} has no configured fixture"
+                    )
+                downloaded = copy_fixture(
+                    Path(entry.fixture_path), downloads_dir, preferred_name=entry.isin
+                )
+            elif use_fixtures and entry.fixture_path:
                 downloaded = copy_fixture(
                     Path(entry.fixture_path), downloads_dir, preferred_name=entry.isin
                 )

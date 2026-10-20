@@ -2,7 +2,9 @@
 
 ## Purpose
 TBD - created by archiving change live-etf-prices. Update Purpose after archive.
+
 ## Requirements
+
 ### Requirement: Normalize live ETF quotes
 The live-data pipeline SHALL produce a versioned JSON artifact containing at least one normalized quote record per configured ETF, with ISIN, numeric price, currency, quote timestamp, trading date when available, status, and provider lookup ticker when the configured adapter requires one. Provider URLs, credentials, raw responses, and provider identities SHALL NOT appear in the artifact. The artifact SHALL remain keyed by ISIN.
 
@@ -36,6 +38,17 @@ The pipeline SHALL select a quote URL formatter and parser by configuration so p
 #### Scenario: Local test supplies the Swiss template
 - **WHEN** the fetch command receives an explicit Swiss URL-template parameter
 - **THEN** it uses that parameter for every configured Swiss ETF without requiring a repository secret
+
+### Requirement: Support currency placeholders in quote URL templates
+Quote URL templates SHALL substitute `{currency}` with the configured quote currency when the placeholder is present. Templates without the placeholder SHALL remain valid.
+
+#### Scenario: Currency is inserted into a secret URL template
+- **WHEN** a configured adapter's URL template contains `{currency}`
+- **THEN** the runtime formats that placeholder with the configured quote currency before dispatching to the adapter
+
+#### Scenario: Existing template omits currency
+- **WHEN** a configured quote URL template contains an ISIN or ticker placeholder but no currency placeholder
+- **THEN** the runtime preserves the existing identifier substitution behavior
 
 ### Requirement: Parse and validate ticker-based chart responses
 The ticker-based adapter SHALL parse the chart response's regular market price, currency metadata, and Unix market timestamp. It SHALL reject provider-reported errors, missing required chart metadata, unsupported currency, non-finite or negative prices, and invalid timestamps.
@@ -129,3 +142,27 @@ Live-data configuration tests SHALL include the new ISIN and continue validating
 - **WHEN** the live quote configuration contract is tested
 - **THEN** `IE0009HF1MK9` is present with CHF source metadata and all previous configured entries remain present
 
+### Requirement: Configure live quotes for refreshable requested ETFs
+The live market-data configuration SHALL include normalized quote entries for EIMI and IMEA using their intended quote currencies.
+
+#### Scenario: EIMI quote is configured in USD
+- **WHEN** quote configuration is loaded for `IE00BKM4GZ66`
+- **THEN** it selects the Swiss CSV adapter and USD quote currency
+
+#### Scenario: IMEA quote is configured in CHF
+- **WHEN** quote configuration is loaded for `IE00B4K48X80`
+- **THEN** it selects the Swiss CSV adapter and CHF quote currency
+
+### Requirement: Omit live quote for fixture-only UBS entry
+The live market-data configuration SHALL NOT include `IE00BD4TXV59` while its registry entry is fixture-only.
+
+#### Scenario: Fixture-only UBS ETF has no automated quote
+- **WHEN** live quote configuration is loaded
+- **THEN** it contains no quote entry for `IE00BD4TXV59`
+
+### Requirement: Normalize USD Swiss CSV quotes
+The Swiss CSV adapter SHALL accept a configured USD quote and publish its normalized record keyed by the configured ETF ISIN.
+
+#### Scenario: EIMI USD quote is normalized
+- **WHEN** the configured EIMI source returns a valid dated CSV quote
+- **THEN** the artifact contains the numeric price, USD currency, quote timestamp, and ISIN `IE00BKM4GZ66`

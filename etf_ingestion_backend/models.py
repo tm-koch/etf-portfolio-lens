@@ -39,6 +39,7 @@ class ETFSourceEntry:
     exchange: str | None = None
     listing_ticker: str | None = None
     listing_currency: str | None = None
+    fixture_only: bool = False
 
 
 @dataclass(slots=True)

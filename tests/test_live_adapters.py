@@ -154,6 +154,40 @@ class LiveAdapterTests(unittest.TestCase):
             self.assertIn("https://one.example/CH0008899764", requests)
             self.assertIn("https://two.example/CH0019852802", requests)
 
+    def test_swiss_quote_template_formats_currency_for_chf_and_usd(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            config = root / "config.json"
+            output = root / "live_prices.json"
+            config.write_text(
+                '{"schema_version":1,"quotes":['
+                '{"isin":"IE00B4K48X80","adapter_id":"swiss_csv_v1","currency":"CHF"},'
+                '{"isin":"IE00BKM4GZ66","adapter_id":"swiss_csv_v1","currency":"USD"}]}',
+                encoding="utf-8",
+            )
+            requests: list[str] = []
+
+            def fetcher(url: str) -> bytes:
+                requests.append(url)
+                if "quotes.example" in url:
+                    return b"10.09.2026\nTime;Price;Volume\n15:30;101.20;1\n"
+                if "from=USD" in url:
+                    return b'{"amount":1,"base":"USD","date":"2026-09-10","rates":{"CHF":0.79}}'
+                return b'{"amount":1,"base":"EUR","date":"2026-09-10","rates":{"CHF":0.93}}'
+
+            artifact = fetch_live_prices(
+                config,
+                output,
+                fetcher=fetcher,
+                trading_date=date(2026, 9, 10),
+                quote_url_template="https://quotes.example/{isin}/{currency}",
+            )
+
+            self.assertIn("https://quotes.example/IE00B4K48X80/CHF", requests)
+            self.assertIn("https://quotes.example/IE00BKM4GZ66/USD", requests)
+            self.assertEqual("CHF", artifact.quotes["IE00B4K48X80"].currency)
+            self.assertEqual("USD", artifact.quotes["IE00BKM4GZ66"].currency)
+
     def test_ticker_quote_uses_ticker_url_and_preserves_provenance(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)

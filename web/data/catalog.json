@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19",
+  "generatedAt": "2026-10-20",
   "basis": "share_weighted",
   "etfs": [
     {
@@ -40,6 +40,39 @@
       "name": "iShares MSCI EMU Mid Cap UCITS ETF",
       "provider": "iShares",
       "snapshotPath": "/data/raw/2026-10-19/snapshots/IE00BCLWRD08.json"
+    },
+    {
+      "isin": "IE00B4K48X80",
+      "ticker": "IMEA",
+      "name": "iShares Core MSCI Europe UCITS ETF EUR (Acc)",
+      "provider": "iShares",
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00B4K48X80.json",
+      "share_class_currency": "EUR",
+      "exchange": "SIX Swiss Exchange",
+      "listing_ticker": "IMEA",
+      "listing_currency": "CHF"
+    },
+    {
+      "isin": "IE00BKM4GZ66",
+      "ticker": "EIMI",
+      "name": "iShares Core MSCI EM IMI UCITS ETF",
+      "provider": "iShares",
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00BKM4GZ66.json",
+      "share_class_currency": "USD",
+      "exchange": "SIX Swiss Exchange",
+      "listing_ticker": "EIMI",
+      "listing_currency": "USD"
+    },
+    {
+      "isin": "IE00BD4TXV59",
+      "ticker": "WRDUSW",
+      "name": "UBS Core MSCI World UCITS ETF USD acc",
+      "provider": "UBS",
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00BD4TXV59.json",
+      "share_class_currency": "USD",
+      "exchange": "SIX Swiss Exchange",
+      "listing_ticker": "WRDUSW",
+      "listing_currency": "CHF"
     },
     {
       "isin": "CH0237935652",
@@ -129,6 +162,30 @@
       },
       {
         "isinA": "IE00B44Z5B48",
+        "isinB": "IE00B4K48X80",
+        "overlapPct": 10.3977,
+        "coveragePctA": 100.0,
+        "coveragePctB": 99.95,
+        "available": true
+      },
+      {
+        "isinA": "IE00B44Z5B48",
+        "isinB": "IE00BKM4GZ66",
+        "overlapPct": 6.6358,
+        "coveragePctA": 100.0,
+        "coveragePctB": 98.38,
+        "available": true
+      },
+      {
+        "isinA": "IE00B44Z5B48",
+        "isinB": "IE00BD4TXV59",
+        "overlapPct": 84.3994,
+        "coveragePctA": 100.0,
+        "coveragePctB": 98.724,
+        "available": true
+      },
+      {
+        "isinA": "IE00B44Z5B48",
         "isinB": "CH0237935652",
         "overlapPct": 2.0996,
         "coveragePctA": 100.0,
@@ -209,6 +266,30 @@
       },
       {
         "isinA": "LU0908500753",
+        "isinB": "IE00B4K48X80",
+        "overlapPct": 66.8804,
+        "coveragePctA": 99.265,
+        "coveragePctB": 99.95,
+        "available": true
+      },
+      {
+        "isinA": "LU0908500753",
+        "isinB": "IE00BKM4GZ66",
+        "overlapPct": 0.73,
+        "coveragePctA": 99.265,
+        "coveragePctB": 98.38,
+        "available": true
+      },
+      {
+        "isinA": "LU0908500753",
+        "isinB": "IE00BD4TXV59",
+        "overlapPct": 14.6342,
+        "coveragePctA": 99.265,
+        "coveragePctB": 98.724,
+        "available": true
+      },
+      {
+        "isinA": "LU0908500753",
         "isinB": "CH0237935652",
         "overlapPct": 13.7969,
         "coveragePctA": 99.265,
@@ -281,6 +362,30 @@
       },
       {
         "isinA": "IE0009HF1MK9",
+        "isinB": "IE00B4K48X80",
+        "overlapPct": 9.6287,
+        "coveragePctA": 99.1986,
+        "coveragePctB": 99.95,
+        "available": true
+      },
+      {
+        "isinA": "IE0009HF1MK9",
+        "isinB": "IE00BKM4GZ66",
+        "overlapPct": 6.8219,
+        "coveragePctA": 99.1986,
+        "coveragePctB": 98.38,
+        "available": true
+      },
+      {
+        "isinA": "IE0009HF1MK9",
+        "isinB": "IE00BD4TXV59",
+        "overlapPct": 82.7498,
+        "coveragePctA": 99.1986,
+        "coveragePctB": 98.724,
+        "available": true
+      },
+      {
+        "isinA": "IE0009HF1MK9",
         "isinB": "CH0237935652",
         "overlapPct": 1.7876,
         "coveragePctA": 99.1986,
@@ -345,6 +450,30 @@
       },
       {
         "isinA": "IE00BF20LF40",
+        "isinB": "IE00B4K48X80",
+        "overlapPct": 16.51,
+        "coveragePctA": 99.96,
+        "coveragePctB": 99.95,
+        "available": true
+      },
+      {
+        "isinA": "IE00BF20LF40",
+        "isinB": "IE00BKM4GZ66",
+        "overlapPct": 0,
+        "coveragePctA": 99.96,
+        "coveragePctB": 98.38,
+        "available": true
+      },
+      {
+        "isinA": "IE00BF20LF40",
+        "isinB": "IE00BD4TXV59",
+        "overlapPct": 2.1023,
+        "coveragePctA": 99.96,
+        "coveragePctB": 98.724,
+        "available": true
+      },
+      {
+        "isinA": "IE00BF20LF40",
         "isinB": "CH0237935652",
         "overlapPct": 11.71,
         "coveragePctA": 99.96,
@@ -401,6 +530,30 @@
       },
       {
         "isinA": "IE00BCLWRD08",
+        "isinB": "IE00B4K48X80",
+        "overlapPct": 8.34,
+        "coveragePctA": 100.0,
+        "coveragePctB": 99.95,
+        "available": true
+      },
+      {
+        "isinA": "IE00BCLWRD08",
+        "isinB": "IE00BKM4GZ66",
+        "overlapPct": 0,
+        "coveragePctA": 100.0,
+        "coveragePctB": 98.38,
+        "available": true
+      },
+      {
+        "isinA": "IE00BCLWRD08",
+        "isinB": "IE00BD4TXV59",
+        "overlapPct": 1.0974,
+        "coveragePctA": 100.0,
+        "coveragePctB": 98.724,
+        "available": true
+      },
+      {
+        "isinA": "IE00BCLWRD08",
         "isinB": "CH0237935652",
         "overlapPct": 0.83,
         "coveragePctA": 100.0,
@@ -452,6 +605,198 @@
         "isinB": "CH1447931341",
         "overlapPct": 0,
         "coveragePctA": 100.0,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "IE00BKM4GZ66",
+        "overlapPct": 0,
+        "coveragePctA": 99.95,
+        "coveragePctB": 98.38,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "IE00BD4TXV59",
+        "overlapPct": 11.0632,
+        "coveragePctA": 99.95,
+        "coveragePctB": 98.724,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "CH0237935652",
+        "overlapPct": 14.87,
+        "coveragePctA": 99.95,
+        "coveragePctB": 99.96,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "CH0008899764",
+        "overlapPct": 12.73,
+        "coveragePctA": 99.95,
+        "coveragePctB": 99.99,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "CH0019852802",
+        "overlapPct": 4.39,
+        "coveragePctA": 99.95,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "CH0130595124",
+        "overlapPct": 4.42,
+        "coveragePctA": 99.95,
+        "coveragePctB": 99.2199,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "CH1553162921",
+        "overlapPct": 4.59,
+        "coveragePctA": 99.95,
+        "coveragePctB": 99.2199,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "CH0111762537",
+        "overlapPct": 4.39,
+        "coveragePctA": 99.95,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00B4K48X80",
+        "isinB": "CH1447931341",
+        "overlapPct": 12.73,
+        "coveragePctA": 99.95,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "IE00BD4TXV59",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 98.724,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "CH0237935652",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 99.96,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "CH0008899764",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 99.99,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "CH0019852802",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "CH0130595124",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 99.2199,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "CH1553162921",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 99.2199,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "CH0111762537",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00BKM4GZ66",
+        "isinB": "CH1447931341",
+        "overlapPct": 0,
+        "coveragePctA": 98.38,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00BD4TXV59",
+        "isinB": "CH0237935652",
+        "overlapPct": 2.2448,
+        "coveragePctA": 98.724,
+        "coveragePctB": 99.96,
+        "available": true
+      },
+      {
+        "isinA": "IE00BD4TXV59",
+        "isinB": "CH0008899764",
+        "overlapPct": 1.9395,
+        "coveragePctA": 98.724,
+        "coveragePctB": 99.99,
+        "available": true
+      },
+      {
+        "isinA": "IE00BD4TXV59",
+        "isinB": "CH0019852802",
+        "overlapPct": 0.6452,
+        "coveragePctA": 98.724,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00BD4TXV59",
+        "isinB": "CH0130595124",
+        "overlapPct": 0.6507,
+        "coveragePctA": 98.724,
+        "coveragePctB": 99.2199,
+        "available": true
+      },
+      {
+        "isinA": "IE00BD4TXV59",
+        "isinB": "CH1553162921",
+        "overlapPct": 0.6753,
+        "coveragePctA": 98.724,
+        "coveragePctB": 99.2199,
+        "available": true
+      },
+      {
+        "isinA": "IE00BD4TXV59",
+        "isinB": "CH0111762537",
+        "overlapPct": 0.6452,
+        "coveragePctA": 98.724,
+        "coveragePctB": 100.0,
+        "available": true
+      },
+      {
+        "isinA": "IE00BD4TXV59",
+        "isinB": "CH1447931341",
+        "overlapPct": 1.9395,
+        "coveragePctA": 98.724,
         "coveragePctB": 100.0,
         "available": true
       },

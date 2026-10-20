@@ -46,7 +46,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--trading-date", type=date.fromisoformat, default=None)
     parser.add_argument(
         "--quote-url-template",
-        help="Quote URL template for local runs and tests; {isin} or {ticker} is substituted.",
+        help="Quote URL template for local runs and tests; {isin}, {ticker}, and {currency} are substituted.",
     )
     return parser
 
@@ -59,15 +59,22 @@ def _fetch_url(url: str) -> bytes:
         return response.read()
 
 
-def _format_secret_url(template: str, isin: str, ticker: str | None) -> str:
+def _format_secret_url(
+    template: str, isin: str, ticker: str | None, currency: str
+) -> str:
     identifier = ticker if ticker is not None else isin
     placeholder = "{ticker}" if ticker is not None else "{isin}"
-    return template.replace(placeholder, identifier)
+    return template.replace(placeholder, identifier).replace("{currency}", currency)
 
 
-def _validate_quote_url_template(template: str, ticker: str | None) -> None:
+def _validate_quote_url_template(
+    template: str, ticker: str | None, currency: str
+) -> None:
     placeholder = "{ticker}" if ticker is not None else "{isin}"
-    parsed = urlsplit(template.replace(placeholder, "TESTIDENTIFIER"))
+    formatted_template = template.replace(placeholder, "TESTIDENTIFIER").replace(
+        "{currency}", currency
+    )
+    parsed = urlsplit(formatted_template)
     if (
         placeholder not in template
         or parsed.scheme not in {"http", "https"}
@@ -112,8 +119,10 @@ def fetch_live_prices(
             parser = QUOTE_ADAPTERS.get(config.adapter_id)
             if parser is None:
                 raise LiveFetchError(f"unsupported quote adapter {config.adapter_id}")
-            _validate_quote_url_template(template, config.ticker)
-            url = _format_secret_url(template, config.isin, config.ticker)
+            _validate_quote_url_template(template, config.ticker, config.currency)
+            url = _format_secret_url(
+                template, config.isin, config.ticker, config.currency
+            )
             result = fetch_and_parse(
                 url,
                 lambda payload, config=config, parser=parser: parser(
