@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 import tempfile
 import urllib.request
@@ -35,6 +36,7 @@ QUOTE_ADAPTERS = {
     "swiss_csv_v1": parse_swiss_trade_csv,
     "yahoo_chart_v1": parse_yahoo_chart,
 }
+logger = logging.getLogger(__name__)
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -44,6 +46,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--config", default="data/live_price_config.json")
     parser.add_argument("--output", default="data/live_prices.json")
     parser.add_argument("--trading-date", type=date.fromisoformat, default=None)
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Log per-ETF quote progress without source details.",
+    )
     parser.add_argument(
         "--quote-url-template",
         help="Quote URL template for local runs and tests; {isin}, {ticker}, and {currency} are substituted.",
@@ -105,37 +112,67 @@ def fetch_live_prices(
     fetcher: Callable[[str], bytes] = _fetch_url,
     trading_date: date | None = None,
     quote_url_template: str | None = None,
+    debug: bool = False,
 ) -> LivePricesArtifact:
     configs = load_quote_config(config_path)
     quotes: dict[str, Quote] = {}
     fx: dict[str, FXRate] = {}
     try:
         for config in configs:
-            template = quote_url_template or os.environ.get(config.secret_name)
-            if not template:
-                raise LiveFetchError(
-                    f"missing configured source secret {config.secret_name}"
-                )
-            parser = QUOTE_ADAPTERS.get(config.adapter_id)
-            if parser is None:
-                raise LiveFetchError(f"unsupported quote adapter {config.adapter_id}")
-            _validate_quote_url_template(template, config.ticker, config.currency)
-            url = _format_secret_url(
-                template, config.isin, config.ticker, config.currency
-            )
-            result = fetch_and_parse(
-                url,
-                lambda payload, config=config, parser=parser: parser(
-                    payload,
+            stage = "configuration"
+            if debug:
+                logger.debug(
+                    "Starting quote for ISIN %s using adapter %s",
                     config.isin,
-                    config.currency,
-                    trading_date,
-                    config.ticker,
-                ),
-                fetcher,
-            )
+                    config.adapter_id,
+                )
+            try:
+                template = quote_url_template or os.environ.get(config.secret_name)
+                if not template:
+                    raise LiveFetchError(
+                        f"missing configured source secret {config.secret_name}"
+                    )
+                parser = QUOTE_ADAPTERS.get(config.adapter_id)
+                if parser is None:
+                    raise LiveFetchError(
+                        f"unsupported quote adapter {config.adapter_id}"
+                    )
+                _validate_quote_url_template(template, config.ticker, config.currency)
+                url = _format_secret_url(
+                    template, config.isin, config.ticker, config.currency
+                )
+                stage = "fetch/parse"
+                result = fetch_and_parse(
+                    url,
+                    lambda payload, config=config, parser=parser: parser(
+                        payload,
+                        config.isin,
+                        config.currency,
+                        trading_date,
+                        config.ticker,
+                    ),
+                    fetcher,
+                )
+            except (LiveFetchError, LiveMarketDataError, OSError, ValueError):
+                if debug:
+                    logger.debug(
+                        "Quote failed for ISIN %s using adapter %s at stage %s",
+                        config.isin,
+                        config.adapter_id,
+                        stage,
+                    )
+                raise LiveFetchError(
+                    f"quote {stage} failed for ISIN {config.isin} "
+                    f"using adapter {config.adapter_id}"
+                ) from None
             assert isinstance(result, Quote)
             quotes[config.isin] = result
+            if debug:
+                logger.debug(
+                    "Quote succeeded for ISIN %s using adapter %s",
+                    config.isin,
+                    config.adapter_id,
+                )
         for pair, url in FRANKFURTER_URLS.items():
             result = fetch_and_parse(
                 url,
@@ -153,12 +190,15 @@ def fetch_live_prices(
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
+    if args.debug:
+        logging.basicConfig(level=logging.DEBUG, format="%(message)s")
     try:
         artifact = fetch_live_prices(
             Path(args.config),
             Path(args.output),
             trading_date=args.trading_date,
             quote_url_template=args.quote_url_template,
+            debug=args.debug,
         )
     except (
         LiveFetchError,

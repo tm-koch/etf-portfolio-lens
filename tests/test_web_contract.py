@@ -450,6 +450,10 @@ class WebContractTests(unittest.TestCase):
         self.assertNotIn("data/live_prices.json", workflow.split("concurrency:", 1)[0])
         self.assertIn("workflow_dispatch", workflow)
         self.assertIn("SWISS_QUOTE_URL_TEMPLATE", workflow)
+        self.assertIn(
+            "run: python -m etf_ingestion_backend.live_cli --config data/live_price_config.json --output data/live_prices.json --debug",
+            workflow,
+        )
         self.assertNotIn("QUOTE_URL_CH0008899764", workflow)
         self.assertNotIn("https://", workflow)
         self.assertNotIn("-NoPush", workflow)

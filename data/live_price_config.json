@@ -87,6 +87,12 @@
       "adapter_id": "swiss_csv_v1",
       "currency": "CHF",
       "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
+    },
+    {
+      "isin": "IE00BD4TXV59",
+      "adapter_id": "swiss_csv_v1",
+      "currency": "CHF",
+      "quote_url_template_secret": "SWISS_QUOTE_URL_TEMPLATE"
     }
   ]
 }

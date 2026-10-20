@@ -13,7 +13,7 @@ from etf_ingestion_backend.live_adapters import (
     parse_swiss_trade_csv,
     parse_yahoo_chart,
 )
-from etf_ingestion_backend.live_cli import fetch_live_prices
+from etf_ingestion_backend.live_cli import build_parser, fetch_live_prices
 
 
 class LiveAdapterTests(unittest.TestCase):
@@ -92,6 +92,79 @@ class LiveAdapterTests(unittest.TestCase):
                 output.read_text(encoding="utf-8"),
             )
 
+    def test_quote_parse_failure_identifies_isin_without_leaking_source(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            config = root / "config.json"
+            output = root / "live_prices.json"
+            config.write_text(
+                '{"schema_version":1,"quotes":[{"isin":"IE00BD4TXV59",'
+                '"adapter_id":"swiss_csv_v1","currency":"CHF",'
+                '"secret_name":"QUOTE_URL"}]}',
+                encoding="utf-8",
+            )
+            previous_artifact = '{"schema_version":1,"status":"old"}\n'
+            output.write_text(previous_artifact, encoding="utf-8")
+            response_marker = "PRIVATE_RESPONSE_MARKER"
+            private_url = "https://private.example/token-value/{isin}"
+
+            with patch.dict(os.environ, {"QUOTE_URL": private_url}):
+                with self.assertRaises(LiveFetchError) as raised:
+                    fetch_live_prices(
+                        config,
+                        output,
+                        fetcher=lambda url: f"{response_marker}\nTime;Price;Volume\n".encode(),
+                    )
+
+            message = str(raised.exception)
+            self.assertIn("IE00BD4TXV59", message)
+            self.assertIn("swiss_csv_v1", message)
+            self.assertNotIn("private.example", message)
+            self.assertNotIn("token-value", message)
+            self.assertNotIn(response_marker, message)
+            self.assertEqual(previous_artifact, output.read_text(encoding="utf-8"))
+
+    def test_debug_logs_quote_progress_without_source_details(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            config = root / "config.json"
+            output = root / "live_prices.json"
+            config.write_text(
+                '{"schema_version":1,"quotes":[{"isin":"IE00BD4TXV59",'
+                '"adapter_id":"swiss_csv_v1","currency":"CHF",'
+                '"secret_name":"QUOTE_URL"}]}',
+                encoding="utf-8",
+            )
+            private_url = "https://private.example/token-value/{isin}"
+            response_marker = "PRIVATE_RESPONSE_MARKER"
+
+            with patch.dict(os.environ, {"QUOTE_URL": private_url}):
+                with self.assertLogs(
+                    "etf_ingestion_backend.live_cli", level="DEBUG"
+                ) as captured:
+                    with self.assertRaises(LiveFetchError):
+                        fetch_live_prices(
+                            config,
+                            output,
+                            fetcher=lambda url: (
+                                f"{response_marker}\nTime;Price;Volume\n".encode()
+                            ),
+                            debug=True,
+                        )
+
+            log_output = "\n".join(captured.output)
+            self.assertIn("Starting quote", log_output)
+            self.assertIn("Quote failed", log_output)
+            self.assertIn("IE00BD4TXV59", log_output)
+            self.assertIn("swiss_csv_v1", log_output)
+            self.assertIn("fetch/parse", log_output)
+            self.assertNotIn("private.example", log_output)
+            self.assertNotIn("token-value", log_output)
+            self.assertNotIn(response_marker, log_output)
+
+    def test_debug_flag_is_available(self) -> None:
+        self.assertTrue(build_parser().parse_args(["--debug"]).debug)
+
     def test_invalid_quote_template_fails_before_fetch(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
@@ -104,7 +177,8 @@ class LiveAdapterTests(unittest.TestCase):
             output.write_text('{"schema_version":1,"status":"old"}\n', encoding="utf-8")
 
             with self.assertRaisesRegex(
-                LiveFetchError, r"absolute HTTP\(S\).*\{isin\}"
+                LiveFetchError,
+                r"quote configuration failed for ISIN CH0008899764 using adapter swiss_csv_v1",
             ):
                 fetch_live_prices(config, output, quote_url_template="secret")
             self.assertEqual(

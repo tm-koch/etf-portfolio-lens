@@ -48,8 +48,11 @@ Generate the artifact with the same command used by GitHub Actions:
 ```powershell
 python -m etf_ingestion_backend.live_cli `
     --config data/live_price_config.json `
-    --output data/live_prices.json
+    --output data/live_prices.json `
+    --debug
 ```
+
+The optional `--debug` flag logs per-ETF progress and safe failure context by ISIN. It does not log provider URLs, credentials, or raw responses; the GitHub workflow enables it for refreshes.
 
 To generate quotes for a specific trading date, add `--trading-date YYYY-MM-DD`. The command fetches every configured ETF and both FX rates, and updates `data/live_prices.json` only after the complete result validates. You can verify the result with:
 

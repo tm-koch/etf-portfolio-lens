@@ -114,6 +114,7 @@ class LiveMarketDataTests(unittest.TestCase):
                 "IE00BCLWRD08",
                 "IE00BKM4GZ66",
                 "IE00B4K48X80",
+                "IE00BD4TXV59",
             ],
             [entry.isin for entry in config],
         )
@@ -147,7 +148,18 @@ class LiveMarketDataTests(unittest.TestCase):
         self.assertEqual(
             ("swiss_csv_v1", "CHF"), (imea_entry.adapter_id, imea_entry.currency)
         )
-        self.assertNotIn("IE00BD4TXV59", {entry.isin for entry in config})
+        wrdusw_entry = next(entry for entry in config if entry.isin == "IE00BD4TXV59")
+        self.assertEqual(
+            ("swiss_csv_v1", "CHF", "SWISS_QUOTE_URL_TEMPLATE"),
+            (wrdusw_entry.adapter_id, wrdusw_entry.currency, wrdusw_entry.secret_name),
+        )
+        registry = json.loads(
+            (root / "data" / "etf_registry.json").read_text(encoding="utf-8")
+        )
+        registry_entry = next(
+            entry for entry in registry["etfs"] if entry["isin"] == "IE00BD4TXV59"
+        )
+        self.assertTrue(registry_entry["fixture_only"])
         self.assertNotIn("source_url", public_config)
         self.assertNotIn("url_template", public_config)
 

@@ -45,7 +45,7 @@ jobs:
         env:
           SWISS_QUOTE_URL_TEMPLATE: ${{ secrets.SWISS_QUOTE_URL_TEMPLATE }}
           YAHOO_QUOTE_URL_TEMPLATE: ${{ secrets.YAHOO_QUOTE_URL_TEMPLATE }}
-        run: python -m etf_ingestion_backend.live_cli --config data/live_price_config.json --output data/live_prices.json
+        run: python -m etf_ingestion_backend.live_cli --config data/live_price_config.json --output data/live_prices.json --debug
 
       - name: Validate staged artifact
         run: python -c "import json; from pathlib import Path; from etf_ingestion_backend.live_market_data import LivePricesArtifact; LivePricesArtifact.from_dict(json.loads(Path('data/live_prices.json').read_text(encoding='utf-8')))"
