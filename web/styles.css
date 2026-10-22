@@ -2203,6 +2203,9 @@ body {
   display: grid;
   gap: 10px;
 }
+.company-list {
+  min-width: 0;
+}
 
 .company-row,
 .warning-item {
@@ -2210,9 +2213,15 @@ body {
   gap: 14px;
 }
 
+
 .company-row {
   padding: 16px;
   width: 100%;
+.compact-explore-search {
+  width: 100%;
+  min-width: 0;
+}
+
   grid-template-columns: minmax(0, 1fr);
 }
 
@@ -2312,16 +2321,36 @@ body {
 }
 
 .compact-explore-table-wrap {
+  width: 100%;
   max-width: 100%;
-  overflow-x: auto;
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.5);
 }
 
+.compact-explore-sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: var(--table-header-background);
+  border-radius: 11px 11px 0 0;
+}
+
+.compact-explore-sticky-header-clip {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.compact-explore-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .compact-explore-table {
   width: max-content;
   min-width: 100%;
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   font-size: 0.78rem;
@@ -2336,14 +2365,36 @@ body {
 }
 
 .compact-explore-table thead th {
-  position: sticky;
-  top: 0;
   z-index: 1;
   color: var(--muted);
   background: var(--table-header-background);
   font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.compact-explore-table .compact-explore-holding-column {
+  width: 360px;
+}
+
+.compact-explore-table .compact-explore-number-column {
+  width: 76px;
+}
+
+.compact-explore-table .compact-explore-total-column {
+  width: 92px;
+}
+
+.compact-explore-table-semantic-header {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .compact-explore-table tbody tr:last-child th,
@@ -2408,11 +2459,13 @@ body {
 }
 
 .compact-explore-table .compact-explore-number {
-  width: 62px;
-  min-width: 62px;
+  width: 76px;
+  min-width: 76px;
 }
 
 .compact-explore-table .compact-explore-total {
+  width: 92px;
+  min-width: 92px;
   color: var(--text);
   font-weight: 700;
 }
@@ -2488,6 +2541,10 @@ body {
     width: 36vw;
     min-width: 36vw;
     max-width: 36vw;
+  }
+
+  .compact-explore-table .compact-explore-holding-column {
+    width: 36vw;
   }
 
   .compact-explore-table .compact-explore-holding-name {

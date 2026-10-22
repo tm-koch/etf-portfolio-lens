@@ -20,6 +20,13 @@ import {
 } from './pairwise-overlap.js';
 import { calculateDiversificationScore } from './diversification.js';
 import {
+  DEFAULT_TOP_HOLDINGS_MAXIMUM,
+  getTopHoldingsDisplayLimit,
+  loadTopHoldingsMaximum,
+  saveTopHoldingsMaximum,
+  validateTopHoldingsMaximum,
+} from './explore-settings.js';
+import {
   calculateRedundancyScore,
   classifyRedundancyScore,
   DEFAULT_REDUNDANCY_THRESHOLDS,
@@ -58,6 +65,7 @@ const defaultState = {
   redundancyThresholds: { ...DEFAULT_REDUNDANCY_THRESHOLDS },
   nearIdenticalThreshold: DEFAULT_NEAR_IDENTICAL_THRESHOLD,
   pairwiseHoldingsMaxCompanies: DEFAULT_PAIRWISE_HOLDINGS_MAX_COMPANIES,
+  topHoldingsMaximum: DEFAULT_TOP_HOLDINGS_MAXIMUM,
   pairwiseSelection: [],
   colorMode: 'automatic',
   effectiveColorMode: 'bright',
@@ -102,6 +110,7 @@ const state = {
   companyRanked: [],
   companyVisibleCount: 0,
   companyObserver: null,
+  companyTableResizeObserver: null,
   colorModeMediaQuery: null,
 };
 
@@ -495,6 +504,22 @@ function loadPairwiseHoldingsMaxCompaniesPreference() {
 function savePairwiseHoldingsMaxCompaniesPreference(maximum) {
   try {
     return savePairwiseHoldingsMaxCompanies(maximum, localStorage);
+  } catch {
+    return false;
+  }
+}
+
+function loadTopHoldingsMaximumPreference() {
+  try {
+    return loadTopHoldingsMaximum(localStorage);
+  } catch {
+    return DEFAULT_TOP_HOLDINGS_MAXIMUM;
+  }
+}
+
+function saveTopHoldingsMaximumPreference(maximum) {
+  try {
+    return saveTopHoldingsMaximum(maximum, localStorage);
   } catch {
     return false;
   }
@@ -1290,29 +1315,72 @@ function buildCompactExploreTable(positions) {
       ${position.entry.ticker}
     </th>
   `).join('');
+  const headerRow = `
+    <tr>
+      <th scope="col" class="compact-explore-holding">${t('explore.holding')}</th>
+      <th scope="col" class="compact-explore-number compact-explore-total">${t('explore.portfolio')}</th>
+      ${etfHeaders}
+    </tr>
+  `;
+  const columns = `
+    <colgroup>
+      <col class="compact-explore-holding-column" />
+      <col class="compact-explore-number-column compact-explore-total-column" />
+      ${positions.map(() => '<col class="compact-explore-number-column" />').join('')}
+    </colgroup>
+  `;
 
   return `
     <div class="compact-explore-table-wrap">
-      <table class="compact-explore-table">
-        <thead>
-          <tr>
-            <th scope="col" class="compact-explore-holding">${t('explore.holding')}</th>
-            <th scope="col" class="compact-explore-number compact-explore-total">${t('explore.portfolio')}</th>
-            ${etfHeaders}
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+      <div class="compact-explore-sticky-header" aria-hidden="true">
+        <div class="compact-explore-sticky-header-clip">
+          <table class="compact-explore-table compact-explore-sticky-header-table">
+            ${columns}
+            <thead>${headerRow}</thead>
+          </table>
+        </div>
+      </div>
+      <div class="compact-explore-table-scroll">
+        <table class="compact-explore-table compact-explore-table-body">
+          ${columns}
+          <thead class="compact-explore-table-semantic-header">${headerRow}</thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
   `;
+}
+
+function syncCompactExploreHeader(scrollContainer) {
+  const tableWrap = scrollContainer.closest('.compact-explore-table-wrap');
+  const headerTable = tableWrap?.querySelector('.compact-explore-sticky-header-table');
+  const bodyTable = tableWrap?.querySelector('.compact-explore-table-body');
+  if (!headerTable || !bodyTable) return;
+
+  const bodyCells = bodyTable.querySelector('tbody tr')?.cells;
+  const headerColumns = headerTable.querySelectorAll('col');
+  if (bodyCells?.length === headerColumns.length) {
+    [...headerColumns].forEach((column, index) => {
+      column.style.width = `${bodyCells[index].getBoundingClientRect().width}px`;
+    });
+  }
+  headerTable.style.width = `${bodyTable.getBoundingClientRect().width}px`;
+  headerTable.style.minWidth = '0';
+  headerTable.style.transform = `translateX(-${scrollContainer.scrollLeft}px)`;
+  const holdingHeader = headerTable.querySelector('.compact-explore-holding');
+  if (holdingHeader) {
+    holdingHeader.style.transform = `translateX(${scrollContainer.scrollLeft}px)`;
+  }
 }
 
 function appendCompanyBatch() {
   const ranked = state.companyRanked;
   const start = state.companyVisibleCount;
-  const end = Math.min(start + COMPANY_BATCH_SIZE, ranked.length);
+  const displayLimit = getTopHoldingsDisplayLimit(ranked.length, state.topHoldingsMaximum);
+  const end = Math.min(start + COMPANY_BATCH_SIZE, displayLimit);
 
   if (end <= start) {
+    elements.companyList.querySelector('.company-scroll-sentinel')?.remove();
     disconnectCompanyObserver();
     return;
   }
@@ -1326,7 +1394,7 @@ function appendCompanyBatch() {
       .slice(start, end)
       .map((company, index) => buildCompactExploreRow(positions, company, start + index + 1))
       .join('');
-    elements.companyList.querySelector('.compact-explore-table tbody').appendChild(template.content);
+    elements.companyList.querySelector('.compact-explore-table-body tbody').appendChild(template.content);
   } else {
     const fragment = document.createRange().createContextualFragment(
       ranked
@@ -1343,7 +1411,7 @@ function appendCompanyBatch() {
 
   state.companyVisibleCount = end;
 
-  if (state.companyVisibleCount >= ranked.length) {
+  if (state.companyVisibleCount >= displayLimit) {
     const existingSentinel = elements.companyList.querySelector('.company-scroll-sentinel');
     if (existingSentinel) {
       existingSentinel.remove();
@@ -1699,6 +1767,12 @@ function renderCompanyList() {
   state.companyRanked = ranked;
   state.companyVisibleCount = 0;
   disconnectCompanyObserver();
+  state.companyTableResizeObserver?.disconnect();
+  state.companyTableResizeObserver = null;
+  const unfilteredDisplayLimit = getTopHoldingsDisplayLimit(
+    ranked.length,
+    state.topHoldingsMaximum,
+  );
   elements.compactExploreSearch.hidden = !state.compactExplorePreview;
   const searchTerm = state.companySearchTerm.trim().toLowerCase();
 
@@ -1710,6 +1784,13 @@ function renderCompanyList() {
     }
 
     elements.companyList.innerHTML = buildCompactExploreTable(positions);
+    const tableScroll = elements.companyList.querySelector('.compact-explore-table-scroll');
+    tableScroll.addEventListener('scroll', () => syncCompactExploreHeader(tableScroll), { passive: true });
+    state.companyTableResizeObserver = new ResizeObserver(() => syncCompactExploreHeader(tableScroll));
+    state.companyTableResizeObserver.observe(tableScroll);
+    state.companyTableResizeObserver.observe(
+      elements.companyList.querySelector('.compact-explore-table-body'),
+    );
 
     if (searchTerm) {
       const matches = ranked
@@ -1718,16 +1799,17 @@ function renderCompanyList() {
       elements.companyHint.textContent = matches.length
         ? t('explore.matchCount', { count: matches.length, countDisplay: formatCount(matches.length) })
         : t('explore.noCompanyMatches');
-      elements.companyList.querySelector('.compact-explore-table tbody').innerHTML = matches
+      elements.companyList.querySelector('.compact-explore-table-body tbody').innerHTML = matches
         .map(({ company, rank }) => buildCompactExploreRow(positions, company, rank))
         .join('');
       state.companyVisibleCount = matches.length;
+      syncCompactExploreHeader(tableScroll);
       return;
     }
 
     elements.companyHint.textContent = t('explore.holdingsRanked');
     appendCompanyBatch();
-    if (state.companyVisibleCount < ranked.length) {
+    if (state.companyVisibleCount < unfilteredDisplayLimit) {
       const sentinel = document.createElement('div');
       sentinel.className = 'company-scroll-sentinel';
       sentinel.setAttribute('aria-hidden', 'true');
@@ -1761,7 +1843,7 @@ function renderCompanyList() {
   elements.companyList.innerHTML = '';
   appendCompanyBatch();
 
-  if (state.companyVisibleCount < ranked.length) {
+  if (state.companyVisibleCount < unfilteredDisplayLimit) {
     const sentinel = document.createElement('div');
     sentinel.className = 'company-scroll-sentinel';
     sentinel.setAttribute('aria-hidden', 'true');
@@ -2517,6 +2599,8 @@ async function bootstrap() {
   elements.nearIdenticalThresholdError = document.getElementById('near-identical-threshold-error');
   elements.pairwiseHoldingsMaxCompanies = document.getElementById('pairwise-holdings-max-companies');
   elements.pairwiseHoldingsMaxCompaniesError = document.getElementById('pairwise-holdings-max-companies-error');
+  elements.topHoldingsMaximum = document.getElementById('top-holdings-maximum');
+  elements.topHoldingsMaximumError = document.getElementById('top-holdings-maximum-error');
   elements.buildDialogButton = document.getElementById('build-dialog-button');
   elements.dataDialogButton = document.getElementById('data-dialog-button');
   elements.buildDialog = document.getElementById('build-dialog');
@@ -2680,6 +2764,8 @@ async function bootstrap() {
   elements.nearIdenticalThreshold.value = state.nearIdenticalThreshold;
   state.pairwiseHoldingsMaxCompanies = loadPairwiseHoldingsMaxCompaniesPreference();
   elements.pairwiseHoldingsMaxCompanies.value = state.pairwiseHoldingsMaxCompanies;
+  state.topHoldingsMaximum = loadTopHoldingsMaximumPreference();
+  elements.topHoldingsMaximum.value = state.topHoldingsMaximum;
 
   const snapshotResults = await Promise.allSettled(
     state.catalog.etfs.map(async (entry) => [entry.isin, await loadSnapshot(entry)])
@@ -2942,6 +3028,25 @@ async function bootstrap() {
       savePairwiseHoldingsMaxCompaniesPreference(maximum);
       elements.pairwiseHoldingsMaxCompaniesError.hidden = true;
       renderPairwiseOverlap();
+      return;
+    }
+
+    const topHoldingsMaximum = event.target.closest('[data-top-holdings-maximum]');
+    if (topHoldingsMaximum) {
+      const maximum = validateTopHoldingsMaximum(elements.topHoldingsMaximum.value);
+      if (maximum === null) {
+        elements.topHoldingsMaximum.value = state.topHoldingsMaximum;
+        elements.topHoldingsMaximumError.hidden = false;
+        elements.topHoldingsMaximumError.textContent = t('developer.invalidTopHoldingsMaximum');
+        return;
+      }
+
+      state.topHoldingsMaximum = maximum;
+      saveTopHoldingsMaximumPreference(maximum);
+      elements.topHoldingsMaximumError.hidden = true;
+      if (state.activeTab === 'aggregated') {
+        renderCompanyList();
+      }
       return;
     }
 

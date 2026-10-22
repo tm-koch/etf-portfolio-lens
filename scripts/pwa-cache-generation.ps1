@@ -6,6 +6,7 @@ $PwaCacheSensitivePaths = @(
   'taxonomy.js',
   'formatting.js',
   'redundancy.js',
+  'explore-settings.js',
   'pairwise-overlap.js',
   'diversification.js',
   'locales/en-CH.json',

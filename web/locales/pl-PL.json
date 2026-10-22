@@ -38,6 +38,8 @@
     "developer.invalidNearIdenticalThreshold": "Podaj próg od 0 do 100.",
     "developer.pairwiseHoldingsMaximum": "Maksymalna liczba wspólnych spółek do wyświetlenia",
     "developer.invalidPairwiseHoldingsMaximum": "Wprowadź dodatnią liczbę całkowitą.",
+    "developer.topHoldingsMaximum": "Maksymalna liczba wyświetlanych głównych pozycji w sekcji Odkrywaj (0 = bez limitu)",
+    "developer.invalidTopHoldingsMaximum": "Wprowadź zero lub dodatnią liczbę całkowitą.",
     "ui.closeDataDetails": "Zamknij szczegóły danych",
     "ui.dataDescription": "Migawki ETF, bieżące dane rynkowe i jakość wybranego zestawu.",
     "ui.publishedData": "Opublikowane dane",

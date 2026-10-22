@@ -38,6 +38,8 @@
     "developer.invalidNearIdenticalThreshold": "Geben Sie einen Schwellenwert von 0 bis 100 ein.",
     "developer.pairwiseHoldingsMaximum": "Maximale Anzahl angezeigter gemeinsamer Unternehmen",
     "developer.invalidPairwiseHoldingsMaximum": "Geben Sie eine positive ganze Zahl ein.",
+    "developer.topHoldingsMaximum": "Maximale Anzahl angezeigter Top-Positionen in Entdecken (0 = unbegrenzt)",
+    "developer.invalidTopHoldingsMaximum": "Geben Sie null oder eine positive ganze Zahl ein.",
     "ui.closeDataDetails": "Datendetails schliessen",
     "ui.dataDescription": "ETF-Snapshots, Live-Marktdaten und aktuelle Qualität der Auswahl.",
     "ui.publishedData": "Veröffentlichte Daten",

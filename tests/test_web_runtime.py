@@ -7,6 +7,67 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
+    def test_top_holdings_maximum_preference_defaults_validates_and_persists(self) -> None:
+        script = """
+import {
+  DEFAULT_TOP_HOLDINGS_MAXIMUM,
+  TOP_HOLDINGS_MAXIMUM_STORAGE_KEY,
+    getTopHoldingsDisplayLimit,
+  loadTopHoldingsMaximum,
+  saveTopHoldingsMaximum,
+  validateTopHoldingsMaximum,
+} from './web/explore-settings.js';
+
+const values = new Map();
+const storage = {
+  getItem: (key) => values.get(key) ?? null,
+  setItem: (key, value) => values.set(key, value),
+};
+const missing = loadTopHoldingsMaximum(storage);
+const saved = saveTopHoldingsMaximum(35, storage);
+const loaded = loadTopHoldingsMaximum(storage);
+values.set(TOP_HOLDINGS_MAXIMUM_STORAGE_KEY, '"Infinity"');
+const malformed = loadTopHoldingsMaximum(storage);
+const unlimitedSaved = saveTopHoldingsMaximum(0, storage);
+console.log(JSON.stringify({
+  defaultValue: DEFAULT_TOP_HOLDINGS_MAXIMUM,
+  missing,
+  saved,
+  loaded,
+  malformed,
+  unlimitedSaved,
+  acceptsIntegerString: validateTopHoldingsMaximum('3'),
+  acceptsUnlimited: validateTopHoldingsMaximum(0),
+  rejects: [-1, 1.5, ' ', 'NaN'].map(validateTopHoldingsMaximum),
+    limits: [
+        getTopHoldingsDisplayLimit(5, 3),
+        getTopHoldingsDisplayLimit(5, 5),
+        getTopHoldingsDisplayLimit(5, 8),
+        getTopHoldingsDisplayLimit(5, 0),
+    ],
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["defaultValue"], 0)
+        self.assertEqual(values["missing"], 0)
+        self.assertTrue(values["saved"])
+        self.assertEqual(values["loaded"], 35)
+        self.assertEqual(values["malformed"], 0)
+        self.assertTrue(values["unlimitedSaved"])
+        self.assertEqual(values["acceptsIntegerString"], 3)
+        self.assertEqual(values["acceptsUnlimited"], 0)
+        self.assertEqual(values["rejects"], [None, None, None, None])
+        self.assertEqual(values["limits"], [3, 5, 5, 5])
+
     def test_localization_resolves_locale_and_persists_runtime_switch(self) -> None:
         script = """
 import { LOCALE_STORAGE_KEY, resolveLocale, selectLocale } from './web/localization.js';

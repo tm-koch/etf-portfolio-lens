@@ -130,6 +130,14 @@
                 <span data-i18n="ui.portfolioImportDebug">Portfolio import debug</span>
                 <input id="portfolio-import-debug-enabled" type="checkbox" role="switch" />
               </label>
+              <div class="developer-threshold-settings top-holdings-limit-settings">
+                <h4 data-i18n="developer.topHoldingsMaximum">Maximum top holdings displayed in Explore (0 = unlimited)</h4>
+                <label for="top-holdings-maximum">
+                  <span data-i18n="developer.topHoldingsMaximum">Maximum top holdings displayed in Explore (0 = unlimited)</span>
+                  <input id="top-holdings-maximum" data-top-holdings-maximum type="number" min="0" step="1" inputmode="numeric" />
+                </label>
+                <p id="top-holdings-maximum-error" class="developer-threshold-error" role="alert" hidden data-i18n="developer.invalidTopHoldingsMaximum">Enter zero or a positive whole number.</p>
+              </div>
               <div class="developer-threshold-settings">
                 <h4 data-i18n="developer.redundancyThresholds">Redundancy score thresholds</h4>
                 <label for="redundancy-low-threshold">

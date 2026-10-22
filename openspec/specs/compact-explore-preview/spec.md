@@ -21,7 +21,7 @@ The application SHALL provide a developer-mode control for enabling the compact 
 
 ### Requirement: Compact holdings matrix
 
-When compact Explore preview mode is enabled, the application SHALL render a semantic holdings table using the existing aggregated holding result. The table SHALL contain one row per aggregated holding and SHALL order rows by total portfolio exposure from largest to smallest.
+When compact Explore preview mode is enabled, the application SHALL render a semantic holdings table using the existing aggregated holding result. The table SHALL contain up to the configured maximum number of top-ranked holdings, or all ranked holdings when the maximum is zero, ordered by total portfolio exposure from largest to smallest.
 
 #### Scenario: Holdings are ranked by total exposure
 - **WHEN** the compact Explore presentation has aggregated holdings
@@ -33,7 +33,7 @@ When compact Explore preview mode is enabled, the application SHALL render a sem
 
 ### Requirement: Portfolio and ETF contribution columns
 
-The compact holdings matrix SHALL display the holding name, the existing total portfolio contribution, and one column for every selected ETF. Each ETF cell SHALL display that ETF contributor's existing share of the holding total, and SHALL display an em dash when that ETF does not contribute to the holding. The matrix SHALL NOT introduce a separate holding-level exposure data source. Portfolio contribution calculations SHALL weight each selected ETF position by its valid imported CHF-normalized market value; positions without imported valuation data SHALL use the existing share-count fallback. The matrix SHALL initially display the first 20 ranked holdings and SHALL append further ranked holdings in batches as the user scrolls toward the end.
+The compact holdings matrix SHALL display the holding name, the existing total portfolio contribution, and one column for every selected ETF. Each ETF cell SHALL display that ETF contributor's existing share of the holding total, and SHALL display an em dash when that ETF does not contribute to the holding. The matrix SHALL NOT introduce a separate holding-level exposure data source. Portfolio contribution calculations SHALL weight each selected ETF position by its valid imported CHF-normalized market value; positions without imported valuation data SHALL use the existing share-count fallback. The matrix SHALL initially display up to the first 20 permitted holdings and SHALL append further permitted holdings in batches as the user scrolls toward the end, without exceeding the configured maximum.
 
 #### Scenario: Shared holding contribution breakdown
 - **WHEN** a holding has contributors from multiple selected ETFs
@@ -55,8 +55,9 @@ The compact holdings matrix SHALL display the holding name, the existing total p
 - **WHEN** the selected portfolio contains multiple ETFs
 - **THEN** the table SHALL provide one distinct column per selected ETF in the selected-position order
 
-#### Scenario: More holdings load while scrolling
-- **WHEN** the user scrolls toward the end of the currently rendered compact rows and more ranked holdings remain
+#### Scenario: More permitted holdings load while scrolling
+-- **WHEN** the user scrolls toward the end of the currently rendered compact rows and more ranked holdings remain
+- **WHEN** the user scrolls toward the end of the currently rendered compact rows and more holdings remain within the configured maximum
 - **THEN** the application SHALL append the next batch of ranked rows without replacing the existing rows
 
 ### Requirement: Responsive table overflow
@@ -117,7 +118,7 @@ The compact Explore preview SHALL display a visible positive integer rank for ev
 - **THEN** the company SHALL retain its rank from the unfiltered portfolio ranking rather than being renumbered from one
 
 ### Requirement: Live company-name filtering
-The Explore company search SHALL provide a company search field that updates the displayed company presentation on every input event in both standard and compact preview modes. Matching SHALL use the trimmed search value, case-insensitively, as a substring of the aggregated company name only. The search control SHALL provide an application-owned clear button that is visible when the search contains text and is usable with pointer, touch, and keyboard input. When activated, the clear button SHALL empty the search, restore the unfiltered first 20 ranked company rows and their infinite-scroll sentinel in the active presentation, and return focus to the search input. The implementation MAY suppress vendor-native search cancel UI only to avoid displaying duplicate clear controls; clear behavior SHALL remain owned by the application. When the search value is empty, the standard and compact presentations SHALL restore their existing complete ranked lists using first-20-plus-infinite-scroll behavior. When the search value is non-empty, both presentations SHALL display every matching company and SHALL display no company rows when there are no matches.
+The Explore company search SHALL provide a company search field that updates the displayed company presentation on every input event in both standard and compact preview modes. Matching SHALL use the trimmed search value, case-insensitively, as a substring of the aggregated company name only. The search control SHALL provide an application-owned clear button that is visible when the search contains text and is usable with pointer, touch, and keyboard input. When activated, the clear button SHALL empty the search, restore the unfiltered top holdings up to the configured maximum in the active presentation, and return focus to the search input. When the maximum is zero, this SHALL restore the existing first-20-plus-infinite-scroll behavior. The implementation MAY suppress vendor-native search cancel UI only to avoid displaying duplicate clear controls; clear behavior SHALL remain owned by the application. When the search value is empty, the standard and compact presentations SHALL restore their unfiltered ranked holdings up to the configured maximum using first-20-plus-infinite-scroll behavior, or all rows when the maximum is zero. When the search value is non-empty, the maximum SHALL NOT restrict results: both presentations SHALL display every matching company from the complete ranking and SHALL display no company rows when there are no matches. Filtered companies SHALL retain their ranks in the complete total-exposure ranking.
 
 #### Scenario: Search updates while typing in standard Explore
 - **WHEN** the user types or edits a value in the company search field while standard Explore presentation is active
@@ -129,11 +130,11 @@ The Explore company search SHALL provide a company search field that updates the
 
 #### Scenario: Clear button restores the standard list
 - **WHEN** the user activates the visible clear button after entering a company search value while standard Explore presentation is active
-- **THEN** the search input SHALL become empty, the unfiltered first 20 ranked standard company rows SHALL be displayed, the infinite-scroll sentinel SHALL be restored when more rows remain, and focus SHALL return to the search input
+- **THEN** the search input SHALL become empty, the unfiltered standard top holdings up to the configured maximum SHALL be displayed, the incremental-loading sentinel SHALL be restored when more permitted rows remain, and focus SHALL return to the search input
 
 #### Scenario: Clear button restores the compact table
 - **WHEN** the user activates the visible clear button after entering a company search value while compact Explore preview is active
-- **THEN** the search input SHALL become empty, the unfiltered first 20 ranked compact company rows SHALL be displayed, the infinite-scroll sentinel SHALL be restored when more rows remain, and focus SHALL return to the search input
+- **THEN** the search input SHALL become empty, the unfiltered compact top holdings up to the configured maximum SHALL be displayed, the incremental-loading sentinel SHALL be restored when more permitted rows remain, and focus SHALL return to the search input
 
 #### Scenario: Clear button is available across browsers
 - **WHEN** the Explore search is displayed in a browser without a native search cancel control, including Firefox mobile
@@ -141,19 +142,39 @@ The Explore company search SHALL provide a company search field that updates the
 
 #### Scenario: Company name substring match in standard Explore
 - **WHEN** the search value matches part of one or more aggregated company names regardless of letter case while standard Explore presentation is active
-- **THEN** the standard company list SHALL display every matching company and no non-matching company rows
+- **THEN** the standard company list SHALL display every matching company from the complete ranking and no non-matching company rows, regardless of the configured maximum
 
 #### Scenario: Company name substring match in compact preview
 - **WHEN** the search value matches part of one or more aggregated company names regardless of letter case while compact Explore preview is active
-- **THEN** the compact Explore table SHALL display every matching company and no non-matching company rows
+- **THEN** the compact Explore table SHALL display every matching company from the complete ranking and no non-matching company rows, regardless of the configured maximum
 
 #### Scenario: Empty search restores ranked loading in standard Explore
 - **WHEN** the company search value is empty or contains only whitespace while standard Explore presentation is active
-- **THEN** the standard presentation SHALL restore the unfiltered ranking and its existing first-20-plus-infinite-scroll behavior
+- **THEN** the standard presentation SHALL restore the unfiltered ranking up to the configured maximum using first-20-plus-incremental-loading behavior, or all rows when the maximum is zero
 
 #### Scenario: Empty search restores ranked loading in compact preview
 - **WHEN** the company search value is empty or contains only whitespace while compact Explore preview is active
-- **THEN** the compact preview SHALL restore the unfiltered ranking and its existing first-20-plus-infinite-scroll behavior
+- **THEN** the compact preview SHALL restore the unfiltered ranking up to the configured maximum using first-20-plus-incremental-loading behavior, or all rows when the maximum is zero
+
+### Requirement: Developer-configurable top holdings maximum
+The application SHALL provide a persisted developer-mode numeric maximum for the unfiltered top holdings displayed in both standard and compact Explore presentations. A value of zero SHALL mean unlimited, and the default SHALL be zero.
+
+#### Scenario: No saved maximum
+- **WHEN** no valid maximum has been saved
+- **THEN** both Explore presentations SHALL display the complete ranked list through their existing incremental loading behavior
+
+#### Scenario: Positive maximum limits the unfiltered list
+- **WHEN** a positive maximum is configured
+- **THEN** both Explore presentations SHALL display no more than that number of top-ranked holdings
+
+#### Scenario: Zero maximum is unlimited
+- **WHEN** the configured maximum is zero
+- **THEN** both Explore presentations SHALL allow the complete ranked list to be displayed through incremental loading
+
+#### Scenario: Maximum preference survives reload
+- **WHEN** a developer changes the maximum and reloads the application
+- **THEN** the saved maximum SHALL be restored and applied to both Explore presentations
+
 
 #### Scenario: Search result bypasses pagination in standard Explore
 - **WHEN** the company search value is non-empty and matching companies exist while standard Explore presentation is active
@@ -174,4 +195,3 @@ The Explore company search SHALL provide a company search field that updates the
 #### Scenario: Filtered rows retain their complete-list ranks
 - **WHEN** a company is displayed after other companies have been excluded by search in either Explore presentation
 - **THEN** the company SHALL retain its one-based rank from the complete total-exposure ranking rather than being renumbered from one
-

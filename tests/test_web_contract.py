@@ -124,6 +124,25 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("validatePairwiseHoldingsMaxCompanies", app)
         self.assertIn("developer.invalidPairwiseHoldingsMaximum", app)
 
+    def test_top_holdings_maximum_is_a_persisted_unlimited_by_default_setting(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        locales = [
+            json.loads((WEB_ROOT / "locales" / filename).read_text(encoding="utf-8"))["translation"]
+            for filename in ("en-CH.json", "de-CH.json", "pl-PL.json")
+        ]
+
+        self.assertIn('id="top-holdings-maximum"', index)
+        self.assertIn('type="number" min="0" step="1" inputmode="numeric"', index)
+        self.assertIn("topHoldingsMaximum: DEFAULT_TOP_HOLDINGS_MAXIMUM,", app)
+        self.assertIn("loadTopHoldingsMaximumPreference()", app)
+        self.assertIn("saveTopHoldingsMaximumPreference(maximum)", app)
+        self.assertIn("validateTopHoldingsMaximum", app)
+        self.assertIn("getTopHoldingsDisplayLimit(ranked.length, state.topHoldingsMaximum)", app)
+        self.assertIn("if (searchTerm)", app)
+        self.assertTrue(all("developer.topHoldingsMaximum" in locale for locale in locales))
+        self.assertTrue(all("developer.invalidTopHoldingsMaximum" in locale for locale in locales))
+
     def test_pairwise_holdings_selectors_are_portfolio_scoped_and_accessible(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
@@ -1019,6 +1038,75 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
+    def test_compact_explore_header_sticks_to_page_and_tracks_horizontal_scroll(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn('class="compact-explore-sticky-header" aria-hidden="true"', app)
+        self.assertIn("compact-explore-table-body", app)
+        self.assertIn("function syncCompactExploreHeader(scrollContainer)", app)
+        self.assertIn("translateX(-${scrollContainer.scrollLeft}px)", app)
+        self.assertIn(
+            ".compact-explore-sticky-header {\n  position: sticky;\n  top: 0;",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table-scroll {\n  max-width: 100%;\n  overflow-x: auto;",
+            styles,
+        )
+        self.assertIn(".compact-explore-table-semantic-header {", styles)
+
+    def test_compact_explore_holding_header_stays_pinned_during_horizontal_scroll(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "const holdingHeader = headerTable.querySelector('.compact-explore-holding');",
+            app,
+        )
+        self.assertIn(
+            "holdingHeader.style.transform = `translateX(${scrollContainer.scrollLeft}px)`;",
+            app,
+        )
+
+    def test_compact_explore_portfolio_and_fund_headings_are_right_aligned(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn(
+            'class="compact-explore-number-column compact-explore-total-column"',
+            app,
+        )
+        self.assertIn(
+            ".compact-explore-table .compact-explore-number-column {\n  width: 76px;",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table .compact-explore-total-column {\n  width: 92px;",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table th,\n.compact-explore-table td {\n  padding: 10px 12px;\n  border-bottom: 1px solid var(--border);\n  text-align: right;",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table .compact-explore-holding {\n  min-width: 300px;\n  text-align: left;",
+            styles,
+        )
+
+    def test_compact_explore_search_and_table_preserve_horizontal_scrolling(self) -> None:
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn(".company-list {\n  min-width: 0;", styles)
+        self.assertIn(".compact-explore-search {\n  width: 100%;\n  min-width: 0;", styles)
+        self.assertIn(
+            ".compact-explore-table-wrap {\n  width: 100%;\n  max-width: 100%;\n  min-width: 0;",
+            styles,
+        )
+        self.assertIn(
+            ".compact-explore-table-scroll {\n  max-width: 100%;\n  overflow-x: auto;",
+            styles,
+        )
+
     def test_color_mode_documentation_mentions_automatic_and_persistence(self) -> None:
         readme = (WEB_ROOT / "README.md").read_text(encoding="utf-8")
 
@@ -1083,7 +1171,7 @@ class WebContractTests(unittest.TestCase):
         self.assertIn(
             "elements.companyHint.textContent = t('explore.showingTopHoldings');", app
         )
-        self.assertIn("if (state.companyVisibleCount < ranked.length) {", app)
+        self.assertIn("if (state.companyVisibleCount < unfilteredDisplayLimit) {", app)
         self.assertIn("ensureCompanyObserver();", app)
 
     def test_catalog_search_supports_an_explore_matching_clear_button(self) -> None:

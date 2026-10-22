@@ -38,6 +38,8 @@
     "developer.invalidNearIdenticalThreshold": "Enter a threshold from 0 to 100.",
     "developer.pairwiseHoldingsMaximum": "Maximum companies shown in pairwise holdings",
     "developer.invalidPairwiseHoldingsMaximum": "Enter a positive whole number.",
+    "developer.topHoldingsMaximum": "Maximum top holdings displayed in Explore (0 = unlimited)",
+    "developer.invalidTopHoldingsMaximum": "Enter zero or a positive whole number.",
     "ui.closeDataDetails": "Close data details",
     "ui.dataDescription": "ETF snapshots, live market data, and current selection quality.",
     "ui.publishedData": "Published data",
