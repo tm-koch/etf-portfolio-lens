@@ -2162,6 +2162,12 @@ body {
   margin-bottom: 10px;
 }
 
+.chart-card-head h3,
+.rollups-box > .subcard-heading h3,
+#portfolio-panel .portfolio-column > .subcard > .subcard-heading h3[data-i18n="ui.selectedPositions"] {
+  margin: 2px 0 0;
+}
+
 .comparison-toolbar {
   display: flex;
   flex-wrap: wrap;

@@ -170,6 +170,31 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertIn("await selectLocale(languageOption.dataset.locale)", app)
         self.assertIn("renderLanguageControl();", app)
 
+    def test_compare_rollup_and_portfolio_headings_match_redundancy_score_inset(
+        self,
+    ) -> None:
+        styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
+        index = (REPOSITORY_ROOT / "web" / "index.html").read_text(encoding="utf-8")
+        base_styles = styles[: styles.index("@media (max-width: 760px)")]
+
+        self.assertIn(
+            ".chart-card-head h3,\n.rollups-box > .subcard-heading h3,\n"
+            "#portfolio-panel .portfolio-column > .subcard > .subcard-heading "
+            'h3[data-i18n="ui.selectedPositions"] {\n'
+            "  margin: 2px 0 0;\n}",
+            base_styles,
+        )
+        self.assertIn('<div class="subcard stack rollups-box">', index)
+        self.assertIn(
+            '<h3 data-i18n="ui.selectedPositions">Selected positions</h3>',
+            index,
+        )
+        self.assertIn(
+            "  .aggregation-layout > .subcard > .subcard-heading h3 {\n"
+            "    margin: 0;",
+            styles,
+        )
+
     def test_local_resources_initialize_and_switch_without_network_access(self) -> None:
         script = """
 import fs from 'node:fs';
