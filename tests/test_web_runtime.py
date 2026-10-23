@@ -195,6 +195,33 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
             styles,
         )
 
+    def test_wide_position_metric_columns_use_shared_tracks(self) -> None:
+        styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
+        wide_styles = styles[
+            styles.index("@media (min-width: 761px)") : styles.index(
+                ".positions-table {"
+            )
+        ]
+        mobile_styles = styles[styles.index("@media (max-width: 760px)") :]
+
+        self.assertIn(
+            ".positions-table .position-row {\n"
+            "    display: grid;\n"
+            "    grid-template-columns: minmax(0, 1fr) 7rem 7rem 4rem auto;",
+            wide_styles,
+        )
+        self.assertIn(
+            ".positions-table .position-row--percentage {\n"
+            "    grid-template-columns: minmax(0, 1fr) auto auto;",
+            wide_styles,
+        )
+        self.assertIn(
+            "  .position-row {\n"
+            "    display: grid;\n"
+            "    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;",
+            mobile_styles,
+        )
+
     def test_local_resources_initialize_and_switch_without_network_access(self) -> None:
         script = """
 import fs from 'node:fs';

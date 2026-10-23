@@ -1973,7 +1973,7 @@ body {
 
   .positions-table .position-row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+    grid-template-columns: minmax(0, 1fr) 7rem 7rem 4rem auto;
     grid-template-areas:
       "identity identity identity identity remove"
       "shares price value weight remove";
