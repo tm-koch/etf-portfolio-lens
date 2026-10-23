@@ -94,4 +94,3 @@ At viewport widths greater than 760px, secondary content positioned in the upper
 #### Scenario: Mobile layout is unchanged
 - **WHEN** Home, Portfolio, Compare, or Explore is active at a viewport width of 760px or less
 - **THEN** the compact color-mode trigger, panel content flow, and fixed bottom navigation retain their existing geometry without the desktop clearance rule
-

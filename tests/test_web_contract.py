@@ -55,6 +55,32 @@ class WebContractTests(unittest.TestCase):
             )["translation"]
             self.assertEqual(resources["ui.heroTitle"], headline, locale)
 
+    def test_comparison_header_to_chart_gap_is_compact_at_all_widths(self) -> None:
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        base_styles = styles[: styles.index("@media (max-width: 760px)")]
+        mobile_styles = styles[styles.rfind("@media (max-width: 760px)") :]
+
+        self.assertIn(
+            ".chart-card {\n"
+            "  padding: 18px;\n"
+            "  border-radius: var(--radius);\n"
+            "  display: grid;\n"
+            "  gap: 14px;\n"
+            "}",
+            base_styles,
+        )
+        self.assertIn(".chart-card-head {\n  margin-bottom: -6px;\n}", base_styles)
+        self.assertIn("--comparison-donut-mobile-spacing: 16px;", styles)
+        self.assertIn("gap: var(--comparison-donut-mobile-spacing);", mobile_styles)
+        self.assertIn(
+            ".chart-card-head {\n    margin-bottom: -8px;\n  }", mobile_styles
+        )
+        self.assertEqual(index.count('<article class="chart-card">'), 3)
+        self.assertEqual(index.count('class="chart-card-head"'), 3)
+        self.assertEqual(index.count('class="chart-frame"'), 3)
+        self.assertEqual(index.count('class="chart-legend-shell"'), 3)
+
     def test_app_translation_keys_exist_in_all_locales(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         charts = (WEB_ROOT / "charts.js").read_text(encoding="utf-8")
@@ -126,7 +152,9 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
-    def test_pairwise_holdings_maximum_is_a_persisted_positive_integer_setting(self) -> None:
+    def test_pairwise_holdings_maximum_is_a_persisted_positive_integer_setting(
+        self,
+    ) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
@@ -137,11 +165,15 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("validatePairwiseHoldingsMaxCompanies", app)
         self.assertIn("developer.invalidPairwiseHoldingsMaximum", app)
 
-    def test_top_holdings_maximum_is_a_persisted_unlimited_by_default_setting(self) -> None:
+    def test_top_holdings_maximum_is_a_persisted_unlimited_by_default_setting(
+        self,
+    ) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         locales = [
-            json.loads((WEB_ROOT / "locales" / filename).read_text(encoding="utf-8"))["translation"]
+            json.loads((WEB_ROOT / "locales" / filename).read_text(encoding="utf-8"))[
+                "translation"
+            ]
             for filename in ("en-CH.json", "de-CH.json", "pl-PL.json")
         ]
 
@@ -151,20 +183,32 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("loadTopHoldingsMaximumPreference()", app)
         self.assertIn("saveTopHoldingsMaximumPreference(maximum)", app)
         self.assertIn("validateTopHoldingsMaximum", app)
-        self.assertIn("getTopHoldingsDisplayLimit(ranked.length, state.topHoldingsMaximum)", app)
+        self.assertIn(
+            "getTopHoldingsDisplayLimit(ranked.length, state.topHoldingsMaximum)", app
+        )
         self.assertIn("if (searchTerm)", app)
-        self.assertTrue(all("developer.topHoldingsMaximum" in locale for locale in locales))
-        self.assertTrue(all("developer.invalidTopHoldingsMaximum" in locale for locale in locales))
+        self.assertTrue(
+            all("developer.topHoldingsMaximum" in locale for locale in locales)
+        )
+        self.assertTrue(
+            all("developer.invalidTopHoldingsMaximum" in locale for locale in locales)
+        )
 
-    def test_pairwise_holdings_selectors_are_portfolio_scoped_and_accessible(self) -> None:
+    def test_pairwise_holdings_selectors_are_portfolio_scoped_and_accessible(
+        self,
+    ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
-        self.assertIn("reconcilePairwiseSelection(positions, state.pairwiseSelection)", app)
+        self.assertIn(
+            "reconcilePairwiseSelection(positions, state.pairwiseSelection)", app
+        )
         self.assertIn('role="menuitemradio"', app)
         self.assertIn('aria-haspopup="menu" aria-expanded="false"', app)
         self.assertIn("pairwiseNeedTwo", app)
 
-    def test_pairwise_holdings_detail_uses_pair_total_and_renders_contributors(self) -> None:
+    def test_pairwise_holdings_detail_uses_pair_total_and_renders_contributors(
+        self,
+    ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
@@ -204,11 +248,23 @@ class WebContractTests(unittest.TestCase):
         self.assertNotIn(".pairwise-butterfly-axis", styles)
         self.assertIn(".pairwise-butterfly-side-track", styles)
         self.assertIn("width: 100%;\n  font-size: 0.8rem;", styles)
-        self.assertIn("grid-template-columns: minmax(0, var(--pairwise-empty)) max-content 4px minmax(0, var(--pairwise-fill));", styles)
-        self.assertIn("grid-template-columns: minmax(0, var(--pairwise-fill)) 4px max-content minmax(0, var(--pairwise-empty));", styles)
-        self.assertIn(".pairwise-butterfly-side.is-a .pairwise-butterfly-side-track", styles)
-        self.assertIn(".pairwise-butterfly-side.is-b .pairwise-butterfly-side-track", styles)
-        self.assertIn("grid-template-columns: minmax(0, 1fr) 2px minmax(0, 1fr);", styles)
+        self.assertIn(
+            "grid-template-columns: minmax(0, var(--pairwise-empty)) max-content 4px minmax(0, var(--pairwise-fill));",
+            styles,
+        )
+        self.assertIn(
+            "grid-template-columns: minmax(0, var(--pairwise-fill)) 4px max-content minmax(0, var(--pairwise-empty));",
+            styles,
+        )
+        self.assertIn(
+            ".pairwise-butterfly-side.is-a .pairwise-butterfly-side-track", styles
+        )
+        self.assertIn(
+            ".pairwise-butterfly-side.is-b .pairwise-butterfly-side-track", styles
+        )
+        self.assertIn(
+            "grid-template-columns: minmax(0, 1fr) 2px minmax(0, 1fr);", styles
+        )
         self.assertIn("grid-column: 3;", styles)
         self.assertIn("grid-template-columns: repeat(2, minmax(0, 1fr));", styles)
         self.assertIn("max-content 4px minmax(0, var(--pairwise-fill))", styles)
@@ -1051,7 +1107,9 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
-    def test_compact_explore_header_sticks_to_page_and_tracks_horizontal_scroll(self) -> None:
+    def test_compact_explore_header_sticks_to_page_and_tracks_horizontal_scroll(
+        self,
+    ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
@@ -1073,7 +1131,9 @@ class WebContractTests(unittest.TestCase):
         )
         self.assertIn(".compact-explore-table-semantic-header {", styles)
 
-    def test_compact_explore_holding_header_stays_pinned_during_horizontal_scroll(self) -> None:
+    def test_compact_explore_holding_header_stays_pinned_during_horizontal_scroll(
+        self,
+    ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
         self.assertIn(
@@ -1085,7 +1145,9 @@ class WebContractTests(unittest.TestCase):
             app,
         )
 
-    def test_compact_explore_portfolio_and_fund_headings_are_right_aligned(self) -> None:
+    def test_compact_explore_portfolio_and_fund_headings_are_right_aligned(
+        self,
+    ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
@@ -1110,11 +1172,15 @@ class WebContractTests(unittest.TestCase):
             styles,
         )
 
-    def test_compact_explore_search_and_table_preserve_horizontal_scrolling(self) -> None:
+    def test_compact_explore_search_and_table_preserve_horizontal_scrolling(
+        self,
+    ) -> None:
         styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
 
         self.assertIn(".company-list {\n  min-width: 0;", styles)
-        self.assertIn(".compact-explore-search {\n  width: 100%;\n  min-width: 0;", styles)
+        self.assertIn(
+            ".compact-explore-search {\n  width: 100%;\n  min-width: 0;", styles
+        )
         self.assertIn(
             ".compact-explore-table-wrap {\n  width: 100%;\n  max-width: 100%;\n  min-width: 0;",
             styles,

@@ -2159,7 +2159,7 @@ body {
 }
 
 .chart-card-head {
-  margin-bottom: 10px;
+  margin-bottom: -6px;
 }
 
 .chart-card-head h3,
@@ -2910,7 +2910,7 @@ body {
   }
 
   .chart-card-head {
-    margin-bottom: 0;
+    margin-bottom: -8px;
   }
 
   .chart-legend {

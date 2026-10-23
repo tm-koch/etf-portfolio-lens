@@ -7,7 +7,9 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
-    def test_top_holdings_maximum_preference_defaults_validates_and_persists(self) -> None:
+    def test_top_holdings_maximum_preference_defaults_validates_and_persists(
+        self,
+    ) -> None:
         script = """
 import {
   DEFAULT_TOP_HOLDINGS_MAXIMUM,
