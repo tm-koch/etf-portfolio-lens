@@ -1046,10 +1046,14 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("compact-explore-table-body", app)
         self.assertIn("function syncCompactExploreHeader(scrollContainer)", app)
         self.assertIn("translateX(-${scrollContainer.scrollLeft}px)", app)
+        self.assertIn("--desktop-navigation-height: 82px;", styles)
+        self.assertIn("height: var(--desktop-navigation-height);", styles)
         self.assertIn(
-            ".compact-explore-sticky-header {\n  position: sticky;\n  top: 0;",
+            ".compact-explore-sticky-header {\n  position: sticky;\n  top: var(--desktop-navigation-height);",
             styles,
         )
+        mobile_styles = styles[styles.rfind("@media (max-width: 760px)") :]
+        self.assertIn("--desktop-navigation-height: 0px;", mobile_styles)
         self.assertIn(
             ".compact-explore-table-scroll {\n  max-width: 100%;\n  overflow-x: auto;",
             styles,
