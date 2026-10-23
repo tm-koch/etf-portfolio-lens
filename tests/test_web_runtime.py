@@ -7,6 +7,79 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
+    def test_report_matrix_columns_are_partitioned_for_readable_continuation(self) -> None:
+        script = """
+import { partitionReportColumns } from './web/report-renderer.js';
+
+const columns = Array.from({ length: 19 }, (_, index) => ({ ticker: `ETF${index + 1}` }));
+const panels = partitionReportColumns(columns);
+console.log(JSON.stringify({
+  sizes: panels.map((panel) => panel.columns.length),
+  ranges: panels.map((panel) => [panel.start, panel.end]),
+  preservesOrder: panels.flatMap((panel) => panel.columns).every((column, index) => column === columns[index]),
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["sizes"], [8, 8, 3])
+        self.assertEqual(values["ranges"], [[0, 8], [8, 16], [16, 19]])
+        self.assertTrue(values["preservesOrder"])
+
+    def test_opening_export_dialog_resets_only_export_session_controls(self) -> None:
+        script = """
+import { openReportDialog } from './web/export-view.js';
+
+const appState = {
+  portfolio: [{ isin: 'IE0001', shares: 8 }],
+  valuationMode: 'imported',
+  colorMode: 'dark',
+};
+const initialAppState = structuredClone(appState);
+const dialog = {
+  open: false,
+  showModal() { this.open = true; },
+};
+const scopeControls = [
+    { value: 'portfolio', checked: false },
+    { value: 'catalog', checked: true },
+];
+const allocationOnlyControl = { checked: true };
+const generationStatus = { textContent: 'Previous status', hidden: false };
+openReportDialog({ dialog, scopeControls, allocationOnlyControl, generationStatus });
+console.log(JSON.stringify({
+  opened: dialog.open,
+    selectedScope: scopeControls.find((control) => control.checked)?.value,
+  allocationOnly: allocationOnlyControl.checked,
+  statusText: generationStatus.textContent,
+  statusHidden: generationStatus.hidden,
+  appStateUnchanged: JSON.stringify(appState) === JSON.stringify(initialAppState),
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertTrue(values["opened"])
+        self.assertEqual(values["selectedScope"], "portfolio")
+        self.assertFalse(values["allocationOnly"])
+        self.assertEqual(values["statusText"], "")
+        self.assertTrue(values["statusHidden"])
+        self.assertTrue(values["appStateUnchanged"])
+
     def test_top_holdings_maximum_preference_defaults_validates_and_persists(
         self,
     ) -> None:
@@ -69,6 +142,70 @@ console.log(JSON.stringify({
         self.assertEqual(values["acceptsUnlimited"], 0)
         self.assertEqual(values["rejects"], [None, None, None, None])
         self.assertEqual(values["limits"], [3, 5, 5, 5])
+
+    def test_report_snapshot_separates_catalog_listing_from_portfolio(self) -> None:
+        script = """
+import { buildReportSnapshot } from './web/report-data.js';
+
+const heldPosition = {
+    isin: 'IE0001',
+    shares: 12,
+    entry: { isin: 'IE0001', ticker: 'HELD' },
+    snapshot: { holdings: [{ security: { name: 'Example Co' } }] },
+    valuation: { valueChf: 240 },
+};
+const portfolioPositions = [heldPosition];
+const catalogEtfs = [heldPosition.entry, { isin: 'IE0002', ticker: 'UNHELD' }];
+const common = {
+    portfolioPositions,
+    catalogEtfs,
+    catalogTimestamp: '2026-10-20',
+    portfolioMode: 'full',
+    valuationMode: 'latest',
+    locale: 'pl-PL',
+    buildInfo: { source: { commit: 'abcdef1234567890' }, data: { timestamp: '2026-10-19' } },
+    livePrices: { generated_at: '2026-10-20T18:21:37Z' },
+    generatedAt: '2026-10-23T12:00:00Z',
+};
+const portfolio = buildReportSnapshot(common);
+const catalog = buildReportSnapshot({ ...common, scope: 'catalog' });
+heldPosition.shares = 99;
+console.log(JSON.stringify({
+    portfolioCount: portfolio.etfs.length,
+    catalogCount: catalog.etfs.length,
+    analyticsPositionCount: catalog.portfolioPositions.length,
+    heldTicker: catalog.etfs[0].portfolioPosition.entry.ticker,
+    unheldPosition: catalog.etfs[1].portfolioPosition,
+    capturedShares: catalog.portfolioPositions[0].shares,
+    locale: catalog.locale,
+    provenance: catalog.provenance,
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["portfolioCount"], 1)
+        self.assertEqual(values["catalogCount"], 2)
+        self.assertEqual(values["analyticsPositionCount"], 1)
+        self.assertEqual(values["heldTicker"], "HELD")
+        self.assertIsNone(values["unheldPosition"])
+        self.assertEqual(values["capturedShares"], 12)
+        self.assertEqual(values["locale"], "pl-PL")
+        self.assertEqual(
+            values["provenance"],
+            {
+                "buildId": "abcdef1",
+                "snapshotTimestamp": "2026-10-19",
+                "livePricesTimestamp": "2026-10-20T18:21:37Z",
+            },
+        )
 
     def test_localization_resolves_locale_and_persists_runtime_switch(self) -> None:
         script = """
@@ -948,6 +1085,7 @@ console.log(JSON.stringify({ legacy, current, nullValues, privatePayload, decode
                 "portfolio": [{"isin": "CH0237935652", "shares": 2}],
             },
         )
+
         self.assertEqual(values["current"]["status"], "valid")
         self.assertEqual(values["current"]["portfolio"][0]["valuationMode"], "latest")
         self.assertEqual(
@@ -965,6 +1103,64 @@ console.log(JSON.stringify({ legacy, current, nullValues, privatePayload, decode
         ]
         self.assertAlmostEqual(private_shares[0], 200 / 3)
         self.assertAlmostEqual(private_shares[1], 100 / 3)
+
+    def test_report_analytics_limits_ranked_matrix_to_top_twenty_portfolio_etfs(
+        self,
+    ) -> None:
+        script = """
+import { buildReportAnalytics, buildReportSnapshot } from './web/report-data.js';
+
+const snapshot = buildReportSnapshot({
+  scope: 'catalog',
+  portfolioPositions: [{ isin: 'IE0001', entry: { ticker: 'HELD', name: 'Held ETF' } }],
+  catalogEtfs: [
+    { isin: 'IE0001', ticker: 'HELD', name: 'Held ETF' },
+    { isin: 'IE0002', ticker: 'UNHELD', name: 'Unheld ETF' },
+  ],
+});
+const rankedCompanies = Array.from({ length: 25 }, (_, index) => ({
+  key: `company-${index}`,
+  name: `Company ${index}`,
+  weight: 25 - index,
+  contributors: index === 0 ? [{ ticker: 'HELD', weight: 12.5 }] : [],
+}));
+const analytics = buildReportAnalytics({
+  snapshot,
+  rankedCompanies,
+  summary: { positions: 1 },
+  rollups: { sector: { Technology: 25 } },
+  redundancy: { available: false },
+  charts: { sector: { labels: ['Technology'], series: [] } },
+  pairwiseHeatmap: [{ product: { ticker: 'HELD' }, cells: [{ type: 'diagonal' }] }],
+});
+console.log(JSON.stringify({
+  columnTickers: analytics.etfColumns.map((column) => column.ticker),
+  count: analytics.companies.length,
+  first: analytics.companies[0],
+  lastRank: analytics.companies.at(-1).rank,
+  preservedSummary: analytics.summary,
+  empty: buildReportAnalytics({ snapshot }).companies,
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["columnTickers"], ["HELD"])
+        self.assertEqual(values["count"], 20)
+        self.assertEqual(values["first"]["rank"], 1)
+        self.assertEqual(values["first"]["name"], "Company 0")
+        self.assertEqual(values["first"]["totalContribution"], 25)
+        self.assertEqual(values["first"]["contributions"], [{"ticker": "HELD", "value": 12.5}])
+        self.assertEqual(values["lastRank"], 20)
+        self.assertEqual(values["preservedSummary"], {"positions": 1})
+        self.assertEqual(values["empty"], [])
 
     def test_effective_valuation_covers_live_fallback_and_unavailable_states(
         self,
@@ -1020,6 +1216,200 @@ console.log(JSON.stringify(cases));
         self.assertEqual(values[4]["valueChf"], 144)
         self.assertEqual(values[5]["valueChf"], 140)
         self.assertIsNone(values[6]["valueChf"])
+
+    def test_pdf_options_are_landscape_and_stamp_provenance_on_every_page(self) -> None:
+        script = """
+import { createReportPdfOptions, stampReportPdf } from './web/pdf-export.js';
+
+const calls = [];
+const pdf = {
+  internal: { getNumberOfPages: () => 2, pageSize: { getWidth: () => 297, getHeight: () => 210 } },
+  setProperties: (value) => calls.push(['properties', value]),
+  setPage: (value) => calls.push(['page', value]),
+  setFont: () => {},
+  setFontSize: () => {},
+  setTextColor: () => {},
+  setDrawColor: () => {},
+  line: (...value) => calls.push(['line', ...value]),
+  splitTextToSize: (value) => [value],
+  text: (value) => calls.push(['text', Array.isArray(value) ? value.join(' ') : value]),
+  getTextWidth: (value) => value.length * 0.5,
+  link: (...value) => calls.push(['link', ...value]),
+};
+const snapshot = {
+  generatedAt: '2026-10-23T12:00:00Z',
+  provenance: { buildId: 'abcdef1', snapshotTimestamp: '2026-10-22', livePricesTimestamp: null },
+};
+const labels = {
+  'export.generatedAt': 'Generated',
+  'export.buildIdentifier': 'Build',
+  'export.etfSnapshot': 'Snapshot',
+  'export.livePrices': 'Live prices',
+  'export.website': 'ETF Portfolio Lens website',
+  'common.unavailable': 'Unavailable',
+};
+const t = (key, values = {}) => key === 'export.page'
+  ? `Page ${values.page} of ${values.total}`
+  : labels[key];
+stampReportPdf(pdf, { snapshot, t, formatTimestamp: (value) => value || 'Unavailable' });
+const options = createReportPdfOptions(snapshot);
+console.log(JSON.stringify({
+  pageFormat: options.jsPDF,
+  filename: options.filename,
+  pages: calls.filter(([type]) => type === 'page').map(([, page]) => page),
+  text: calls.filter(([type]) => type === 'text').map(([, text]) => text),
+  links: calls.filter(([type]) => type === 'link').map(([, x, y, width, height, options]) => ({ x, y, width, height, url: options.url })),
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["pageFormat"]["format"], "a4")
+        self.assertEqual(values["pageFormat"]["orientation"], "landscape")
+        self.assertEqual(values["filename"], "etf-portfolio-lens-report-2026-10-23.pdf")
+        self.assertEqual(values["pages"], [1, 2])
+        self.assertEqual(len(values["links"]), 2)
+        self.assertTrue(all(link["width"] > 0 for link in values["links"]))
+        self.assertTrue(all(link["url"] == "https://tm-koch.github.io/etf-portfolio-lens/" for link in values["links"]))
+        joined_text = "\n".join(values["text"])
+        for required in ("Generated:", "Build: abcdef1", "Snapshot: 2026-10-22", "Live prices: Unavailable", "Page 1 of 2", "Page 2 of 2"):
+            self.assertIn(required, joined_text)
+
+    def test_offline_pwa_uses_cached_report_resources_without_uploads(self) -> None:
+        script = """
+import fs from 'node:fs';
+import vm from 'node:vm';
+import { generateReportPdf } from './web/pdf-export.js';
+
+const listeners = new Map();
+const cacheStore = new Map();
+const networkRequests = [];
+let offline = false;
+let savedFilename = null;
+let capturedOptions = null;
+const shellCacheName = 'etf-lens-shell-test';
+const runtimeCacheName = 'etf-lens-runtime-test';
+const shellCache = {
+    addAll: async (urls) => urls.forEach((url) => cacheStore.set(url, { asset: url })),
+    match: async (request, options = {}) => {
+        const url = typeof request === 'string' ? request : request.url;
+        if (cacheStore.has(url)) return cacheStore.get(url);
+        if (options.ignoreSearch) {
+            const path = new URL(url).pathname;
+            return [...cacheStore.entries()].find(([key]) => new URL(key).pathname === path)?.[1] || null;
+        }
+        return null;
+    },
+    put: async (request, response) => cacheStore.set(request.url, response),
+    keys: async () => [...cacheStore.keys()].map((url) => ({ url })),
+    delete: async (request) => cacheStore.delete(request.url),
+};
+const caches = {
+    open: async () => shellCache,
+    keys: async () => [shellCacheName, runtimeCacheName],
+    delete: async () => true,
+};
+const self = {
+    registration: { scope: 'https://app.test/web/' },
+    clients: { claim: async () => {} },
+    skipWaiting: async () => {},
+    addEventListener: (name, listener) => listeners.set(name, listener),
+};
+async function fetch(request) {
+    networkRequests.push({ url: request.url, method: request.method });
+    if (offline) throw new Error('offline');
+    return { ok: true, value: request.url, clone() { return { ...this }; } };
+}
+vm.runInNewContext(fs.readFileSync('./web/sw.js', 'utf8'), { self, caches, fetch, URL, Promise, Error });
+
+let installPromise;
+listeners.get('install')({ waitUntil: (promise) => { installPromise = promise; } });
+await installPromise;
+async function requestThroughWorker(request) {
+    let responsePromise;
+    listeners.get('fetch')({ request, respondWith: (promise) => { responsePromise = promise; } });
+    return responsePromise;
+}
+const cachedRequests = [
+    { url: 'https://app.test/web/data/catalog.json', method: 'GET', mode: 'cors' },
+    { url: 'https://app.test/data/raw/snapshots/CHSPI.json', method: 'GET', mode: 'cors' },
+];
+for (const request of cachedRequests) await requestThroughWorker(request);
+offline = true;
+const offlineData = await Promise.all(cachedRequests.map(requestThroughWorker));
+const pdfLibrary = await requestThroughWorker({
+    url: 'https://app.test/web/vendor/html2pdf.bundle.min.js',
+    method: 'GET',
+    mode: 'cors',
+});
+
+globalThis.document = { fonts: { ready: Promise.resolve() } };
+const pdf = {
+    internal: { getNumberOfPages: () => 1, pageSize: { getWidth: () => 297, getHeight: () => 210 } },
+    setProperties: () => {},
+    setPage: () => {},
+    setFont: () => {},
+    setFontSize: () => {},
+    setTextColor: () => {},
+    setDrawColor: () => {},
+    line: () => {},
+    splitTextToSize: (value) => [value],
+    text: () => {},
+    getTextWidth: (value) => value.length * 0.5,
+    link: () => {},
+};
+const worker = {
+    set(options) { capturedOptions = options; return this; },
+    from() { return this; },
+    toPdf() { return this; },
+    get() { return { then(callback) { callback(pdf); return { save(filename) { savedFilename = filename; return Promise.resolve(filename); } }; } }; },
+};
+await generateReportPdf({
+    root: { id: 'report' },
+    snapshot: { generatedAt: '2026-10-23T12:00:00Z', provenance: {} },
+    t: (key) => key,
+    formatTimestamp: (value) => value || 'Unavailable',
+    html2pdf: () => worker,
+});
+console.log(JSON.stringify({
+    offlineData: offlineData.map((response) => response.value),
+    pdfLibraryCached: Boolean(pdfLibrary?.asset),
+    filename: savedFilename,
+    orientation: capturedOptions.jsPDF.orientation,
+    networkRequests,
+    cacheContainsPdfLibrary: [...cacheStore.keys()].some((url) => url.endsWith('/vendor/html2pdf.bundle.min.js')),
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(
+            values["offlineData"],
+            [
+                "https://app.test/web/data/catalog.json",
+                "https://app.test/data/raw/snapshots/CHSPI.json",
+            ],
+        )
+        self.assertTrue(values["pdfLibraryCached"])
+        self.assertEqual(values["filename"], "etf-portfolio-lens-report-2026-10-23.pdf")
+        self.assertEqual(values["orientation"], "landscape")
+        self.assertTrue(values["cacheContainsPdfLibrary"])
+        self.assertTrue(all(request["method"] == "GET" for request in values["networkRequests"]))
+        self.assertTrue(all(request["url"].startswith("https://app.test/") for request in values["networkRequests"]))
 
 
 if __name__ == "__main__":

@@ -58,7 +58,12 @@ try {
   $requiredWebFiles = @(
     'index.html',
     'styles.css',
+    'fonts.css',
     'app.js',
+    'report-data.js',
+    'export-view.js',
+    'report-renderer.js',
+    'pdf-export.js',
     'localization.js',
     'taxonomy.js',
     'formatting.js',
@@ -79,11 +84,21 @@ try {
     'sw.js',
     'icons/launchericon-192x192.png',
     'icons/launchericon-512x512.png',
+    'fonts/space-grotesk-latin-400-normal.woff2',
+    'fonts/space-grotesk-latin-500-normal.woff2',
+    'fonts/space-grotesk-latin-700-normal.woff2',
+    'fonts/space-grotesk-latin-ext-400-normal.woff2',
+    'fonts/space-grotesk-latin-ext-500-normal.woff2',
+    'fonts/space-grotesk-latin-ext-700-normal.woff2',
     'vendor/chart.umd.min.js',
     'vendor/i18next.min.js',
     'vendor/lucide.js',
     'vendor/pdf.min.js',
-    'vendor/pdf.worker.min.js'
+    'vendor/pdf.worker.min.js',
+    'vendor/html2pdf.bundle.min.js',
+    'vendor/html2pdf.LICENSE',
+    'vendor/html2pdf.bundle.min.js.LICENSE.txt',
+    'fonts/OFL.txt'
   )
 
   foreach ($file in $requiredWebFiles) {

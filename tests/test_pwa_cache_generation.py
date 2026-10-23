@@ -57,6 +57,36 @@ class PwaCacheGenerationTests(unittest.TestCase):
 
             self.assertNotEqual(first_generation, self.run_generation(second_root))
 
+    def test_pdf_and_font_resources_are_cache_sensitive(self) -> None:
+        command = f". '{CACHE_HELPER}'; Get-PwaCacheSensitivePaths"
+        result = subprocess.run(
+            ["pwsh", "-NoProfile", "-Command", command],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        cache_paths = set(result.stdout.splitlines())
+        expected_paths = {
+            "report-data.js",
+            "export-view.js",
+            "report-renderer.js",
+            "pdf-export.js",
+            "fonts.css",
+            "fonts/space-grotesk-latin-400-normal.woff2",
+            "fonts/space-grotesk-latin-500-normal.woff2",
+            "fonts/space-grotesk-latin-700-normal.woff2",
+            "fonts/space-grotesk-latin-ext-400-normal.woff2",
+            "fonts/space-grotesk-latin-ext-500-normal.woff2",
+            "fonts/space-grotesk-latin-ext-700-normal.woff2",
+            "vendor/html2pdf.bundle.min.js",
+        }
+
+        self.assertTrue(expected_paths.issubset(cache_paths))
+        for path in expected_paths:
+            self.assertTrue((WEB_ROOT / path).is_file())
+            self.assertIn(f"'{path}'", (WEB_ROOT / "sw.js").read_text(encoding="utf-8"))
+
     def test_published_worker_replacement_does_not_modify_source_worker(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             published_worker = Path(temporary_directory) / "sw.js"

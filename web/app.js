@@ -44,6 +44,10 @@ import {
 } from './redundancy.js?v=20261019-1';
 import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
 import { initializeLocalization, selectLocale } from './localization.js';
+import { buildReportAnalytics, buildReportSnapshot } from './report-data.js';
+import { openReportDialog } from './export-view.js';
+import { destroyReportCharts, renderReportDocument } from './report-renderer.js';
+import { generateReportPdf } from './pdf-export.js';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
@@ -103,10 +107,12 @@ const state = {
   catalogMaps: null,
   snapshots: new Map(),
   pairwiseOverlapIndex: new Map(),
+  reportChartInstances: [],
   buildInfo: null,
   livePrices: null,
   buildDialogReturnFocus: null,
   dataDialogReturnFocus: null,
+  exportDialogReturnFocus: null,
   companyRanked: [],
   companyVisibleCount: 0,
   companyObserver: null,
@@ -845,6 +851,69 @@ function closeDataDialog() {
   }
 }
 
+function openExportDialog() {
+  state.exportDialogReturnFocus = document.activeElement;
+  destroyReportCharts(state.reportChartInstances);
+  elements.exportReportPreview.hidden = true;
+  elements.exportGenerateButton.disabled = false;
+  openReportDialog({
+    dialog: elements.exportDialog,
+    scopeControls: elements.exportScope,
+    allocationOnlyControl: elements.exportAllocationOnly,
+    generationStatus: elements.exportGenerationStatus,
+  });
+}
+
+async function generateExportReport() {
+  elements.exportGenerateButton.disabled = true;
+  elements.exportGenerationStatus.hidden = false;
+  elements.exportGenerationStatus.textContent = t('export.generating');
+  try {
+    const scope = elements.exportScope.find((control) => control.checked)?.value || 'portfolio';
+    const snapshot = createReportSnapshot(scope);
+    const analytics = createReportAnalytics(snapshot);
+    elements.exportReportPreview.hidden = false;
+    renderReportDocument({
+      root: elements.exportReportPreview,
+      snapshot,
+      analytics,
+      allocationOnly: elements.exportAllocationOnly.checked,
+      t,
+      formatCount,
+      formatDecimal: formatPercentNumber,
+      formatPercent,
+      formatCurrency: formatCurrencyValue,
+      translateTaxonomy: (label) => translateTaxonomyLabel(label, t),
+      chartInstances: state.reportChartInstances,
+    });
+    await generateReportPdf({
+      root: elements.exportReportPreview,
+      snapshot,
+      t,
+      formatTimestamp: (value) => value ? formatBuildTimestamp(value) : t('common.unavailable'),
+    });
+    elements.exportGenerationStatus.textContent = t('export.pdfReady');
+    elements.exportReportPreview.hidden = true;
+    destroyReportCharts(state.reportChartInstances);
+    closeExportDialog();
+  } catch (error) {
+    console.error('Could not build the PDF report:', error);
+    elements.exportGenerationStatus.textContent = t('export.generationFailed');
+  } finally {
+    elements.exportGenerateButton.disabled = false;
+  }
+}
+
+function closeExportDialog() {
+  if (typeof elements.exportDialog.close === 'function') {
+    elements.exportDialog.close();
+  } else {
+    elements.exportDialog.removeAttribute('open');
+    state.exportDialogReturnFocus?.focus();
+    state.exportDialogReturnFocus = null;
+  }
+}
+
 function openScoreInfoDialog(event) {
   const opener = event.currentTarget;
   const panelId = opener.dataset.scoreInfo;
@@ -929,6 +998,116 @@ function enrichPositions() {
 
 function getSelectedPositions() {
   return enrichPositions();
+}
+
+function createReportSnapshot(scope = 'portfolio') {
+  const positions = getSelectedPositions();
+  const totalShareUnits = getTotalShareUnits(positions);
+  const portfolioPositions = positions.map((position) => ({
+    ...position,
+    valuation: getPositionValuation(position),
+    weightPct: getPositionWeight(position, totalShareUnits),
+  }));
+
+  return buildReportSnapshot({
+    scope,
+    portfolioPositions,
+    catalogEtfs: state.catalog?.etfs || [],
+    catalogTimestamp: state.catalog?.generatedAt || null,
+    portfolioMode: state.portfolioMode,
+    valuationMode: state.valuationMode,
+    locale: window.i18next.resolvedLanguage || window.i18next.language,
+    buildInfo: state.buildInfo,
+    livePrices: state.livePrices,
+  });
+}
+
+function createReportAnalytics(snapshot) {
+  const positions = snapshot.portfolioPositions;
+  const companyExposure = aggregateCompanyExposure(positions);
+  const { ranked } = companyExposure;
+  const rollupMaps = aggregatePortfolioRollups(positions);
+  const positionWeights = positions.map((position) => ({
+    weight: position.weightPct,
+    hasUsableHoldings: Boolean(position.snapshot?.holdings?.length),
+  }));
+  const redundancy = calculateRedundancyScore(ranked, positionWeights);
+  const coveragePositions = positions.map((position) => ({
+    weight: position.weightPct,
+    coveragePct: (position.snapshot?.holdings || []).reduce((total, holding) => {
+      const weight = Number(holding?.exposure?.weight_pct);
+      return total + (Number.isFinite(weight) && weight > 0 ? weight : 0);
+    }, 0),
+  }));
+  const diversification = calculateDiversificationScore(
+    ranked.map((company) => company.weight),
+    coveragePositions,
+  );
+  const rollups = Object.fromEntries(
+    Object.entries(rollupMaps).map(([key, values]) => [key, Object.fromEntries(values)])
+  );
+  const hasPortfolioReference = positionWeights.some((position) => position.weight > 0);
+  const chartData = (metricKey) => {
+    const data = metricKey === 'currency_weights'
+      ? getCurrencyMetricData(positions)
+      : getMetricData(positions, metricKey);
+    const rollupKey = metricKey.replace('_weights', '');
+    const labels = mergeLabels(data.labels, Object.keys(rollups[rollupKey] || {}));
+    const series = data.series.map((entry) => ({
+      label: entry.label,
+      values: Object.fromEntries(entry.values),
+    }));
+    if (hasPortfolioReference) {
+      series.unshift({
+        label: t('chart.portfolioReference'),
+        values: Object.fromEntries(labels.map((label) => [label, rollups[rollupKey]?.[label] || 0])),
+      });
+    }
+    return { labels, series };
+  };
+  const values = positions
+    .map((position) => Number(position.valuation?.valueChf))
+    .filter((value) => Number.isFinite(value) && value >= 0);
+  const summary = {
+    positions: positions.length,
+    shareUnits: snapshot.portfolioMode === 'percentage'
+      ? null
+      : positions.reduce((total, position) => total + Math.max(Number(position.shares) || 0, 0), 0),
+    totalValueChf: snapshot.portfolioMode === 'percentage' || !values.length
+      ? null
+      : values.reduce((total, value) => total + value, 0),
+    underlyingHoldings: positions.reduce((total, position) => total + (position.snapshot?.holdings?.length || 0), 0),
+    sharedCompanies: companyExposure.ranked.filter((company) => company.etfs.size > 1).length,
+  };
+  const pairwiseHeatmap = buildPairwiseMatrix(
+    positions,
+    state.pairwiseOverlapIndex,
+    state.nearIdenticalThreshold,
+  );
+
+  return buildReportAnalytics({
+    snapshot,
+    rankedCompanies: companyExposure.ranked,
+    summary,
+    rollups,
+    redundancy: {
+      ...redundancy,
+      level: redundancy.available
+        ? classifyRedundancyScore(
+          redundancy.score,
+          state.redundancyThresholds.lowModerate,
+          state.redundancyThresholds.moderateHigh,
+        )
+        : null,
+    },
+    diversification,
+    charts: {
+      sector: chartData('sector_weights'),
+      region: chartData('region_weights'),
+      currency: chartData('currency_weights'),
+    },
+    pairwiseHeatmap,
+  });
 }
 
 function getPositionValuation(position) {
@@ -1103,7 +1282,8 @@ function getComparisonSelection() {
 }
 
 function aggregateCompanyExposure(positions) {
-  const totalShareUnits = getTotalShareUnits(positions);
+  const hasCapturedWeights = positions.every((position) => Number.isFinite(position.weightPct));
+  const totalShareUnits = hasCapturedWeights ? 0 : getTotalShareUnits(positions);
   const exposure = new Map();
   const warnings = [];
 
@@ -1115,7 +1295,9 @@ function aggregateCompanyExposure(positions) {
 
     const contributionColor = ETF_SEGMENT_COLORS[positionIndex % ETF_SEGMENT_COLORS.length];
 
-    const positionWeight = getPositionWeight(position, totalShareUnits);
+    const positionWeight = hasCapturedWeights
+      ? position.weightPct
+      : getPositionWeight(position, totalShareUnits);
     const holdings = snapshot.holdings || [];
     for (const holding of holdings) {
       const holdingWeight = Number(holding?.exposure?.weight_pct || 0);
@@ -1456,14 +1638,17 @@ function aggregatePortfolioRollups(positions) {
     region: new Map(),
     currency: new Map(),
   };
-  const totalShareUnits = getTotalShareUnits(positions);
+  const hasCapturedWeights = positions.every((position) => Number.isFinite(position.weightPct));
+  const totalShareUnits = hasCapturedWeights ? 0 : getTotalShareUnits(positions);
 
   for (const position of positions) {
     const snapshot = position.snapshot;
     if (!snapshot || !totalShareUnits) {
       continue;
     }
-    const positionWeight = getPositionWeight(position, totalShareUnits);
+    const positionWeight = hasCapturedWeights
+      ? position.weightPct
+      : getPositionWeight(position, totalShareUnits);
     const aggregates = snapshot.aggregates || {};
     const add = (bucket, items) => {
       for (const item of items || []) {
@@ -2603,6 +2788,14 @@ async function bootstrap() {
   elements.topHoldingsMaximumError = document.getElementById('top-holdings-maximum-error');
   elements.buildDialogButton = document.getElementById('build-dialog-button');
   elements.dataDialogButton = document.getElementById('data-dialog-button');
+  elements.exportButton = document.getElementById('export-report-button');
+  elements.exportDialog = document.getElementById('export-report-dialog');
+  elements.exportDialogClose = document.getElementById('export-report-close');
+  elements.exportScope = [...document.querySelectorAll('input[name="export-report-scope"]')];
+  elements.exportAllocationOnly = document.getElementById('export-allocation-only');
+  elements.exportGenerateButton = document.getElementById('export-report-generate');
+  elements.exportGenerationStatus = document.getElementById('export-generation-status');
+  elements.exportReportPreview = document.getElementById('export-report-preview');
   elements.buildDialog = document.getElementById('build-dialog');
   elements.buildDialogClose = document.getElementById('build-dialog-close');
   elements.buildMetadata = document.getElementById('build-metadata');
@@ -2653,6 +2846,9 @@ async function bootstrap() {
   renderBuildInfo();
   elements.buildDialogButton.addEventListener('click', openBuildDialog);
   elements.dataDialogButton.addEventListener('click', openDataDialog);
+  elements.exportButton.addEventListener('click', openExportDialog);
+  elements.exportDialogClose.addEventListener('click', closeExportDialog);
+  elements.exportGenerateButton.addEventListener('click', generateExportReport);
   elements.buildDialogClose.addEventListener('click', closeBuildDialog);
   elements.dataDialogClose.addEventListener('click', closeDataDialog);
   document.querySelectorAll('[data-score-info]').forEach((button) => {
@@ -2694,6 +2890,14 @@ async function bootstrap() {
     event.preventDefault();
     closeDataDialog();
   });
+  elements.exportDialog.addEventListener('close', () => {
+    state.exportDialogReturnFocus?.focus();
+    state.exportDialogReturnFocus = null;
+  });
+  elements.exportDialog.addEventListener('cancel', (event) => {
+    event.preventDefault();
+    closeExportDialog();
+  });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') hideScoreBandTouchTooltips();
     if (event.key === 'Escape') {
@@ -2710,6 +2914,10 @@ async function bootstrap() {
     if (event.key === 'Escape' && elements.dataDialog.open) {
       event.preventDefault();
       closeDataDialog();
+    }
+    if (event.key === 'Escape' && elements.exportDialog.open) {
+      event.preventDefault();
+      closeExportDialog();
     }
     if (event.key === 'Escape' && elements.scoreInfoDialog.open) {
       event.preventDefault();
