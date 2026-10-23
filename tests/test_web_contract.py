@@ -42,6 +42,19 @@ class WebContractTests(unittest.TestCase):
             )["translation"]
             self.assertEqual(parser.keys - resources.keys(), set(), locale)
 
+    def test_home_headline_is_localized_in_all_supported_languages(self) -> None:
+        expected = {
+            "en-CH": "Privacy-first ETF portfolio exposure, clear on any screen.",
+            "de-CH": "Datenschutz zuerst. Klare ETF-Portfolio-Exponierung auf jedem Bildschirm.",
+            "pl-PL": "Prywatność przede wszystkim. Ekspozycja portfela ETF czytelna na każdym ekranie.",
+        }
+
+        for locale, headline in expected.items():
+            resources = json.loads(
+                (WEB_ROOT / "locales" / f"{locale}.json").read_text(encoding="utf-8")
+            )["translation"]
+            self.assertEqual(resources["ui.heroTitle"], headline, locale)
+
     def test_app_translation_keys_exist_in_all_locales(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         charts = (WEB_ROOT / "charts.js").read_text(encoding="utf-8")
