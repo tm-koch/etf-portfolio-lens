@@ -154,6 +154,16 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertIn(".language-button > .language-name {", mobile_styles)
         self.assertIn(".language-button > .language-code {", mobile_styles)
         self.assertIn("display: inline;", mobile_styles)
+        self.assertIn(
+            ".language-button,\n  .color-mode-button {\n"
+            "    box-sizing: border-box;\n"
+            "    width: 43px;\n"
+            "    height: 37px;\n"
+            "    padding: 0;\n"
+            "    justify-content: center;\n"
+            "  }",
+            mobile_styles,
+        )
         self.assertNotIn('<select id="language-select"', index)
         self.assertIn("./vendor/i18next.min.js", index)
         self.assertIn("initializeLocalization().then(bootstrap)", app)

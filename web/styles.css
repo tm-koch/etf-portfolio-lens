@@ -2738,6 +2738,15 @@ body {
     display: none;
   }
 
+  .language-button,
+  .color-mode-button {
+    box-sizing: border-box;
+    width: 43px;
+    height: 37px;
+    padding: 0;
+    justify-content: center;
+  }
+
   .pairwise-selector-button > span {
     display: inline;
   }

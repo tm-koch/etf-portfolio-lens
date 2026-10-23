@@ -38,7 +38,7 @@ The global color-mode control SHALL preserve the existing preference semantics: 
 - **THEN** rendered comparison charts refresh using the colors for the new effective theme
 
 ### Requirement: Accessible responsive control
-The color-mode control SHALL be keyboard operable, expose menu and radio-item semantics, and remain usable at mobile widths without entering the fixed bottom-navigation footprint. At viewport widths of 760px or less, the trigger SHALL display only the current mode's icon while retaining a descriptive accessible name and tooltip; the expanded menu SHALL display Bright, Automatic, and Dark choices with both icons and visible text. At viewport widths greater than 760px, the trigger SHALL retain its existing icon-and-text presentation.
+The color-mode control SHALL be keyboard operable, expose menu and radio-item semantics, and remain usable at mobile widths without entering the fixed bottom-navigation footprint. At viewport widths of 760px or less, the trigger SHALL display only the current mode's icon while retaining a descriptive accessible name and tooltip; the expanded menu SHALL display Bright, Automatic, and Dark choices with both icons and visible text. At viewport widths greater than 760px, the trigger SHALL retain its existing icon-and-text presentation. At viewport widths of 760px or less, its collapsed trigger SHALL have the same width and height as the adjacent language trigger and SHALL align with its top and bottom edges.
 
 #### Scenario: Keyboard user opens the selector
 - **WHEN** a keyboard user focuses and activates the color-mode button
@@ -63,6 +63,10 @@ The color-mode control SHALL be keyboard operable, expose menu and radio-item se
 #### Scenario: Mobile selector remains separate from bottom navigation
 - **WHEN** the viewport width is 760px or less
 - **THEN** the color-mode control remains in the top-right utility area and does not overlap or change the geometry of the fixed bottom navigation
+
+#### Scenario: Compact color and language controls have matching dimensions
+- **WHEN** the color-mode selector and language selector are collapsed on a viewport 760px wide or narrower
+- **THEN** their trigger boxes have equal width and height and share the same top and bottom edges, while the color-mode icon and accessible name remain unchanged
 
 ### Requirement: Desktop secondary content clears the color-mode control
 At viewport widths greater than 760px, secondary content positioned in the upper-right area of the Home, Portfolio, Compare, and Explore panels SHALL begin below the global color-mode control, with enough vertical spacing that the regions do not overlap. This spacing SHALL preserve the existing title alignment and SHALL NOT apply to the compact mobile layout.
