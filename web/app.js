@@ -46,7 +46,6 @@ import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare
 import { initializeLocalization, selectLocale } from './localization.js';
 import { buildReportAnalytics, buildReportSnapshot } from './report-data.js';
 import { openReportDialog } from './export-view.js';
-import { destroyReportCharts, renderReportDocument } from './report-renderer.js';
 import { generateReportPdf } from './pdf-export.js';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
@@ -107,7 +106,6 @@ const state = {
   catalogMaps: null,
   snapshots: new Map(),
   pairwiseOverlapIndex: new Map(),
-  reportChartInstances: [],
   buildInfo: null,
   livePrices: null,
   buildDialogReturnFocus: null,
@@ -853,8 +851,6 @@ function closeDataDialog() {
 
 function openExportDialog() {
   state.exportDialogReturnFocus = document.activeElement;
-  destroyReportCharts(state.reportChartInstances);
-  elements.exportReportPreview.hidden = true;
   elements.exportGenerateButton.disabled = false;
   openReportDialog({
     dialog: elements.exportDialog,
@@ -872,9 +868,7 @@ async function generateExportReport() {
     const scope = elements.exportScope.find((control) => control.checked)?.value || 'portfolio';
     const snapshot = createReportSnapshot(scope);
     const analytics = createReportAnalytics(snapshot);
-    elements.exportReportPreview.hidden = false;
-    renderReportDocument({
-      root: elements.exportReportPreview,
+    await generateReportPdf({
       snapshot,
       analytics,
       allocationOnly: elements.exportAllocationOnly.checked,
@@ -884,17 +878,9 @@ async function generateExportReport() {
       formatPercent,
       formatCurrency: formatCurrencyValue,
       translateTaxonomy: (label) => translateTaxonomyLabel(label, t),
-      chartInstances: state.reportChartInstances,
-    });
-    await generateReportPdf({
-      root: elements.exportReportPreview,
-      snapshot,
-      t,
       formatTimestamp: (value) => value ? formatBuildTimestamp(value) : t('common.unavailable'),
     });
     elements.exportGenerationStatus.textContent = t('export.pdfReady');
-    elements.exportReportPreview.hidden = true;
-    destroyReportCharts(state.reportChartInstances);
     closeExportDialog();
   } catch (error) {
     console.error('Could not build the PDF report:', error);
@@ -2795,7 +2781,6 @@ async function bootstrap() {
   elements.exportAllocationOnly = document.getElementById('export-allocation-only');
   elements.exportGenerateButton = document.getElementById('export-report-generate');
   elements.exportGenerationStatus = document.getElementById('export-generation-status');
-  elements.exportReportPreview = document.getElementById('export-report-preview');
   elements.buildDialog = document.getElementById('build-dialog');
   elements.buildDialogClose = document.getElementById('build-dialog-close');
   elements.buildMetadata = document.getElementById('build-metadata');

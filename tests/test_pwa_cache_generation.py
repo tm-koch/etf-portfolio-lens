@@ -26,8 +26,8 @@ class PwaCacheGenerationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary_directory:
             first_root = Path(temporary_directory) / "first"
             second_root = Path(temporary_directory) / "second"
-            shutil.copytree(WEB_ROOT, first_root)
-            shutil.copytree(WEB_ROOT, second_root)
+            shutil.copytree(WEB_ROOT, first_root, ignore=shutil.ignore_patterns("node_modules"))
+            shutil.copytree(WEB_ROOT, second_root, ignore=shutil.ignore_patterns("node_modules"))
 
             first_generation = self.run_generation(first_root)
             self.assertEqual(first_generation, self.run_generation(first_root))
@@ -70,16 +70,16 @@ class PwaCacheGenerationTests(unittest.TestCase):
         expected_paths = {
             "report-data.js",
             "export-view.js",
-            "report-renderer.js",
+            "pdf-report-renderer.js",
+            "pdf-vendor.js",
+            "chart-palette.js",
             "pdf-export.js",
             "fonts.css",
-            "fonts/space-grotesk-latin-400-normal.woff2",
-            "fonts/space-grotesk-latin-500-normal.woff2",
-            "fonts/space-grotesk-latin-700-normal.woff2",
-            "fonts/space-grotesk-latin-ext-400-normal.woff2",
-            "fonts/space-grotesk-latin-ext-500-normal.woff2",
-            "fonts/space-grotesk-latin-ext-700-normal.woff2",
-            "vendor/html2pdf.bundle.min.js",
+            "fonts/space-grotesk-400.ttf",
+            "fonts/space-grotesk-500.ttf",
+            "fonts/space-grotesk-700.ttf",
+            "vendor/jspdf.umd.min.js",
+            "vendor/jspdf.plugin.autotable.min.js",
         }
 
         self.assertTrue(expected_paths.issubset(cache_paths))

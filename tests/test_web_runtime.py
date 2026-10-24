@@ -9,7 +9,7 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 class WebRuntimeTests(unittest.TestCase):
     def test_report_matrix_columns_are_partitioned_for_readable_continuation(self) -> None:
         script = """
-import { partitionReportColumns } from './web/report-renderer.js';
+import { partitionReportColumns } from './web/pdf-report-renderer.js';
 
 const columns = Array.from({ length: 19 }, (_, index) => ({ ticker: `ETF${index + 1}` }));
 const panels = partitionReportColumns(columns);
@@ -1284,8 +1284,6 @@ console.log(JSON.stringify({
 
     def test_offline_pwa_uses_cached_report_resources_without_uploads(self) -> None:
         script = """
-import fs from 'node:fs';
-import vm from 'node:vm';
 import { generateReportPdf } from './web/pdf-export.js';
 
 const listeners = new Map();
@@ -1297,7 +1295,11 @@ let capturedOptions = null;
 const shellCacheName = 'etf-lens-shell-test';
 const runtimeCacheName = 'etf-lens-runtime-test';
 const shellCache = {
-    addAll: async (urls) => urls.forEach((url) => cacheStore.set(url, { asset: url })),
+    addAll: async (urls) => urls.forEach((url) => cacheStore.set(url, {
+        asset: url,
+        ok: true,
+        arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer,
+    })),
     match: async (request, options = {}) => {
         const url = typeof request === 'string' ? request : request.url;
         if (cacheStore.has(url)) return cacheStore.get(url);
@@ -1327,7 +1329,9 @@ async function fetch(request) {
     if (offline) throw new Error('offline');
     return { ok: true, value: request.url, clone() { return { ...this }; } };
 }
-vm.runInNewContext(fs.readFileSync('./web/sw.js', 'utf8'), { self, caches, fetch, URL, Promise, Error });
+const workerSource = await (await import('node:fs/promises')).readFile('./web/sw.js', 'utf8');
+const vm = await import('node:vm');
+vm.runInNewContext(workerSource, { self, caches, fetch, URL, Promise, Error });
 
 let installPromise;
 listeners.get('install')({ waitUntil: (promise) => { installPromise = promise; } });
@@ -1344,11 +1348,17 @@ const cachedRequests = [
 for (const request of cachedRequests) await requestThroughWorker(request);
 offline = true;
 const offlineData = await Promise.all(cachedRequests.map(requestThroughWorker));
-const pdfLibrary = await requestThroughWorker({
-    url: 'https://app.test/web/vendor/html2pdf.bundle.min.js',
-    method: 'GET',
-    mode: 'cors',
-});
+const pdfAssetPaths = [
+    'pdf-report-renderer.js',
+    'pdf-vendor.js',
+    'chart-palette.js',
+    'fonts/space-grotesk-400.ttf',
+    'fonts/space-grotesk-500.ttf',
+    'fonts/space-grotesk-700.ttf',
+    'vendor/jspdf.umd.min.js',
+    'vendor/jspdf.plugin.autotable.min.js',
+];
+const pdfAssetsListed = pdfAssetPaths.every((path) => workerSource.includes(`'${path}'`));
 
 globalThis.document = { fonts: { ready: Promise.resolve() } };
 const pdf = {
@@ -1359,42 +1369,72 @@ const pdf = {
     setFontSize: () => {},
     setTextColor: () => {},
     setDrawColor: () => {},
+    setFillColor: () => {},
+    setLineWidth: () => {},
+    roundedRect: () => {},
+    rect: () => {},
     line: () => {},
     splitTextToSize: (value) => [value],
     text: () => {},
     getTextWidth: (value) => value.length * 0.5,
+    addPage: () => {},
     link: () => {},
+    addFileToVFS: () => {},
+    addFont: () => {},
+    save: (filename) => { savedFilename = filename; },
 };
-const worker = {
-    set(options) { capturedOptions = options; return this; },
-    from() { return this; },
-    toPdf() { return this; },
-    get() { return { then(callback) { callback(pdf); return { save(filename) { savedFilename = filename; return Promise.resolve(filename); } }; } }; },
+class PdfConstructor {
+    constructor(options) { capturedOptions = options; return pdf; }
+}
+const autoTable = (document, options) => {
+    document.lastAutoTable = { finalY: (options.startY || 12) + 8 };
 };
 await generateReportPdf({
-    root: { id: 'report' },
-    snapshot: { generatedAt: '2026-10-23T12:00:00Z', provenance: {} },
+    snapshot: { generatedAt: '2026-10-23T12:00:00Z', provenance: {}, etfs: [] },
+    analytics: {
+        summary: {},
+        rollups: {},
+        redundancy: {},
+        diversification: {},
+        etfColumns: [],
+        companies: [],
+        pairwiseHeatmap: [],
+    },
     t: (key) => key,
     formatTimestamp: (value) => value || 'Unavailable',
-    html2pdf: () => worker,
+    formatCount: (value) => String(value),
+    formatDecimal: (value) => String(value),
+    formatPercent: (value) => `${value}%`,
+    formatCurrency: (value) => String(value),
+    translateTaxonomy: (value) => value,
+    jsPDFConstructor: PdfConstructor,
+    autoTable,
+    fetchImpl: async (url) => {
+        const filename = new URL(url).pathname.split('/').at(-1);
+        if (offline && ![...cacheStore.keys()].some((path) => path.endsWith(`/fonts/${filename}`))) {
+            throw new Error(`Offline font unavailable: ${filename}`);
+        }
+        return { ok: true, arrayBuffer: async () => new Uint8Array([1, 2, 3]).buffer };
+    },
 });
 console.log(JSON.stringify({
     offlineData: offlineData.map((response) => response.value),
-    pdfLibraryCached: Boolean(pdfLibrary?.asset),
+    pdfAssetsListed,
     filename: savedFilename,
-    orientation: capturedOptions.jsPDF.orientation,
+    orientation: capturedOptions.orientation,
     networkRequests,
-    cacheContainsPdfLibrary: [...cacheStore.keys()].some((url) => url.endsWith('/vendor/html2pdf.bundle.min.js')),
+    cacheContainsPdfFonts: ['400', '500', '700'].every((weight) => [...cacheStore.keys()].some((url) => url.endsWith(`/fonts/space-grotesk-${weight}.ttf`))),
 }));
 """
         result = subprocess.run(
             ["node", "--input-type=module", "-e", script],
             cwd=REPOSITORY_ROOT,
-            check=True,
+            check=False,
             capture_output=True,
             text=True,
             encoding="utf-8",
         )
+        self.assertEqual(result.returncode, 0, result.stderr)
         values = json.loads(result.stdout)
 
         self.assertEqual(
@@ -1404,10 +1444,10 @@ console.log(JSON.stringify({
                 "https://app.test/data/raw/snapshots/CHSPI.json",
             ],
         )
-        self.assertTrue(values["pdfLibraryCached"])
+        self.assertTrue(values["pdfAssetsListed"])
         self.assertEqual(values["filename"], "etf-portfolio-lens-report-2026-10-23.pdf")
         self.assertEqual(values["orientation"], "landscape")
-        self.assertTrue(values["cacheContainsPdfLibrary"])
+        self.assertTrue(values["cacheContainsPdfFonts"])
         self.assertTrue(all(request["method"] == "GET" for request in values["networkRequests"]))
         self.assertTrue(all(request["url"].startswith("https://app.test/") for request in values["networkRequests"]))
 

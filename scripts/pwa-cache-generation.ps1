@@ -5,7 +5,9 @@ $PwaCacheSensitivePaths = @(
   'app.js',
   'report-data.js',
   'export-view.js',
-  'report-renderer.js',
+  'pdf-report-renderer.js',
+  'pdf-vendor.js',
+  'chart-palette.js',
   'pdf-export.js',
   'localization.js',
   'taxonomy.js',
@@ -29,12 +31,16 @@ $PwaCacheSensitivePaths = @(
   'fonts/space-grotesk-latin-ext-400-normal.woff2',
   'fonts/space-grotesk-latin-ext-500-normal.woff2',
   'fonts/space-grotesk-latin-ext-700-normal.woff2',
+  'fonts/space-grotesk-400.ttf',
+  'fonts/space-grotesk-500.ttf',
+  'fonts/space-grotesk-700.ttf',
   'vendor/chart.umd.min.js',
   'vendor/i18next.min.js',
   'vendor/lucide.js',
   'vendor/pdf.min.js',
   'vendor/pdf.worker.min.js',
-  'vendor/html2pdf.bundle.min.js'
+  'vendor/jspdf.umd.min.js',
+  'vendor/jspdf.plugin.autotable.min.js'
 )
 
 function Get-PwaCacheSensitivePaths {

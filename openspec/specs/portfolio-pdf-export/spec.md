@@ -26,7 +26,7 @@ The app SHALL provide an accessible Export view with scope choices for the curre
 - **AND** the option does not change or persist the portfolio's entry mode or valuation mode
 
 ### Requirement: Generate a localized bright-mode PDF
-The app SHALL generate the report as an A4 landscape PDF using the currently selected interface language and the website font in a bright presentation, independently of the active application color mode.
+The app SHALL generate and directly download the report as an A4 landscape PDF using the currently selected interface language and the website font in a bright presentation, independently of the active application color mode. Report text, including headings, labels, tables, metrics, and legends, SHALL be native selectable PDF text; chart plots MAY remain graphics.
 
 #### Scenario: Export from a dark application theme
 - **WHEN** the user generates a report while the application is in dark or automatic-dark mode
@@ -36,9 +36,14 @@ The app SHALL generate the report as an A4 landscape PDF using the currently sel
 - **WHEN** the user generates a report after selecting a supported interface language
 - **THEN** report headings, labels, taxonomy names, numbers, dates, and currency values use that language and its formatting conventions
 
+#### Scenario: Report text is selectable
+- **WHEN** the generated report contains headings, table cells, metrics, or chart legends
+- **THEN** those contents are represented as native PDF text that users can select, search, and copy
+- **AND** chart plots may be embedded as graphics
+
 #### Scenario: Successful PDF export closes the dialog
 - **WHEN** PDF generation succeeds
-- **THEN** the app closes the Export dialog automatically
+- **THEN** the app downloads the PDF and closes the Export dialog automatically
 - **AND** the dialog remains open with an error status if PDF generation fails
 
 ### Requirement: Present the portfolio page
@@ -101,7 +106,11 @@ The third report section SHALL be titled exactly `3 · Exposure Analysis` and SH
 - **AND** each doughnut plot uses a 252px fixed-size frame
 - **AND** each chart legend starts at least 48px below its plot to remain visually separate
 - **AND** all three plots fit inside the printable page width without cropping
-- **AND** doughnut rendering is complete before the PDF capture begins
+- **AND** doughnut rendering is complete before the PDF is saved
+
+#### Scenario: Donut charts use the website bright palette
+- **WHEN** a donut chart is rendered in the PDF
+- **THEN** its slice colors use the same palette as the regular website in bright mode
 
 #### Scenario: Pairwise drill-down is excluded
 - **WHEN** the report is generated

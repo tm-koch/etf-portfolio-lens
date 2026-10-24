@@ -9,7 +9,9 @@ const SHELL_PATHS = [
   'app.js',
   'report-data.js',
   'export-view.js',
-  'report-renderer.js',
+  'pdf-report-renderer.js',
+  'pdf-vendor.js',
+  'chart-palette.js',
   'pdf-export.js',
   'localization.js',
   'taxonomy.js',
@@ -38,7 +40,11 @@ const SHELL_PATHS = [
   'vendor/lucide.js',
   'vendor/pdf.min.js',
   'vendor/pdf.worker.min.js',
-  'vendor/html2pdf.bundle.min.js',
+  'fonts/space-grotesk-400.ttf',
+  'fonts/space-grotesk-500.ttf',
+  'fonts/space-grotesk-700.ttf',
+  'vendor/jspdf.umd.min.js',
+  'vendor/jspdf.plugin.autotable.min.js',
 ];
 
 const baseUrl = new URL('./', self.registration.scope);

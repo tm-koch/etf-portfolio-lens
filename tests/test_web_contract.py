@@ -20,6 +20,33 @@ class LocalizationKeyParser(HTMLParser):
 
 
 class WebContractTests(unittest.TestCase):
+    def test_comparison_and_report_donuts_share_the_bright_palette(self) -> None:
+        palette = (WEB_ROOT / "chart-palette.js").read_text(encoding="utf-8")
+        charts = (WEB_ROOT / "charts.js").read_text(encoding="utf-8")
+        report = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
+        colors = re.findall(r"'#[0-9a-fA-F]{6}'", palette)
+
+        self.assertEqual(
+            colors,
+            [
+                "'#1f7ae0'",
+                "'#18a0d6'",
+                "'#19b7b0'",
+                "'#2ac18a'",
+                "'#60c85a'",
+                "'#8cc83f'",
+                "'#f0b83d'",
+                "'#f08b3d'",
+                "'#f05b76'",
+                "'#e056a6'",
+                "'#9b7bff'",
+                "'#5f8cff'",
+            ],
+        )
+        self.assertIn("import { CHART_COLORS } from './chart-palette.js';", charts)
+        self.assertIn("import { CHART_COLORS } from './chart-palette.js';", report)
+        self.assertNotIn("REPORT_COLORS", report)
+
     def test_web_readme_documents_shipped_locales_and_offline_language_switching(
         self,
     ) -> None:
@@ -167,78 +194,50 @@ class WebContractTests(unittest.TestCase):
 
     def test_report_renderer_builds_required_sections_without_pairwise_drilldown(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
-        renderer = (WEB_ROOT / "report-renderer.js").read_text(encoding="utf-8")
+        renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
 
         self.assertIn("createReportSnapshot(scope)", app)
         self.assertIn("createReportAnalytics(snapshot)", app)
-        for section in ("portfolio", "analytics", "exposure"):
-            self.assertIn("appendSection(root, t('export.section", renderer)
-            self.assertIn(f"'{section}'", renderer)
-        for report_surface in (
-            "pdf-report-portfolio-table",
-            "pdf-report-company-table",
-            "pdf-report-chart",
-            "pdf-report-heatmap",
-        ):
-            self.assertIn(report_surface, renderer)
+        self.assertIn("renderPortfolio(pdf, autoTable", renderer)
+        self.assertIn("addPageTitle(pdf, t('export.sectionAnalytics'))", renderer)
+        self.assertIn("addPageTitle(pdf, t('export.sectionExposure'))", renderer)
+        self.assertIn("autoTable(pdf", renderer)
+        self.assertIn("pdf.addImage(image, 'PNG'", renderer)
         self.assertNotIn("pairwise-holdings", renderer)
 
-    def test_report_charts_are_created_inside_the_visible_report_layout(self) -> None:
+    def test_report_uses_native_text_and_only_embeds_chart_plots_as_images(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
-        renderer = (WEB_ROOT / "report-renderer.js").read_text(encoding="utf-8")
-        generate_report = app[app.index("async function generateExportReport()"):]
+        renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
+        pdf_export = (WEB_ROOT / "pdf-export.js").read_text(encoding="utf-8")
 
-        self.assertLess(
-            generate_report.index("elements.exportReportPreview.hidden = false;"),
-            generate_report.index("renderReportDocument({"),
-        )
-        self.assertLess(
-            renderer.index("const exposure = appendSection(root"),
-            renderer.index("exposure.append(charts);"),
-        )
-        self.assertLess(
-            renderer.index("exposure.append(charts);"),
-            renderer.index("appendChart(charts, 'sector'"),
-        )
+        self.assertIn("pdf.text(title", renderer)
+        self.assertIn("autoTable(pdf", renderer)
+        self.assertIn("pdf.addImage(image, 'PNG'", renderer)
+        self.assertNotIn("html2canvas", pdf_export)
+        self.assertNotIn("exportReportPreview", app)
 
     def test_report_analytics_boxes_and_compact_donut_layout(self) -> None:
-        renderer = (WEB_ROOT / "report-renderer.js").read_text(encoding="utf-8")
-        pdf_export = (WEB_ROOT / "pdf-export.js").read_text(encoding="utf-8")
-        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
 
-        self.assertIn("createElement('div', 'pdf-report-metric')", renderer)
-        self.assertIn("createElement('div', 'pdf-report-chart-canvas-wrap')", renderer)
-        self.assertIn("createElement('h3', 'pdf-report-top-companies-title', t('export.topCompanies'))", renderer)
-        self.assertIn("createElement('h3', 'pdf-report-pairwise-title', t('export.pairwiseOverlap'))", renderer)
-        self.assertIn("'.pdf-report-top-companies-title'", pdf_export)
-        self.assertIn("'.pdf-report-pairwise-title'", pdf_export)
-        self.assertIn("animation: false,", renderer)
-        self.assertIn(".pdf-report-metric,\n.pdf-report-rollup {", styles)
-        self.assertIn(".pdf-report-metrics {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  width: 92%;\n  max-width: 100%;", styles)
-        self.assertIn(".pdf-report-rollups {\n  display: grid;\n  grid-template-columns: repeat(3, minmax(0, 1fr));\n  width: 92%;\n  max-width: 100%;", styles)
-        self.assertIn("width: 252px;\n  height: 252px;", styles)
-        self.assertIn(".pdf-report {\n  --report-text: #17212b;", styles)
-        self.assertIn("width: 1040px;\n  max-width: none;", styles)
-        self.assertIn("windowWidth: 1040,", pdf_export)
-        self.assertIn(".pdf-report-chart-legend {\n  grid-template-columns: repeat(2, minmax(0, 1fr));\n  margin-top: 48px;", styles)
-        self.assertIn(".pdf-report-pairwise-title {\n  break-before: page;\n  page-break-before: always;", styles)
-        self.assertIn(".pdf-report-top-companies-title {\n  break-before: page;\n  page-break-before: always;", styles)
-        self.assertIn(".pdf-report-company-table th,\n.pdf-report-company-table td {\n  padding: 4px 6px;", styles)
-        self.assertIn(".pdf-report-company-table th:nth-child(n + 3),\n.pdf-report-company-table td:nth-child(n + 3) {\n  text-align: right;", styles)
-        self.assertIn("text: contribution.value == null ? '—' : formatPercent(contribution.value),", renderer)
-        self.assertIn(".pdf-report-company-table {\n  width: max-content;\n  max-width: 100%;\n  table-layout: fixed;", styles)
-        self.assertIn(".pdf-report-portfolio-table {\n  width: 96%;\n  max-width: 100%;\n  table-layout: fixed;", styles)
-        self.assertIn(".pdf-report-portfolio-table th:first-child,\n.pdf-report-portfolio-table td:first-child {\n  width: 42%;\n  overflow-wrap: anywhere;", styles)
-        self.assertIn("width: 216px;\n  min-width: 216px;\n  max-width: 216px;", styles)
+        self.assertIn("function addMetricCards(pdf", renderer)
+        self.assertIn("function addRollupCards(pdf", renderer)
+        self.assertIn("const chartSize = 66.7;", renderer)
+        self.assertIn("function addChartLegend(pdf", renderer)
+        self.assertIn("rowPageBreak: 'avoid'", renderer)
 
     def test_numbered_pdf_sections_start_new_pages_and_analytics_stays_inside_margins(self) -> None:
-        pdf_export = (WEB_ROOT / "pdf-export.js").read_text(encoding="utf-8")
-        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
 
-        self.assertIn(".pdf-report-section[data-report-section=\"analytics\"]", pdf_export)
-        self.assertIn(".pdf-report-section[data-report-section=\"exposure\"]", pdf_export)
-        self.assertIn(".pdf-report-section[data-report-section=\"analytics\"],\n.pdf-report-section[data-report-section=\"exposure\"] {\n  break-before: page;\n  page-break-before: always;", styles)
-        self.assertIn("width: 98%;\n  max-width: 100%;", styles)
+        self.assertIn("let y = addPageTitle(pdf, t('export.sectionAnalytics'))", renderer)
+        self.assertIn("y = addPageTitle(pdf, t('export.sectionExposure'))", renderer)
+        self.assertIn("const y = addPageTitle(pdf, t('export.pairwiseOverlap'))", renderer)
+        self.assertIn("y = addSectionTitle(pdf, t('export.topCompanies'))", renderer)
+
+    def test_pairwise_pdf_export_keeps_empty_cells_blank(self) -> None:
+        renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
+
+        self.assertIn("if (value.type === 'empty')", renderer)
+        self.assertIn("return { content: '', styles: { fillColor: SURFACE_COLOR } };", renderer)
 
     def test_app_translation_keys_exist_in_all_locales(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
@@ -631,8 +630,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('src="./vendor/chart.umd.min.js"', index)
         self.assertIn('src="./vendor/i18next.min.js"', index)
         self.assertIn('src="./vendor/pdf.min.js"', index)
-        self.assertIn('src="./vendor/html2pdf.bundle.min.js"', index)
-        self.assertTrue((WEB_ROOT / "vendor/html2pdf.bundle.min.js").is_file())
+        self.assertNotIn("html2pdf", index)
+        self.assertIn('src="./vendor/jspdf.umd.min.js"', index)
+        self.assertIn('src="./vendor/jspdf.plugin.autotable.min.js"', index)
         self.assertIn('src="./vendor/lucide.js"', index)
         self.assertIn('href="./fonts.css"', index)
         self.assertNotIn("fonts.googleapis.com", index)
@@ -663,7 +663,8 @@ class WebContractTests(unittest.TestCase):
             "vendor/lucide.js",
             "vendor/pdf.min.js",
             "vendor/pdf.worker.min.js",
-            "vendor/html2pdf.bundle.min.js",
+            "vendor/jspdf.umd.min.js",
+            "vendor/jspdf.plugin.autotable.min.js",
         ):
             self.assertTrue((WEB_ROOT / path).is_file())
             self.assertIn(path, publish_script)
@@ -672,7 +673,9 @@ class WebContractTests(unittest.TestCase):
             "localization.js",
             "report-data.js",
             "export-view.js",
-            "report-renderer.js",
+            "pdf-report-renderer.js",
+            "pdf-vendor.js",
+            "chart-palette.js",
             "pdf-export.js",
             "taxonomy.js",
             "formatting.js",
@@ -687,6 +690,11 @@ class WebContractTests(unittest.TestCase):
             "fonts/space-grotesk-latin-ext-400-normal.woff2",
             "fonts/space-grotesk-latin-ext-500-normal.woff2",
             "fonts/space-grotesk-latin-ext-700-normal.woff2",
+            "fonts/space-grotesk-400.ttf",
+            "fonts/space-grotesk-500.ttf",
+            "fonts/space-grotesk-700.ttf",
+            "vendor/jspdf.umd.min.js",
+            "vendor/jspdf.plugin.autotable.min.js",
         ):
             self.assertTrue((WEB_ROOT / path).is_file())
             self.assertIn(path, publish_script)
@@ -694,8 +702,8 @@ class WebContractTests(unittest.TestCase):
             self.assertIn(path, service_worker)
 
         for path in (
-            "vendor/html2pdf.LICENSE",
-            "vendor/html2pdf.bundle.min.js.LICENSE.txt",
+            "vendor/jspdf.LICENSE.txt",
+            "vendor/jspdf-autotable.LICENSE.txt",
             "fonts/OFL.txt",
         ):
             self.assertTrue((WEB_ROOT / path).is_file())

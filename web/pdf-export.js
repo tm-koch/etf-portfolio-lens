@@ -1,3 +1,6 @@
+import { renderReportDocument } from './pdf-report-renderer.js';
+import { autoTable as bundledAutoTable, jsPDFConstructor as bundledJsPDF } from './pdf-vendor.js';
+
 export const REPORT_WEBSITE_URL = 'https://tm-koch.github.io/etf-portfolio-lens/';
 
 export function stampReportPdf(pdf, { snapshot, t, formatTimestamp, websiteUrl = REPORT_WEBSITE_URL }) {
@@ -19,7 +22,7 @@ export function stampReportPdf(pdf, { snapshot, t, formatTimestamp, websiteUrl =
   });
   for (let page = 1; page <= pageCount; page += 1) {
     pdf.setPage(page);
-    pdf.setFont('helvetica', 'normal');
+    pdf.setFont('SpaceGrotesk', 'normal');
     pdf.setFontSize(6.5);
     pdf.setTextColor(71, 85, 105);
     pdf.setDrawColor(203, 213, 225);
@@ -38,51 +41,65 @@ export function stampReportPdf(pdf, { snapshot, t, formatTimestamp, websiteUrl =
 export function createReportPdfOptions(snapshot) {
   const filenameDate = String(snapshot.generatedAt || new Date().toISOString()).slice(0, 10);
   return {
-    margin: [8, 8, 23, 8],
     filename: `etf-portfolio-lens-report-${filenameDate}.pdf`,
-    image: { type: 'png', quality: 1 },
-    enableLinks: true,
-    html2canvas: {
-      scale: 2,
-      useCORS: false,
-      backgroundColor: '#ffffff',
-      logging: false,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: 1040,
-    },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape', compress: true },
-    pagebreak: {
-      mode: ['css', 'legacy'],
-      before: [
-        '.pdf-report-section[data-report-section="analytics"]',
-        '.pdf-report-section[data-report-section="exposure"]',
-        '.pdf-report-top-companies-title',
-        '.pdf-report-pairwise-title',
-        '.pdf-report-company-panel--continued',
-      ],
-      avoid: ['.pdf-report-section-title', '.pdf-report-chart', '.pdf-report-table tr', '.pdf-report-heatmap tr'],
-    },
   };
 }
 
+async function addReportFonts(pdf, fetchImpl) {
+  const fontFaces = [
+    ['space-grotesk-400.ttf', 'normal'],
+    ['space-grotesk-500.ttf', 'medium'],
+    ['space-grotesk-700.ttf', 'bold'],
+  ];
+  for (const [filename, style] of fontFaces) {
+    const response = await fetchImpl(new URL(`./fonts/${filename}`, import.meta.url));
+    if (!response.ok) throw new Error(`Could not load the local report font: ${filename}`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    let binary = '';
+    for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+      binary += String.fromCharCode(...bytes.subarray(offset, offset + 0x8000));
+    }
+    pdf.addFileToVFS(filename, globalThis.btoa(binary));
+    pdf.addFont(filename, 'SpaceGrotesk', style, 'Identity-H');
+  }
+}
+
 export async function generateReportPdf({
-  root,
   snapshot,
+  analytics,
+  allocationOnly = false,
   t,
+  formatCount,
+  formatDecimal,
+  formatPercent,
+  formatCurrency,
   formatTimestamp,
-  html2pdf = globalThis.html2pdf,
+  translateTaxonomy,
+  jsPDFConstructor = bundledJsPDF,
+  autoTable = bundledAutoTable,
+  fetchImpl = globalThis.fetch?.bind(globalThis),
 } = {}) {
-  if (typeof html2pdf !== 'function') {
+  if (typeof jsPDFConstructor !== 'function' || typeof autoTable !== 'function' || typeof fetchImpl !== 'function') {
     throw new Error('The local PDF generator is unavailable.');
   }
-  if (globalThis.document?.fonts?.ready) {
-    await globalThis.document.fonts.ready;
-  }
-
   const options = createReportPdfOptions(snapshot);
-  const worker = html2pdf().set(options).from(root).toPdf().get('pdf');
-  return worker
-    .then((pdf) => stampReportPdf(pdf, { snapshot, t, formatTimestamp }))
-    .save(options.filename);
+  const pdf = new jsPDFConstructor(options.jsPDF);
+  await addReportFonts(pdf, fetchImpl);
+  renderReportDocument({
+    pdf,
+    autoTable,
+    snapshot,
+    analytics,
+    allocationOnly,
+    t,
+    formatCount,
+    formatDecimal,
+    formatPercent,
+    formatCurrency,
+    translateTaxonomy,
+  });
+  stampReportPdf(pdf, { snapshot, t, formatTimestamp });
+  pdf.save(options.filename);
+  return options.filename;
 }
