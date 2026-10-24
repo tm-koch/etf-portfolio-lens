@@ -297,7 +297,7 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
             ".language-button,\n  .color-mode-button {\n"
             "    box-sizing: border-box;\n"
             "    width: 43px;\n"
-            "    height: 37px;\n"
+            "    height: var(--utility-control-height);\n"
             "    padding: 0;\n"
             "    justify-content: center;\n"
             "  }",

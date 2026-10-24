@@ -93,10 +93,19 @@ body {
 }
 
 .app-utility-content {
+  --utility-control-height: 40px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
+}
+
+.install-app-button,
+.export-report-button,
+.language-button,
+.color-mode-button {
+  box-sizing: border-box;
+  height: var(--utility-control-height);
 }
 
 .install-app-button {
@@ -116,7 +125,7 @@ body {
 .export-report-button {
   display: inline-grid;
   width: 42px;
-  height: 42px;
+  height: var(--utility-control-height);
   flex: 0 0 42px;
   place-items: center;
   padding: 0;
@@ -3117,6 +3126,10 @@ body {
 }
 
 @media (max-width: 760px) {
+  .app-utility-content {
+    --utility-control-height: 37px;
+  }
+
   :root {
     --mobile-nav-row-height: 64px;
     --mobile-nav-safe-area: 0px;
@@ -3131,7 +3144,7 @@ body {
   .color-mode-button {
     box-sizing: border-box;
     width: 43px;
-    height: 37px;
+    height: var(--utility-control-height);
     padding: 0;
     justify-content: center;
   }

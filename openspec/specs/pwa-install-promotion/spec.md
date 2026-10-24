@@ -22,6 +22,13 @@ The application SHALL capture the browser's `beforeinstallprompt` event and expo
 - **WHEN** the application loads without a supported `beforeinstallprompt` event
 - **THEN** the existing application remains usable and the install action remains hidden
 
+### Requirement: Visible install action matches utility control height
+When the PWA install action is visible in the top utility area, its outer button box SHALL have the same height as the adjacent language and color-mode controls and SHALL align with their top and bottom edges.
+
+#### Scenario: Install action is available
+- **WHEN** the browser makes the PWA install action available and the button is shown
+- **THEN** its outer box matches the adjacent language and color-mode controls in height and vertical alignment
+
 ### Requirement: Reflect installed display state
 
 The application SHALL hide its install action when it is running in an installed standalone display mode or after the browser dispatches `appinstalled`.
@@ -30,4 +37,3 @@ The application SHALL hide its install action when it is running in an installed
 
 - **WHEN** the application starts in standalone display mode or receives `appinstalled`
 - **THEN** no in-app install action is presented
-

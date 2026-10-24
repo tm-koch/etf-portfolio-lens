@@ -68,6 +68,17 @@ The color-mode control SHALL be keyboard operable, expose menu and radio-item se
 - **WHEN** the color-mode selector and language selector are collapsed on a viewport 760px wide or narrower
 - **THEN** their trigger boxes have equal width and height and share the same top and bottom edges, while the color-mode icon and accessible name remain unchanged
 
+### Requirement: Top utility controls share an outer height
+The app-level utility area SHALL render the language, color-mode, report-export, and any visible PWA install controls with equal outer border-box heights and aligned top and bottom edges at desktop and mobile viewport widths.
+
+#### Scenario: Desktop utility controls align
+- **WHEN** the viewport is wider than 760px and the utility controls are rendered
+- **THEN** the language, color-mode, report-export, and any visible install button boxes have equal heights and aligned top and bottom edges
+
+#### Scenario: Mobile utility controls align
+- **WHEN** the viewport is 760px wide or narrower and the utility controls are rendered
+- **THEN** the language, color-mode, report-export, and any visible install button boxes have equal heights and aligned top and bottom edges
+
 ### Requirement: Desktop secondary content clears the color-mode control
 At viewport widths greater than 760px, secondary content positioned in the upper-right area of the Home, Portfolio, Compare, and Explore panels SHALL begin below the global color-mode control, with enough vertical spacing that the regions do not overlap. This spacing SHALL preserve the existing title alignment and SHALL NOT apply to the compact mobile layout.
 

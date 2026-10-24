@@ -1254,6 +1254,25 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("--chart-border", styles)
         self.assertIn("getThemeColor('--text'", charts)
 
+    def test_utility_buttons_share_responsive_outer_height(self) -> None:
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+
+        self.assertIn("--utility-control-height: 40px;", styles)
+        self.assertRegex(
+            styles,
+            r"@media \(max-width: 760px\) \{\s*\.app-utility-content \{\s*--utility-control-height: 37px;",
+        )
+        self.assertIn(
+            ".install-app-button,\n"
+            ".export-report-button,\n"
+            ".language-button,\n"
+            ".color-mode-button {\n"
+            "  box-sizing: border-box;\n"
+            "  height: var(--utility-control-height);",
+            styles,
+        )
+        self.assertIn(".install-app-button:not([hidden])", styles)
+
     def test_color_mode_is_labeled_and_explore_sticky_column_follows_hover(
         self,
     ) -> None:
