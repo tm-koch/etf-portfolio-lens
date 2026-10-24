@@ -3,10 +3,12 @@ import { autoTable as bundledAutoTable, jsPDFConstructor as bundledJsPDF } from 
 
 export const REPORT_WEBSITE_URL = 'https://tm-koch.github.io/etf-portfolio-lens/';
 
-export function stampReportPdf(pdf, { snapshot, formatTimestamp }) {
+export function stampReportPdf(pdf, { snapshot, t, formatTimestamp }) {
   const pageCount = pdf.internal.getNumberOfPages();
   const pageHeight = pdf.internal.pageSize.getHeight();
+  const pageWidth = pdf.internal.pageSize.getWidth();
   const left = 8;
+  const right = pageWidth - 8;
   const websiteLabel = 'ETF Portfolio Lens';
   const websiteLabelWidth = pdf.getTextWidth(websiteLabel);
   const footerText = `ETF Portfolio Lens | Generated: ${formatTimestamp(snapshot.generatedAt)}`;
@@ -23,6 +25,7 @@ export function stampReportPdf(pdf, { snapshot, formatTimestamp }) {
     pdf.setFontSize(7.5);
     pdf.setTextColor(71, 85, 105);
     pdf.text(footerText, left, footerY);
+    pdf.text(t('export.page', { page, total: pageCount }), right, footerY, { align: 'right' });
     pdf.link(left, footerY - 3, websiteLabelWidth, 4, { url: REPORT_WEBSITE_URL });
   }
   return pdf;

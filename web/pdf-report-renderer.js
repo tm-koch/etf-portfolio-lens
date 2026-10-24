@@ -11,6 +11,16 @@ const HEADER_COLOR = [237, 242, 246];
 const SURFACE_COLOR = [247, 249, 251];
 const PAGE_WIDTH = 297;
 const PAGE_HEIGHT = 210;
+const SCORE_VERDICT_COLORS = {
+  low: [201, 232, 200],
+  moderate: [248, 221, 162],
+  high: [245, 208, 209],
+  highlyConcentrated: [245, 208, 209],
+  concentrated: [246, 214, 188],
+  moderatelyDiversified: [248, 221, 162],
+  wellDiversified: [220, 228, 185],
+  highlyDiversified: [201, 232, 200],
+};
 
 function addSectionTitle(pdf, title, y = PAGE_TOP) {
   pdf.setFont('SpaceGrotesk', 'bold');
@@ -100,6 +110,40 @@ function addMetricCards(pdf, entries, y) {
   return y + rowCount * (cardHeight + rowGap) + 2;
 }
 
+function addScoreCards(pdf, entries, y) {
+  const gap = 4;
+  const cardWidth = (PAGE_WIDTH - PAGE_LEFT - PAGE_RIGHT - gap) / 2;
+  const cardHeight = 20;
+
+  entries.forEach(({ label, value, verdict, verdictColor }, index) => {
+    const x = PAGE_LEFT + index * (cardWidth + gap);
+    pdf.setDrawColor(...BORDER_COLOR);
+    pdf.setFillColor(...SURFACE_COLOR);
+    pdf.roundedRect(x, y, cardWidth, cardHeight, 1, 1, 'FD');
+    pdf.setFont('SpaceGrotesk', 'normal');
+    pdf.setFontSize(7);
+    pdf.setTextColor(...MUTED_COLOR);
+    pdf.text(pdf.splitTextToSize(label, cardWidth - 6).slice(0, 1), x + 3, y + 5);
+    pdf.setFont('SpaceGrotesk', 'bold');
+    pdf.setFontSize(11);
+    pdf.setTextColor(...TEXT_COLOR);
+    pdf.text(String(value), x + 3, y + 16);
+
+    if (verdict && verdictColor) {
+      const badgeWidth = Math.min(verdict.length * 2 + 6, cardWidth / 2);
+      const badgeX = x + cardWidth - badgeWidth - 3;
+      const badgeY = y + 10;
+      pdf.setFillColor(...verdictColor);
+      pdf.roundedRect(badgeX, badgeY, badgeWidth, 7, 1, 1, 'F');
+      pdf.setFont('SpaceGrotesk', 'bold');
+      pdf.setFontSize(6.5);
+      pdf.setTextColor(...TEXT_COLOR);
+      pdf.text(verdict, badgeX + 3, badgeY + 4.7);
+    }
+  });
+  return y + cardHeight + 2;
+}
+
 function addRollupCards(pdf, analytics, { t, translateTaxonomy, formatPercent, unavailable }, y) {
   const groups = [
     [t('rollup.sectorExposure'), analytics.rollups?.sector],
@@ -151,6 +195,12 @@ function addRollupCards(pdf, analytics, { t, translateTaxonomy, formatPercent, u
   return y + cardHeight + 2;
 }
 
+function hasPortfolioValue(value) {
+  return value != null
+    && !(typeof value === 'string' && !value.trim())
+    && Number.isFinite(Number(value));
+}
+
 function buildPortfolioRows(snapshot, { allocationOnly, t, formatCount, formatPercent, formatCurrency }) {
   const headers = [t('ui.etf'), t('export.portfolioStatus')];
   if (!allocationOnly) {
@@ -171,20 +221,22 @@ function buildPortfolioRows(snapshot, { allocationOnly, t, formatCount, formatPe
     ];
     if (!allocationOnly) {
       row.push(
-        inPortfolio
-          ? snapshot.portfolioMode === 'percentage'
-            ? formatPercent(Number(portfolioPosition?.shares) || 0)
-            : formatCount(Number(portfolioPosition?.shares) || 0)
-          : t('export.noData'),
-        !inPortfolio || valuation?.price == null
-          ? t('export.noData')
+        !inPortfolio || !hasPortfolioValue(portfolioPosition?.shares)
+          ? '—'
+          : snapshot.portfolioMode === 'percentage'
+            ? formatPercent(Number(portfolioPosition.shares))
+            : formatCount(Number(portfolioPosition.shares)),
+        !hasPortfolioValue(valuation?.price)
+          ? '—'
           : formatCurrency(valuation.price, valuation.currency || 'CHF'),
-        !inPortfolio || valuation?.valueChf == null
-          ? t('export.noData')
+        !hasPortfolioValue(valuation?.valueChf)
+          ? '—'
           : formatCurrency(valuation.valueChf, 'CHF'),
       );
     }
-    row.push(inPortfolio ? formatPercent(portfolioPosition.weightPct) : t('export.noData'));
+    row.push(hasPortfolioValue(portfolioPosition?.weightPct)
+      ? formatPercent(portfolioPosition.weightPct)
+      : '—');
     return row;
   });
   return { headers, rows };
@@ -346,15 +398,15 @@ function hexToRgb(hex) {
 
 function renderReportCover(pdf, { snapshot, coverIcon, t, formatTimestamp }) {
   if (coverIcon) {
-    pdf.addImage(coverIcon, 'PNG', PAGE_LEFT, 42, 32, 32);
+    pdf.addImage(coverIcon, 'PNG', PAGE_LEFT, 59, 32, 32);
   }
   pdf.setFont('SpaceGrotesk', 'bold');
   pdf.setFontSize(24);
   pdf.setTextColor(...TEXT_COLOR);
-  pdf.text('ETF Portfolio Lens', PAGE_LEFT + 40, 59);
+  pdf.text('ETF Portfolio Lens', PAGE_LEFT + 40, 76);
   pdf.setDrawColor(...TEXT_COLOR);
   pdf.setLineWidth(0.6);
-  pdf.line(PAGE_LEFT, 88, PAGE_WIDTH - PAGE_RIGHT, 88);
+  pdf.line(PAGE_LEFT, 105, PAGE_WIDTH - PAGE_RIGHT, 105);
 
   const unavailable = t('common.unavailable');
   const format = typeof formatTimestamp === 'function'
@@ -372,7 +424,7 @@ function renderReportCover(pdf, { snapshot, coverIcon, t, formatTimestamp }) {
     const column = index % 2;
     const row = Math.floor(index / 2);
     const x = PAGE_LEFT + column * (columnWidth + gap);
-    const y = 108 + row * 36;
+    const y = 125 + row * 36;
     pdf.setFont('SpaceGrotesk', 'medium');
     pdf.setFontSize(7);
     pdf.setTextColor(...MUTED_COLOR);
@@ -525,13 +577,26 @@ export function renderReportDocument({
   y = addMetricCards(pdf, summaryEntries, y);
   y = addSubheading(pdf, t('export.exposureRollups'), y);
   y = addRollupCards(pdf, analytics, { t, translateTaxonomy, formatPercent, unavailable }, y);
-  y = addSubheading(pdf, t('explore.redundancyTitle'), y);
+  y = addSubheading(pdf, t('export.portfolioScores'), y);
   const scoreEntries = [
-    [t('export.redundancy'), analytics.redundancy?.available ? formatPercent(analytics.redundancy.score) : unavailable],
-    [t('export.diversification'), analytics.diversification?.available ? formatDecimal(analytics.diversification.score) : unavailable],
-    [t('export.coverage'), analytics.diversification?.coveragePct == null ? unavailable : formatPercent(analytics.diversification.coveragePct)],
+    {
+      label: t('export.redundancy'),
+      value: analytics.redundancy?.available ? formatPercent(analytics.redundancy.score) : unavailable,
+      verdict: analytics.redundancy?.available && analytics.redundancy.level
+        ? t(`explore.redundancy.${analytics.redundancy.level}`)
+        : null,
+      verdictColor: SCORE_VERDICT_COLORS[analytics.redundancy?.level],
+    },
+    {
+      label: t('export.diversification'),
+      value: analytics.diversification?.available ? formatDecimal(analytics.diversification.score) : unavailable,
+      verdict: analytics.diversification?.available && analytics.diversification.rating
+        ? t(`explore.diversification.${analytics.diversification.rating}`)
+        : null,
+      verdictColor: SCORE_VERDICT_COLORS[analytics.diversification?.rating],
+    },
   ];
-  addMetricCards(pdf, scoreEntries, y);
+  addScoreCards(pdf, scoreEntries, y);
 
   renderTopCompanies(pdf, autoTable, analytics, { t, formatCount, formatPercent, unavailable });
   y = addPageTitle(pdf, t('export.sectionExposure'));

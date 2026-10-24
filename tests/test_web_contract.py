@@ -139,6 +139,7 @@ class WebContractTests(unittest.TestCase):
             "export.portfolioWeight",
             "export.summaryMetrics",
             "export.exposureRollups",
+            "export.portfolioScores",
             "export.diversification",
             "export.redundancy",
             "export.coverage",
@@ -206,12 +207,22 @@ class WebContractTests(unittest.TestCase):
     ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
+        pdf_export = (WEB_ROOT / "pdf-export.js").read_text(encoding="utf-8")
 
         self.assertIn("createReportSnapshot(scope)", app)
         self.assertIn("createReportAnalytics(snapshot)", app)
         self.assertIn("renderPortfolio(pdf, autoTable", renderer)
         self.assertIn("addPageTitle(pdf, t('export.sectionAnalytics'))", renderer)
         self.assertIn("addPageTitle(pdf, t('export.sectionExposure'))", renderer)
+        self.assertIn("pdf.text('ETF Portfolio Lens', PAGE_LEFT + 40, 76);", renderer)
+        self.assertIn(
+            "pdf.line(PAGE_LEFT, 105, PAGE_WIDTH - PAGE_RIGHT, 105);", renderer
+        )
+        self.assertIn(
+            "pdf.text(t('export.page', { page, total: pageCount }), right, footerY, { align: 'right' });",
+            pdf_export,
+        )
+        self.assertIn("pdf.link(left, footerY - 3, websiteLabelWidth, 4", pdf_export)
         self.assertIn("autoTable(pdf", renderer)
         self.assertIn("pdf.addImage(image, 'PNG'", renderer)
         self.assertNotIn("pairwise-holdings", renderer)

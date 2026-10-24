@@ -7,7 +7,9 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
-    def test_report_matrix_columns_are_partitioned_for_readable_continuation(self) -> None:
+    def test_report_matrix_columns_are_partitioned_for_readable_continuation(
+        self,
+    ) -> None:
         script = """
 import { partitionReportColumns } from './web/pdf-report-renderer.js';
 
@@ -1148,7 +1150,9 @@ console.log(JSON.stringify({ legacy, current, nullValues, privatePayload, decode
         self.assertAlmostEqual(private_shares[0], 200 / 3)
         self.assertAlmostEqual(private_shares[1], 100 / 3)
 
-    def test_pdf_portfolio_link_preserves_share_modes_and_omits_empty_portfolios(self) -> None:
+    def test_pdf_portfolio_link_preserves_share_modes_and_omits_empty_portfolios(
+        self,
+    ) -> None:
         script = """
 import { buildPortfolioShareUrl, decodePortfolioShare } from './web/share.js';
 import { renderReportDocument } from './web/pdf-report-renderer.js';
@@ -1218,12 +1222,16 @@ console.log(JSON.stringify({
         values = json.loads(result.stdout)
 
         self.assertEqual(values["full"]["mode"], "full")
-        self.assertEqual([item["shares"] for item in values["full"]["portfolio"]], [2, 1])
+        self.assertEqual(
+            [item["shares"] for item in values["full"]["portfolio"]], [2, 1]
+        )
         self.assertEqual(values["private"]["mode"], "percentage")
         self.assertAlmostEqual(values["private"]["portfolio"][0]["shares"], 200 / 3)
         self.assertAlmostEqual(values["private"]["portfolio"][1]["shares"], 100 / 3)
         self.assertIsNone(values["emptyUrl"])
-        self.assertEqual(values["annotations"], [values["fullUrl"], values["privateUrl"]])
+        self.assertEqual(
+            values["annotations"], [values["fullUrl"], values["privateUrl"]]
+        )
         self.assertEqual(values["linkLabels"], ["Open this portfolio online"] * 2)
 
     def test_report_analytics_limits_ranked_matrix_to_top_twenty_portfolio_etfs(
@@ -1279,7 +1287,9 @@ console.log(JSON.stringify({
         self.assertEqual(values["first"]["rank"], 1)
         self.assertEqual(values["first"]["name"], "Company 0")
         self.assertEqual(values["first"]["totalContribution"], 25)
-        self.assertEqual(values["first"]["contributions"], [{"ticker": "HELD", "value": 12.5}])
+        self.assertEqual(
+            values["first"]["contributions"], [{"ticker": "HELD", "value": 12.5}]
+        )
         self.assertEqual(values["lastRank"], 20)
         self.assertEqual(values["preservedSummary"], {"positions": 1})
         self.assertEqual(values["empty"], [])
@@ -1339,13 +1349,15 @@ console.log(JSON.stringify(cases));
         self.assertEqual(values[5]["valueChf"], 140)
         self.assertIsNone(values[6]["valueChf"])
 
-    def test_pdf_options_are_landscape_and_stamp_only_generated_line_on_every_page(self) -> None:
+    def test_pdf_options_are_landscape_and_stamp_only_generated_line_on_every_page(
+        self,
+    ) -> None:
         script = """
 import { createReportPdfOptions, stampReportPdf } from './web/pdf-export.js';
 
 const calls = [];
 const pdf = {
-    internal: { getNumberOfPages: () => 2, pageSize: { getHeight: () => 210 } },
+    internal: { getNumberOfPages: () => 2, pageSize: { getWidth: () => 297, getHeight: () => 210 } },
   setProperties: (value) => calls.push(['properties', value]),
   setPage: (value) => calls.push(['page', value]),
   setFont: () => {},
@@ -1354,7 +1366,7 @@ const pdf = {
   setDrawColor: () => {},
   line: (...value) => calls.push(['line', ...value]),
   splitTextToSize: (value) => [value],
-  text: (value) => calls.push(['text', Array.isArray(value) ? value.join(' ') : value]),
+    text: (value, x, y, options) => calls.push(['text', Array.isArray(value) ? value.join(' ') : value, x, y, options]),
   getTextWidth: (value) => value.length * 0.5,
   link: (...value) => calls.push(['link', ...value]),
 };
@@ -1372,13 +1384,14 @@ const labels = {
 const t = (key, values = {}) => key === 'export.page'
   ? `Page ${values.page} of ${values.total}`
   : labels[key];
-stampReportPdf(pdf, { snapshot, formatTimestamp: () => '24 Oct 2026, 11:24:30 UTC' });
+stampReportPdf(pdf, { snapshot, t, formatTimestamp: () => '24 Oct 2026, 11:24:30 UTC' });
 const options = createReportPdfOptions(snapshot);
 console.log(JSON.stringify({
   pageFormat: options.jsPDF,
   filename: options.filename,
   pages: calls.filter(([type]) => type === 'page').map(([, page]) => page),
-  text: calls.filter(([type]) => type === 'text').map(([, text]) => text),
+    text: calls.filter(([type, text]) => type === 'text' && text.startsWith('ETF Portfolio Lens | Generated')).map(([, text]) => text),
+    pageNumbers: calls.filter(([type, text]) => type === 'text' && text.startsWith('Page ')).map(([, text, x, y, options]) => ({ text, x, y, align: options.align })),
         links: calls.filter(([type]) => type === 'link').map(([, x, y, width, height, options]) => ({
             x, y, width, height, url: options.url,
         })),
@@ -1398,14 +1411,34 @@ console.log(JSON.stringify({
         self.assertEqual(values["pageFormat"]["orientation"], "landscape")
         self.assertEqual(values["filename"], "etf-portfolio-lens-report-2026-10-23.pdf")
         self.assertEqual(values["pages"], [1, 2])
+        self.assertEqual(
+            values["pageNumbers"],
+            [
+                {"text": "Page 1 of 2", "x": 289, "y": 202, "align": "right"},
+                {"text": "Page 2 of 2", "x": 289, "y": 202, "align": "right"},
+            ],
+        )
         self.assertEqual(len(values["links"]), 2)
-        self.assertTrue(all(link["url"] == "https://tm-koch.github.io/etf-portfolio-lens/" for link in values["links"]))
-        self.assertTrue(all(link["x"] == 8 and link["width"] == len("ETF Portfolio Lens") * 0.5 for link in values["links"]))
+        self.assertTrue(
+            all(
+                link["url"] == "https://tm-koch.github.io/etf-portfolio-lens/"
+                for link in values["links"]
+            )
+        )
+        self.assertTrue(
+            all(
+                link["x"] == 8 and link["width"] == len("ETF Portfolio Lens") * 0.5
+                for link in values["links"]
+            )
+        )
         self.assertTrue(all(link["height"] == 4 for link in values["links"]))
-        self.assertEqual(values["text"], [
-            "ETF Portfolio Lens | Generated: 24 Oct 2026, 11:24:30 UTC",
-            "ETF Portfolio Lens | Generated: 24 Oct 2026, 11:24:30 UTC",
-        ])
+        self.assertEqual(
+            values["text"],
+            [
+                "ETF Portfolio Lens | Generated: 24 Oct 2026, 11:24:30 UTC",
+                "ETF Portfolio Lens | Generated: 24 Oct 2026, 11:24:30 UTC",
+            ],
+        )
 
     def test_offline_pwa_uses_cached_report_resources_without_uploads(self) -> None:
         script = """
@@ -1585,7 +1618,9 @@ console.log(JSON.stringify({
         self.assertEqual(values["filename"], "etf-portfolio-lens-report-2026-10-23.pdf")
         self.assertEqual(values["orientation"], "landscape")
         self.assertTrue(values["cacheContainsPdfFonts"])
-        self.assertTrue(values["coverImage"]["data"].startswith("data:image/png;base64,"))
+        self.assertTrue(
+            values["coverImage"]["data"].startswith("data:image/png;base64,")
+        )
         self.assertEqual(values["coverImage"]["page"], 1)
         self.assertFalse(any(item["page"] == 1 for item in values["roundedRects"]))
         rendered_values = [item["value"] for item in values["renderedText"]]
@@ -1594,13 +1629,298 @@ console.log(JSON.stringify({
         self.assertIn("export.buildIdentifier", rendered_values)
         self.assertIn("export.etfSnapshot", rendered_values)
         self.assertIn("export.livePrices", rendered_values)
-        footer_values = [value for value in rendered_values if value.startswith("ETF Portfolio Lens | Generated:")]
+        footer_values = [
+            value
+            for value in rendered_values
+            if value.startswith("ETF Portfolio Lens | Generated:")
+        ]
         self.assertEqual(len(footer_values), values["pageCount"])
         self.assertIn("export.sectionPortfolio", rendered_values)
-        self.assertNotIn("https://tm-koch.github.io/etf-portfolio-lens/", rendered_values)
-        self.assertTrue(all(request["method"] == "GET" for request in values["networkRequests"]))
-        self.assertTrue(all(request["url"].startswith("https://app.test/") for request in values["networkRequests"]))
+        self.assertNotIn(
+            "https://tm-koch.github.io/etf-portfolio-lens/", rendered_values
+        )
+        self.assertTrue(
+            all(request["method"] == "GET" for request in values["networkRequests"])
+        )
+        self.assertTrue(
+            all(
+                request["url"].startswith("https://app.test/")
+                for request in values["networkRequests"]
+            )
+        )
 
+    def test_report_score_cards_show_verdict_badges_without_coverage(self) -> None:
+        script = """
+import { renderReportDocument } from './web/pdf-report-renderer.js';
+
+globalThis.document = {
+    documentElement: { dataset: { colorMode: 'light' } },
+    createElement: () => ({ getContext: () => ({}) }),
+};
+globalThis.Chart = class { destroy() {} };
+const translations = {
+    'export.portfolioScores': 'Portfolio scores',
+    'export.redundancy': 'Redundancy',
+    'export.diversification': 'Diversification',
+    'export.coverage': 'Holdings coverage',
+    'explore.redundancy.low': 'Low',
+    'explore.redundancy.moderate': 'Moderate',
+    'explore.redundancy.high': 'High',
+    'explore.diversification.highlyConcentrated': 'Highly Concentrated',
+    'explore.diversification.concentrated': 'Concentrated',
+    'explore.diversification.moderatelyDiversified': 'Moderately Diversified',
+    'explore.diversification.wellDiversified': 'Well Diversified',
+    'explore.diversification.highlyDiversified': 'Highly Diversified',
+};
+const cases = [
+    { type: 'redundancy', verdict: 'low', label: 'Low', color: [201, 232, 200] },
+    { type: 'redundancy', verdict: 'moderate', label: 'Moderate', color: [248, 221, 162] },
+    { type: 'redundancy', verdict: 'high', label: 'High', color: [245, 208, 209] },
+    { type: 'diversification', verdict: 'highlyConcentrated', label: 'Highly Concentrated', color: [245, 208, 209] },
+    { type: 'diversification', verdict: 'concentrated', label: 'Concentrated', color: [246, 214, 188] },
+    { type: 'diversification', verdict: 'moderatelyDiversified', label: 'Moderately Diversified', color: [248, 221, 162] },
+    { type: 'diversification', verdict: 'wellDiversified', label: 'Well Diversified', color: [220, 228, 185] },
+    { type: 'diversification', verdict: 'highlyDiversified', label: 'Highly Diversified', color: [201, 232, 200] },
+];
+const results = [];
+for (const colorMode of ['light', 'dark']) {
+    document.documentElement.dataset.colorMode = colorMode;
+    for (const testCase of cases) {
+        const textCalls = [];
+        const fillColors = [];
+        const pdf = {
+            text: (value) => textCalls.push(Array.isArray(value) ? value.join(' ') : value),
+            splitTextToSize: (value) => [value],
+            setFillColor: (...value) => fillColors.push(value),
+            lastAutoTable: null,
+        };
+        for (const method of ['addPage', 'setFont', 'setFontSize', 'setTextColor', 'setDrawColor', 'setLineWidth', 'roundedRect', 'rect', 'line', 'link']) {
+            pdf[method] = () => {};
+        }
+        renderReportDocument({
+            pdf,
+            autoTable: (document, options) => { document.lastAutoTable = { finalY: options.startY + 8 }; },
+            snapshot: { generatedAt: '2026-10-23T12:00:00Z', provenance: {}, portfolioMode: 'full', etfs: [] },
+            analytics: {
+                summary: {},
+                rollups: {},
+                redundancy: {
+                    available: true,
+                    score: 8,
+                    level: testCase.type === 'redundancy' ? testCase.verdict : 'low',
+                },
+                diversification: {
+                    available: true,
+                    score: 12.5,
+                    rating: testCase.type === 'diversification' ? testCase.verdict : 'moderatelyDiversified',
+                    coveragePct: 42,
+                },
+                charts: {},
+                etfColumns: [],
+                companies: [],
+                pairwiseHeatmap: [],
+            },
+            t: (key) => translations[key] || key,
+            formatCount: String,
+            formatDecimal: String,
+            formatPercent: (value) => `${value}%`,
+            formatCurrency: String,
+            translateTaxonomy: (value) => value,
+        });
+        results.push({ colorMode, testCase, textCalls, fillColors });
+    }
+}
+console.log(JSON.stringify(results));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        results = json.loads(result.stdout)
+
+        self.assertEqual(len(results), 16)
+        for result in results:
+            test_case = result["testCase"]
+            self.assertIn("Portfolio scores", result["textCalls"])
+            self.assertIn(test_case["label"], result["textCalls"])
+            self.assertNotIn("Holdings coverage", result["textCalls"])
+            self.assertIn(test_case["color"], result["fillColors"])
+
+    def test_report_portfolio_table_uses_dashes_only_for_missing_values(self) -> None:
+        script = """
+import { renderReportDocument } from './web/pdf-report-renderer.js';
+
+let portfolioTable = null;
+const textCalls = [];
+const pdf = {
+    text: (value) => textCalls.push(Array.isArray(value) ? value.join(' ') : value),
+    splitTextToSize: (value) => [value],
+    lastAutoTable: null,
+};
+for (const method of ['addPage', 'setFont', 'setFontSize', 'setTextColor', 'setDrawColor', 'setLineWidth', 'setFillColor', 'roundedRect', 'rect', 'line', 'link']) {
+    pdf[method] = () => {};
+}
+globalThis.document = { createElement: () => ({ getContext: () => ({}) }) };
+globalThis.Chart = class { destroy() {} };
+const translations = {
+    'export.noData': 'Unavailable',
+    'export.sectionPortfolio': '1 · Portfolio',
+    'export.sectionAnalytics': '2 · Portfolio Analytics',
+    'export.sectionExposure': '3 · Exposure Analysis',
+    'export.inPortfolio': 'In portfolio',
+    'export.catalogOnly': 'Catalog only',
+};
+renderReportDocument({
+    pdf,
+    autoTable: (document, options) => {
+        if (options.head?.[0]?.[0] === 'ui.etf') portfolioTable = options;
+        document.lastAutoTable = { finalY: options.startY + 8 };
+    },
+    snapshot: {
+        generatedAt: '2026-10-23T12:00:00Z',
+        provenance: {},
+        portfolioMode: 'full',
+        etfs: [
+            {
+                entry: { ticker: 'AAA', name: 'Missing Values' },
+                portfolioPosition: {
+                    shares: null,
+                    weightPct: null,
+                    valuation: { price: null, valueChf: null },
+                },
+            },
+            { entry: { ticker: 'BBB', name: 'Catalog Only' }, portfolioPosition: null },
+            {
+                entry: { ticker: 'CCC', name: 'Zero Values' },
+                portfolioPosition: {
+                    shares: 0,
+                    weightPct: 0,
+                    valuation: { price: 0, valueChf: 0, currency: 'CHF' },
+                },
+            },
+        ],
+    },
+    analytics: {
+        summary: {}, rollups: {}, redundancy: {}, diversification: {}, charts: {},
+        etfColumns: [], companies: [], pairwiseHeatmap: [],
+    },
+    t: (key) => translations[key] || key,
+    formatCount: (value) => `${value} shares`,
+    formatDecimal: String,
+    formatPercent: (value) => `${value}%`,
+    formatCurrency: (value) => `CHF ${value}`,
+    translateTaxonomy: (value) => value,
+});
+console.log(JSON.stringify({ body: portfolioTable.body, textCalls }));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(
+            values["body"],
+            [
+                ["AAA · Missing Values", "In portfolio", "—", "—", "—", "—"],
+                ["BBB · Catalog Only", "Catalog only", "—", "—", "—", "—"],
+                [
+                    "CCC · Zero Values",
+                    "In portfolio",
+                    "0 shares",
+                    "CHF 0",
+                    "CHF 0",
+                    "0%",
+                ],
+            ],
+        )
+        self.assertIn("Unavailable", values["textCalls"])
+
+    def test_report_cover_centers_separator_and_keeps_provenance_clear_of_footer(
+        self,
+    ) -> None:
+        script = """
+import { renderReportDocument } from './web/pdf-report-renderer.js';
+
+const textCalls = [];
+const lines = [];
+let coverImage = null;
+const pdf = {
+    text: (value, x, y) => textCalls.push({ value: Array.isArray(value) ? value.join(' ') : value, x, y }),
+    splitTextToSize: (value) => [value],
+    line: (...value) => lines.push(value),
+    addImage: (...value) => { coverImage = value; },
+    lastAutoTable: null,
+};
+for (const method of ['addPage', 'setFont', 'setFontSize', 'setTextColor', 'setDrawColor', 'setLineWidth', 'setFillColor', 'roundedRect', 'rect', 'link']) {
+    pdf[method] = () => {};
+}
+globalThis.document = { createElement: () => ({ getContext: () => ({}) }) };
+globalThis.Chart = class { destroy() {} };
+renderReportDocument({
+    pdf,
+    autoTable: (document, options) => { document.lastAutoTable = { finalY: options.startY + 8 }; },
+    snapshot: {
+        generatedAt: '2026-10-23T12:00:00Z',
+        provenance: { buildId: 'abcdef1', snapshotTimestamp: '2026-10-22', livePricesTimestamp: '2026-10-23' },
+        portfolioMode: 'full',
+        etfs: [],
+    },
+    analytics: {
+        summary: {}, rollups: {}, redundancy: {}, diversification: {}, charts: {},
+        etfColumns: [], companies: [], pairwiseHeatmap: [],
+    },
+    coverIcon: 'icon',
+    t: (key) => key,
+    formatCount: String,
+    formatDecimal: String,
+    formatPercent: String,
+    formatCurrency: String,
+    formatTimestamp: (value) => value,
+    translateTaxonomy: (value) => value,
+});
+console.log(JSON.stringify({ textCalls, lines, coverImage }));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+        text_calls = values["textCalls"]
+        cover_title = next(
+            item for item in text_calls if item["value"] == "ETF Portfolio Lens"
+        )
+        provenance_values = {
+            "export.generatedAt",
+            "export.buildIdentifier",
+            "export.etfSnapshot",
+            "export.livePrices",
+            "2026-10-23T12:00:00Z",
+            "abcdef1",
+            "2026-10-22",
+            "2026-10-23",
+        }
+        provenance = [item for item in text_calls if item["value"] in provenance_values]
+
+        self.assertEqual(values["coverImage"][2:6], [8, 59, 32, 32])
+        self.assertEqual(cover_title["y"], 76)
+        self.assertEqual(values["lines"][0], [8, 105, 289, 105])
+        self.assertEqual(len(provenance), len(provenance_values))
+        self.assertGreater(105, cover_title["y"])
+        self.assertLess(105, min(item["y"] for item in provenance))
+        self.assertLessEqual(max(item["y"] for item in provenance), 182)
 
     def test_report_rollups_limit_entries_and_group_the_remainder(self) -> None:
         script = """
@@ -1649,18 +1969,28 @@ console.log(JSON.stringify(textCalls));
             encoding="utf-8",
         )
         text_calls = json.loads(result.stdout)
-        sector_labels = [value for value in text_calls if value.startswith("Sector ") and value != "Sector exposure"]
+        sector_labels = [
+            value
+            for value in text_calls
+            if value.startswith("Sector ") and value != "Sector exposure"
+        ]
         self.assertEqual(sector_labels, [f"Sector {index}" for index in range(1, 21)])
         self.assertNotIn("Sector 21", text_calls)
         self.assertIn("Other categories", text_calls)
         self.assertIn("15%", text_calls)
         self.assertEqual(text_calls.count("Other categories"), 1)
         self.assertEqual(
-            [value for value in text_calls if value.startswith("Region ") and value != "Region exposure"],
+            [
+                value
+                for value in text_calls
+                if value.startswith("Region ") and value != "Region exposure"
+            ],
             [f"Region {index}" for index in range(1, 21)],
         )
 
-    def test_report_category_headers_repeat_and_exposure_bars_span_columns(self) -> None:
+    def test_report_category_headers_repeat_and_exposure_bars_span_columns(
+        self,
+    ) -> None:
         script = """
 import { renderReportDocument } from './web/pdf-report-renderer.js';
 
@@ -1747,20 +2077,38 @@ console.log(JSON.stringify({
         values = json.loads(result.stdout)
         text_calls = values["textCalls"]
         top_titles = [item for item in text_calls if item["value"] == "Top companies"]
-        pairwise_titles = [item for item in text_calls if item["value"] == "Pairwise ETF overlap"]
+        pairwise_titles = [
+            item for item in text_calls if item["value"] == "Pairwise ETF overlap"
+        ]
         self.assertGreaterEqual(len(top_titles), 4)
         self.assertGreaterEqual(len(pairwise_titles), 4)
-        self.assertTrue(all(item["fontSize"] == 11 for item in top_titles + pairwise_titles))
+        self.assertTrue(
+            all(item["fontSize"] == 11 for item in top_titles + pairwise_titles)
+        )
         self.assertTrue(values["topAutoContinuation"])
-        self.assertEqual(values["bars"], [
-            {"x": 8, "width": 87, "drawColor": [213, 220, 227], "lineWidth": 0.35},
-            {"x": 105, "width": 87, "drawColor": [213, 220, 227], "lineWidth": 0.35},
-            {"x": 202, "width": 87, "drawColor": [213, 220, 227], "lineWidth": 0.35},
-        ])
+        self.assertEqual(
+            values["bars"],
+            [
+                {"x": 8, "width": 87, "drawColor": [213, 220, 227], "lineWidth": 0.35},
+                {
+                    "x": 105,
+                    "width": 87,
+                    "drawColor": [213, 220, 227],
+                    "lineWidth": 0.35,
+                },
+                {
+                    "x": 202,
+                    "width": 87,
+                    "drawColor": [213, 220, 227],
+                    "lineWidth": 0.35,
+                },
+            ],
+        )
         currency_legend = values["currencyLegend"]
         self.assertEqual(len(currency_legend), 8)
         self.assertEqual(len({item["x"] for item in currency_legend[:4]}), 4)
         self.assertEqual(len({item["y"] for item in currency_legend[:4]}), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

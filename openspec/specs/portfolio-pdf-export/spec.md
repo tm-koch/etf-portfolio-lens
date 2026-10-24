@@ -59,7 +59,23 @@ The first report section SHALL be titled exactly `1 · Portfolio` and SHALL pres
 - **WHEN** the user generates a report using the full ETF catalog scope
 - **THEN** the `1 · Portfolio` section lists each catalog ETF and distinguishes current portfolio positions from catalog-only ETFs
 - **AND** portfolio allocations and valuation details are shown only for current portfolio positions
-- **AND** unavailable price data is identified as unavailable rather than represented as zero
+- **AND** unavailable price data outside Portfolio table cells is identified as unavailable rather than represented as zero
+
+### Requirement: Show em dashes for unavailable portfolio table values
+Unavailable share or allocation, unit-price, market-value, and portfolio-weight cells in the PDF `1 · Portfolio` table SHALL display an em dash (`—`) instead of a localized unavailable label. This rule SHALL NOT change genuine zero values or unavailable labels elsewhere in the report.
+
+#### Scenario: A current portfolio value is unavailable
+- **WHEN** a current portfolio position lacks a share or allocation, unit-price, market-value, or portfolio-weight value
+- **THEN** the corresponding Portfolio table cell displays `—`
+- **AND** other available values in that row remain formatted normally
+
+#### Scenario: A catalog-only ETF has no portfolio values
+- **WHEN** the full-catalog report includes an ETF that is not in the portfolio
+- **THEN** its unavailable allocation, unit-price, market-value, and portfolio-weight cells display `—`
+
+#### Scenario: A portfolio value is zero
+- **WHEN** a portfolio table value is available and equals zero
+- **THEN** the cell displays the formatted zero value rather than `—`
 
 #### Scenario: Portfolio table has a visible right boundary
 - **WHEN** the portfolio table is rendered in the PDF
@@ -111,6 +127,30 @@ The second report section SHALL be titled exactly `2 · Portfolio Analytics` and
 #### Scenario: Analytics are unavailable
 - **WHEN** the current portfolio has insufficient data for a metric or company ranking
 - **THEN** the report identifies that metric or ranking as unavailable without blocking the rest of the report
+
+### Requirement: Present portfolio score verdicts
+The Portfolio Analytics score section SHALL use the localized heading `Portfolio scores` and present the redundancy and diversification scores with localized verdict badges.
+
+#### Scenario: Both portfolio scores are available
+- **WHEN** the PDF report includes portfolio analytics with both scores available
+- **THEN** the score section shows each score and its localized verdict badge under the `Portfolio scores` heading
+- **AND** the Explore view's redundancy heading remains unchanged
+
+### Requirement: Use bright-mode colors for score verdict badges
+Score verdict badges in the PDF SHALL use the website's bright-mode verdict colors regardless of the active application color mode.
+
+#### Scenario: Export while the app uses a dark theme
+- **WHEN** a report is generated while the app uses dark or automatic-dark mode
+- **THEN** both score verdict badges use the same colors as the website's bright-mode verdicts
+- **AND** the app's color-mode preference remains unchanged
+
+### Requirement: Omit holdings coverage from the score section
+The PDF score section SHALL NOT display a Holdings coverage card, metric, or caveat.
+
+#### Scenario: Holdings coverage is incomplete
+- **WHEN** the report's underlying holdings have incomplete coverage
+- **THEN** the score section omits holdings-coverage values and caveats
+- **AND** the redundancy and diversification scores remain available when their own inputs permit calculation
 
 ### Requirement: Calculate exposure roll-ups from report weights
 The report SHALL calculate exposure roll-ups from each position's captured portfolio weight when that weight is available.
@@ -190,9 +230,10 @@ The report SHALL add continuation pages when variable portfolio, catalog, matrix
 - **WHEN** the report is captured for landscape A4 output
 - **THEN** its fixed-width canvas remains within the printable width after page margins
 
-#### Scenario: Footer contains only generation identity
+#### Scenario: Footer contains generation identity and page position
 - **WHEN** the report has one or more pages
-- **THEN** every page footer contains only `ETF Portfolio Lens | Generated: <timestamp>`, while section headings retain the exact titles `1 · Portfolio`, `2 · Portfolio Analytics`, and `3 · Exposure Analysis`
+- **THEN** every page footer retains `ETF Portfolio Lens | Generated: <timestamp>` on the left and shows the localized current page of total right-aligned on the same footer line, with the cover numbered 1
+- **AND** section headings retain the exact titles `1 · Portfolio`, `2 · Portfolio Analytics`, and `3 · Exposure Analysis`
 
 #### Scenario: Analytics fit within the report page
 - **WHEN** portfolio analytics are rendered
@@ -207,14 +248,15 @@ The report SHALL add continuation pages when variable portfolio, catalog, matrix
 - **THEN** its company-name column is twice the previous 108px width and company names continue to wrap within the column
 
 ### Requirement: Present a branded report cover
-The PDF SHALL begin with a standalone cover page containing the PWA launcher icon, the ETF Portfolio Lens title, and the report's generation provenance grouped without individual metadata boxes.
+The PDF SHALL begin with a standalone cover page containing the PWA launcher icon, the ETF Portfolio Lens title, and the report's generation provenance grouped without individual metadata boxes. The cover separator SHALL be centered at the page's vertical midpoint, with the icon and title above it and provenance below it.
 
 #### Scenario: Report cover is generated
 - **WHEN** a PDF report is generated
 - **THEN** its first page presents the PWA icon and ETF Portfolio Lens title together with generation time, build identifier, ETF snapshot timestamp, and live-price timestamp in a visually grouped layout without individual boxes
+- **AND** a horizontal separator is centered at the page's vertical midpoint, with the icon and title above it and provenance below it
 
 ### Requirement: Include grouped report provenance and a compact footer
-The cover SHALL identify generation time, website build identifier, ETF snapshot-data timestamp, and live-price-data timestamp in a grouped layout without individual boxes. Every page footer SHALL contain only the visible text `ETF Portfolio Lens | Generated: <timestamp>`, with a website hyperlink over only the `ETF Portfolio Lens` label. The footer SHALL not include a page number, build identifier, ETF snapshot timestamp, or live-price timestamp.
+The cover SHALL identify generation time, website build identifier, ETF snapshot-data timestamp, and live-price-data timestamp in a grouped layout without individual boxes. Every page footer SHALL display `ETF Portfolio Lens | Generated: <timestamp>` on the left and the localized current page of total right-aligned on the same footer line, with a website hyperlink over only the `ETF Portfolio Lens` label. The footer SHALL NOT include a build identifier, ETF snapshot timestamp, or live-price timestamp.
 
 #### Scenario: Cover provenance is available
 - **WHEN** the report is generated with build, snapshot, and live-price metadata available
@@ -222,7 +264,9 @@ The cover SHALL identify generation time, website build identifier, ETF snapshot
 
 #### Scenario: Footer remains minimal
 - **WHEN** any report page is rendered
-- **THEN** its only footer text is `ETF Portfolio Lens | Generated: <timestamp>` and its only footer link annotation covers the `ETF Portfolio Lens` label
+- **THEN** its left-side footer text is `ETF Portfolio Lens | Generated: <timestamp>`
+- **AND** its localized current page of total is right-aligned on the same footer line
+- **AND** its only footer link annotation covers the `ETF Portfolio Lens` label
 
 #### Scenario: Footer brand opens the website
 - **WHEN** a user activates `ETF Portfolio Lens` in a report footer
