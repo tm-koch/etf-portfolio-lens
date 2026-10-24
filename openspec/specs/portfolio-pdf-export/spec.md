@@ -36,6 +36,11 @@ The app SHALL generate and directly download the report as an A4 landscape PDF u
 - **WHEN** the user generates a report after selecting a supported interface language
 - **THEN** report headings, labels, taxonomy names, numbers, dates, and currency values use that language and its formatting conventions
 
+#### Scenario: Numbered section headings use the selected language
+- **WHEN** the report is generated in English (`en-CH`), German (`de-CH`), or Polish (`pl-PL`)
+- **THEN** its numbered top-level section headings use the selected language: `1 · Portfolio`, `2 · Portfolio Analytics`, and `3 · Exposure Analysis` in English; `1 · Portfolio`, `2 · Portfolioanalyse`, and `3 · Analyse der Exponierung` in German; `1 · Portfel`, `2 · Analiza portfela`, and `3 · Analiza ekspozycji` in Polish
+- **AND** the ETF Portfolio Lens product name remains unchanged
+
 #### Scenario: Report text is selectable
 - **WHEN** the generated report contains headings, table cells, metrics, or chart legends
 - **THEN** those contents are represented as native PDF text that users can select, search, and copy
@@ -47,17 +52,17 @@ The app SHALL generate and directly download the report as an A4 landscape PDF u
 - **AND** the dialog remains open with an error status if PDF generation fails
 
 ### Requirement: Present the portfolio page
-The first report section SHALL be titled exactly `1 · Portfolio` and SHALL present the selected portfolio ETFs with available fund identity, share or allocation, valuation, and portfolio-weight details appropriate to the active valuation and export modes.
+The first report section SHALL use the selected language's equivalent of `1 · Portfolio` as its title and SHALL present the selected portfolio ETFs with available fund identity, share or allocation, valuation, and portfolio-weight details appropriate to the active valuation and export modes.
 
 #### Scenario: Current portfolio report
 - **WHEN** the user generates a report using the default current portfolio scope
-- **THEN** the `1 · Portfolio` section lists each ETF position in the current portfolio
+- **THEN** the localized Portfolio section lists each ETF position in the current portfolio
 - **AND** shares-based output includes available current price, currency, value, and portfolio weight
 - **AND** percentage-only or allocation-only output does not invent absolute prices, shares, or values
 
 #### Scenario: Catalog report identifies portfolio membership
 - **WHEN** the user generates a report using the full ETF catalog scope
-- **THEN** the `1 · Portfolio` section lists each catalog ETF and distinguishes current portfolio positions from catalog-only ETFs
+- **THEN** the localized Portfolio section lists each catalog ETF and distinguishes current portfolio positions from catalog-only ETFs
 - **AND** portfolio allocations and valuation details are shown only for current portfolio positions
 - **AND** unavailable price data outside Portfolio table cells is identified as unavailable rather than represented as zero
 
@@ -97,7 +102,7 @@ The Portfolio section SHALL include a clickable localized text link to a URL tha
 - **THEN** the Portfolio section does not contain a malformed or empty portfolio link
 
 ### Requirement: Present portfolio analytics and top holdings
-The second report section SHALL be titled exactly `2 · Portfolio Analytics` and SHALL present current-portfolio summary metrics, exposure rollups and scores, and up to the 20 highest-ranked underlying companies.
+The second report section SHALL use the selected language's equivalent of `2 · Portfolio Analytics` as its title and SHALL present current-portfolio summary metrics, exposure rollups and scores, and up to the 20 highest-ranked underlying companies.
 
 #### Scenario: Analytics use the current portfolio
 - **WHEN** a report is generated in either scope
@@ -111,6 +116,7 @@ The second report section SHALL be titled exactly `2 · Portfolio Analytics` and
 - **WHEN** at least one underlying company is available for the current portfolio
 - **THEN** the section includes up to the 20 highest-ranked companies in descending portfolio exposure order
 - **AND** each row includes the company rank, name, total portfolio contribution, and one contribution column for every ETF in the current portfolio
+- **AND** each contributing ETF cell shows that ETF's percentage share of the company's total exposure across the portfolio, so contributing ETF percentages total 100% per company before display rounding
 - **AND** absent ETF contributions are shown as unavailable or not applicable rather than as a positive value
 - **AND** report generation does not depend on which Explore rows have already been rendered or loaded on screen
 
@@ -171,7 +177,7 @@ Each sector, region, and currency rollup SHALL display no more than its 20 highe
 - **THEN** the report displays all entries without a remainder entry
 
 ### Requirement: Present exposure analysis
-The third report section SHALL be titled exactly `3 · Exposure Analysis` and SHALL present the sector, region, and currency comparison charts and the pairwise ETF overlap heatmap for the current portfolio. It SHALL omit the pairwise holdings drill-down table.
+The third report section SHALL use the selected language's equivalent of `3 · Exposure Analysis` as its title and SHALL present the sector, region, and currency comparison charts and the pairwise ETF overlap heatmap for the current portfolio. It SHALL omit the pairwise holdings drill-down table.
 
 #### Scenario: Exposure charts fit and represent current positions
 - **WHEN** the current portfolio has data for one or more exposure charts
@@ -194,15 +200,15 @@ The third report section SHALL be titled exactly `3 · Exposure Analysis` and SH
 - **THEN** they begin on a new page
 
 ### Requirement: Identify the parent section on category pages
-Top Companies and Pairwise ETF Overlap pages SHALL show their numbered parent section title in the page header and render the category title at a subordinate heading size.
+Top Companies and Pairwise ETF Overlap pages SHALL show their localized numbered parent section title in the page header and render the category title at a subordinate heading size.
 
 #### Scenario: Top Companies page hierarchy
 - **WHEN** a Top Companies page or continuation page is rendered
-- **THEN** its header identifies `2 · Portfolio Analytics` and its Top Companies title is subordinate
+- **THEN** its header identifies the selected language's equivalent of `2 · Portfolio Analytics` and its Top Companies title is subordinate
 
 #### Scenario: Pairwise ETF Overlap page hierarchy
 - **WHEN** a Pairwise ETF Overlap page or continuation page is rendered
-- **THEN** its header identifies `3 · Exposure Analysis` and its Pairwise ETF Overlap title is subordinate
+- **THEN** its header identifies the selected language's equivalent of `3 · Exposure Analysis` and its Pairwise ETF Overlap title is subordinate
 
 ### Requirement: Decorate exposure chart titles with aligned separators
 Sector, region, and currency chart titles SHALL each have a thin gray horizontal separator below them; each separator SHALL align with its title, span its chart column, and leave a 10 mm gutter between adjacent columns without encoding data values. The currency legend SHALL use four columns.
@@ -220,7 +226,7 @@ The report SHALL add continuation pages when variable portfolio, catalog, matrix
 
 #### Scenario: Numbered sections start on new pages
 - **WHEN** the report is generated
-- **THEN** the cover is page 1, `1 · Portfolio` starts on a following page, and `2 · Portfolio Analytics` and `3 · Exposure Analysis` each start on a new page
+- **THEN** the cover is page 1, the localized `1 · Portfolio` section starts on a following page, and the localized `2 · Portfolio Analytics` and `3 · Exposure Analysis` sections each start on a new page
 
 #### Scenario: Content continues beyond a base page
 - **WHEN** report content exceeds the available printable area or width
@@ -232,8 +238,8 @@ The report SHALL add continuation pages when variable portfolio, catalog, matrix
 
 #### Scenario: Footer contains generation identity and page position
 - **WHEN** the report has one or more pages
-- **THEN** every page footer retains `ETF Portfolio Lens | Generated: <timestamp>` on the left and shows the localized current page of total right-aligned on the same footer line, with the cover numbered 1
-- **AND** section headings retain the exact titles `1 · Portfolio`, `2 · Portfolio Analytics`, and `3 · Exposure Analysis`
+- **THEN** every page footer retains `ETF Portfolio Lens | <localized generation label>: <timestamp>` on the left and shows the localized current page of total right-aligned on the same footer line, with the cover numbered 1
+- **AND** section headings use the selected language's equivalent of `1 · Portfolio`, `2 · Portfolio Analytics`, and `3 · Exposure Analysis`
 
 #### Scenario: Analytics fit within the report page
 - **WHEN** portfolio analytics are rendered
@@ -256,7 +262,7 @@ The PDF SHALL begin with a standalone cover page containing the PWA launcher ico
 - **AND** a horizontal separator is centered at the page's vertical midpoint, with the icon and title above it and provenance below it
 
 ### Requirement: Include grouped report provenance and a compact footer
-The cover SHALL identify generation time, website build identifier, ETF snapshot-data timestamp, and live-price-data timestamp in a grouped layout without individual boxes. Every page footer SHALL display `ETF Portfolio Lens | Generated: <timestamp>` on the left and the localized current page of total right-aligned on the same footer line, with a website hyperlink over only the `ETF Portfolio Lens` label. The footer SHALL NOT include a build identifier, ETF snapshot timestamp, or live-price timestamp.
+The cover SHALL identify generation time, website build identifier, ETF snapshot-data timestamp, and live-price-data timestamp in a grouped layout without individual boxes. Every page footer SHALL display `ETF Portfolio Lens | <localized generation label>: <timestamp>` on the left and the localized current page of total right-aligned on the same footer line, with a website hyperlink over only the `ETF Portfolio Lens` label. The generation label SHALL match the cover's generation-time label. The footer SHALL NOT include a build identifier, ETF snapshot timestamp, or live-price timestamp.
 
 #### Scenario: Cover provenance is available
 - **WHEN** the report is generated with build, snapshot, and live-price metadata available
@@ -264,7 +270,8 @@ The cover SHALL identify generation time, website build identifier, ETF snapshot
 
 #### Scenario: Footer remains minimal
 - **WHEN** any report page is rendered
-- **THEN** its left-side footer text is `ETF Portfolio Lens | Generated: <timestamp>`
+- **THEN** its left-side footer text is `ETF Portfolio Lens | <localized generation label>: <timestamp>`
+- **AND** the generation label matches the cover's label for the generation-time value (`Generated` in English, `Erstellt` in German, and `Wygenerowano` in Polish)
 - **AND** its localized current page of total is right-aligned on the same footer line
 - **AND** its only footer link annotation covers the `ETF Portfolio Lens` label
 

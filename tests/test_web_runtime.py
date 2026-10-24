@@ -1242,17 +1242,26 @@ import { buildReportAnalytics, buildReportSnapshot } from './web/report-data.js'
 
 const snapshot = buildReportSnapshot({
   scope: 'catalog',
-  portfolioPositions: [{ isin: 'IE0001', entry: { ticker: 'HELD', name: 'Held ETF' } }],
+    portfolioPositions: [
+        { isin: 'IE0001', entry: { ticker: 'HELD', name: 'Held ETF' } },
+        { isin: 'IE0002', entry: { ticker: 'SECOND', name: 'Second ETF' } },
+        { isin: 'IE0003', entry: { ticker: 'THIRD', name: 'Third ETF' } },
+        { isin: 'IE0004', entry: { ticker: 'FOURTH', name: 'Fourth ETF' } },
+    ],
   catalogEtfs: [
     { isin: 'IE0001', ticker: 'HELD', name: 'Held ETF' },
-    { isin: 'IE0002', ticker: 'UNHELD', name: 'Unheld ETF' },
+        { isin: 'IE0005', ticker: 'UNHELD', name: 'Unheld ETF' },
   ],
 });
 const rankedCompanies = Array.from({ length: 25 }, (_, index) => ({
   key: `company-${index}`,
   name: `Company ${index}`,
   weight: 25 - index,
-  contributors: index === 0 ? [{ ticker: 'HELD', weight: 12.5 }] : [],
+    contributors: index === 0 ? [
+        { ticker: 'HELD', weight: 12.5 },
+        { ticker: 'SECOND', weight: 7.5 },
+        { ticker: 'THIRD', weight: 5 },
+    ] : [],
 }));
 const analytics = buildReportAnalytics({
   snapshot,
@@ -1263,6 +1272,15 @@ const analytics = buildReportAnalytics({
   charts: { sector: { labels: ['Technology'], series: [] } },
   pairwiseHeatmap: [{ product: { ticker: 'HELD' }, cells: [{ type: 'diagonal' }] }],
 });
+const zeroTotal = buildReportAnalytics({
+    snapshot,
+    rankedCompanies: [{
+        key: 'zero',
+        name: 'Zero company',
+        weight: 0,
+        contributors: [{ ticker: 'HELD', weight: 0 }],
+    }],
+}).companies[0];
 console.log(JSON.stringify({
   columnTickers: analytics.etfColumns.map((column) => column.ticker),
   count: analytics.companies.length,
@@ -1270,6 +1288,7 @@ console.log(JSON.stringify({
   lastRank: analytics.companies.at(-1).rank,
   preservedSummary: analytics.summary,
   empty: buildReportAnalytics({ snapshot }).companies,
+    zeroTotal,
 }));
 """
         result = subprocess.run(
@@ -1282,14 +1301,25 @@ console.log(JSON.stringify({
         )
         values = json.loads(result.stdout)
 
-        self.assertEqual(values["columnTickers"], ["HELD"])
+        self.assertEqual(values["columnTickers"], ["HELD", "SECOND", "THIRD", "FOURTH"])
         self.assertEqual(values["count"], 20)
         self.assertEqual(values["first"]["rank"], 1)
         self.assertEqual(values["first"]["name"], "Company 0")
         self.assertEqual(values["first"]["totalContribution"], 25)
         self.assertEqual(
-            values["first"]["contributions"], [{"ticker": "HELD", "value": 12.5}]
+            values["first"]["contributions"],
+            [
+                {"ticker": "HELD", "value": 50},
+                {"ticker": "SECOND", "value": 30},
+                {"ticker": "THIRD", "value": 20},
+                {"ticker": "FOURTH", "value": None},
+            ],
         )
+        self.assertEqual(
+            sum(item["value"] for item in values["first"]["contributions"] if item["value"] is not None),
+            100,
+        )
+        self.assertEqual(values["zeroTotal"]["contributions"][0]["value"], 0)
         self.assertEqual(values["lastRank"], 20)
         self.assertEqual(values["preservedSummary"], {"positions": 1})
         self.assertEqual(values["empty"], [])
@@ -1349,7 +1379,7 @@ console.log(JSON.stringify(cases));
         self.assertEqual(values[5]["valueChf"], 140)
         self.assertIsNone(values[6]["valueChf"])
 
-    def test_pdf_options_are_landscape_and_stamp_only_generated_line_on_every_page(
+    def test_pdf_options_are_landscape_and_stamp_localized_generated_line_on_every_page(
         self,
     ) -> None:
         script = """
@@ -1382,15 +1412,18 @@ const labels = {
   'common.unavailable': 'Unavailable',
 };
 const t = (key, values = {}) => key === 'export.page'
-  ? `Page ${values.page} of ${values.total}`
-  : labels[key];
-stampReportPdf(pdf, { snapshot, t, formatTimestamp: () => '24 Oct 2026, 11:24:30 UTC' });
+    ? `Page ${values.page} of ${values.total}`
+    : labels[key];
+for (const generatedLabel of ['Generated', 'Erstellt', 'Wygenerowano']) {
+    labels['export.generatedAt'] = generatedLabel;
+    stampReportPdf(pdf, { snapshot, t, formatTimestamp: () => '24 Oct 2026, 11:24:30 UTC' });
+}
 const options = createReportPdfOptions(snapshot);
 console.log(JSON.stringify({
   pageFormat: options.jsPDF,
   filename: options.filename,
   pages: calls.filter(([type]) => type === 'page').map(([, page]) => page),
-    text: calls.filter(([type, text]) => type === 'text' && text.startsWith('ETF Portfolio Lens | Generated')).map(([, text]) => text),
+        text: calls.filter(([type, text]) => type === 'text' && text.startsWith('ETF Portfolio Lens | ')).map(([, text]) => text),
     pageNumbers: calls.filter(([type, text]) => type === 'text' && text.startsWith('Page ')).map(([, text, x, y, options]) => ({ text, x, y, align: options.align })),
         links: calls.filter(([type]) => type === 'link').map(([, x, y, width, height, options]) => ({
             x, y, width, height, url: options.url,
@@ -1410,15 +1443,15 @@ console.log(JSON.stringify({
         self.assertEqual(values["pageFormat"]["format"], "a4")
         self.assertEqual(values["pageFormat"]["orientation"], "landscape")
         self.assertEqual(values["filename"], "etf-portfolio-lens-report-2026-10-23.pdf")
-        self.assertEqual(values["pages"], [1, 2])
+        self.assertEqual(values["pages"], [1, 2] * 3)
         self.assertEqual(
             values["pageNumbers"],
             [
                 {"text": "Page 1 of 2", "x": 289, "y": 202, "align": "right"},
                 {"text": "Page 2 of 2", "x": 289, "y": 202, "align": "right"},
-            ],
+            ] * 3,
         )
-        self.assertEqual(len(values["links"]), 2)
+        self.assertEqual(len(values["links"]), 6)
         self.assertTrue(
             all(
                 link["url"] == "https://tm-koch.github.io/etf-portfolio-lens/"
@@ -1435,8 +1468,9 @@ console.log(JSON.stringify({
         self.assertEqual(
             values["text"],
             [
-                "ETF Portfolio Lens | Generated: 24 Oct 2026, 11:24:30 UTC",
-                "ETF Portfolio Lens | Generated: 24 Oct 2026, 11:24:30 UTC",
+                f"ETF Portfolio Lens | {label}: 24 Oct 2026, 11:24:30 UTC"
+                for label in ("Generated", "Erstellt", "Wygenerowano")
+                for _ in range(2)
             ],
         )
 
@@ -1632,7 +1666,7 @@ console.log(JSON.stringify({
         footer_values = [
             value
             for value in rendered_values
-            if value.startswith("ETF Portfolio Lens | Generated:")
+            if value.startswith("ETF Portfolio Lens | ")
         ]
         self.assertEqual(len(footer_values), values["pageCount"])
         self.assertIn("export.sectionPortfolio", rendered_values)
@@ -2026,7 +2060,10 @@ const analytics = {
         rank: 1,
         name: 'Example Company',
         totalContribution: 20,
-        contributions: columns.map((column) => ({ ticker: column.ticker, value: 20 / columns.length })),
+        contributions: columns.map((column, index) => ({
+            ticker: column.ticker,
+            value: index === 0 ? 50 : index === 1 ? 30 : index === 2 ? 20 : null,
+        })),
     }],
     pairwiseHeatmap: columns.map((product) => ({ product, cells: columns.map(() => ({ type: 'diagonal' })) })),
 };
@@ -2034,6 +2071,9 @@ const translations = {
     'export.sectionAnalytics': '2 · Portfolio Analytics',
     'export.sectionExposure': '3 · Exposure Analysis',
     'export.topCompanies': 'Top companies',
+    'export.rank': 'Rank',
+    'export.company': 'Company',
+    'export.totalContribution': 'Total contribution',
     'export.pairwiseOverlap': 'Pairwise ETF overlap',
     'chart.titleSectors': 'Sector chart',
     'chart.titleRegions': 'Region chart',
@@ -2059,8 +2099,10 @@ renderReportDocument({
 });
 const bars = lines.filter(({ values: [, y1, , y2] }) => y1 === 34 && y2 === 34);
 const currencyLegend = textCalls.filter(({ value }) => currencies.includes(value));
+const topCompanyTable = tableOptions.find((options) => options.head?.[0]?.[1] === 'Company');
 console.log(JSON.stringify({
     textCalls,
+    topCompanyRows: topCompanyTable?.body,
     bars: bars.map(({ values: [x1, , x2], drawColor, lineWidth }) => ({ x: x1, width: x2 - x1, drawColor, lineWidth })),
     currencyLegend,
     topAutoContinuation: tableOptions.some((options) => typeof options.willDrawPage === 'function'),
@@ -2086,6 +2128,12 @@ console.log(JSON.stringify({
             all(item["fontSize"] == 11 for item in top_titles + pairwise_titles)
         )
         self.assertTrue(values["topAutoContinuation"])
+        top_company_row = values["topCompanyRows"][0]
+        self.assertEqual(
+            top_company_row[:7],
+            ["1", "Example Company", "20%", "50%", "30%", "20%", "—"],
+        )
+        self.assertEqual(top_company_row[7:], ["—"] * 4)
         self.assertEqual(
             values["bars"],
             [

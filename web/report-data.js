@@ -103,6 +103,7 @@ export function buildReportAnalytics({
       || String(first.key || first.name).localeCompare(String(second.key || second.name))
   );
   const companies = ranked.slice(0, 20).map((company, index) => {
+    const totalContribution = Number(company.weight) || 0;
     const contributors = new Map(
       (company.contributors || []).map((contributor) => [contributor.ticker, contributor])
     );
@@ -110,12 +111,14 @@ export function buildReportAnalytics({
       rank: index + 1,
       key: company.key,
       name: company.name,
-      totalContribution: Number(company.weight) || 0,
+      totalContribution,
       contributions: etfColumns.map((column) => {
         const contributor = contributors.get(column.ticker);
+        if (!contributor) return { ticker: column.ticker, value: null };
+        const contributorWeight = Number(contributor.weight) || 0;
         return {
           ticker: column.ticker,
-          value: contributor ? Number(contributor.weight) || 0 : null,
+          value: totalContribution > 0 ? (contributorWeight / totalContribution) * 100 : 0,
         };
       }),
     };

@@ -11,7 +11,7 @@ export function stampReportPdf(pdf, { snapshot, t, formatTimestamp }) {
   const right = pageWidth - 8;
   const websiteLabel = 'ETF Portfolio Lens';
   const websiteLabelWidth = pdf.getTextWidth(websiteLabel);
-  const footerText = `ETF Portfolio Lens | Generated: ${formatTimestamp(snapshot.generatedAt)}`;
+  const footerText = `ETF Portfolio Lens | ${t('export.generatedAt')}: ${formatTimestamp(snapshot.generatedAt)}`;
   const footerY = pageHeight - 8;
 
   pdf.setProperties({

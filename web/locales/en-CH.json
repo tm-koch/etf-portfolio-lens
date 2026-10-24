@@ -97,7 +97,7 @@
     "ui.addEtfsSetShares": "Add supported ETFs and set shares or relative allocations.",
     "ui.localPersistence": "Browser persistence is local only.",
     "ui.importSaxoPdf": "Import Saxo Bank PDF",
-    "ui.dropPdf": "Drop a holdings report here or choose a PDF.",
+    "ui.dropPdf": "Drop a transaction and balance report here or choose a PDF.",
     "ui.importPrivacy": "Imported PDF data stays in this browser and is never uploaded.",
     "ui.downloadExtractedPdfText": "Download extracted PDF text",
     "ui.reviewImport": "Review import",

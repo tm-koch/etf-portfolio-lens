@@ -1,6 +1,8 @@
 ## Purpose
 Define local Saxo Bank holdings PDF import, review, currency normalization, and portfolio replacement behavior.
+
 ## Requirements
+
 ### Requirement: Import a Saxo holdings PDF locally
 The Portfolio tab SHALL provide a file drop and file-selection control that accepts PDF files and parses them entirely in the browser using PDF.js without sending the file to a server. The importer SHALL recognize Saxo Bank transaction and balance reports and SHALL reject unsupported or unrecognized documents without changing the existing portfolio.
 
@@ -87,3 +89,17 @@ The Saxo import review SHALL use the selected valuation basis as the initial por
 - **WHEN** the user cancels the import review
 - **THEN** neither the existing portfolio nor its valuation mode changes
 
+### Requirement: Name the Saxo report in the import instruction
+The Saxo PDF file-drop instruction SHALL identify the expected document as a transaction and balance report using the selected interface language.
+
+#### Scenario: English import instruction
+- **WHEN** the interface language is English (`en-CH`)
+- **THEN** the instruction reads `Drop a transaction and balance report here or choose a PDF.`
+
+#### Scenario: German import instruction
+- **WHEN** the interface language is German (`de-CH`)
+- **THEN** the instruction reads `Ziehen Sie hier einen Transaktions- und Saldobericht hinein oder wählen Sie eine PDF-Datei aus.`
+
+#### Scenario: Polish import instruction
+- **WHEN** the interface language is Polish (`pl-PL`)
+- **THEN** the instruction reads `Upuść tutaj raport transakcji i sald lub wybierz plik PDF.`

@@ -108,13 +108,30 @@ class WebContractTests(unittest.TestCase):
         self.assertEqual(index.count('class="chart-frame"'), 3)
         self.assertEqual(index.count('class="chart-legend-shell"'), 3)
 
-    def test_export_labels_exist_in_all_locales_and_keep_required_section_titles(
+    def test_export_labels_and_saxo_instruction_are_localized(
         self,
     ) -> None:
         expected_titles = {
-            "export.sectionPortfolio": "1 · Portfolio",
-            "export.sectionAnalytics": "2 · Portfolio Analytics",
-            "export.sectionExposure": "3 · Exposure Analysis",
+            "en-CH": {
+                "export.sectionPortfolio": "1 · Portfolio",
+                "export.sectionAnalytics": "2 · Portfolio Analytics",
+                "export.sectionExposure": "3 · Exposure Analysis",
+            },
+            "de-CH": {
+                "export.sectionPortfolio": "1 · Portfolio",
+                "export.sectionAnalytics": "2 · Portfolioanalyse",
+                "export.sectionExposure": "3 · Analyse der Exponierung",
+            },
+            "pl-PL": {
+                "export.sectionPortfolio": "1 · Portfel",
+                "export.sectionAnalytics": "2 · Analiza portfela",
+                "export.sectionExposure": "3 · Analiza ekspozycji",
+            },
+        }
+        expected_saxo_instructions = {
+            "en-CH": "Drop a transaction and balance report here or choose a PDF.",
+            "de-CH": "Ziehen Sie hier einen Transaktions- und Saldobericht hinein oder wählen Sie eine PDF-Datei aus.",
+            "pl-PL": "Upuść tutaj raport transakcji i sald lub wybierz plik PDF.",
         }
         expected_keys = {
             "export.open",
@@ -168,8 +185,9 @@ class WebContractTests(unittest.TestCase):
                 (WEB_ROOT / "locales" / f"{locale}.json").read_text(encoding="utf-8")
             )["translation"]
             self.assertTrue(expected_keys.issubset(resources.keys()), locale)
-            for key, title in expected_titles.items():
+            for key, title in expected_titles[locale].items():
                 self.assertEqual(resources[key], title, locale)
+            self.assertEqual(resources["ui.dropPdf"], expected_saxo_instructions[locale], locale)
 
     def test_export_dialog_has_accessible_scope_and_generation_controls(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
