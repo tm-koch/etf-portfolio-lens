@@ -340,7 +340,8 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertIn(".language-button > .language-code {", mobile_styles)
         self.assertIn("display: inline;", mobile_styles)
         self.assertIn(
-            ".language-button,\n  .color-mode-button {\n"
+            ".app-utility-bar .language-button,\n"
+            "  .app-utility-bar .color-mode-button {\n"
             "    box-sizing: border-box;\n"
             "    width: 43px;\n"
             "    height: var(--utility-control-height);\n"
@@ -354,6 +355,46 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertIn("initializeLocalization().then(bootstrap)", app)
         self.assertIn("await selectLocale(languageOption.dataset.locale)", app)
         self.assertIn("renderLanguageControl();", app)
+
+    def test_pairwise_selectors_fill_two_columns_on_mobile(self) -> None:
+        styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
+        base_styles = styles[: styles.index("@media (max-width: 760px)")]
+        mobile_styles = styles[styles.index("@media (max-width: 760px)") :]
+
+        self.assertIn(
+            ".pairwise-holdings-controls {\n"
+            "  display: grid;\n"
+            "  grid-template-columns: repeat(2, minmax(0, 1fr));",
+            base_styles,
+        )
+        self.assertIn(
+            ".pairwise-selector-button {\n" "  width: 100%;\n" "  min-width: 0;",
+            base_styles,
+        )
+        self.assertNotIn(".pairwise-selector-button {", mobile_styles)
+
+    def test_pairwise_drilldown_heading_aligns_with_card_header(self) -> None:
+        styles = (REPOSITORY_ROOT / "web" / "styles.css").read_text(encoding="utf-8")
+        base_styles = styles[: styles.index("@media (max-width: 760px)")]
+
+        self.assertIn(
+            ".pairwise-holdings-box > .subcard-heading h3 {\n" "  margin: 0;\n}",
+            base_styles,
+        )
+        self.assertIn(
+            ".score-info-heading-row {\n"
+            "  display: flex;\n"
+            "  align-items: flex-start;",
+            base_styles,
+        )
+        self.assertIn(
+            ".score-info-button {\n"
+            "  display: grid;\n"
+            "  width: 24px;\n"
+            "  height: 24px;\n"
+            "  flex: 0 0 24px;",
+            base_styles,
+        )
 
     def test_compare_rollup_and_portfolio_headings_match_redundancy_score_inset(
         self,
@@ -1316,7 +1357,11 @@ console.log(JSON.stringify({
             ],
         )
         self.assertEqual(
-            sum(item["value"] for item in values["first"]["contributions"] if item["value"] is not None),
+            sum(
+                item["value"]
+                for item in values["first"]["contributions"]
+                if item["value"] is not None
+            ),
             100,
         )
         self.assertEqual(values["zeroTotal"]["contributions"][0]["value"], 0)
@@ -1449,7 +1494,8 @@ console.log(JSON.stringify({
             [
                 {"text": "Page 1 of 2", "x": 289, "y": 202, "align": "right"},
                 {"text": "Page 2 of 2", "x": 289, "y": 202, "align": "right"},
-            ] * 3,
+            ]
+            * 3,
         )
         self.assertEqual(len(values["links"]), 6)
         self.assertTrue(
@@ -1806,7 +1852,9 @@ console.log(JSON.stringify(results));
             self.assertIn(test_case["color"], result["fillColors"])
             self.assertEqual(len(result["scoreCards"]), 2)
             self.assertEqual(len(result["rollupCards"]), 3)
-            for score_card, rollup_card in zip(result["scoreCards"], result["rollupCards"]):
+            for score_card, rollup_card in zip(
+                result["scoreCards"], result["rollupCards"]
+            ):
                 self.assertEqual(score_card[0], rollup_card[0])
                 self.assertEqual(score_card[2], rollup_card[2])
             self.assertEqual(result["scoreCards"][0][1], result["scoreCards"][1][1])
@@ -1909,46 +1957,64 @@ console.log(JSON.stringify(results));
         for result in results:
             self.assertEqual(len(result["scoreCards"]), 2, result["locale"])
             self.assertEqual(len(result["rollupCards"]), 3, result["locale"])
-            for score_card, rollup_card in zip(result["scoreCards"], result["rollupCards"]):
+            for score_card, rollup_card in zip(
+                result["scoreCards"], result["rollupCards"]
+            ):
                 self.assertEqual(score_card[0], rollup_card[0], result["locale"])
                 self.assertEqual(score_card[2], rollup_card[2], result["locale"])
 
             if result["available"]:
-                self.assertTrue(all(label in result["textCalls"] for label in result["labels"]))
-                self.assertTrue(all(verdict in result["textCalls"] for verdict in result["verdicts"]))
+                self.assertTrue(
+                    all(label in result["textCalls"] for label in result["labels"])
+                )
+                self.assertTrue(
+                    all(
+                        verdict in result["textCalls"] for verdict in result["verdicts"]
+                    )
+                )
                 self.assertIn("8%", result["textCalls"])
                 self.assertIn("12.5", result["textCalls"])
                 self.assertEqual(len(result["badgeRects"]), 2, result["locale"])
-                for card, label, value in zip(result["scoreCards"], result["labels"], ["8%", "12.5"]):
-                    self.assertTrue(any(
-                        placement["text"] == label
-                        and placement["x"] == card[0] + 3
-                        and placement["y"] == card[1] + 5
-                        for placement in result["textPlacements"]
-                    ))
+                for card, label, value in zip(
+                    result["scoreCards"], result["labels"], ["8%", "12.5"]
+                ):
+                    self.assertTrue(
+                        any(
+                            placement["text"] == label
+                            and placement["x"] == card[0] + 3
+                            and placement["y"] == card[1] + 5
+                            for placement in result["textPlacements"]
+                        )
+                    )
                     value_placement = next(
-                        placement for placement in result["textPlacements"]
+                        placement
+                        for placement in result["textPlacements"]
                         if placement["text"] == value
                     )
                     self.assertEqual(value_placement["x"], card[0] + 3)
                     self.assertEqual(value_placement["y"], card[1] + 16)
-                for card, badge, verdict in zip(result["scoreCards"], result["badgeRects"], result["verdicts"]):
+                for card, badge, verdict in zip(
+                    result["scoreCards"], result["badgeRects"], result["verdicts"]
+                ):
                     self.assertGreaterEqual(badge[0], card[0] + card[2] / 2 - 3)
                     self.assertLessEqual(badge[0] + badge[2], card[0] + card[2])
                     verdict_placement = next(
-                        placement for placement in result["textPlacements"]
+                        placement
+                        for placement in result["textPlacements"]
                         if placement["text"] == verdict
                     )
                     self.assertEqual(verdict_placement["x"], badge[0] + 3)
                     self.assertAlmostEqual(verdict_placement["y"], badge[1] + 4.7)
             else:
                 for card in result["scoreCards"]:
-                    self.assertTrue(any(
-                        placement["text"] == result["unavailable"]
-                        and placement["x"] == card[0] + 3
-                        and placement["y"] == card[1] + 16
-                        for placement in result["textPlacements"]
-                    ))
+                    self.assertTrue(
+                        any(
+                            placement["text"] == result["unavailable"]
+                            and placement["x"] == card[0] + 3
+                            and placement["y"] == card[1] + 16
+                            for placement in result["textPlacements"]
+                        )
+                    )
                 self.assertEqual(result["badgeRects"], [])
 
     def test_report_portfolio_table_uses_dashes_only_for_missing_values(self) -> None:

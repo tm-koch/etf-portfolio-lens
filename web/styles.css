@@ -2100,6 +2100,10 @@ body {
   font-size: 1.08rem;
 }
 
+.pairwise-holdings-box > .subcard-heading h3 {
+  margin: 0;
+}
+
 .redundancy-score-heading .section-label {
   margin-bottom: 4px;
 }
@@ -3140,8 +3144,8 @@ body {
     display: none;
   }
 
-  .language-button,
-  .color-mode-button {
+  .app-utility-bar .language-button,
+  .app-utility-bar .color-mode-button {
     box-sizing: border-box;
     width: 43px;
     height: var(--utility-control-height);

@@ -161,7 +161,7 @@ Developer settings SHALL provide a persisted maximum number of companies for the
 - **THEN** the invalid value SHALL NOT be applied or persisted, and the last valid maximum or default SHALL remain active
 
 ### Requirement: Display a standalone pairwise holdings card
-The pairwise holdings drill-down SHALL appear in a standalone card separate from the product-overlap heatmap. For an available selected pair, the card SHALL show its label and precomputed overlap total. Its two ETF selectors SHALL remain side by side, and its title SHALL identify the pair drill-down without naming the chart style.
+The pairwise holdings drill-down SHALL appear in a standalone card separate from the product-overlap heatmap. For an available selected pair, the card SHALL show its label and precomputed overlap total. Its two ETF selectors SHALL remain side by side at all supported viewport widths, each using the available width of its column, and its title SHALL identify the pair drill-down without naming the chart style.
 
 #### Scenario: Drill-down is separate from the heatmap
 - **WHEN** the pairwise section is displayed
@@ -243,3 +243,10 @@ The pairwise heatmap and drill-down cards SHALL display their content at smartph
 #### Scenario: User views pairwise content on a smartphone
 - **WHEN** the Explore panel is shown at a viewport width of 375 CSS pixels or less
 - **THEN** the heatmap and drill-down cards, selectors, and holdings details SHALL remain visible and usable
+
+### Requirement: Align the pair drill-down card header
+At widescreen viewport widths, the pair drill-down title SHALL align with the heading inset and vertical position used by neighboring aggregation cards, while its information control remains anchored at the upper-right of the card header.
+
+#### Scenario: Widescreen card heading alignment
+- **WHEN** the aggregation view is displayed at a widescreen viewport width
+- **THEN** the pair drill-down title SHALL align with neighboring card headings and the information control SHALL remain at the upper-right of its card header
