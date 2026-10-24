@@ -1697,6 +1697,9 @@ const translations = {
     'export.redundancy': 'Redundancy',
     'export.diversification': 'Diversification',
     'export.coverage': 'Holdings coverage',
+    'rollup.sectorExposure': 'Sector exposure',
+    'rollup.regionExposure': 'Region exposure',
+    'rollup.currencyExposure': 'Currency exposure',
     'explore.redundancy.low': 'Low',
     'explore.redundancy.moderate': 'Moderate',
     'explore.redundancy.high': 'High',
@@ -1721,14 +1724,21 @@ for (const colorMode of ['light', 'dark']) {
     document.documentElement.dataset.colorMode = colorMode;
     for (const testCase of cases) {
         const textCalls = [];
+        const textPlacements = [];
         const fillColors = [];
+        const roundedRects = [];
         const pdf = {
-            text: (value) => textCalls.push(Array.isArray(value) ? value.join(' ') : value),
+            text: (value, x, y) => {
+                const text = Array.isArray(value) ? value.join(' ') : value;
+                textCalls.push(text);
+                textPlacements.push({ text, x, y });
+            },
             splitTextToSize: (value) => [value],
             setFillColor: (...value) => fillColors.push(value),
+            roundedRect: (...args) => roundedRects.push(args),
             lastAutoTable: null,
         };
-        for (const method of ['addPage', 'setFont', 'setFontSize', 'setTextColor', 'setDrawColor', 'setLineWidth', 'roundedRect', 'rect', 'line', 'link']) {
+        for (const method of ['addPage', 'setFont', 'setFontSize', 'setTextColor', 'setDrawColor', 'setLineWidth', 'rect', 'line', 'link']) {
             pdf[method] = () => {};
         }
         renderReportDocument({
@@ -1761,7 +1771,18 @@ for (const colorMode of ['light', 'dark']) {
             formatCurrency: String,
             translateTaxonomy: (value) => value,
         });
-        results.push({ colorMode, testCase, textCalls, fillColors });
+        const rectsForLabels = (labels) => {
+            const placements = textPlacements.filter(({ text }) => labels.includes(text));
+            return roundedRects.filter(([x, y]) => placements.some((placement) => placement.x === x + 3 && placement.y === y + 5));
+        };
+        results.push({
+            colorMode,
+            testCase,
+            textCalls,
+            fillColors,
+            scoreCards: rectsForLabels(['Redundancy', 'Diversification']),
+            rollupCards: rectsForLabels(['Sector exposure', 'Region exposure', 'Currency exposure']),
+        });
     }
 }
 console.log(JSON.stringify(results));
@@ -1783,6 +1804,152 @@ console.log(JSON.stringify(results));
             self.assertIn(test_case["label"], result["textCalls"])
             self.assertNotIn("Holdings coverage", result["textCalls"])
             self.assertIn(test_case["color"], result["fillColors"])
+            self.assertEqual(len(result["scoreCards"]), 2)
+            self.assertEqual(len(result["rollupCards"]), 3)
+            for score_card, rollup_card in zip(result["scoreCards"], result["rollupCards"]):
+                self.assertEqual(score_card[0], rollup_card[0])
+                self.assertEqual(score_card[2], rollup_card[2])
+            self.assertEqual(result["scoreCards"][0][1], result["scoreCards"][1][1])
+            self.assertEqual(
+                result["scoreCards"][1][0],
+                result["scoreCards"][0][0] + result["scoreCards"][0][2] + 4,
+            )
+
+    def test_report_score_cards_fit_localized_and_unavailable_content(self) -> None:
+        script = """
+import { readFile } from 'node:fs/promises';
+import { renderReportDocument } from './web/pdf-report-renderer.js';
+
+globalThis.document = {
+    documentElement: { dataset: { colorMode: 'light' } },
+    createElement: () => ({ getContext: () => ({}) }),
+};
+globalThis.Chart = class { destroy() {} };
+const localeNames = ['en-CH', 'de-CH', 'pl-PL'];
+const results = [];
+for (const locale of localeNames) {
+    const translation = JSON.parse(await readFile(`web/locales/${locale}.json`, 'utf8')).translation;
+    for (const available of [true, false]) {
+        const textCalls = [];
+        const textPlacements = [];
+        const roundedRects = [];
+        const pdf = {
+            text: (value, x, y) => {
+                const text = Array.isArray(value) ? value.join(' ') : value;
+                textCalls.push(text);
+                textPlacements.push({ text, x, y });
+            },
+            splitTextToSize: (value) => [value],
+            roundedRect: (...args) => roundedRects.push(args),
+            lastAutoTable: null,
+        };
+        for (const method of ['addPage', 'setFont', 'setFontSize', 'setTextColor', 'setDrawColor', 'setLineWidth', 'setFillColor', 'rect', 'line', 'link']) {
+            pdf[method] = () => {};
+        }
+        renderReportDocument({
+            pdf,
+            autoTable: (document, options) => { document.lastAutoTable = { finalY: options.startY + 8 }; },
+            snapshot: { generatedAt: '2026-10-23T12:00:00Z', provenance: {}, portfolioMode: 'full', etfs: [] },
+            analytics: {
+                summary: {},
+                rollups: {},
+                redundancy: available ? { available: true, score: 8, level: 'high' } : { available: false },
+                diversification: available ? { available: true, score: 12.5, rating: 'highlyConcentrated' } : { available: false },
+                charts: {},
+                etfColumns: [],
+                companies: [],
+                pairwiseHeatmap: [],
+            },
+            t: (key) => translation[key] || key,
+            formatCount: String,
+            formatDecimal: String,
+            formatPercent: (value) => `${value}%`,
+            formatCurrency: String,
+            translateTaxonomy: (value) => value,
+        });
+        const rectsForLabels = (labels) => {
+            const placements = textPlacements.filter(({ text }) => labels.includes(text));
+            return roundedRects.filter(([x, y]) => placements.some((placement) => placement.x === x + 3 && placement.y === y + 5));
+        };
+        const scoreCards = rectsForLabels([translation['export.redundancy'], translation['export.diversification']]);
+        const rollupCards = rectsForLabels([
+            translation['rollup.sectorExposure'],
+            translation['rollup.regionExposure'],
+            translation['rollup.currencyExposure'],
+        ]);
+        const badgeRects = roundedRects.filter(([x, y, width, height]) => height === 7
+            && scoreCards.some(([cardX, cardY, cardWidth]) => y === cardY + 10 && x >= cardX && x + width <= cardX + cardWidth));
+        results.push({
+            locale,
+            available,
+            textCalls,
+            textPlacements,
+            scoreCards,
+            rollupCards,
+            badgeRects,
+            labels: [translation['export.redundancy'], translation['export.diversification']],
+            unavailable: translation['export.noData'],
+            verdicts: [translation['explore.redundancy.high'], translation['explore.diversification.highlyConcentrated']],
+        });
+    }
+}
+console.log(JSON.stringify(results));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        results = json.loads(result.stdout)
+
+        self.assertEqual(len(results), 6)
+        for result in results:
+            self.assertEqual(len(result["scoreCards"]), 2, result["locale"])
+            self.assertEqual(len(result["rollupCards"]), 3, result["locale"])
+            for score_card, rollup_card in zip(result["scoreCards"], result["rollupCards"]):
+                self.assertEqual(score_card[0], rollup_card[0], result["locale"])
+                self.assertEqual(score_card[2], rollup_card[2], result["locale"])
+
+            if result["available"]:
+                self.assertTrue(all(label in result["textCalls"] for label in result["labels"]))
+                self.assertTrue(all(verdict in result["textCalls"] for verdict in result["verdicts"]))
+                self.assertIn("8%", result["textCalls"])
+                self.assertIn("12.5", result["textCalls"])
+                self.assertEqual(len(result["badgeRects"]), 2, result["locale"])
+                for card, label, value in zip(result["scoreCards"], result["labels"], ["8%", "12.5"]):
+                    self.assertTrue(any(
+                        placement["text"] == label
+                        and placement["x"] == card[0] + 3
+                        and placement["y"] == card[1] + 5
+                        for placement in result["textPlacements"]
+                    ))
+                    value_placement = next(
+                        placement for placement in result["textPlacements"]
+                        if placement["text"] == value
+                    )
+                    self.assertEqual(value_placement["x"], card[0] + 3)
+                    self.assertEqual(value_placement["y"], card[1] + 16)
+                for card, badge, verdict in zip(result["scoreCards"], result["badgeRects"], result["verdicts"]):
+                    self.assertGreaterEqual(badge[0], card[0] + card[2] / 2 - 3)
+                    self.assertLessEqual(badge[0] + badge[2], card[0] + card[2])
+                    verdict_placement = next(
+                        placement for placement in result["textPlacements"]
+                        if placement["text"] == verdict
+                    )
+                    self.assertEqual(verdict_placement["x"], badge[0] + 3)
+                    self.assertAlmostEqual(verdict_placement["y"], badge[1] + 4.7)
+            else:
+                for card in result["scoreCards"]:
+                    self.assertTrue(any(
+                        placement["text"] == result["unavailable"]
+                        and placement["x"] == card[0] + 3
+                        and placement["y"] == card[1] + 16
+                        for placement in result["textPlacements"]
+                    ))
+                self.assertEqual(result["badgeRects"], [])
 
     def test_report_portfolio_table_uses_dashes_only_for_missing_values(self) -> None:
         script = """

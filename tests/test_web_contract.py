@@ -187,7 +187,9 @@ class WebContractTests(unittest.TestCase):
             self.assertTrue(expected_keys.issubset(resources.keys()), locale)
             for key, title in expected_titles[locale].items():
                 self.assertEqual(resources[key], title, locale)
-            self.assertEqual(resources["ui.dropPdf"], expected_saxo_instructions[locale], locale)
+            self.assertEqual(
+                resources["ui.dropPdf"], expected_saxo_instructions[locale], locale
+            )
 
     def test_export_dialog_has_accessible_scope_and_generation_controls(self) -> None:
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")

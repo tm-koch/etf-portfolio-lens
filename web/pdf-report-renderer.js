@@ -112,7 +112,7 @@ function addMetricCards(pdf, entries, y) {
 
 function addScoreCards(pdf, entries, y) {
   const gap = 4;
-  const cardWidth = (PAGE_WIDTH - PAGE_LEFT - PAGE_RIGHT - gap) / 2;
+  const cardWidth = (PAGE_WIDTH - PAGE_LEFT - PAGE_RIGHT - gap * 2) / 3;
   const cardHeight = 20;
 
   entries.forEach(({ label, value, verdict, verdictColor }, index) => {
