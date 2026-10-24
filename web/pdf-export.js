@@ -3,17 +3,14 @@ import { autoTable as bundledAutoTable, jsPDFConstructor as bundledJsPDF } from 
 
 export const REPORT_WEBSITE_URL = 'https://tm-koch.github.io/etf-portfolio-lens/';
 
-export function stampReportPdf(pdf, { snapshot, t, formatTimestamp, websiteUrl = REPORT_WEBSITE_URL }) {
+export function stampReportPdf(pdf, { snapshot, formatTimestamp }) {
   const pageCount = pdf.internal.getNumberOfPages();
-  const pageWidth = pdf.internal.pageSize.getWidth();
   const pageHeight = pdf.internal.pageSize.getHeight();
   const left = 8;
-  const right = pageWidth - 8;
-  const firstLine = `${t('export.generatedAt')}: ${formatTimestamp(snapshot.generatedAt)}  |  ${t('export.buildIdentifier')}: ${snapshot.provenance.buildId || t('common.unavailable')}`;
-  const secondLine = `${t('export.etfSnapshot')}: ${formatTimestamp(snapshot.provenance.snapshotTimestamp)}  |  ${t('export.livePrices')}: ${formatTimestamp(snapshot.provenance.livePricesTimestamp)}`;
-  const websiteLabel = `${t('export.website')}: `;
-  const websiteLine = `${websiteLabel}${websiteUrl}`;
-  const footerTop = pageHeight - 18;
+  const websiteLabel = 'ETF Portfolio Lens';
+  const websiteLabelWidth = pdf.getTextWidth(websiteLabel);
+  const footerText = `ETF Portfolio Lens | Generated: ${formatTimestamp(snapshot.generatedAt)}`;
+  const footerY = pageHeight - 8;
 
   pdf.setProperties({
     title: 'ETF Portfolio Lens report',
@@ -23,17 +20,10 @@ export function stampReportPdf(pdf, { snapshot, t, formatTimestamp, websiteUrl =
   for (let page = 1; page <= pageCount; page += 1) {
     pdf.setPage(page);
     pdf.setFont('SpaceGrotesk', 'normal');
-    pdf.setFontSize(6.5);
+    pdf.setFontSize(7.5);
     pdf.setTextColor(71, 85, 105);
-    pdf.setDrawColor(203, 213, 225);
-    pdf.line(left, footerTop - 3, right, footerTop - 3);
-    pdf.text(pdf.splitTextToSize(firstLine, right - left), left, footerTop);
-    pdf.text(pdf.splitTextToSize(secondLine, right - left), left, footerTop + 3.5);
-    pdf.text(websiteLine, left, footerTop + 7);
-    const websiteLinkStart = left + pdf.getTextWidth(websiteLabel);
-    const websiteLinkWidth = pdf.getTextWidth(websiteUrl);
-    pdf.link(websiteLinkStart, footerTop + 4.5, websiteLinkWidth, 3.5, { url: websiteUrl });
-    pdf.text(t('export.page', { page, total: pageCount }), right, footerTop + 7, { align: 'right' });
+    pdf.text(footerText, left, footerY);
+    pdf.link(left, footerY - 3, websiteLabelWidth, 4, { url: REPORT_WEBSITE_URL });
   }
   return pdf;
 }
@@ -65,9 +55,22 @@ async function addReportFonts(pdf, fetchImpl) {
   }
 }
 
+async function loadReportCoverIcon(fetchImpl) {
+  const filename = 'launchericon-512x512.png';
+  const response = await fetchImpl(new URL(`./icons/${filename}`, import.meta.url));
+  if (!response.ok) throw new Error(`Could not load the local report icon: ${filename}`);
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  let binary = '';
+  for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+    binary += String.fromCharCode(...bytes.subarray(offset, offset + 0x8000));
+  }
+  return `data:image/png;base64,${globalThis.btoa(binary)}`;
+}
+
 export async function generateReportPdf({
   snapshot,
   analytics,
+  portfolioShareUrl = null,
   allocationOnly = false,
   t,
   formatCount,
@@ -86,17 +89,21 @@ export async function generateReportPdf({
   const options = createReportPdfOptions(snapshot);
   const pdf = new jsPDFConstructor(options.jsPDF);
   await addReportFonts(pdf, fetchImpl);
+  const coverIcon = await loadReportCoverIcon(fetchImpl);
   renderReportDocument({
     pdf,
     autoTable,
     snapshot,
     analytics,
+    portfolioShareUrl,
+    coverIcon,
     allocationOnly,
     t,
     formatCount,
     formatDecimal,
     formatPercent,
     formatCurrency,
+    formatTimestamp,
     translateTaxonomy,
   });
   stampReportPdf(pdf, { snapshot, t, formatTimestamp });

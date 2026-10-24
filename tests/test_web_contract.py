@@ -108,7 +108,9 @@ class WebContractTests(unittest.TestCase):
         self.assertEqual(index.count('class="chart-frame"'), 3)
         self.assertEqual(index.count('class="chart-legend-shell"'), 3)
 
-    def test_export_labels_exist_in_all_locales_and_keep_required_section_titles(self) -> None:
+    def test_export_labels_exist_in_all_locales_and_keep_required_section_titles(
+        self,
+    ) -> None:
         expected_titles = {
             "export.sectionPortfolio": "1 · Portfolio",
             "export.sectionAnalytics": "2 · Portfolio Analytics",
@@ -180,7 +182,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn('<legend data-i18n="export.scope">', index)
         self.assertIn('name="export-report-scope" value="portfolio" checked', index)
         self.assertIn('name="export-report-scope" value="catalog"', index)
-        self.assertIn('type="checkbox"', index[index.index('id="export-allocation-only"') - 80 :])
+        self.assertIn(
+            'type="checkbox"', index[index.index('id="export-allocation-only"') - 80 :]
+        )
         self.assertIn('role="status" aria-live="polite"', index)
 
     def test_export_dialog_closes_only_after_successful_pdf_generation(self) -> None:
@@ -189,10 +193,17 @@ class WebContractTests(unittest.TestCase):
         end = app.index("\nfunction closeExportDialog()", start)
         handler = app[start:end]
 
-        self.assertLess(handler.index("await generateReportPdf("), handler.index("closeExportDialog();"))
-        self.assertLess(handler.index("closeExportDialog();"), handler.index("} catch (error)"))
+        self.assertLess(
+            handler.index("await generateReportPdf("),
+            handler.index("closeExportDialog();"),
+        )
+        self.assertLess(
+            handler.index("closeExportDialog();"), handler.index("} catch (error)")
+        )
 
-    def test_report_renderer_builds_required_sections_without_pairwise_drilldown(self) -> None:
+    def test_report_renderer_builds_required_sections_without_pairwise_drilldown(
+        self,
+    ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
 
@@ -205,7 +216,9 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("pdf.addImage(image, 'PNG'", renderer)
         self.assertNotIn("pairwise-holdings", renderer)
 
-    def test_report_uses_native_text_and_only_embeds_chart_plots_as_images(self) -> None:
+    def test_report_uses_native_text_and_only_embeds_chart_plots_as_images(
+        self,
+    ) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
         pdf_export = (WEB_ROOT / "pdf-export.js").read_text(encoding="utf-8")
@@ -225,19 +238,31 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("function addChartLegend(pdf", renderer)
         self.assertIn("rowPageBreak: 'avoid'", renderer)
 
-    def test_numbered_pdf_sections_start_new_pages_and_analytics_stays_inside_margins(self) -> None:
+    def test_numbered_pdf_sections_start_new_pages_and_analytics_stays_inside_margins(
+        self,
+    ) -> None:
         renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
 
-        self.assertIn("let y = addPageTitle(pdf, t('export.sectionAnalytics'))", renderer)
+        self.assertIn(
+            "let y = addPageTitle(pdf, t('export.sectionAnalytics'))", renderer
+        )
         self.assertIn("y = addPageTitle(pdf, t('export.sectionExposure'))", renderer)
-        self.assertIn("const y = addPageTitle(pdf, t('export.pairwiseOverlap'))", renderer)
-        self.assertIn("y = addSectionTitle(pdf, t('export.topCompanies'))", renderer)
+        self.assertIn(
+            "function addCategoryPageHeading(pdf, parentTitle, categoryTitle)", renderer
+        )
+        self.assertIn("const parentTitle = t('export.sectionAnalytics');", renderer)
+        self.assertIn("const categoryTitle = t('export.topCompanies');", renderer)
+        self.assertIn("const parentTitle = t('export.sectionExposure');", renderer)
+        self.assertIn("const categoryTitle = t('export.pairwiseOverlap');", renderer)
+        self.assertIn("willDrawPage: ({ pageNumber }) =>", renderer)
 
     def test_pairwise_pdf_export_keeps_empty_cells_blank(self) -> None:
         renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
 
         self.assertIn("if (value.type === 'empty')", renderer)
-        self.assertIn("return { content: '', styles: { fillColor: SURFACE_COLOR } };", renderer)
+        self.assertIn(
+            "return { content: '', styles: { fillColor: SURFACE_COLOR } };", renderer
+        )
 
     def test_app_translation_keys_exist_in_all_locales(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
@@ -640,9 +665,7 @@ class WebContractTests(unittest.TestCase):
         for weight in ("400", "500", "700"):
             for subset in ("latin", "latin-ext"):
                 font_path = (
-                    WEB_ROOT
-                    / "fonts"
-                    / f"space-grotesk-{subset}-{weight}-normal.woff2"
+                    WEB_ROOT / "fonts" / f"space-grotesk-{subset}-{weight}-normal.woff2"
                 )
                 self.assertTrue(font_path.is_file())
         self.assertIn("navigator.serviceWorker.register('./sw.js')", app)

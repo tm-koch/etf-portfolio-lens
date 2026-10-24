@@ -2,6 +2,41 @@ function cloneValue(value) {
   return value == null ? value : JSON.parse(JSON.stringify(value));
 }
 
+export function aggregatePortfolioRollups(positions, { getTotalShareUnits, getPositionWeight }) {
+  const totals = {
+    sector: new Map(),
+    region: new Map(),
+    currency: new Map(),
+  };
+  const hasCapturedWeights = positions.every((position) => Number.isFinite(position.weightPct));
+  const totalShareUnits = hasCapturedWeights ? 0 : getTotalShareUnits(positions);
+
+  for (const position of positions) {
+    const snapshot = position.snapshot;
+    if (!snapshot || (!hasCapturedWeights && !totalShareUnits)) {
+      continue;
+    }
+    const positionWeight = hasCapturedWeights
+      ? position.weightPct
+      : getPositionWeight(position, totalShareUnits);
+    const aggregates = snapshot.aggregates || {};
+    const add = (bucket, items) => {
+      for (const item of items || []) {
+        if (!item?.name) {
+          continue;
+        }
+        const current = bucket.get(item.name) || 0;
+        bucket.set(item.name, current + (positionWeight * Number(item.weight_pct || 0)) / 100);
+      }
+    };
+    add(totals.sector, aggregates.sector_weights);
+    add(totals.region, aggregates.region_weights);
+    add(totals.currency, aggregates.currency_weights);
+  }
+
+  return totals;
+}
+
 export function buildReportSnapshot({
   scope = 'portfolio',
   portfolioPositions = [],

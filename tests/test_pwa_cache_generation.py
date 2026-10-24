@@ -26,8 +26,12 @@ class PwaCacheGenerationTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary_directory:
             first_root = Path(temporary_directory) / "first"
             second_root = Path(temporary_directory) / "second"
-            shutil.copytree(WEB_ROOT, first_root, ignore=shutil.ignore_patterns("node_modules"))
-            shutil.copytree(WEB_ROOT, second_root, ignore=shutil.ignore_patterns("node_modules"))
+            shutil.copytree(
+                WEB_ROOT, first_root, ignore=shutil.ignore_patterns("node_modules")
+            )
+            shutil.copytree(
+                WEB_ROOT, second_root, ignore=shutil.ignore_patterns("node_modules")
+            )
 
             first_generation = self.run_generation(first_root)
             self.assertEqual(first_generation, self.run_generation(first_root))
@@ -69,6 +73,7 @@ class PwaCacheGenerationTests(unittest.TestCase):
         cache_paths = set(result.stdout.splitlines())
         expected_paths = {
             "report-data.js",
+            "share.js",
             "export-view.js",
             "pdf-report-renderer.js",
             "pdf-vendor.js",

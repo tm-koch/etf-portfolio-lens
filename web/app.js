@@ -42,9 +42,9 @@ import {
   validateNearIdenticalThreshold,
   validateRedundancyThresholds,
 } from './redundancy.js?v=20261019-1';
-import { decodePortfolioShare, encodePortfolioShare, encodePrivatePortfolioShare } from './share.js';
+import { buildPortfolioShareUrl as createPortfolioShareUrl, decodePortfolioShare } from './share.js?v=20261024-1';
 import { initializeLocalization, selectLocale } from './localization.js';
-import { buildReportAnalytics, buildReportSnapshot } from './report-data.js';
+import { aggregatePortfolioRollups as aggregateReportPortfolioRollups, buildReportAnalytics, buildReportSnapshot } from './report-data.js';
 import { openReportDialog } from './export-view.js';
 import { generateReportPdf } from './pdf-export.js';
 
@@ -617,15 +617,12 @@ function readPortfolioShareFromUrl() {
 }
 
 function buildPortfolioShareUrl(portfolio, mode = 'full') {
-  const encoded = mode === 'percentage'
-    ? encodePrivatePortfolioShare(portfolio, getTotalShareUnits, getPositionWeight)
-    : encodePortfolioShare(portfolio, state.valuationMode);
-  if (!encoded) {
-    return null;
-  }
-  const url = new URL(window.location.href);
-  url.hash = `${SHARE_FRAGMENT_KEY}=${encoded}`;
-  return url.toString();
+  return createPortfolioShareUrl(portfolio, mode, {
+    currentUrl: window.location.href,
+    valuationMode: state.valuationMode,
+    getTotalShareUnits,
+    getPositionWeight,
+  });
 }
 
 function renderShareFeedback() {
@@ -871,6 +868,7 @@ async function generateExportReport() {
     await generateReportPdf({
       snapshot,
       analytics,
+      portfolioShareUrl: buildPortfolioShareUrl(getSelectedPositions(), state.portfolioMode),
       allocationOnly: elements.exportAllocationOnly.checked,
       t,
       formatCount,
@@ -1169,6 +1167,13 @@ function getPositionWeight(position, totalShareUnits) {
     return 0;
   }
   return (getPositionWeightBase(position) / totalShareUnits) * 100;
+}
+
+function aggregatePortfolioRollups(positions) {
+  return aggregateReportPortfolioRollups(positions, {
+    getTotalShareUnits,
+    getPositionWeight,
+  });
 }
 
 function roundExposurePercent(value) {
@@ -1616,41 +1621,6 @@ function ensureCompanyObserver() {
   if (sentinel) {
     state.companyObserver.observe(sentinel);
   }
-}
-
-function aggregatePortfolioRollups(positions) {
-  const totals = {
-    sector: new Map(),
-    region: new Map(),
-    currency: new Map(),
-  };
-  const hasCapturedWeights = positions.every((position) => Number.isFinite(position.weightPct));
-  const totalShareUnits = hasCapturedWeights ? 0 : getTotalShareUnits(positions);
-
-  for (const position of positions) {
-    const snapshot = position.snapshot;
-    if (!snapshot || !totalShareUnits) {
-      continue;
-    }
-    const positionWeight = hasCapturedWeights
-      ? position.weightPct
-      : getPositionWeight(position, totalShareUnits);
-    const aggregates = snapshot.aggregates || {};
-    const add = (bucket, items) => {
-      for (const item of items || []) {
-        if (!item?.name) {
-          continue;
-        }
-        const current = bucket.get(item.name) || 0;
-        bucket.set(item.name, current + (positionWeight * Number(item.weight_pct || 0)) / 100);
-      }
-    };
-    add(totals.sector, aggregates.sector_weights);
-    add(totals.region, aggregates.region_weights);
-    add(totals.currency, aggregates.currency_weights);
-  }
-
-  return totals;
 }
 
 function mergeLabels(...labelGroups) {

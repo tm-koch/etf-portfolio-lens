@@ -7,6 +7,7 @@ const SHELL_PATHS = [
   'styles.css',
   'fonts.css',
   'app.js',
+  'share.js',
   'report-data.js',
   'export-view.js',
   'pdf-report-renderer.js',

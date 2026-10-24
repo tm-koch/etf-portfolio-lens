@@ -33,6 +33,11 @@ function addSubheading(pdf, title, y, options = {}) {
   return nextY + after;
 }
 
+function addCategoryPageHeading(pdf, parentTitle, categoryTitle) {
+  const y = addSectionTitle(pdf, parentTitle);
+  return addSubheading(pdf, categoryTitle, y, { size: 11, before: 0, after: 5 });
+}
+
 function addTable(pdf, autoTable, options) {
   autoTable(pdf, {
     theme: 'grid',
@@ -103,12 +108,17 @@ function addRollupCards(pdf, analytics, { t, translateTaxonomy, formatPercent, u
   ];
   const gap = 4;
   const cardWidth = (PAGE_WIDTH - PAGE_LEFT - PAGE_RIGHT - gap * 2) / 3;
-  const entriesByGroup = groups.map(([title, values]) => [
-    title,
-    Object.entries(values || {}).sort((first, second) => second[1] - first[1]),
-  ]);
+  const entriesByGroup = groups.map(([title, values]) => {
+    const entries = Object.entries(values || {}).sort((first, second) => second[1] - first[1]);
+    if (entries.length > 20) {
+      const remainder = entries.slice(20).reduce((total, [, value]) => total + (Number(value) || 0), 0);
+      entries.splice(20, entries.length - 20, [null, remainder]);
+    }
+    return [title, entries];
+  });
   const rowCount = Math.max(1, ...entriesByGroup.map(([, entries]) => entries.length));
-  const cardHeight = 11 + rowCount * 4.2;
+  const rowHeight = 3.2;
+  const cardHeight = 11 + rowCount * rowHeight;
 
   entriesByGroup.forEach(([title, entries], index) => {
     const x = PAGE_LEFT + index * (cardWidth + gap);
@@ -127,11 +137,12 @@ function addRollupCards(pdf, analytics, { t, translateTaxonomy, formatPercent, u
       return;
     }
     entries.forEach(([label, value], row) => {
-      const rowY = y + 10 + row * 4.2;
+      const rowY = y + 10 + row * rowHeight;
       pdf.setFont('SpaceGrotesk', 'normal');
       pdf.setFontSize(6.8);
       pdf.setTextColor(...TEXT_COLOR);
-      const labelLines = pdf.splitTextToSize(translateTaxonomy(label), cardWidth - 28).slice(0, 1);
+      const displayLabel = label === null ? t('export.otherRollup') : translateTaxonomy(label);
+      const labelLines = pdf.splitTextToSize(displayLabel, cardWidth - 28).slice(0, 1);
       pdf.text(labelLines, x + 3, rowY);
       pdf.setFont('SpaceGrotesk', 'medium');
       pdf.text(formatPercent(value), x + cardWidth - 3, rowY, { align: 'right' });
@@ -179,8 +190,18 @@ function buildPortfolioRows(snapshot, { allocationOnly, t, formatCount, formatPe
   return { headers, rows };
 }
 
-function renderPortfolio(pdf, autoTable, { snapshot, allocationOnly, t, formatCount, formatPercent, formatCurrency }) {
-  const y = addSectionTitle(pdf, t('export.sectionPortfolio'));
+function renderPortfolio(pdf, autoTable, { snapshot, portfolioShareUrl, allocationOnly, t, formatCount, formatPercent, formatCurrency }) {
+  let y = addSectionTitle(pdf, t('export.sectionPortfolio'));
+  if (portfolioShareUrl) {
+    const linkLabel = t('export.openPortfolio');
+    const linkY = y + 2;
+    pdf.setFont('SpaceGrotesk', 'medium');
+    pdf.setFontSize(7);
+    pdf.setTextColor(37, 99, 235);
+    pdf.text(linkLabel, PAGE_LEFT, linkY);
+    pdf.link(PAGE_LEFT, linkY - 3, pdf.getTextWidth(linkLabel), 4, { url: portfolioShareUrl });
+    y += 8;
+  }
   const { headers, rows } = buildPortfolioRows(snapshot, {
     allocationOnly,
     t,
@@ -204,8 +225,10 @@ function renderPortfolio(pdf, autoTable, { snapshot, allocationOnly, t, formatCo
 function renderTopCompanies(pdf, autoTable, analytics, { t, formatCount, formatPercent, unavailable }) {
   const columns = analytics.etfColumns || [];
   const panels = partitionReportColumns(columns);
+  const parentTitle = t('export.sectionAnalytics');
+  const categoryTitle = t('export.topCompanies');
   pdf.addPage();
-  let y = addSectionTitle(pdf, t('export.topCompanies'));
+  let y = addCategoryPageHeading(pdf, parentTitle, categoryTitle);
 
   if (!analytics.companies?.length) {
     pdf.setFont('SpaceGrotesk', 'normal');
@@ -218,7 +241,7 @@ function renderTopCompanies(pdf, autoTable, analytics, { t, formatCount, formatP
   panels.forEach((panel, panelIndex) => {
     if (panelIndex > 0) {
       pdf.addPage();
-      y = addSectionTitle(pdf, t('export.topCompanies'));
+      y = addCategoryPageHeading(pdf, parentTitle, categoryTitle);
       pdf.setFont('SpaceGrotesk', 'medium');
       pdf.setFontSize(8);
       pdf.text(t('export.contributionPanel', { start: panel.start + 1, end: panel.end }), PAGE_LEFT, y);
@@ -243,6 +266,10 @@ function renderTopCompanies(pdf, autoTable, analytics, { t, formatCount, formatP
       startY: y,
       head: [headers],
       body: rows,
+      margin: { left: PAGE_LEFT, right: PAGE_RIGHT, top: 32, bottom: FOOTER_MARGIN },
+      willDrawPage: ({ pageNumber }) => {
+        if (pageNumber > 1) addCategoryPageHeading(pdf, parentTitle, categoryTitle);
+      },
       columnStyles,
       styles: { fontSize: 7, cellPadding: 1.6 },
     });
@@ -291,8 +318,7 @@ function createDonutImage(chartData, { translateTaxonomy, formatPercent }) {
   return image;
 }
 
-function addChartLegend(pdf, labels, x, y, width, translateTaxonomy) {
-  const columns = 2;
+function addChartLegend(pdf, labels, x, y, width, translateTaxonomy, columns = 2) {
   const columnWidth = width / columns;
   const rowHeights = [];
   const translated = labels.map(translateTaxonomy);
@@ -318,13 +344,53 @@ function hexToRgb(hex) {
   return [0, 2, 4].map((offset) => Number.parseInt(normalized.slice(offset, offset + 2), 16));
 }
 
+function renderReportCover(pdf, { snapshot, coverIcon, t, formatTimestamp }) {
+  if (coverIcon) {
+    pdf.addImage(coverIcon, 'PNG', PAGE_LEFT, 42, 32, 32);
+  }
+  pdf.setFont('SpaceGrotesk', 'bold');
+  pdf.setFontSize(24);
+  pdf.setTextColor(...TEXT_COLOR);
+  pdf.text('ETF Portfolio Lens', PAGE_LEFT + 40, 59);
+  pdf.setDrawColor(...TEXT_COLOR);
+  pdf.setLineWidth(0.6);
+  pdf.line(PAGE_LEFT, 88, PAGE_WIDTH - PAGE_RIGHT, 88);
+
+  const unavailable = t('common.unavailable');
+  const format = typeof formatTimestamp === 'function'
+    ? formatTimestamp
+    : (value) => value || unavailable;
+  const metadata = [
+    [t('export.generatedAt'), format(snapshot.generatedAt)],
+    [t('export.buildIdentifier'), snapshot.provenance.buildId || unavailable],
+    [t('export.etfSnapshot'), format(snapshot.provenance.snapshotTimestamp)],
+    [t('export.livePrices'), format(snapshot.provenance.livePricesTimestamp)],
+  ];
+  const gap = 16;
+  const columnWidth = (PAGE_WIDTH - PAGE_LEFT - PAGE_RIGHT - gap) / 2;
+  metadata.forEach(([label, value], index) => {
+    const column = index % 2;
+    const row = Math.floor(index / 2);
+    const x = PAGE_LEFT + column * (columnWidth + gap);
+    const y = 108 + row * 36;
+    pdf.setFont('SpaceGrotesk', 'medium');
+    pdf.setFontSize(7);
+    pdf.setTextColor(...MUTED_COLOR);
+    pdf.text(label, x, y);
+    pdf.setFont('SpaceGrotesk', 'normal');
+    pdf.setFontSize(9);
+    pdf.setTextColor(...TEXT_COLOR);
+    pdf.text(pdf.splitTextToSize(String(value), columnWidth).slice(0, 2), x, y + 8);
+  });
+}
+
 function renderExposureCharts(pdf, analytics, { t, translateTaxonomy, formatPercent, unavailable }) {
   const charts = [
     ['chart.titleSectors', analytics.charts?.sector],
     ['chart.titleRegions', analytics.charts?.region],
     ['chart.titleCurrencies', analytics.charts?.currency],
   ];
-  const gap = 4;
+  const gap = 10;
   const cardWidth = (PAGE_WIDTH - PAGE_LEFT - PAGE_RIGHT - gap * 2) / 3;
   const chartSize = 66.7;
   const imageY = 37;
@@ -335,10 +401,14 @@ function renderExposureCharts(pdf, analytics, { t, translateTaxonomy, formatPerc
     pdf.setFontSize(9);
     pdf.setTextColor(...TEXT_COLOR);
     pdf.text(t(titleKey), x, 31);
+    pdf.setDrawColor(...BORDER_COLOR);
+    pdf.setLineWidth(0.35);
+    pdf.line(x, 34, x + cardWidth, 34);
     const image = createDonutImage(chartData, { translateTaxonomy, formatPercent });
     if (image) {
       pdf.addImage(image, 'PNG', x + (cardWidth - chartSize) / 2, imageY, chartSize, chartSize);
-      addChartLegend(pdf, chartData.labels, x + 2, imageY + chartSize + 13, cardWidth - 4, translateTaxonomy);
+      const legendColumns = index === 2 ? 4 : 2;
+      addChartLegend(pdf, chartData.labels, x + 2, imageY + chartSize + 13, cardWidth - 4, translateTaxonomy, legendColumns);
     } else {
       pdf.setFont('SpaceGrotesk', 'normal');
       pdf.setFontSize(7);
@@ -365,7 +435,10 @@ function heatmapCell(value, unavailable, formatPercent) {
 }
 
 function renderPairwiseHeatmap(pdf, autoTable, rows, { t, formatPercent, unavailable }) {
-  const y = addPageTitle(pdf, t('export.pairwiseOverlap'));
+  const parentTitle = t('export.sectionExposure');
+  const categoryTitle = t('export.pairwiseOverlap');
+  pdf.addPage();
+  let y = addCategoryPageHeading(pdf, parentTitle, categoryTitle);
   if (!rows?.length) {
     pdf.setFont('SpaceGrotesk', 'normal');
     pdf.setFontSize(8);
@@ -378,10 +451,12 @@ function renderPairwiseHeatmap(pdf, autoTable, rows, { t, formatPercent, unavail
   panels.forEach((panel, panelIndex) => {
     if (panelIndex > 0) {
       pdf.addPage();
+      y = addCategoryPageHeading(pdf, parentTitle, categoryTitle);
       pdf.setFont('SpaceGrotesk', 'bold');
       pdf.setFontSize(10);
       pdf.setTextColor(...TEXT_COLOR);
-      pdf.text(t('export.overlapPanel', { start: panel.start + 1, end: panel.end }), PAGE_LEFT, PAGE_TOP);
+      pdf.text(t('export.overlapPanel', { start: panel.start + 1, end: panel.end }), PAGE_LEFT, y);
+      y += 5;
     }
     const headers = ['', ...panel.columns.map((product) => product.ticker)];
     const body = rows.map((row) => [
@@ -393,9 +468,13 @@ function renderPairwiseHeatmap(pdf, autoTable, rows, { t, formatPercent, unavail
       columnStyles[index + 1] = { cellWidth: 30, halign: 'center', fontSize: 6.8 };
     });
     addTable(pdf, autoTable, {
-      startY: panelIndex === 0 ? y : PAGE_TOP + 6,
+      startY: y,
       head: [headers],
       body,
+      margin: { left: PAGE_LEFT, right: PAGE_RIGHT, top: 32, bottom: FOOTER_MARGIN },
+      willDrawPage: ({ pageNumber }) => {
+        if (pageNumber > 1) addCategoryPageHeading(pdf, parentTitle, categoryTitle);
+      },
       columnStyles,
       styles: { halign: 'center', fontSize: 6.8, cellPadding: 1.5 },
       pageBreak: 'auto',
@@ -416,16 +495,21 @@ export function renderReportDocument({
   autoTable,
   snapshot,
   analytics,
+  portfolioShareUrl = null,
+  coverIcon = null,
   allocationOnly = false,
   t,
   formatCount,
   formatDecimal,
   formatPercent,
   formatCurrency,
+  formatTimestamp,
   translateTaxonomy,
 } = {}) {
   const unavailable = t('export.noData');
-  renderPortfolio(pdf, autoTable, { snapshot, allocationOnly, t, formatCount, formatPercent, formatCurrency });
+  renderReportCover(pdf, { snapshot, coverIcon, t, formatTimestamp });
+  pdf.addPage();
+  renderPortfolio(pdf, autoTable, { snapshot, portfolioShareUrl, allocationOnly, t, formatCount, formatPercent, formatCurrency });
 
   let y = addPageTitle(pdf, t('export.sectionAnalytics'));
   y = addSubheading(pdf, t('export.summaryMetrics'), y);

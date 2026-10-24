@@ -115,6 +115,25 @@ export function encodePrivatePortfolioShare(positions, getTotalShareUnits, getPo
   );
 }
 
+export function buildPortfolioShareUrl(portfolio, mode = 'full', {
+  currentUrl,
+  valuationMode = 'latest',
+  getTotalShareUnits,
+  getPositionWeight,
+} = {}) {
+  const encoded = mode === 'percentage'
+    ? typeof getTotalShareUnits === 'function' && typeof getPositionWeight === 'function'
+      ? encodePrivatePortfolioShare(portfolio, getTotalShareUnits, getPositionWeight)
+      : null
+    : encodePortfolioShare(portfolio, valuationMode);
+  if (!encoded || !currentUrl) {
+    return null;
+  }
+  const url = new URL(currentUrl);
+  url.hash = `portfolio=${encoded}`;
+  return url.toString();
+}
+
 export function decodePortfolioShare(value) {
   if (!value) {
     return { status: 'missing', mode: 'full', portfolio: null };
