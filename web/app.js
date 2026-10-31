@@ -2631,7 +2631,7 @@ function renderAll() {
 function setTab(tabName) {
   state.activeTab = getNavigationDestination(tabName)?.key || defaultState.activeTab;
   saveActiveTab();
-  for (const button of elements.tabButtons) {
+  for (const button of elements.navigationItems.querySelectorAll('.tab-button')) {
     const isActive = button.dataset.tab === state.activeTab;
     button.classList.toggle('active', isActive);
     if (isActive) {
@@ -2689,7 +2689,6 @@ async function bootstrap() {
   renderLanguageControl();
   renderNavigation();
   window.lucide?.createIcons();
-  elements.tabButtons = [...document.querySelectorAll('.tab-button')];
   elements.tabPanels = [...document.querySelectorAll('.tab-panel')];
   elements.catalogSearch = document.getElementById('catalog-search');
   elements.catalogSearchClear = document.getElementById('catalog-search-clear');

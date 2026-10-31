@@ -2,7 +2,9 @@
 
 ## Purpose
 TBD - created by archiving change mobile-bottom-navigation. Update Purpose after archive.
+
 ## Requirements
+
 ### Requirement: Primary destination navigation
 The web app SHALL provide a primary navigation containing the destinations Home, Portfolio, Compare, and Explore in that order.
 
@@ -127,6 +129,10 @@ The navigation SHALL expose the active destination to keyboard and assistive-tec
 - **WHEN** a keyboard user focuses a destination item and activates it
 - **THEN** the same destination switching behavior occurs as for pointer activation
 
+#### Scenario: Active destination remains selected after a language switch
+- **WHEN** a user switches the interface language while a destination is active
+- **THEN** that destination remains active and its navigation button continues to expose `aria-current="page"` and the visible selected style
+
 ### Requirement: Destination persistence
 The app SHALL persist the selected destination locally and SHALL restore it after a page reload without changing the browser URL or history. When no valid destination is stored, Home SHALL be selected by default.
 
@@ -223,4 +229,3 @@ The application SHALL keep the global color-mode control visually and structural
 #### Scenario: Navigation geometry is preserved
 - **WHEN** the global color-mode control is rendered at any supported viewport width
 - **THEN** the primary navigation's destination buttons, safe-area region, and mobile row height retain their existing geometry
-

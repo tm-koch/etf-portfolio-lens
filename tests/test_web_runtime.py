@@ -302,6 +302,96 @@ console.log(JSON.stringify({ ...results, language: document.documentElement.lang
         self.assertEqual(values["language"], "pl-PL")
         self.assertEqual(values["saved"], "pl-PL")
 
+    def test_navigation_active_state_tracks_buttons_replaced_by_locale_render(
+        self,
+    ) -> None:
+        script = """
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const source = fs.readFileSync('web/app.js', 'utf8');
+const functionStart = source.indexOf('function setTab(tabName) {');
+const functionEnd = source.indexOf('\\nfunction addPosition(', functionStart);
+const setTabSource = source.slice(functionStart, functionEnd);
+const createClassList = () => {
+    const classes = new Set();
+    return {
+        toggle(name, active) {
+            if (active) classes.add(name);
+            else classes.delete(name);
+        },
+        contains: (name) => classes.has(name),
+    };
+};
+const createButton = (tab) => {
+    const attributes = {};
+    return {
+        dataset: { tab },
+        classList: createClassList(),
+        attributes,
+        setAttribute: (name, value) => { attributes[name] = value; },
+        removeAttribute: (name) => { delete attributes[name]; },
+    };
+};
+const createButtons = () => ['home', 'portfolio', 'comparison'].map(createButton);
+const panels = ['home', 'portfolio', 'comparison'].map((panel) => ({
+    dataset: { panel },
+    classList: createClassList(),
+}));
+let currentButtons = createButtons();
+const elements = {
+    navigationItems: {
+        querySelectorAll: (selector) => {
+            if (selector !== '.tab-button') throw new Error(`Unexpected selector: ${selector}`);
+            return currentButtons;
+        },
+    },
+    tabButtons: currentButtons,
+    tabPanels: panels,
+};
+const sandbox = {
+    state: { activeTab: 'home' },
+    defaultState: { activeTab: 'home' },
+    elements,
+    getNavigationDestination: (key) => ['home', 'portfolio', 'comparison'].includes(key) ? { key } : null,
+    saveActiveTab() {},
+    positionColorModeControl() {},
+    updateInstallAction() {},
+    applyChartFrameSizing() {},
+    renderComparisonCharts() {},
+    renderCompanyList() {},
+};
+vm.runInNewContext(setTabSource, sandbox);
+
+sandbox.setTab('portfolio');
+currentButtons = createButtons();
+sandbox.setTab(sandbox.state.activeTab);
+const selectedAfterLocale = currentButtons.find((button) => button.dataset.tab === 'portfolio');
+const localeSwitchPreservedSelection = selectedAfterLocale.classList.contains('active')
+        && selectedAfterLocale.attributes['aria-current'] === 'page';
+sandbox.setTab('comparison');
+const selectedAfterClick = currentButtons.find((button) => button.dataset.tab === 'comparison');
+console.log(JSON.stringify({
+    localeSwitchPreservedSelection,
+    nextClickSelectsCurrentButton: selectedAfterClick.classList.contains('active')
+        && selectedAfterClick.attributes['aria-current'] === 'page',
+    nextClickActivatesPanel: panels.find((panel) => panel.dataset.panel === 'comparison').classList.contains('active'),
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertTrue(values["localeSwitchPreservedSelection"])
+        self.assertTrue(values["nextClickSelectsCurrentButton"])
+        self.assertTrue(values["nextClickActivatesPanel"])
+
     def test_language_selector_uses_supported_locales_and_local_runtime(
         self,
     ) -> None:
