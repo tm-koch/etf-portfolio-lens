@@ -4,6 +4,7 @@
     "ui.documentTitle": "ETF Portfolio Lens",
     "ui.applicationUtilities": "Narzędzia aplikacji",
     "export.open": "Eksportuj raport",
+    "export.openPortfolioPdf": "Eksportuj portfolio do PDF",
     "export.title": "Eksportuj raport",
     "export.close": "Zamknij eksport raportu",
     "export.description": "Utwórz prywatny raport PDF w tej przeglądarce.",

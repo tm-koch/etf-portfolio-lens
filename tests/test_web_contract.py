@@ -208,6 +208,29 @@ class WebContractTests(unittest.TestCase):
         )
         self.assertIn('role="status" aria-live="polite"', index)
 
+    def test_explore_export_action_precedes_insights_and_is_localized(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        panel_start = index.index('id="aggregated-panel"')
+        action_position = index.index('id="explore-export-report-button"', panel_start)
+        insights_position = index.index('<div class="aggregation-layout">', panel_start)
+        mobile_styles = styles[styles.rfind("@media (max-width: 760px)") :]
+        expected_labels = {
+            "en-CH": "Export portfolio PDF",
+            "de-CH": "Portfolio-PDF exportieren",
+            "pl-PL": "Eksportuj portfolio do PDF",
+        }
+
+        self.assertLess(action_position, insights_position)
+        self.assertIn('data-i18n="export.openPortfolioPdf"', index)
+        self.assertIn(".explore-export-actions {", styles)
+        self.assertIn(".explore-export-button {\n    width: 100%;", mobile_styles)
+        for locale, label in expected_labels.items():
+            resources = json.loads(
+                (WEB_ROOT / "locales" / f"{locale}.json").read_text(encoding="utf-8")
+            )["translation"]
+            self.assertEqual(resources["export.openPortfolioPdf"], label, locale)
+
     def test_export_dialog_closes_only_after_successful_pdf_generation(self) -> None:
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
         start = app.index("async function generateExportReport()")

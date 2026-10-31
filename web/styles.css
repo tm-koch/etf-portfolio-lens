@@ -1137,6 +1137,25 @@ body {
   font-size: clamp(1.5rem, 3vw, 2.4rem);
 }
 
+.explore-export-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+.explore-export-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+}
+
+.explore-export-button svg {
+  width: 17px;
+  height: 17px;
+}
+
 .share-portfolio-button {
   display: inline-flex;
   align-items: center;
@@ -3294,6 +3313,11 @@ body {
 
   .share-portfolio-button {
     width: 100%;
+  }
+
+  .explore-export-button {
+    width: 100%;
+    min-height: 44px;
   }
 
   .company-row-head {

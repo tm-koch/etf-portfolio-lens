@@ -7,6 +7,50 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class WebRuntimeTests(unittest.TestCase):
+    def test_global_and_explore_export_buttons_share_the_dialog_opener(self) -> None:
+        script = """
+import fs from 'node:fs';
+import vm from 'node:vm';
+
+const source = fs.readFileSync('web/app.js', 'utf8');
+const expectedBindings = [
+    "elements.exportButton.addEventListener('click', openExportDialog);",
+    "elements.exploreExportButton.addEventListener('click', openExportDialog);",
+];
+const bindings = source.split('\\n').filter((line) => expectedBindings.includes(line.trim()));
+if (bindings.length !== expectedBindings.length) throw new Error('Missing export button binding');
+const listeners = new Map();
+const createButton = () => ({
+    addEventListener: (eventName, listener) => listeners.set(eventName + listeners.size, listener),
+});
+const globalButton = createButton();
+const exploreButton = createButton();
+let openCount = 0;
+const openExportDialog = () => { openCount += 1; };
+vm.runInNewContext(bindings.join('\\n'), {
+    elements: { exportButton: globalButton, exploreExportButton: exploreButton },
+    openExportDialog,
+});
+const registeredListeners = [...listeners.values()];
+registeredListeners.forEach((listener) => listener());
+console.log(JSON.stringify({
+    openCount,
+    sharedHandler: registeredListeners[0] === registeredListeners[1],
+}));
+"""
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script],
+            cwd=REPOSITORY_ROOT,
+            check=True,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        values = json.loads(result.stdout)
+
+        self.assertEqual(values["openCount"], 2)
+        self.assertTrue(values["sharedHandler"])
+
     def test_report_matrix_columns_are_partitioned_for_readable_continuation(
         self,
     ) -> None:

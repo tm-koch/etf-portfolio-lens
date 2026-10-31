@@ -2744,6 +2744,7 @@ async function bootstrap() {
   elements.buildDialogButton = document.getElementById('build-dialog-button');
   elements.dataDialogButton = document.getElementById('data-dialog-button');
   elements.exportButton = document.getElementById('export-report-button');
+  elements.exploreExportButton = document.getElementById('explore-export-report-button');
   elements.exportDialog = document.getElementById('export-report-dialog');
   elements.exportDialogClose = document.getElementById('export-report-close');
   elements.exportScope = [...document.querySelectorAll('input[name="export-report-scope"]')];
@@ -2801,6 +2802,7 @@ async function bootstrap() {
   elements.buildDialogButton.addEventListener('click', openBuildDialog);
   elements.dataDialogButton.addEventListener('click', openDataDialog);
   elements.exportButton.addEventListener('click', openExportDialog);
+  elements.exploreExportButton.addEventListener('click', openExportDialog);
   elements.exportDialogClose.addEventListener('click', closeExportDialog);
   elements.exportGenerateButton.addEventListener('click', generateExportReport);
   elements.buildDialogClose.addEventListener('click', closeBuildDialog);
