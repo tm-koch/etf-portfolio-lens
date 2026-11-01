@@ -254,8 +254,28 @@ class WebContractTests(unittest.TestCase):
 
         self.assertIn("createReportSnapshot(scope)", app)
         self.assertIn("createReportAnalytics(snapshot)", app)
+        self.assertIn("portfolioTerAnnualCostChf", renderer)
+        self.assertIn(
+            "const portfolioTerPct = emptyPortfolio ? 0 : getMixLabPortfolioTerBaseline();",
+            app,
+        )
+        self.assertIn("portfolioTerAnnualCostChf: emptyPortfolio\n      ? 0", app)
+        self.assertIn("portfolioValueChf * portfolioTerPct / 100", app)
         self.assertIn("renderPortfolio(pdf, autoTable", renderer)
         self.assertIn("addPageTitle(pdf, t('export.sectionAnalytics'))", renderer)
+        self.assertIn("t('summary.portfolioTer')", renderer)
+        self.assertIn("analytics.summary.portfolioTerAnnualCostChf == null", renderer)
+        self.assertIn(
+            "formatCurrency(analytics.summary.portfolioTerAnnualCostChf, 'CHF')",
+            renderer,
+        )
+        self.assertIn("const cardHeight = hasDetails ? 21 : 20;", renderer)
+        self.assertIn("cardY + (hasDetails ? 14 : 16)", renderer)
+        self.assertIn("cardY + 19", renderer)
+        self.assertIn(
+            "analytics.summary.portfolioTerPct == null ? unavailable : formatPercent(analytics.summary.portfolioTerPct)",
+            renderer,
+        )
         self.assertIn("addPageTitle(pdf, t('export.sectionExposure'))", renderer)
         self.assertIn("pdf.text('ETF Portfolio Lens', PAGE_LEFT + 40, 76);", renderer)
         self.assertIn(
@@ -269,6 +289,18 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("autoTable(pdf", renderer)
         self.assertIn("pdf.addImage(image, 'PNG'", renderer)
         self.assertNotIn("pairwise-holdings", renderer)
+
+    def test_mixlab_results_remain_outside_pdf_report_snapshot(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        renderer = (WEB_ROOT / "pdf-report-renderer.js").read_text(encoding="utf-8")
+        pdf_export = (WEB_ROOT / "pdf-export.js").read_text(encoding="utf-8")
+        snapshot_start = app.index("function createReportSnapshot(")
+        analytics_start = app.index("function createReportAnalytics(", snapshot_start)
+        report_snapshot = app[snapshot_start:analytics_start]
+
+        self.assertNotIn("mixlab", report_snapshot.lower())
+        self.assertNotIn("mixlab", renderer.lower())
+        self.assertNotIn("mixlab", pdf_export.lower())
 
     def test_report_uses_native_text_and_only_embeds_chart_plots_as_images(
         self,
@@ -340,9 +372,9 @@ class WebContractTests(unittest.TestCase):
         index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
         app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
 
-        self.assertEqual(index.count('class="score-info-button"'), 4)
+        self.assertEqual(index.count('class="score-info-button"'), 5)
         self.assertIn('aria-labelledby="score-info-dialog-title"', index)
-        for topic in ("redundancy", "diversification"):
+        for topic in ("redundancy", "diversification", "mixlab"):
             self.assertIn(f'data-score-info="{topic}"', index)
             self.assertIn(f'data-score-info-panel="{topic}"', index)
         for topic in ("heatmap", "drilldown"):
@@ -356,6 +388,151 @@ class WebContractTests(unittest.TestCase):
         self.assertIn("dialog.addEventListener('cancel'", app)
         self.assertIn("elements.pairwiseInfoDialogs.forEach((dialog)", app)
         self.assertIn("state.scoreInfoReturnFocus?.focus();", app)
+
+    def test_mixlab_mode_and_distribution_controls_share_one_card(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        styles = (WEB_ROOT / "styles.css").read_text(encoding="utf-8")
+        control_start = index.index('<section class="mixlab-control-group"')
+        mode_start = index.index('<fieldset class="mixlab-mode-control">')
+        control_end = index.index("</section>", control_start)
+
+        self.assertLess(control_start, mode_start)
+        self.assertLess(mode_start, control_end)
+        self.assertIn(
+            ".mixlab-filter-control {\n  padding-top: 0;\n  border-top: 0;\n}",
+            styles,
+        )
+        self.assertIn(
+            ".mixlab-filter-control > .mixlab-segmented-control {\n  margin-top: 8px;\n}",
+            styles,
+        )
+        self.assertIn(
+            ".mixlab-mode-control > .mixlab-segmented-control {\n  margin-top: 8px;\n}",
+            styles,
+        )
+        self.assertIn(
+            ".mixlab-mode-panel[hidden],\n.mixlab-empty-state[hidden],\n.mixlab-current-summary[hidden],\n.mixlab-value-control[hidden] {\n  display: none;\n}",
+            styles,
+        )
+        self.assertIn(".tab-panel.mixlab-panel {\n  gap: 18px;\n}", styles)
+        self.assertIn(
+            ".mixlab-control-layout {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));\n  align-items: start;\n  column-gap: 28px;\n  row-gap: 18px;\n}",
+            styles,
+        )
+        self.assertIn(".mixlab-results:empty {\n  display: none;\n}", styles)
+        sleeve_start = index.index('<section class="mixlab-sleeve-controls"')
+        sleeve_heading = index.index(
+            '<h3 id="mixlab-sleeve-allocation-title"', sleeve_start
+        )
+        sleeve_end = index.index("</section>", sleeve_start)
+        self.assertLess(sleeve_start, sleeve_heading)
+        self.assertLess(sleeve_heading, sleeve_end)
+        self.assertIn(
+            'role="group" aria-labelledby="mixlab-sleeve-allocation-title"', index
+        )
+        self.assertIn(
+            '.mixlab-mode-panel[data-mixlab-mode-panel="consolidation"]:not([hidden]) {\n  display: grid;\n  gap: 18px;\n}',
+            styles,
+        )
+
+    def test_mixlab_cost_improvement_is_a_negative_annual_change(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        result_renderer = app.split("function renderMixLabResult(", 1)[1].split(
+            "function renderMixLabResults(", 1
+        )[0]
+
+        self.assertIn(
+            "value: formatChfValue(result.annualTerCostChf - baselineCost)",
+            result_renderer,
+        )
+
+    def test_home_summary_shows_weighted_ter_and_conditional_chf_cost(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        summary = app.split("function updateSummary()", 1)[1].split(
+            "function renderCatalog()", 1
+        )[0]
+
+        self.assertIn("summary.portfolioTer", summary)
+        self.assertIn("summary.annualTerCost", summary)
+        self.assertIn("portfolioTerAnnualCostChf", app)
+        self.assertIn("getMixLabPortfolioTerBaseline()", summary)
+        self.assertIn("state.portfolioMode === 'percentage' ? null", summary)
+        self.assertIn("const emptyPortfolio = state.portfolio.length === 0;", summary)
+        self.assertIn("const portfolioTerBaseline = emptyPortfolio\n    ? 0", summary)
+        self.assertIn(
+            "const annualTerCost = emptyPortfolio\n    ? formatChfValue(0)", summary
+        )
+        self.assertIn("portfolioValueChf * portfolioTerBaseline / 100", summary)
+        self.assertIn(
+            "${card.detail ? `<div class=\"detail\">${card.detail}</div>` : ''}",
+            summary,
+        )
+
+    def test_mixlab_limits_default_to_current_portfolio_metrics(self) -> None:
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        defaults = app.split("function syncMixLabConstraintDefaults()", 1)[1].split(
+            "function renderMixLabPortfolioSummary(", 1
+        )[0]
+
+        self.assertIn("getMixLabPortfolioTerBaseline()", defaults)
+        self.assertIn("combineMixAllocations(allocations)", defaults)
+        self.assertIn("input.dataset.userEdited === 'true'", defaults)
+        self.assertIn("function formatMixLabConstraintInput(value, decimalPlaces)", app)
+        self.assertIn('data-i18n="mixlab.maximumTer">Maximum weighted TER (%)', index)
+        self.assertIn('id="mixlab-max-ter" type="number" min="0" step="0.001"', index)
+        self.assertIn(
+            'id="mixlab-min-companies" type="number" min="0" step="0.1"', index
+        )
+        self.assertIn(
+            "function limitMixLabConstraintPrecision(input, decimalPlaces)", app
+        )
+        self.assertIn(
+            "const formattedValue = String(Number(value.toFixed(decimalPlaces)));", app
+        )
+        self.assertIn(
+            "if (decimalPlaces !== null) limitMixLabConstraintPrecision(input, decimalPlaces);",
+            app,
+        )
+        self.assertIn(
+            "input.addEventListener('input', () => {\n      input.dataset.userEdited = 'true';",
+            app,
+        )
+        self.assertIn("input.addEventListener('blur', () => {", app)
+        self.assertIn(
+            "[elements.mixlabMaximumTer, getMixLabPortfolioTerBaseline(), 3]", defaults
+        )
+        self.assertIn(
+            "[elements.mixlabMinimumCompanies, combined.available ? combined.effectiveCompanies : null, 1]",
+            defaults,
+        )
+        self.assertIn("maximumTerEnabled: false", app)
+        self.assertIn("minimumEffectiveCompaniesEnabled: false", app)
+
+        for locale in ("en-CH", "de-CH", "pl-PL"):
+            resources = json.loads(
+                (WEB_ROOT / "locales" / f"{locale}.json").read_text(encoding="utf-8")
+            )["translation"]
+            self.assertTrue(resources["mixlab.maximumTer"].endswith("(%)"), locale)
+
+    def test_mixlab_result_cards_omit_snapshot_dates_and_explain_controls(self) -> None:
+        index = (WEB_ROOT / "index.html").read_text(encoding="utf-8")
+        app = (WEB_ROOT / "app.js").read_text(encoding="utf-8")
+        result_renderer = app.split("function renderMixLabResult(", 1)[1].split(
+            "function renderMixLabResults(", 1
+        )[0]
+
+        self.assertNotIn("snapshotDates", result_renderer)
+        self.assertNotIn("mixlab.snapshotDates", result_renderer)
+        for key in (
+            "mixlab.infoMode",
+            "mixlab.infoBalance",
+            "mixlab.infoDistribution",
+            "mixlab.infoOverlap",
+            "mixlab.infoLimits",
+            "mixlab.infoResults",
+        ):
+            self.assertIn(f'data-i18n="{key}"', index)
 
         english = json.loads(
             (WEB_ROOT / "locales" / "en-CH.json").read_text(encoding="utf-8")

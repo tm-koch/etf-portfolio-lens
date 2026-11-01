@@ -72,6 +72,7 @@ class PwaCacheGenerationTests(unittest.TestCase):
         )
         cache_paths = set(result.stdout.splitlines())
         expected_paths = {
+            "mixlab.js",
             "report-data.js",
             "share.js",
             "export-view.js",

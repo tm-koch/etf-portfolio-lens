@@ -22,6 +22,7 @@ from etf_ingestion_backend.fetching import (
 from etf_ingestion_backend.pipeline import IngestionPipeline
 from etf_ingestion_backend.pipeline import _prepare_amundi_rows
 from etf_ingestion_backend.normalization import normalize_row, parse_weight_float
+from etf_ingestion_backend.models import ETFSourceEntry
 from etf_ingestion_backend.parsing import (
     parse_csv_file,
     parse_xlsx_bytes,
@@ -77,6 +78,150 @@ class IngestionTests(unittest.TestCase):
 
     def test_registry_has_fifteen_supported_sources(self) -> None:
         self.assertEqual(15, len(self.registry.entries))
+
+    def test_registry_reports_missing_optimizer_metadata(self) -> None:
+        entry = ETFSourceEntry(
+            isin="IE00BF20LF40",
+            ticker="EUMD",
+            name="Test ETF",
+            provider="Test",
+            source_url="https://example.test/",
+            expected_format="csv",
+            parser_id="test",
+            investment_universe="developed_europe",
+        )
+
+        self.assertEqual(
+            ["ter_pct", "ter_source", "distribution_policy"],
+            entry.optimizer_metadata_issues,
+        )
+        self.assertFalse(entry.mixlab_eligible)
+
+    def test_all_registry_entries_match_supplied_ter_and_distribution_table(
+        self,
+    ) -> None:
+        expected = {
+            "IE00B44Z5B48": (0.12, "accumulating"),
+            "LU0908500753": (0.07, "accumulating"),
+            "IE0009HF1MK9": (0.07, "distributing"),
+            "IE00BF20LF40": (0.15, "accumulating"),
+            "IE00BCLWRD08": (0.49, "accumulating"),
+            "IE00B4K48X80": (0.12, "accumulating"),
+            "IE00BKM4GZ66": (0.18, "accumulating"),
+            "IE00BD4TXV59": (0.06, "accumulating"),
+            "CH0237935652": (0.10, "distributing"),
+            "CH0008899764": (0.35, "distributing"),
+            "CH0019852802": (0.45, "distributing"),
+            "CH0130595124": (0.25, "distributing"),
+            "CH1553162921": (0.13, "accumulating"),
+            "CH0111762537": (0.25, "distributing"),
+            "CH1447931341": (0.20, "accumulating"),
+        }
+
+        self.assertEqual(set(expected), {entry.isin for entry in self.registry.entries})
+        for entry in self.registry.entries:
+            with self.subTest(isin=entry.isin):
+                ter_pct, distribution_policy = expected[entry.isin]
+                self.assertEqual(ter_pct, entry.ter_pct)
+                self.assertEqual("User-provided TER table", entry.ter_source)
+                self.assertEqual(distribution_policy, entry.distribution_policy)
+                self.assertTrue(entry.mixlab_eligible)
+
+    def test_registry_validates_optimizer_metadata(self) -> None:
+        entry = self.registry.select_by_isins(["IE00BD4TXV59"])[0]
+
+        self.assertEqual(0.06, entry.ter_pct)
+        self.assertEqual("accumulating", entry.distribution_policy)
+        self.assertEqual("developed_world", entry.investment_universe)
+        self.assertTrue(entry.mixlab_eligible)
+
+    def test_registry_rejects_invalid_optimizer_metadata(self) -> None:
+        values = {
+            "isin": "TEST",
+            "ticker": "TEST",
+            "name": "Test ETF",
+            "provider": "Test",
+            "source_url": "https://example.test/",
+            "expected_format": "csv",
+            "parser_id": "test",
+        }
+
+        for metadata in (
+            {"ter_pct": -0.01, "ter_source": "test"},
+            {"ter_pct": float("nan"), "ter_source": "test"},
+            {"ter_pct": 0.1},
+            {"distribution_policy": "unknown"},
+            {"investment_universe": "unknown"},
+        ):
+            with self.subTest(metadata=metadata):
+                with self.assertRaises(ValueError):
+                    ETFSourceEntry(**values, **metadata)
+
+    def test_country_label_is_preserved_with_normalized_country_code(self) -> None:
+        holding = normalize_row(
+            {"Name": "Swiss Co", "Location": "Switzerland"},
+            SecurityMaster([], "test", []),
+            "test",
+            "ishares_csv_v1",
+        )
+
+        classification = holding.to_dict()["classification"]
+        self.assertEqual("Switzerland", classification["country"])
+        self.assertEqual("CH", classification["country_code"])
+
+    def test_verified_security_master_country_code_is_used(self) -> None:
+        holding = normalize_row(
+            {"ISIN": "NL0000000001", "Name": "KONINKLIJKE KPN NV"},
+            self.security_master,
+            "test",
+            "ishares_csv_v1",
+        )
+
+        self.assertEqual("Netherlands", holding.country)
+        self.assertEqual("NL", holding.country_code)
+
+    def test_verified_override_country_code_is_used(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            override_path = Path(temp_dir) / "overrides.json"
+            override_path.write_text(
+                json.dumps(
+                    {
+                        "overrides": [
+                            {
+                                "match": {"isin": "CH9999999999"},
+                                "set": {"country_code": "CH"},
+                            }
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+            holding = normalize_row(
+                {"ISIN": "CH9999999999", "Name": "Override Co"},
+                SecurityMaster([], "test", []),
+                "test",
+                "ishares_csv_v1",
+                overrides=OverrideRegistry.from_json(override_path),
+            )
+
+        self.assertEqual("CH", holding.country_code)
+
+    def test_conflicting_country_code_is_unknown_and_diagnosed(self) -> None:
+        holding = normalize_row(
+            {
+                "Name": "Swiss Co",
+                "Location": "Switzerland",
+                "Country Code": "US",
+            },
+            SecurityMaster([], "test", []),
+            "test",
+            "ishares_csv_v1",
+        )
+
+        self.assertEqual("Switzerland", holding.country)
+        self.assertIsNone(holding.country_code)
+        self.assertIn("country_code_warning", holding.source_fields)
+        self.assertIn("conflicts", holding.match.warning)
 
     def test_registry_contains_requested_global_etfs(self) -> None:
         expected = {

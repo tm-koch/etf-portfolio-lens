@@ -2,7 +2,9 @@
 
 ## Purpose
 TBD - created by archiving change canonical-security-identity-enrichment. Update Purpose after archive.
+
 ## Requirements
+
 ### Requirement: Normalize exchange identifiers
 The resolver SHALL normalize provider-specific exchange labels into stable internal exchange codes before applying ticker-based matching, while retaining the original exchange value in holding provenance.
 
@@ -99,3 +101,17 @@ The resolver SHALL leave holdings unresolved or ambiguous when no verified exact
 - **WHEN** a reviewed ticker/context conflict has no verified ISIN mapping
 - **THEN** the resolver SHALL retain the holding with an explicit ambiguous diagnostic rather than selecting a security-master record arbitrarily
 
+### Requirement: Enrich holdings with verified country identifiers
+Security identity enrichment SHALL populate a normalized ISO 3166-1 alpha-2 country identifier from an exact security-master match or verified override when available, without inferring a country from ticker alone.
+
+#### Scenario: Exact identity provides a country identifier
+- **WHEN** a holding resolves to a security-master record with a valid country identifier
+- **THEN** enrichment assigns that identifier while preserving provider country and venue provenance
+
+#### Scenario: Verified override provides a country identifier
+- **WHEN** a holding matches a verified override with a valid country identifier
+- **THEN** enrichment uses the override identifier and records the existing override provenance
+
+#### Scenario: Country identity is ambiguous
+- **WHEN** no exact identity or verified override establishes the holding's country
+- **THEN** enrichment leaves the normalized country identifier unavailable and retains diagnostics rather than guessing

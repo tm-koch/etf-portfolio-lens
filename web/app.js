@@ -47,6 +47,12 @@ import { initializeLocalization, selectLocale } from './localization.js';
 import { aggregatePortfolioRollups as aggregateReportPortfolioRollups, buildReportAnalytics, buildReportSnapshot } from './report-data.js';
 import { openReportDialog } from './export-view.js';
 import { generateReportPdf } from './pdf-export.js';
+import {
+  combineMixAllocations,
+  prepareMixLabFund,
+  searchConsolidation,
+  searchCustomSleeves,
+} from './mixlab.js';
 
 const STORAGE_KEY = 'etf-lens.portfolio.v1';
 const ACTIVE_TAB_STORAGE_KEY = 'etf-lens.active-tab.v1';
@@ -76,6 +82,28 @@ const defaultState = {
   shareFallbackUrl: '',
   importValuationMode: 'latest',
   valuationMode: 'latest',
+  mixlab: {
+    mode: 'consolidation',
+    diversificationPriority: 0,
+    overlapThresholdPct: 97,
+    distributionPolicyFilter: 'both',
+    maximumTerEnabled: false,
+    maximumTerPct: '',
+    minimumEffectiveCompaniesEnabled: false,
+    minimumEffectiveCompanies: '',
+    portfolioValueChf: '10000',
+    sleeveAllocations: {
+      developed_world: 0,
+      all_country_world: 0,
+      emerging_markets: 0,
+      developed_europe: 0,
+      switzerland: 0,
+    },
+    hasRun: false,
+    lastResult: null,
+    lastContext: null,
+    lastPortfolioSignature: null,
+  },
 };
 
 const chartRefs = {
@@ -105,6 +133,8 @@ const state = {
   catalog: null,
   catalogMaps: null,
   snapshots: new Map(),
+  mixlabFunds: [],
+  mixlabByIsin: new Map(),
   pairwiseOverlapIndex: new Map(),
   buildInfo: null,
   livePrices: null,
@@ -126,6 +156,7 @@ const NAVIGATION_DESTINATIONS = [
   { key: 'portfolio', labelKey: 'nav.portfolio', icon: 'briefcase-business' },
   { key: 'comparison', labelKey: 'nav.compare', icon: 'scale' },
   { key: 'aggregated', labelKey: 'nav.explore', icon: 'layers-3' },
+  { key: 'mixlab', labelKey: 'nav.lab', icon: 'flask-conical' },
 ];
 
 function t(key, options) {
@@ -677,6 +708,13 @@ function formatPercentNumber(value) {
   return formatLocalePercentNumber(value, window.i18next.language);
 }
 
+function formatMixLabTer(value) {
+  return new Intl.NumberFormat(window.i18next.language, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 3,
+  }).format(value);
+}
+
 function formatCount(value) {
   return formatLocaleCount(value, window.i18next.language);
 }
@@ -1052,8 +1090,17 @@ function createReportAnalytics(snapshot) {
   const values = positions
     .map((position) => Number(position.valuation?.valueChf))
     .filter((value) => Number.isFinite(value) && value >= 0);
+  const emptyPortfolio = state.portfolio.length === 0;
+  const portfolioTerPct = emptyPortfolio ? 0 : getMixLabPortfolioTerBaseline();
+  const portfolioValueChf = state.portfolioMode === 'percentage' ? null : getMixLabPortfolioValueChf();
   const summary = {
     positions: positions.length,
+    portfolioTerPct,
+    portfolioTerAnnualCostChf: emptyPortfolio
+      ? 0
+      : portfolioTerPct !== null && portfolioValueChf !== null
+      ? portfolioValueChf * portfolioTerPct / 100
+      : null,
     shareUnits: snapshot.portfolioMode === 'percentage'
       ? null
       : positions.reduce((total, position) => total + Math.max(Number(position.shares) || 0, 0), 0),
@@ -1675,6 +1722,18 @@ function updateSummary() {
     : effectiveValues.length
     ? formatChfValue(effectiveValues.reduce((sum, value) => sum + value, 0))
     : formatChfValue(0);
+  const emptyPortfolio = state.portfolio.length === 0;
+  const portfolioValueChf = state.portfolioMode === 'percentage' ? null : getMixLabPortfolioValueChf();
+  const portfolioTerBaseline = emptyPortfolio
+    ? 0
+    : state.portfolioMode === 'percentage' || portfolioValueChf !== null
+    ? getMixLabPortfolioTerBaseline()
+    : null;
+  const annualTerCost = emptyPortfolio
+    ? formatChfValue(0)
+    : portfolioTerBaseline !== null && portfolioValueChf !== null
+    ? formatChfValue(portfolioValueChf * portfolioTerBaseline / 100)
+    : t('common.notAvailable');
   const uniqueEtfs = positions.length;
   const totalHoldings = positions.reduce((sum, position) => sum + (position.snapshot?.holdings?.length || 0), 0);
   const overlapCount = aggregateCompanyExposure(positions).ranked.filter((item) => item.etfs.size > 1).length;
@@ -1685,6 +1744,11 @@ function updateSummary() {
     { label: t('summary.totalValue'), value: totalValueChf },
     { label: t('summary.underlyingHoldings'), value: formatCount(totalHoldings) },
     { label: t('summary.sharedCompanies'), value: formatCount(overlapCount) },
+    {
+      label: t('summary.portfolioTer'),
+      value: portfolioTerBaseline === null ? t('common.notAvailable') : `${formatMixLabTer(portfolioTerBaseline)}%`,
+      detail: `${t('summary.annualTerCost')}: ${annualTerCost}`,
+    },
   ];
   if (state.portfolioMode === 'percentage') {
     cards[1].value = t('common.notAvailable');
@@ -1696,6 +1760,7 @@ function updateSummary() {
         <article class="summary-card">
           <div class="label">${card.label}</div>
           <div class="value">${card.value}</div>
+          ${card.detail ? `<div class="detail">${card.detail}</div>` : ''}
         </article>
       `
     )
@@ -2607,6 +2672,314 @@ function confirmImport() {
   renderAll();
 }
 
+function mixLabUnknownFund() {
+  return {
+    exposure: {
+      buckets: {
+        switzerland: 0,
+        developedEurope: 0,
+        northAmerica: 0,
+        developedAsiaPacific: 0,
+        emergingMarkets: 0,
+        otherClassified: 0,
+        unclassified: 100,
+      },
+      coveragePct: 0,
+      unclassifiedPct: 100,
+    },
+    companyWeights: new Map(),
+    terPct: null,
+    snapshotDate: null,
+  };
+}
+
+function getMixLabPortfolioAllocations() {
+  const totalShareUnits = getTotalShareUnits(state.portfolio);
+  if (!totalShareUnits) return [];
+  const unknownFund = mixLabUnknownFund();
+  return state.portfolio
+    .map((position) => ({
+      fund: state.mixlabByIsin.get(position.isin) ?? unknownFund,
+      weightPct: getPositionWeight(position, totalShareUnits),
+    }))
+    .filter(({ weightPct }) => weightPct > 0);
+}
+
+function getMixLabPortfolioSignature() {
+  return JSON.stringify({
+    mode: state.portfolioMode,
+    positions: state.portfolio.map((position) => [
+      position.isin,
+      position.shares,
+      position.price,
+      position.value,
+      position.valueChf,
+      position.currency,
+    ]),
+    valueChf: getMixLabPortfolioValueChf(),
+  });
+}
+
+function getMixLabPortfolioTarget() {
+  const allocations = getMixLabPortfolioAllocations();
+  const mixed = combineMixAllocations(allocations);
+  return mixed.available ? mixed : null;
+}
+
+function getMixLabPortfolioValueChf() {
+  if (state.portfolioMode === 'percentage') {
+    const rawValue = elements.mixlabPortfolioValue.value;
+    const value = Number(rawValue);
+    return rawValue !== '' && Number.isFinite(value) && value > 0 ? value : null;
+  }
+  if (!state.portfolio.length) return null;
+  const values = state.portfolio.map((position) => Number(getPositionValuation(position).valueChf));
+  if (values.some((value) => !Number.isFinite(value) || value <= 0)) return null;
+  return values.reduce((total, value) => total + value, 0);
+}
+
+function getMixLabPortfolioTerBaseline() {
+  const allocations = getMixLabPortfolioAllocations();
+  if (!allocations.length) return null;
+  let weightedTerPct = 0;
+  for (const { fund, weightPct } of allocations) {
+    if (!Number.isFinite(fund.terPct) || !fund.terSource) return null;
+    weightedTerPct += fund.terPct * weightPct / 100;
+  }
+  return weightedTerPct;
+}
+
+function formatMixLabConstraintInput(value, decimalPlaces) {
+  return Number.isFinite(value) ? String(Number(value.toFixed(decimalPlaces))) : '';
+}
+
+function limitMixLabConstraintPrecision(input, decimalPlaces) {
+  if (input.value === '') return false;
+  const value = Number(input.value);
+  if (!Number.isFinite(value)) return false;
+  const formattedValue = String(Number(value.toFixed(decimalPlaces)));
+  if (input.value === formattedValue) return false;
+  input.value = formattedValue;
+  return true;
+}
+
+function syncMixLabConstraintDefaults() {
+  const allocations = getMixLabPortfolioAllocations();
+  const combined = combineMixAllocations(allocations);
+  const defaults = [
+    [elements.mixlabMaximumTer, getMixLabPortfolioTerBaseline(), 3],
+    [elements.mixlabMinimumCompanies, combined.available ? combined.effectiveCompanies : null, 1],
+  ];
+  for (const [input, value, decimalPlaces] of defaults) {
+    if (input.dataset.userEdited === 'true') continue;
+    input.value = formatMixLabConstraintInput(value, decimalPlaces);
+  }
+}
+
+function renderMixLabPortfolioSummary(target) {
+  const allocations = getMixLabPortfolioAllocations();
+  if (!allocations.length || !target) {
+    elements.mixlabCurrentSummary.innerHTML = '';
+    return;
+  }
+  const rows = allocations.map(({ fund, weightPct }) => `
+    <li><span>${escapeMarkup(fund.ticker || t('mixlab.unknownFund'))}</span><strong>${escapeMarkup(formatPercentNumber(weightPct))}%</strong></li>
+  `).join('');
+  elements.mixlabCurrentSummary.innerHTML = `
+    <p>${t('mixlab.targetCoverage', { coverage: formatPercentNumber(target.exposure.coveragePct) })}</p>
+    <ul class="mixlab-portfolio-positions">${rows}</ul>
+  `;
+}
+
+function syncMixLabControls() {
+  elements.mixlabBalanceValue.value = `${elements.mixlabBalance.value}%`;
+  elements.mixlabOverlapValue.value = `${elements.mixlabOverlap.value}%`;
+  elements.mixlabMaximumTer.disabled = !elements.mixlabMaximumTerEnabled.checked;
+  elements.mixlabMinimumCompanies.disabled = !elements.mixlabMinimumCompaniesEnabled.checked;
+  const sleeveTotal = elements.mixlabSleeves.reduce((total, input) => total + (Number(input.value) || 0), 0);
+  elements.mixlabSleeveTotal.textContent = t('mixlab.sleeveTotal', {
+    total: formatPercentNumber(sleeveTotal),
+  });
+}
+
+function currentMixLabMode() {
+  return elements.mixlabModeInputs.find((input) => input.checked)?.value || 'consolidation';
+}
+
+function renderMixLabPanel() {
+  if (!elements.mixlabModeInputs?.length) return;
+  const portfolioSignature = getMixLabPortfolioSignature();
+  if (state.mixlab.hasRun && state.mixlab.lastPortfolioSignature !== portfolioSignature) {
+    state.mixlab.hasRun = false;
+    state.mixlab.lastResult = null;
+    state.mixlab.lastContext = null;
+    elements.mixlabStatus.textContent = '';
+    elements.mixlabResults.innerHTML = '';
+  }
+  state.mixlab.mode = currentMixLabMode();
+  for (const panel of elements.mixlabModePanels) {
+    panel.hidden = panel.dataset.mixlabModePanel !== state.mixlab.mode;
+  }
+  const hasPositions = getTotalShareUnits(state.portfolio) > 0;
+  elements.mixlabEmptyPortfolio.hidden = state.mixlab.mode !== 'consolidation' || hasPositions;
+  elements.mixlabCurrentSummary.hidden = state.mixlab.mode !== 'consolidation' || !hasPositions;
+  elements.mixlabRun.disabled = state.mixlab.mode === 'consolidation' && !hasPositions;
+  elements.mixlabValueControl.hidden = state.portfolioMode !== 'percentage';
+  const target = hasPositions ? getMixLabPortfolioTarget() : null;
+  if (target) renderMixLabPortfolioSummary(target);
+  else renderMixLabPortfolioSummary(null);
+  syncMixLabConstraintDefaults();
+  syncMixLabControls();
+  if (state.mixlab.lastResult && state.mixlab.lastContext) {
+    const { mode, portfolioTerBaseline, portfolioValueChf } = state.mixlab.lastContext;
+    renderMixLabResults(state.mixlab.lastResult, mode, portfolioTerBaseline, portfolioValueChf);
+  }
+}
+
+function renderMixLabResult(result, index, mode, portfolioTerBaseline, portfolioValueChf, alternative = false) {
+  const allocations = result.allocations.map(({ ticker, weightPct }) => `
+    <li><span>${escapeMarkup(ticker)}</span><strong>${escapeMarkup(formatPercentNumber(weightPct))}%</strong></li>
+  `).join('');
+  const bucketNames = {
+    switzerland: 'switzerland',
+    developedEurope: 'developedEurope',
+    northAmerica: 'northAmerica',
+    developedAsiaPacific: 'developedAsiaPacific',
+    emergingMarkets: 'emergingMarkets',
+    otherClassified: 'otherClassified',
+    unclassified: 'unclassified',
+  };
+  const countryExposure = Object.entries(result.exposure.buckets)
+    .filter(([, weight]) => weight > 0.01)
+    .map(([bucket, weight]) => `
+      <li><span>${t(`mixlab.bucket.${bucketNames[bucket] || 'unclassified'}`)}</span><strong>${formatPercentNumber(weight)}%</strong></li>
+    `).join('');
+  const failedConstraints = (result.failedConstraints || [])
+    .map((constraint) => t(`mixlab.constraint.${constraint}`))
+    .join(', ');
+  const annualCost = result.annualTerCostChf === null
+    ? t('common.notAvailable')
+    : formatChfValue(result.annualTerCostChf);
+  const baselineCost = portfolioTerBaseline !== null && portfolioValueChf !== null
+    ? portfolioValueChf * portfolioTerBaseline / 100
+    : null;
+  const annualDifference = baselineCost === null || result.annualTerCostChf === null
+    ? ''
+    : `<p class="mixlab-cost-difference">${t('mixlab.annualDifference', {
+      value: formatChfValue(result.annualTerCostChf - baselineCost),
+    })}</p>`;
+  const matchValue = mode === 'custom'
+    ? `${formatPercentNumber(result.sleeveFitPct)}%`
+    : result.overlapPct === null
+      ? t('common.notAvailable')
+      : `${formatPercentNumber(result.overlapPct)}%`;
+  const matchLabel = mode === 'custom' ? t('mixlab.sleeveFit') : t('mixlab.countryOverlap');
+  const failed = alternative
+    ? `<p class="mixlab-constraint-failures">${t('mixlab.failedConstraints', { constraints: escapeMarkup(failedConstraints) })}</p>`
+    : '';
+  return `
+    <article class="mixlab-result-row">
+      <header class="mixlab-result-heading">
+        <h3>${t(alternative ? 'mixlab.alternativeNumber' : 'mixlab.resultNumber', { number: index + 1 })}</h3>
+        <span>${result.fundCount} ${t(result.fundCount === 1 ? 'mixlab.fundCountSingular' : 'mixlab.fundCount')}</span>
+      </header>
+      ${failed}
+      <ul class="mixlab-fund-allocation-list">${allocations}</ul>
+      <dl class="mixlab-result-metrics">
+        <div><dt>${t('mixlab.weightedTer')}</dt><dd>${formatMixLabTer(result.weightedTerPct)}%</dd></div>
+        <div><dt>${t('mixlab.annualTerCost')}</dt><dd>${annualCost}</dd></div>
+        <div><dt>${t('mixlab.effectiveCompanies')}</dt><dd>${formatPercentNumber(result.effectiveCompanies)}</dd></div>
+        <div><dt>${matchLabel}</dt><dd>${matchValue}</dd></div>
+        <div><dt>${t('mixlab.classifiedCoverage')}</dt><dd>${formatPercentNumber(result.candidateCoveragePct ?? result.exposure.coveragePct)}%</dd></div>
+        <div><dt>${t('mixlab.unclassified')}</dt><dd>${formatPercentNumber(result.exposure.unclassifiedPct)}%</dd></div>
+      </dl>
+      ${annualDifference}
+      <details class="mixlab-country-details">
+        <summary>${t('mixlab.lookthroughExposure')}</summary>
+        <ul>${countryExposure}</ul>
+      </details>
+    </article>
+  `;
+}
+
+function renderMixLabResults(result, mode, portfolioTerBaseline, portfolioValueChf) {
+  if (result.validationErrors?.length) {
+    elements.mixlabStatus.textContent = t('mixlab.invalidSettings');
+  } else if (mode === 'custom' && !result.valid) {
+    elements.mixlabStatus.textContent = t('mixlab.invalidSleeveTotal', {
+      total: formatPercentNumber(result.totalWeightPct),
+    });
+  } else if (result.missingSleeves?.length) {
+    elements.mixlabStatus.textContent = t('mixlab.missingSleeveFunds', {
+      sleeves: result.missingSleeves.map((sleeve) => t(`mixlab.sleeve.${sleeve}`)).join(', '),
+    });
+  } else if (!result.results?.length && result.closestAlternatives?.length) {
+    elements.mixlabStatus.textContent = t('mixlab.noQualifyingMix');
+  } else if (!result.results?.length) {
+    elements.mixlabStatus.textContent = t('mixlab.noMixFound', {
+      count: result.eligibleFundCount || 0,
+    });
+  } else {
+    elements.mixlabStatus.textContent = t('mixlab.mixCount', {
+      count: result.results.length,
+      eligible: result.eligibleFundCount,
+    });
+  }
+
+  const results = result.results || [];
+  const alternatives = result.closestAlternatives || [];
+  const resultMarkup = results.map((entry, index) =>
+    renderMixLabResult(entry, index, mode, portfolioTerBaseline, portfolioValueChf)
+  ).join('');
+  const alternativeMarkup = alternatives.length ? `
+    <h3 class="mixlab-alternatives-heading">${t('mixlab.closestAlternatives')}</h3>
+    ${alternatives.map((entry, index) =>
+      renderMixLabResult(entry, index, mode, portfolioTerBaseline, portfolioValueChf, true)
+    ).join('')}
+  ` : '';
+  elements.mixlabResults.innerHTML = resultMarkup + alternativeMarkup;
+}
+
+function runMixLab() {
+  const mode = currentMixLabMode();
+  state.mixlab.mode = mode;
+  if (mode === 'consolidation' && getTotalShareUnits(state.portfolio) <= 0) {
+    state.mixlab.hasRun = false;
+    state.mixlab.lastResult = null;
+    state.mixlab.lastContext = null;
+    elements.mixlabStatus.textContent = '';
+    elements.mixlabResults.innerHTML = '';
+    return;
+  }
+  const portfolioValueChf = getMixLabPortfolioValueChf();
+  const portfolioTerBaseline = getMixLabPortfolioTerBaseline();
+  const commonOptions = {
+    funds: state.mixlabFunds,
+    diversificationPriority: Number(elements.mixlabBalance.value) / 100,
+    portfolioValueChf,
+    distributionPolicyFilter: elements.mixlabDistributionInputs.find((input) => input.checked)?.value || 'both',
+    maximumTerEnabled: elements.mixlabMaximumTerEnabled.checked,
+    maximumTerPct: elements.mixlabMaximumTer.value,
+    minimumEffectiveCompaniesEnabled: elements.mixlabMinimumCompaniesEnabled.checked,
+    minimumEffectiveCompanies: elements.mixlabMinimumCompanies.value,
+  };
+  const result = mode === 'custom'
+    ? searchCustomSleeves({
+      ...commonOptions,
+      sleeveAllocations: Object.fromEntries(elements.mixlabSleeves.map((input) => [input.dataset.mixlabSleeve, input.value])),
+    })
+    : searchConsolidation({
+      ...commonOptions,
+      target: getMixLabPortfolioTarget()?.exposure,
+      overlapThresholdPct: Number(elements.mixlabOverlap.value),
+    });
+  state.mixlab.hasRun = true;
+  state.mixlab.lastResult = result;
+  state.mixlab.lastContext = { mode, portfolioTerBaseline, portfolioValueChf };
+  state.mixlab.lastPortfolioSignature = getMixLabPortfolioSignature();
+  renderMixLabResults(result, mode, portfolioTerBaseline, portfolioValueChf);
+}
+
 function renderAll() {
   renderPortfolioModeControl();
   renderValuationModeControl();
@@ -2626,6 +2999,7 @@ function renderAll() {
   renderWarnings();
   updateSummary();
   renderShareFeedback();
+  renderMixLabPanel();
 }
 
 function setTab(tabName) {
@@ -2783,6 +3157,76 @@ async function bootstrap() {
   elements.colorModeMenu = document.getElementById('color-mode-menu');
   elements.installAppButton = document.getElementById('install-app-button');
   elements.colorModeUtility = document.querySelector('.app-utility-bar');
+  elements.mixlabModeInputs = [...document.querySelectorAll('input[name="mixlab-mode"]')];
+  elements.mixlabDistributionInputs = [...document.querySelectorAll('input[name="mixlab-distribution"]')];
+  elements.mixlabBalance = document.getElementById('mixlab-balance');
+  elements.mixlabBalanceValue = document.getElementById('mixlab-balance-value');
+  elements.mixlabOverlap = document.getElementById('mixlab-overlap');
+  elements.mixlabOverlapValue = document.getElementById('mixlab-overlap-value');
+  elements.mixlabMaximumTerEnabled = document.getElementById('mixlab-max-ter-enabled');
+  elements.mixlabMaximumTer = document.getElementById('mixlab-max-ter');
+  elements.mixlabMinimumCompaniesEnabled = document.getElementById('mixlab-min-companies-enabled');
+  elements.mixlabMinimumCompanies = document.getElementById('mixlab-min-companies');
+  elements.mixlabPortfolioValue = document.getElementById('mixlab-portfolio-value');
+  elements.mixlabSleeves = [...document.querySelectorAll('[data-mixlab-sleeve]')];
+  elements.mixlabModePanels = [...document.querySelectorAll('[data-mixlab-mode-panel]')];
+  elements.mixlabEmptyPortfolio = document.getElementById('mixlab-empty-portfolio');
+  elements.mixlabCurrentSummary = document.getElementById('mixlab-current-summary');
+  elements.mixlabRun = document.getElementById('mixlab-run');
+  elements.mixlabOpenCustom = document.querySelector('[data-mixlab-open-custom]');
+  elements.mixlabStatus = document.getElementById('mixlab-status');
+  elements.mixlabResults = document.getElementById('mixlab-results');
+  elements.mixlabSleeveTotal = document.getElementById('mixlab-sleeve-total');
+  elements.mixlabValueControl = document.querySelector('.mixlab-value-control');
+  elements.mixlabModeInputs.forEach((input) => {
+    input.checked = input.value === state.mixlab.mode;
+    input.addEventListener('change', () => {
+      renderMixLabPanel();
+      if (state.mixlab.hasRun) runMixLab();
+    });
+  });
+  const mixLabControlInputs = [
+    ...elements.mixlabDistributionInputs,
+    elements.mixlabBalance,
+    elements.mixlabOverlap,
+    elements.mixlabMaximumTerEnabled,
+    elements.mixlabMaximumTer,
+    elements.mixlabMinimumCompaniesEnabled,
+    elements.mixlabMinimumCompanies,
+    elements.mixlabPortfolioValue,
+    ...elements.mixlabSleeves,
+  ];
+  for (const input of mixLabControlInputs) {
+    input.addEventListener('input', syncMixLabControls);
+    input.addEventListener('change', () => {
+      const decimalPlaces = input === elements.mixlabMaximumTer
+        ? 3
+        : input === elements.mixlabMinimumCompanies ? 1 : null;
+      if (decimalPlaces !== null) limitMixLabConstraintPrecision(input, decimalPlaces);
+      syncMixLabControls();
+      if (state.mixlab.hasRun) runMixLab();
+    });
+  }
+  elements.mixlabRun.addEventListener('click', runMixLab);
+  for (const [input, decimalPlaces] of [
+    [elements.mixlabMaximumTer, 3],
+    [elements.mixlabMinimumCompanies, 1],
+  ]) {
+    input.addEventListener('input', () => {
+      input.dataset.userEdited = 'true';
+    });
+    input.addEventListener('blur', () => {
+      if (!limitMixLabConstraintPrecision(input, decimalPlaces)) return;
+      syncMixLabControls();
+      if (state.mixlab.hasRun) runMixLab();
+    });
+  }
+  elements.mixlabOpenCustom.addEventListener('click', () => {
+    const customMode = elements.mixlabModeInputs.find((input) => input.value === 'custom');
+    if (customMode) customMode.checked = true;
+    renderMixLabPanel();
+  });
+  syncMixLabControls();
   bindScoreBandTouchTooltip(elements.redundancyMeter, elements.redundancySegments);
   bindScoreBandTouchTooltip(elements.diversificationMeter, elements.diversificationSegments);
   document.addEventListener('pointerdown', (event) => {
@@ -2943,6 +3387,10 @@ async function bootstrap() {
     }
   }
   state.snapshots = new Map(snapshots);
+  state.mixlabFunds = state.catalog.etfs.map((entry) =>
+    prepareMixLabFund(entry, state.snapshots.get(entry.isin))
+  );
+  state.mixlabByIsin = new Map(state.mixlabFunds.map((fund) => [fund.isin, fund]));
 
   for (const position of state.portfolio) {
     if (!state.catalogMaps.byIsin.has(position.isin)) {

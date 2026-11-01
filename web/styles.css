@@ -1018,6 +1018,12 @@ body {
   margin-top: 8px;
 }
 
+.summary-card .detail {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
 .home-panel {
   gap: 18px;
 }
@@ -1135,6 +1141,20 @@ body {
 
 .panel-heading h2 {
   font-size: clamp(1.5rem, 3vw, 2.4rem);
+}
+
+.mixlab-panel-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.mixlab-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
 .explore-export-actions {
@@ -3482,4 +3502,447 @@ body {
 .lede,
 .inline-note span {
   color: #637089;
+}
+
+.tab-panel.mixlab-panel {
+  gap: 18px;
+}
+
+.mixlab-mode-control,
+.mixlab-filter-control,
+.mixlab-sleeve-controls {
+  min-width: 0;
+  margin: 0;
+  padding: 14px 0 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.mixlab-mode-control {
+  grid-column: 1 / -1;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.mixlab-filter-control {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.mixlab-filter-control > .mixlab-segmented-control {
+  margin-top: 8px;
+}
+
+.mixlab-mode-control legend,
+.mixlab-filter-control legend,
+.mixlab-sleeve-controls > h3 {
+  padding-right: 10px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.mixlab-mode-control > .mixlab-segmented-control {
+  margin-top: 8px;
+}
+
+.mixlab-control-group,
+.mixlab-empty-state,
+.mixlab-current-summary,
+.mixlab-sleeve-controls,
+.mixlab-run-row,
+.mixlab-result-row,
+.mixlab-methodology {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+}
+
+.mixlab-segmented-control {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.mixlab-segmented-control label {
+  position: relative;
+  display: flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.mixlab-segmented-control label + label {
+  border-left: 1px solid var(--border);
+}
+
+.mixlab-segmented-control input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.mixlab-segmented-control label:has(input:checked) {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 12%, var(--card-strong));
+  font-weight: 700;
+}
+
+.mixlab-segmented-control label:focus-within {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: -3px;
+}
+
+.mixlab-control-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  align-items: start;
+  column-gap: 28px;
+  row-gap: 18px;
+}
+
+.mixlab-control-group {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  align-items: start;
+  gap: 18px 22px;
+  padding: 18px;
+}
+
+.mixlab-range-control,
+.mixlab-value-control {
+  display: grid;
+  min-width: 0;
+  gap: 8px;
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.mixlab-range-control input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.mixlab-range-endpoints {
+  display: flex;
+  min-height: 22px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.mixlab-range-endpoints output {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.mixlab-limit-controls {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 10px;
+}
+
+.mixlab-limit-control {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(100px, 150px);
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-size: 0.88rem;
+}
+
+.mixlab-limit-control input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
+
+.mixlab-limit-control input[type='number'],
+.mixlab-value-control input,
+.mixlab-sleeve-grid input {
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  background: var(--input-background);
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.mixlab-limit-control input:disabled {
+  opacity: 0.55;
+}
+
+.mixlab-value-control {
+  max-width: 240px;
+}
+
+.mixlab-mode-panel {
+  min-width: 0;
+}
+
+.mixlab-mode-panel[data-mixlab-mode-panel="consolidation"]:not([hidden]) {
+  display: grid;
+  gap: 18px;
+}
+
+.mixlab-mode-panel[hidden],
+.mixlab-empty-state[hidden],
+.mixlab-current-summary[hidden],
+.mixlab-value-control[hidden] {
+  display: none;
+}
+
+.mixlab-results:empty {
+  display: none;
+}
+
+.mixlab-empty-state {
+  display: grid;
+  max-width: 620px;
+  justify-items: start;
+  gap: 14px;
+  padding: 18px;
+}
+
+.mixlab-empty-state p,
+.mixlab-sleeve-disclosure,
+.mixlab-status {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.mixlab-current-summary {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+}
+
+.mixlab-current-summary p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.mixlab-portfolio-positions,
+.mixlab-fund-allocation-list,
+.mixlab-country-details ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mixlab-portfolio-positions li,
+.mixlab-fund-allocation-list li,
+.mixlab-country-details li {
+  display: flex;
+  max-width: 100%;
+  align-items: baseline;
+  gap: 8px;
+  overflow-wrap: anywhere;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.mixlab-portfolio-positions strong,
+.mixlab-fund-allocation-list strong,
+.mixlab-country-details strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.mixlab-sleeve-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 12px 18px;
+}
+
+.mixlab-sleeve-grid label {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(76px, 100px) auto;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+  font-size: 0.88rem;
+}
+
+.mixlab-sleeve-grid label > span:first-child {
+  overflow-wrap: anywhere;
+}
+
+.mixlab-sleeve-total {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.mixlab-sleeve-disclosure {
+  margin-top: 12px;
+  font-size: 0.86rem;
+}
+
+.mixlab-sleeve-controls {
+  padding: 14px 18px 18px;
+}
+
+.mixlab-sleeve-controls > h3 {
+  margin: 0 0 12px;
+}
+
+.mixlab-run-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+}
+
+.mixlab-run-row .primary-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 8px;
+}
+
+.mixlab-run-row .primary-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.mixlab-run-row .primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.mixlab-status {
+  font-size: 0.9rem;
+}
+
+.mixlab-results {
+  display: grid;
+  min-width: 0;
+  gap: 12px;
+}
+
+.mixlab-result-row {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+}
+
+.mixlab-result-heading {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mixlab-result-heading h3,
+.mixlab-alternatives-heading {
+  margin: 0;
+  font-size: 1.12rem;
+}
+
+.mixlab-result-heading > span {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.mixlab-result-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr));
+  gap: 12px 20px;
+  margin: 0;
+}
+
+.mixlab-result-metrics > div {
+  min-width: 0;
+}
+
+.mixlab-result-metrics dt {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.mixlab-result-metrics dd {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.mixlab-cost-difference,
+.mixlab-constraint-failures {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.mixlab-constraint-failures {
+  color: var(--danger);
+}
+
+.mixlab-country-details summary,
+.mixlab-methodology summary {
+  width: fit-content;
+  color: var(--accent);
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.mixlab-country-details ul {
+  padding-top: 12px;
+}
+
+.mixlab-alternatives-heading {
+  padding: 18px 0 0;
+}
+
+.mixlab-methodology {
+  padding: 14px 18px;
+}
+
+.mixlab-methodology-copy {
+  display: grid;
+  max-width: 900px;
+  gap: 8px;
+  padding-top: 12px;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.mixlab-methodology-copy p {
+  margin: 0;
 }

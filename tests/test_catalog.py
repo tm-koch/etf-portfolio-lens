@@ -13,6 +13,9 @@ from etf_ingestion_backend.models import (
     IngestionResult,
     NormalizedHolding,
 )
+from etf_ingestion_backend.registry import load_registry
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def make_entry(isin: str, ticker: str) -> ETFSourceEntry:
@@ -42,6 +45,65 @@ def make_result(
 
 
 class CatalogTests(unittest.TestCase):
+    def test_published_optimizer_metadata_matches_registry(self) -> None:
+        registry = load_registry(ROOT / "data" / "etf_registry.json")
+        catalog = json.loads(
+            (ROOT / "web" / "data" / "catalog.json").read_text(encoding="utf-8")
+        )
+        catalog_by_isin = {entry["isin"]: entry for entry in catalog["etfs"]}
+
+        self.assertEqual(
+            {entry.isin for entry in registry.entries}, set(catalog_by_isin)
+        )
+        for entry in registry.entries:
+            with self.subTest(isin=entry.isin):
+                published = catalog_by_isin[entry.isin]
+                self.assertEqual(entry.ter_pct, published["terPct"])
+                self.assertEqual(entry.ter_source, published["terSource"])
+                self.assertEqual(
+                    entry.distribution_policy, published["distributionPolicy"]
+                )
+                self.assertEqual(
+                    entry.investment_universe, published["investmentUniverse"]
+                )
+                self.assertEqual([], published["optimizerMetadataIssues"])
+
+    def test_build_catalog_publishes_optimizer_metadata(self) -> None:
+        entry = make_entry("FIRST", "ONE")
+        entry.ter_pct = 0.12
+        entry.ter_source = "Test source"
+        entry.distribution_policy = "accumulating"
+        entry.investment_universe = "developed_world"
+
+        catalog = build_catalog(
+            [entry], [make_result(entry, Path("data/raw/2026-08-16"))]
+        )
+
+        catalog_entry = catalog["etfs"][0]
+        self.assertEqual(0.12, catalog_entry["terPct"])
+        self.assertEqual("Test source", catalog_entry["terSource"])
+        self.assertEqual("accumulating", catalog_entry["distributionPolicy"])
+        self.assertEqual("developed_world", catalog_entry["investmentUniverse"])
+        self.assertEqual([], catalog_entry["optimizerMetadataIssues"])
+        self.assertEqual(
+            "/data/raw/2026-08-16/snapshots/FIRST.json",
+            catalog_entry["snapshotPath"],
+        )
+
+    def test_build_catalog_reports_missing_optimizer_metadata(self) -> None:
+        entry = make_entry("FIRST", "ONE")
+        catalog = build_catalog(
+            [entry], [make_result(entry, Path("data/raw/2026-08-16"))]
+        )
+
+        catalog_entry = catalog["etfs"][0]
+        self.assertNotIn("terPct", catalog_entry)
+        self.assertNotIn("distributionPolicy", catalog_entry)
+        self.assertEqual(
+            ["ter_pct", "ter_source", "distribution_policy", "investment_universe"],
+            catalog_entry["optimizerMetadataIssues"],
+        )
+
     def test_build_catalog_preserves_entry_order_and_snapshot_date(self) -> None:
         first = make_entry("FIRST", "ONE")
         second = make_entry("SECOND", "TWO")

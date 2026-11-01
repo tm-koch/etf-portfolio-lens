@@ -3,6 +3,7 @@ $PwaCacheSensitivePaths = @(
   'styles.css',
   'fonts.css',
   'app.js',
+  'mixlab.js',
   'share.js',
   'report-data.js',
   'export-view.js',

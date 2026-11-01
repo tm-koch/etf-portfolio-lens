@@ -85,11 +85,12 @@ function addPageTitle(pdf, title) {
 function addMetricCards(pdf, entries, y) {
   const gap = 4;
   const cardWidth = (PAGE_WIDTH - PAGE_LEFT - PAGE_RIGHT - gap * 2) / 3;
-  const cardHeight = 20;
+  const hasDetails = entries.some((entry) => entry[2]);
+  const cardHeight = hasDetails ? 21 : 20;
   const rowGap = 3;
   const rowCount = Math.ceil(entries.length / 3);
 
-  entries.forEach(([label, value], index) => {
+  entries.forEach(([label, value, detail], index) => {
     const column = index % 3;
     const row = Math.floor(index / 3);
     const x = PAGE_LEFT + column * (cardWidth + gap);
@@ -105,7 +106,13 @@ function addMetricCards(pdf, entries, y) {
     pdf.setFont('SpaceGrotesk', 'bold');
     pdf.setFontSize(11);
     pdf.setTextColor(...TEXT_COLOR);
-    pdf.text(String(value), x + 2, cardY + 16);
+    pdf.text(String(value), x + 2, cardY + (hasDetails ? 14 : 16));
+    if (detail) {
+      pdf.setFont('SpaceGrotesk', 'normal');
+      pdf.setFontSize(6);
+      pdf.setTextColor(...MUTED_COLOR);
+      pdf.text(pdf.splitTextToSize(detail, cardWidth - 4).slice(0, 1), x + 2, cardY + 19);
+    }
   });
   return y + rowCount * (cardHeight + rowGap) + 2;
 }
@@ -574,6 +581,13 @@ export function renderReportDocument({
     summaryEntries.splice(1, 0, [t('summary.shareUnits'), analytics.summary.shareUnits == null ? unavailable : formatCount(analytics.summary.shareUnits)]);
     summaryEntries.splice(2, 0, [t('summary.totalValue'), analytics.summary.totalValueChf == null ? unavailable : formatCurrency(analytics.summary.totalValueChf, 'CHF')]);
   }
+  summaryEntries.push([
+    t('summary.portfolioTer'),
+    analytics.summary.portfolioTerPct == null ? unavailable : formatPercent(analytics.summary.portfolioTerPct),
+    `${t('summary.annualTerCost')}: ${analytics.summary.portfolioTerAnnualCostChf == null
+      ? unavailable
+      : formatCurrency(analytics.summary.portfolioTerAnnualCostChf, 'CHF')}`,
+  ]);
   y = addMetricCards(pdf, summaryEntries, y);
   y = addSubheading(pdf, t('export.exposureRollups'), y);
   y = addRollupCards(pdf, analytics, { t, translateTaxonomy, formatPercent, unavailable }, y);

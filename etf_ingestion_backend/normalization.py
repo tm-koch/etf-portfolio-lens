@@ -47,6 +47,67 @@ REGION_BY_COUNTRY = {
     "south korea": "Asia",
 }
 
+COUNTRY_CODE_BY_NAME = {
+    "australia": "AU",
+    "austria": "AT",
+    "belgium": "BE",
+    "bermuda": "BM",
+    "brazil": "BR",
+    "canada": "CA",
+    "cayman islands": "KY",
+    "chile": "CL",
+    "china": "CN",
+    "colombia": "CO",
+    "czech republic": "CZ",
+    "denmark": "DK",
+    "egypt": "EG",
+    "finland": "FI",
+    "france": "FR",
+    "germany": "DE",
+    "greece": "GR",
+    "hong kong": "HK",
+    "hungary": "HU",
+    "india": "IN",
+    "indonesia": "ID",
+    "ireland": "IE",
+    "israel": "IL",
+    "italy": "IT",
+    "japan": "JP",
+    "jersey": "JE",
+    "korea (south)": "KR",
+    "kuwait": "KW",
+    "liechtenstein": "LI",
+    "luxembourg": "LU",
+    "malaysia": "MY",
+    "mexico": "MX",
+    "netherlands": "NL",
+    "new zealand": "NZ",
+    "norway": "NO",
+    "peru": "PE",
+    "philippines": "PH",
+    "poland": "PL",
+    "portugal": "PT",
+    "qatar": "QA",
+    "republic of korea": "KR",
+    "russia": "RU",
+    "russian federation": "RU",
+    "saudi arabia": "SA",
+    "singapore": "SG",
+    "south africa": "ZA",
+    "south korea": "KR",
+    "spain": "ES",
+    "sweden": "SE",
+    "switzerland": "CH",
+    "taiwan": "TW",
+    "thailand": "TH",
+    "turkey": "TR",
+    "united arab emirates": "AE",
+    "united kingdom": "GB",
+    "united states": "US",
+    "usa": "US",
+}
+VALID_COUNTRY_CODES = set(COUNTRY_CODE_BY_NAME.values())
+
 
 def parse_float(value: Any) -> float | None:
     if value is None:
@@ -91,6 +152,15 @@ def _infer_region(country: str | None) -> str | None:
     if not country:
         return None
     return REGION_BY_COUNTRY.get(_normalize_key(country))
+
+
+def _normalize_country_code(value: Any) -> str | None:
+    code = str(value or "").strip().upper()
+    return code if code in VALID_COUNTRY_CODES else None
+
+
+def _country_code_from_name(country: str | None) -> str | None:
+    return COUNTRY_CODE_BY_NAME.get(_normalize_key(country))
 
 
 def _company_id(name: str | None, isin: str | None) -> str | None:
@@ -166,6 +236,18 @@ def normalize_row(
         or raw_row.get("Standort")
         or ""
     ).strip() or None
+    source_country_code = _normalize_country_code(
+        raw_row.get("Country Code")
+        or raw_row.get("Country code")
+        or raw_row.get("country_code")
+        or raw_row.get("countryCode")
+    )
+    label_country_code = _country_code_from_name(country)
+    country_code_conflict = bool(
+        source_country_code
+        and label_country_code
+        and source_country_code != label_country_code
+    )
     exchange = (
         raw_row.get("Exchange") or raw_row.get("exchange") or raw_row.get("Börse") or ""
     ).strip() or None
@@ -185,6 +267,9 @@ def normalize_row(
         asset_class=asset_class,
         region=_infer_region(country),
         country=country,
+        country_code=(
+            None if country_code_conflict else source_country_code or label_country_code
+        ),
         exchange=exchange,
         exchange_code=normalize_exchange(exchange),
         market_currency=market_currency,
@@ -216,6 +301,10 @@ def normalize_row(
         source_fields=dict(raw_row),
         enrichment_source=source_name,
     )
+    if country_code_conflict:
+        holding.source_fields["country_code_warning"] = (
+            "Source country code conflicts with the country label"
+        )
 
     override = (overrides or OverrideRegistry.empty()).find(holding)
     if override:
@@ -250,6 +339,19 @@ def normalize_row(
         holding.enrichment_source = "provider_classification"
     elif match.record:
         enrich_holding(holding, match.record)
+        master_country_code = _normalize_country_code(match.record.country_code)
+        if (
+            label_country_code
+            and master_country_code
+            and label_country_code != master_country_code
+        ):
+            country_code_conflict = True
+            holding.country_code = None
+            holding.source_fields["country_code_warning"] = (
+                "Security master country code conflicts with the source country label"
+            )
+        elif not holding.country_code:
+            holding.country_code = master_country_code
         holding.enrichment_source = "security_master"
         if not override:
             override = (overrides or OverrideRegistry.empty()).find(holding)
@@ -296,6 +398,14 @@ def normalize_row(
         holding.region = _infer_region(holding.country)
 
     if override:
+        if "country_code" in override.set_values:
+            verified_country_code = _normalize_country_code(
+                override.set_values["country_code"]
+            )
+            if verified_country_code:
+                holding.country_code = verified_country_code
+                country_code_conflict = False
+                holding.source_fields.pop("country_code_warning", None)
         holding.enrichment_source = (
             "override+security_master" if match and match.record else "override"
         )
@@ -307,6 +417,10 @@ def normalize_row(
         holding.match.attempted.append("override:" + "+".join(sorted(override.match)))
         if complete_override and not non_company_holding:
             holding.match.warning = None
+    if country_code_conflict and holding.match:
+        holding.match.warning = holding.source_fields["country_code_warning"]
+    if not country_code_conflict and not holding.country_code:
+        holding.country_code = _country_code_from_name(holding.country)
     if holding.canonical_name:
         holding.name = holding.canonical_name
     elif match and match.record:
@@ -335,6 +449,8 @@ def enrich_holding(holding: NormalizedHolding, record: SecurityRecord) -> None:
         holding.asset_class = record.asset_type or "Stock"
     if not holding.country:
         holding.country = record.country
+    if not holding.country_code:
+        holding.country_code = _normalize_country_code(record.country_code)
     if not holding.exchange:
         holding.exchange = record.exchange
     if not holding.exchange_code:

@@ -326,3 +326,18 @@ The ingestion pipeline SHALL always use the supplied local fixture for `IE00BD4T
 #### Scenario: Missing UBS fixture fails clearly
 - **WHEN** an ingestion run selects `IE00BD4TXV59` and its fixture is unavailable
 - **THEN** ingestion fails before publishing a snapshot and identifies the missing fixture
+
+### Requirement: Persist normalized country identifiers for holdings
+Newly generated holding snapshots SHALL include a normalized ISO 3166-1 alpha-2 country identifier when it is available from the source, verified override, or security master, while retaining the source country label.
+
+#### Scenario: Country identifier is available
+- **WHEN** a holding's country is known and maps to a valid ISO 3166-1 alpha-2 identifier
+- **THEN** the snapshot stores that identifier and retains the original country label
+
+#### Scenario: Country identifier is unavailable
+- **WHEN** a holding's country is absent, ambiguous, or cannot be mapped confidently
+- **THEN** the snapshot leaves the normalized identifier unavailable and preserves available source data and diagnostics
+
+#### Scenario: Historical snapshots remain unchanged
+- **WHEN** the country-identifier field is added to future snapshots
+- **THEN** existing files under `data/raw/` are not rewritten by the change

@@ -115,6 +115,23 @@ The source registry lives in `data/etf_registry.json`. Each entry defines:
 - parser identifier
 - local fixture path for offline testing
 
+## MixLab ETF and Country Metadata
+
+The MixLab registry fields are optional for products that lack verified data:
+
+- `ter_pct` is a numeric percentage-point value (`0.06` means a TER of 0.06%, not 6%). `ter_source` records the supplied source. A missing TER is unavailable, never zero.
+- `distribution_policy` is `accumulating` or `distributing`; it is a user-selected filter, not an optimization objective.
+- `investment_universe` is an explicit sleeve classification: `developed_world`, `all_country_world`, `emerging_markets`, `developed_europe`, or `switzerland`. Do not infer this field from a ticker or display name. World sleeves can overlap regional sleeves.
+- `country_code` in newly generated holding classifications is an ISO 3166-1 alpha-2 identifier. The source country label remains available in `country`, and unresolved or conflicting identities remain unknown with diagnostics. Existing historical snapshots are not migrated.
+
+MixLab's exclusive country buckets are versioned as `mixlab-country-buckets-v1` (reviewed 2026-10-31). ISO 3166-1 alpha-2 supplies the country identifiers; the project-owned grouping places Switzerland separately, then assigns recognized codes to North America, developed Europe excluding Switzerland, developed Asia-Pacific, emerging markets, or other classified markets. Unmapped or conflicting exposure remains unclassified. This grouping is a comparison taxonomy, not an official index classification. Membership changes require a version update and corresponding tests.
+
+The browser catalog publishes the available optimizer metadata and an `optimizerMetadataIssues` list for each ETF. To refresh snapshots and the static catalog from fixtures, run:
+
+```powershell
+python -m etf_ingestion_backend --all --fixtures --update-catalog
+```
+
 ## Snapshot Format
 
 Each snapshot is a JSON document with:

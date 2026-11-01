@@ -1,8 +1,18 @@
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
+
+DISTRIBUTION_POLICIES = {"accumulating", "distributing"}
+INVESTMENT_UNIVERSES = {
+    "developed_world",
+    "all_country_world",
+    "emerging_markets",
+    "developed_europe",
+    "switzerland",
+}
 
 
 @dataclass(slots=True)
@@ -40,6 +50,50 @@ class ETFSourceEntry:
     listing_ticker: str | None = None
     listing_currency: str | None = None
     fixture_only: bool = False
+    ter_pct: float | None = None
+    ter_source: str | None = None
+    distribution_policy: str | None = None
+    investment_universe: str | None = None
+
+    def __post_init__(self) -> None:
+        if self.ter_pct is not None:
+            try:
+                ter_pct = float(self.ter_pct)
+            except (TypeError, ValueError) as error:
+                raise ValueError(f"Invalid TER for {self.isin}") from error
+            if not math.isfinite(ter_pct) or ter_pct < 0:
+                raise ValueError(f"Invalid TER for {self.isin}")
+            self.ter_pct = ter_pct
+            if self.ter_source is None:
+                raise ValueError(f"Missing TER source for {self.isin}")
+        if self.ter_source is not None and (
+            not isinstance(self.ter_source, str) or not self.ter_source.strip()
+        ):
+            raise ValueError(f"Invalid TER source for {self.isin}")
+        if self.distribution_policy is not None and (
+            not isinstance(self.distribution_policy, str)
+            or self.distribution_policy not in DISTRIBUTION_POLICIES
+        ):
+            raise ValueError(f"Invalid distribution policy for {self.isin}")
+        if self.investment_universe is not None and (
+            not isinstance(self.investment_universe, str)
+            or self.investment_universe not in INVESTMENT_UNIVERSES
+        ):
+            raise ValueError(f"Invalid investment universe for {self.isin}")
+
+    @property
+    def optimizer_metadata_issues(self) -> list[str]:
+        fields = {
+            "ter_pct": self.ter_pct,
+            "ter_source": self.ter_source,
+            "distribution_policy": self.distribution_policy,
+            "investment_universe": self.investment_universe,
+        }
+        return [name for name, value in fields.items() if value is None]
+
+    @property
+    def mixlab_eligible(self) -> bool:
+        return not self.optimizer_metadata_issues
 
 
 @dataclass(slots=True)
@@ -53,6 +107,7 @@ class NormalizedHolding:
     asset_class: str | None = None
     region: str | None = None
     country: str | None = None
+    country_code: str | None = None
     exchange: str | None = None
     exchange_code: str | None = None
     market_currency: str | None = None
@@ -80,6 +135,7 @@ class NormalizedHolding:
                 "sector": self.sector,
                 "region": self.region,
                 "country": self.country,
+                "country_code": self.country_code,
                 "exchange": self.exchange,
                 "market_currency": self.market_currency,
             },

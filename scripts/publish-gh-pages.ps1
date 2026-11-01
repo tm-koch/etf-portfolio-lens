@@ -60,6 +60,7 @@ try {
     'styles.css',
     'fonts.css',
     'app.js',
+    'mixlab.js',
     'report-data.js',
     'export-view.js',
     'pdf-report-renderer.js',

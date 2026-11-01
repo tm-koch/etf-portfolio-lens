@@ -74,6 +74,17 @@ def _catalog_entry(entry: ETFSourceEntry, run_date: str) -> dict[str, object]:
         value = getattr(entry, field_name)
         if value is not None:
             result[field_name] = value
+    optimizer_fields = {
+        "ter_pct": "terPct",
+        "ter_source": "terSource",
+        "distribution_policy": "distributionPolicy",
+        "investment_universe": "investmentUniverse",
+    }
+    for source_name, catalog_name in optimizer_fields.items():
+        value = getattr(entry, source_name)
+        if value is not None:
+            result[catalog_name] = value
+    result["optimizerMetadataIssues"] = entry.optimizer_metadata_issues
     return result
 
 

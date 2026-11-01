@@ -538,6 +538,106 @@
             </div>
           </div>
         </section>
+        <section class="tab-panel card mixlab-panel" id="mixlab-panel" data-panel="mixlab">
+          <div class="panel-heading mixlab-panel-heading">
+            <div>
+              <p class="section-label" data-i18n="nav.lab">Lab</p>
+              <div class="mixlab-title-row">
+                <h2 data-i18n="mixlab.title">MixLab</h2>
+                <button class="score-info-button" type="button" data-score-info="mixlab" data-score-info-title="mixlab.infoTitle" aria-label="Explain MixLab controls and results" data-i18n-attr-aria-label="mixlab.infoButton">
+                  <i data-lucide="info" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+            <p class="panel-copy" data-i18n="mixlab.description">Compare ETF mixes by fee, breadth, and country exposure.</p>
+          </div>
+
+          <div class="mixlab-control-layout">
+            <section class="mixlab-control-group" aria-label="Mix ranking and constraints" data-i18n-attr-aria-label="mixlab.controls">
+              <fieldset class="mixlab-mode-control">
+                <legend data-i18n="mixlab.mode">Mix type</legend>
+                <div class="mixlab-segmented-control">
+                  <label><input type="radio" name="mixlab-mode" value="consolidation" checked><span data-i18n="mixlab.consolidation">Consolidate portfolio</span></label>
+                  <label><input type="radio" name="mixlab-mode" value="custom"><span data-i18n="mixlab.customMode">Custom fund sleeves</span></label>
+                </div>
+              </fieldset>
+              <label class="mixlab-range-control" for="mixlab-balance">
+                <span data-i18n="mixlab.balance">Balance TER and company breadth</span>
+                <span class="mixlab-range-endpoints"><span data-i18n="mixlab.lowerTer">Lower TER</span><output id="mixlab-balance-value">0%</output><span data-i18n="mixlab.moreCompanies">More companies</span></span>
+                <input id="mixlab-balance" type="range" min="0" max="100" step="1" value="0">
+              </label>
+              <fieldset class="mixlab-filter-control">
+                <legend data-i18n="mixlab.distribution">Distribution policy</legend>
+                <div class="mixlab-segmented-control">
+                  <label><input type="radio" name="mixlab-distribution" value="both" checked><span data-i18n="mixlab.both">Both</span></label>
+                  <label><input type="radio" name="mixlab-distribution" value="accumulating"><span data-i18n="mixlab.accumulating">Accumulating</span></label>
+                  <label><input type="radio" name="mixlab-distribution" value="distributing"><span data-i18n="mixlab.distributing">Distributing</span></label>
+                </div>
+              </fieldset>
+              <label class="mixlab-range-control" for="mixlab-overlap">
+                <span data-i18n="mixlab.overlap">Minimum country exposure overlap</span>
+                <span class="mixlab-range-endpoints"><span>90%</span><output id="mixlab-overlap-value">97%</output><span>100%</span></span>
+                <input id="mixlab-overlap" type="range" min="90" max="100" step="1" value="97">
+              </label>
+              <div class="mixlab-limit-controls">
+                <div class="mixlab-limit-control">
+                  <input id="mixlab-max-ter-enabled" type="checkbox">
+                  <label for="mixlab-max-ter-enabled" data-i18n="mixlab.maximumTer">Maximum weighted TER (%)</label>
+                  <input id="mixlab-max-ter" type="number" min="0" step="0.001" placeholder="TER %" aria-label="Maximum weighted TER (%)" data-i18n-attr-placeholder="mixlab.terPlaceholder" data-i18n-attr-aria-label="mixlab.maximumTer" disabled>
+                </div>
+                <div class="mixlab-limit-control">
+                  <input id="mixlab-min-companies-enabled" type="checkbox">
+                  <label for="mixlab-min-companies-enabled" data-i18n="mixlab.minimumCompanies">Minimum effective companies</label>
+                  <input id="mixlab-min-companies" type="number" min="0" step="0.1" placeholder="Companies" aria-label="Minimum effective companies" data-i18n-attr-placeholder="mixlab.companiesPlaceholder" data-i18n-attr-aria-label="mixlab.minimumCompanies" disabled>
+                </div>
+              </div>
+              <label class="mixlab-value-control" for="mixlab-portfolio-value" hidden>
+                <span data-i18n="mixlab.portfolioValue">Portfolio value (CHF)</span>
+                <input id="mixlab-portfolio-value" type="number" min="0" step="100" value="10000">
+              </label>
+            </section>
+
+            <section class="mixlab-mode-panel" data-mixlab-mode-panel="consolidation">
+              <div class="mixlab-empty-state" id="mixlab-empty-portfolio" role="status">
+                <p data-i18n="mixlab.emptyPortfolio">Add portfolio positions to run a consolidation. Custom fund sleeves remain available.</p>
+                <button class="secondary-button" type="button" data-mixlab-open-custom data-i18n="mixlab.openCustom">Build a custom mix</button>
+              </div>
+              <div class="mixlab-current-summary" id="mixlab-current-summary" hidden></div>
+            </section>
+
+            <section class="mixlab-mode-panel" data-mixlab-mode-panel="custom" hidden>
+              <section class="mixlab-sleeve-controls" role="group" aria-labelledby="mixlab-sleeve-allocation-title">
+                <h3 id="mixlab-sleeve-allocation-title" data-i18n="mixlab.sleeveAllocation">Fund-sleeve allocation</h3>
+                <div class="mixlab-sleeve-grid">
+                  <label for="mixlab-sleeve-developed-world"><span data-i18n="mixlab.sleeve.developed_world">Developed World</span><input id="mixlab-sleeve-developed-world" data-mixlab-sleeve="developed_world" type="number" min="0" max="100" step="1" value="0"><span>%</span></label>
+                  <label for="mixlab-sleeve-all-country-world"><span data-i18n="mixlab.sleeve.all_country_world">All-country World</span><input id="mixlab-sleeve-all-country-world" data-mixlab-sleeve="all_country_world" type="number" min="0" max="100" step="1" value="0"><span>%</span></label>
+                  <label for="mixlab-sleeve-emerging"><span data-i18n="mixlab.sleeve.emerging_markets">Emerging markets</span><input id="mixlab-sleeve-emerging" data-mixlab-sleeve="emerging_markets" type="number" min="0" max="100" step="1" value="0"><span>%</span></label>
+                  <label for="mixlab-sleeve-europe"><span data-i18n="mixlab.sleeve.developed_europe">Developed Europe</span><input id="mixlab-sleeve-europe" data-mixlab-sleeve="developed_europe" type="number" min="0" max="100" step="1" value="0"><span>%</span></label>
+                  <label for="mixlab-sleeve-switzerland"><span data-i18n="mixlab.sleeve.switzerland">Switzerland</span><input id="mixlab-sleeve-switzerland" data-mixlab-sleeve="switzerland" type="number" min="0" max="100" step="1" value="0"><span>%</span></label>
+                </div>
+                <p class="mixlab-sleeve-total" id="mixlab-sleeve-total" role="status">Sleeve total: 0%</p>
+              </section>
+              <p class="mixlab-sleeve-disclosure" data-i18n="mixlab.sleeveDisclosure">Sleeve allocations are fund capital allocations. World and regional funds can overlap; look-through country exposure is calculated separately.</p>
+            </section>
+          </div>
+
+          <div class="mixlab-run-row">
+            <button class="primary-button" id="mixlab-run" type="button"><i data-lucide="flask-conical" aria-hidden="true"></i><span data-i18n="mixlab.run">Find mixes</span></button>
+            <p id="mixlab-status" role="status" aria-live="polite"></p>
+          </div>
+          <div class="mixlab-results" id="mixlab-results" aria-live="polite"></div>
+          <details class="mixlab-methodology">
+            <summary data-i18n="mixlab.methodology">Methodology and data limits</summary>
+            <div class="mixlab-methodology-copy" id="mixlab-methodology-copy">
+              <p data-i18n="mixlab.methodCountry">ISO 3166-1 alpha-2 identifiers map to the versioned MixLab country buckets. Unmapped identities remain unclassified.</p>
+              <p data-i18n="mixlab.methodTer">TER values are published percentage points with source metadata. Missing fees are excluded, never estimated as zero.</p>
+              <p data-i18n="mixlab.methodCosts">Annual TER estimates use portfolio value and exclude taxes, trading costs, and tracking differences.</p>
+              <p data-i18n="mixlab.methodCatalog">The search is limited to products with verified optimizer metadata and available holdings snapshots.</p>
+              <p data-i18n="mixlab.methodGrid">Mix allocations are non-negative, sum to 100%, and use a bounded deterministic search grid.</p>
+            </div>
+          </details>
+        </section>
+
         <dialog class="build-dialog score-info-dialog" id="score-info-dialog" aria-labelledby="score-info-dialog-title">
           <div class="build-dialog-content">
             <div class="build-dialog-heading">
@@ -556,6 +656,14 @@
               <p data-i18n="explore.scoreInfo.diversificationEffectiveNumber">This is an effective number of equally weighted companies, not the actual number of companies held. A score of 10 means the disclosed exposure has the same concentration as 10 equally weighted companies.</p>
               <p data-i18n="explore.scoreInfo.diversificationRatings">Ratings: below 5, Highly Concentrated; 5 to below 10, Concentrated; 10 to below 20, Moderately Diversified; 20 to below 40, Well Diversified; 40 or more, Highly Diversified.</p>
               <p data-i18n="explore.scoreInfo.diversificationCoverage">When holdings are incomplete, the calculation uses disclosed company exposure. The coverage warning shows how much is included.</p>
+            </section>
+            <section class="score-info-panel" data-score-info-panel="mixlab" hidden>
+              <p data-i18n="mixlab.infoMode">Consolidation ranks mixes that approximate the current portfolio. Custom fund sleeves lets you set target percentages for fund categories; sleeve percentages must total 100%.</p>
+              <p data-i18n="mixlab.infoBalance">The balance slider sets the ranking trade-off: 0% favors lower weighted TER, while 100% favors more effective companies. Intermediate values balance both.</p>
+              <p data-i18n="mixlab.infoDistribution">Choose accumulating or distributing ETFs, or include both. This filters which products can be used.</p>
+              <p data-i18n="mixlab.infoOverlap">In consolidation mode, the minimum country exposure overlap is the required similarity between the current portfolio and a candidate's classified country exposure. Low coverage can make overlap unavailable. This constraint does not apply to custom sleeves.</p>
+              <p data-i18n="mixlab.infoLimits">Optional maximum TER and minimum effective companies must both be met when enabled. If no mix qualifies, the closest alternatives are shown with the constraints they miss.</p>
+              <p data-i18n="mixlab.infoResults">Results show fund weights, weighted TER, effective companies, and country exposure. Estimated annual TER cost uses the portfolio value and excludes taxes, trading costs, and tracking differences.</p>
             </section>
           </div>
         </dialog>

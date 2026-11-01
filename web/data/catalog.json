@@ -7,14 +7,24 @@
       "ticker": "ACWD",
       "name": "SPDR MSCI ACWI UCITS ETF",
       "provider": "SSGA",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00B44Z5B48.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00B44Z5B48.json",
+      "terPct": 0.12,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "all_country_world",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "LU0908500753",
       "ticker": "MEUD",
       "name": "Amundi Core Stoxx Europe 600 UCITS ETF Acc",
       "provider": "Amundi",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/LU0908500753.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/LU0908500753.json",
+      "terPct": 0.07,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "developed_europe",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "IE0009HF1MK9",
@@ -25,21 +35,36 @@
       "share_class_currency": "USD",
       "exchange": "SIX Swiss Exchange",
       "listing_ticker": "WEBGCHF",
-      "listing_currency": "CHF"
+      "listing_currency": "CHF",
+      "terPct": 0.07,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "distributing",
+      "investmentUniverse": "all_country_world",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "IE00BF20LF40",
       "ticker": "EUMD",
       "name": "iShares MSCI Europe Mid Cap UCITS ETF EUR (Acc)",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00BF20LF40.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00BF20LF40.json",
+      "terPct": 0.15,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "developed_europe",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "IE00BCLWRD08",
       "ticker": "IS3H",
       "name": "iShares MSCI EMU Mid Cap UCITS ETF",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00BCLWRD08.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/IE00BCLWRD08.json",
+      "terPct": 0.49,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "developed_europe",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "IE00B4K48X80",
@@ -50,7 +75,12 @@
       "share_class_currency": "EUR",
       "exchange": "SIX Swiss Exchange",
       "listing_ticker": "IMEA",
-      "listing_currency": "CHF"
+      "listing_currency": "CHF",
+      "terPct": 0.12,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "developed_europe",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "IE00BKM4GZ66",
@@ -61,7 +91,12 @@
       "share_class_currency": "USD",
       "exchange": "SIX Swiss Exchange",
       "listing_ticker": "EIMI",
-      "listing_currency": "USD"
+      "listing_currency": "USD",
+      "terPct": 0.18,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "emerging_markets",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "IE00BD4TXV59",
@@ -72,56 +107,96 @@
       "share_class_currency": "USD",
       "exchange": "SIX Swiss Exchange",
       "listing_ticker": "WRDUSW",
-      "listing_currency": "CHF"
+      "listing_currency": "CHF",
+      "terPct": 0.06,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "developed_world",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "CH0237935652",
       "ticker": "CHSPI",
       "name": "iShares Core SPI ETF (CH)",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0237935652.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0237935652.json",
+      "terPct": 0.10,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "distributing",
+      "investmentUniverse": "switzerland",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "CH0008899764",
       "ticker": "CSSMI",
       "name": "iShares SMI® ETF (CH)",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0008899764.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0008899764.json",
+      "terPct": 0.35,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "distributing",
+      "investmentUniverse": "switzerland",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "CH0019852802",
       "ticker": "CSSMIM",
       "name": "iShares SMIM® ETF (CH)",
       "provider": "iShares",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0019852802.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0019852802.json",
+      "terPct": 0.45,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "distributing",
+      "investmentUniverse": "switzerland",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "CH0130595124",
       "ticker": "SPMCHA",
       "name": "UBS ETF (CH) – SPI Mid (CHF) A-dis",
       "provider": "UBS",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0130595124.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0130595124.json",
+      "terPct": 0.25,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "distributing",
+      "investmentUniverse": "switzerland",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "CH1553162921",
       "ticker": "SPIEXT",
       "name": "UBS SPI® Extra ETF",
       "provider": "UBS",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH1553162921.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH1553162921.json",
+      "terPct": 0.13,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "switzerland",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "CH0111762537",
       "ticker": "SMIM",
       "name": "UBS SMIM® ETF CHF dis",
       "provider": "UBS",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0111762537.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH0111762537.json",
+      "terPct": 0.25,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "distributing",
+      "investmentUniverse": "switzerland",
+      "optimizerMetadataIssues": []
     },
     {
       "isin": "CH1447931341",
       "ticker": "SMI",
       "name": "UBS SMI® ETF CHF acc",
       "provider": "UBS",
-      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH1447931341.json"
+      "snapshotPath": "/data/raw/2026-10-20/snapshots/CH1447931341.json",
+      "terPct": 0.20,
+      "terSource": "User-provided TER table",
+      "distributionPolicy": "accumulating",
+      "investmentUniverse": "switzerland",
+      "optimizerMetadataIssues": []
     }
   ],
   "pairwiseOverlap": {
