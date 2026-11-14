@@ -1,126 +1,126 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-10-20T18:21:37Z",
+  "generated_at": "2026-11-14T01:16:01Z",
   "status": "complete",
   "quotes": {
     "CH0008899764": {
       "isin": "CH0008899764",
-      "price": 150.3,
+      "price": 156.64,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "CH0019852802": {
       "isin": "CH0019852802",
-      "price": 330.7,
+      "price": 344.55,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:29:59.210000Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "CH0237935652": {
       "isin": "CH0237935652",
-      "price": 173.02,
+      "price": 180.4,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "CH0130595124": {
       "isin": "CH0130595124",
-      "price": 133.38,
+      "price": 137.84,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "CH1553162921": {
       "isin": "CH1553162921",
-      "price": 13.218,
+      "price": 13.748,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:26:43.990000Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "CH0111762537": {
       "isin": "CH0111762537",
-      "price": 318.9,
+      "price": 332.8,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "CH1447931341": {
       "isin": "CH1447931341",
-      "price": 4.1405,
+      "price": 4.318,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "IE00B44Z5B48": {
       "isin": "IE00B44Z5B48",
-      "price": 268.9,
+      "price": 267.7,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "IE0009HF1MK9": {
       "isin": "IE0009HF1MK9",
-      "price": 12.698,
+      "price": 12.602,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:13:47Z",
+      "quoted_at": "2026-11-13T17:14:41.780000Z",
       "status": "available"
     },
     "IE00BF20LF40": {
       "isin": "IE00BF20LF40",
-      "price": 10.518,
+      "price": 11.03,
       "currency": "EUR",
-      "quoted_at": "2026-10-20T15:22:22Z",
+      "quoted_at": "2026-11-13T16:35:20Z",
       "status": "available",
       "ticker": "EUMD.L"
     },
     "LU0908500753": {
       "isin": "LU0908500753",
-      "price": 315.35,
+      "price": 328.25,
       "currency": "EUR",
-      "quoted_at": "2026-10-20T15:36:02Z",
+      "quoted_at": "2026-11-13T16:35:48Z",
       "status": "available",
       "ticker": "LYP6.DE"
     },
     "IE00BCLWRD08": {
       "isin": "IE00BCLWRD08",
-      "price": 80.07,
+      "price": 83.78,
       "currency": "EUR",
-      "quoted_at": "2026-10-20T15:35:49Z",
+      "quoted_at": "2026-11-13T16:36:11Z",
       "status": "available",
       "ticker": "IS3H.DE"
     },
     "IE00BKM4GZ66": {
       "isin": "IE00BKM4GZ66",
-      "price": 52.08,
+      "price": 49.68,
       "currency": "USD",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "IE00B4K48X80": {
       "isin": "IE00B4K48X80",
-      "price": 96.27,
+      "price": 100.06,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     },
     "IE00BD4TXV59": {
       "isin": "IE00BD4TXV59",
-      "price": 37.675,
+      "price": 37.615,
       "currency": "CHF",
-      "quoted_at": "2026-10-20T17:36:35Z",
+      "quoted_at": "2026-11-13T17:35:40Z",
       "status": "available"
     }
   },
   "fx": {
     "EUR/CHF": {
-      "rate": 0.9237,
-      "quoted_at": "2026-10-20T00:00:00Z",
+      "rate": 0.9266,
+      "quoted_at": "2026-11-13T00:00:00Z",
       "status": "available"
     },
     "USD/CHF": {
-      "rate": 0.82363,
-      "quoted_at": "2026-10-20T00:00:00Z",
+      "rate": 0.8384,
+      "quoted_at": "2026-11-13T00:00:00Z",
       "status": "available"
     }
   }
