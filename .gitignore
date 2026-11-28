@@ -1,5 +1,0 @@
-**/__pycache__/**
-data/raw/**/downloads/tickers.*
-data/*.pdf
-.env
-**/node_modules/**
